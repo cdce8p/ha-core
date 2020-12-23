@@ -86,7 +86,7 @@ jobs:
       - name: Run pip-licenses [All]
         run: |
           . venv/bin/activate
-          pip-licenses --from all --order=license
+          pip-licenses --from all --order=License-Metadata
       - name: Run pip-licenses [csv output]
         run: |
           . venv/bin/activate
