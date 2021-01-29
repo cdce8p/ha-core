@@ -9,3 +9,6 @@ purge:
     repack:
       description: Attempt to save disk space by rewriting the entire database file.
       example: true
+    apply_filter:
+      description: Apply entity_id and event_type filter in addition to time based purge.
+      example: true
