@@ -138,7 +138,7 @@ def test_purge_method(hass, hass_recorder):
             hass.data[DATA_INSTANCE].block_till_done()
             wait_recording_done(hass)
             assert (
-                mock_logger.debug.mock_calls[5][1][0]
+                mock_logger.debug.mock_calls[2][1][0]
                 == "Vacuuming SQL DB to free space"
             )
 
@@ -216,7 +216,7 @@ def _add_test_events(hass):
 
 def _add_test_recorder_runs(hass):
     """Add a few recorder_runs for testing."""
-    now = datetime.now()
+    now = dt_util.utcnow()
     five_days_ago = now - timedelta(days=5)
     eleven_days_ago = now - timedelta(days=11)
 
