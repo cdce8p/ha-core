@@ -21,6 +21,7 @@ repos:
     rev: v1.31.1
     hooks:
       - id: zizmor
+        stages: [manual]
         args:
           - --pedantic
           - --no-online-audits
