@@ -23,3 +23,7 @@ requirements_all.txt linguist-generated=true
 requirements_test_pre_commit.txt linguist-generated=true
 script/hassfest/docker/Dockerfile linguist-generated=true
 .github/workflows/*.lock.yml linguist-generated=true merge=ours
+
+.gitattributes linguist-generated=true
+.github/actions/**/*.yml linguist-generated=true
+.github/workflows/ci.yaml linguist-generated=true
