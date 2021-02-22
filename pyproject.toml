@@ -402,7 +402,7 @@ disable = [
     "wrong-exception-operation",
 ]
 enable = [
-    #"useless-suppression",  # temporarily every now and then to clean them up
+    "useless-suppression",  # temporarily every now and then to clean them up
     "use-symbolic-message-instead",
 ]
 per-file-ignores = [
@@ -436,6 +436,9 @@ runtime-typing = false
 
 [tool.pylint.CODE_STYLE]
 max-line-length-suggestions = 72
+
+[tool.pylint.HASS_ENFORCE_TYPE_HINTS]
+ignore-missing-annotations = true
 
 [tool.pytest.ini_options]
 testpaths = [
