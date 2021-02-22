@@ -25,6 +25,10 @@ inputs:
   save:
     description: Whether to save the rebuilt venv and uv cache. Only the prepare job should.
     default: "false"
+  lookup-only:
+    default: "false"
+  fail-on-cache-miss:
+    default: "false"
 
 outputs:
   python-version:
@@ -45,6 +49,8 @@ runs:
       uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: venv
+        lookup-only: ${{ inputs.lookup-only }}
+        fail-on-cache-miss: ${{ inputs.fail-on-cache-miss }}
         key: >-
           ${{ runner.os }}-${{ runner.arch }}-${{ steps.python.outputs.python-version }}-${{
           inputs.python-cache-key }}
