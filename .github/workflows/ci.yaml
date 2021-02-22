@@ -649,6 +649,9 @@ jobs:
       - name: Run pylint
         run: |
           . venv/bin/activate
+          pip uninstall -y pylint astroid
+          pip install -U git+git://github.com/cdce8p/astroid.git@dev
+          pip install -U git+git://github.com/cdce8p/pylint.git@dev
           pylint homeassistant
 
   mypy:
