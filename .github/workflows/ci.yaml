@@ -18,17 +18,17 @@ env:
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   changes:
     name: Determine what has changed
     outputs:
       # In case of issues with the partial run, use the following line instead:
-      # test_full_suite: 'true'
-      test_full_suite: ${{ steps.info.outputs.test_full_suite }}
+      test_full_suite: 'true'
+      # test_full_suite: ${{ steps.info.outputs.test_full_suite }}
       core: ${{ steps.core.outputs.changes }}
       integrations: ${{ steps.integrations.outputs.changes }}
       integrations_glob: ${{ steps.info.outputs.integrations_glob }}
@@ -621,7 +621,10 @@ jobs:
         run: |
           . venv/bin/activate
           python --version
-          pylint homeassistant
+          pip uninstall -y pylint astroid
+          pip install -U git+git://github.com/cdce8p/astroid.git@dev
+          pip install -U git+git://github.com/cdce8p/pylint.git@dev
+          pylint --fail-on=useless-suppression homeassistant
       - name: Run pylint (partially)
         if: needs.changes.outputs.test_full_suite == 'false'
         shell: bash
@@ -706,7 +709,8 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    # if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    if: false
     needs:
       - changes
       - gen-requirements-all
