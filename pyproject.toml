@@ -88,7 +88,7 @@ disable = [
     "wrong-import-order",
 ]
 enable = [
-    #"useless-suppression",  # temporarily every now and then to clean them up
+    "useless-suppression",  # temporarily every now and then to clean them up
     "use-symbolic-message-instead",
 ]
 
