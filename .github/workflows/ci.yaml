@@ -34,6 +34,7 @@ env:
   MYPY_CACHE_VERSION: 4
   HA_SHORT_VERSION: 2023.9
   DEFAULT_PYTHON: "3.11"
+  # Only use default version below
   ALL_PYTHON_VERSIONS: "['3.11']"
   # 10.3 is the oldest supported version
   # - 10.3.32 is the version currently shipped with Synology (as of 17 Feb 2022)
@@ -55,9 +56,9 @@ env:
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -458,6 +459,7 @@ jobs:
         with:
           path: venv
           lookup-only: true
+          fail-on-cache-miss: true
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
             needs.info.outputs.python_cache_key }}
@@ -564,13 +566,19 @@ jobs:
   pylint:
     name: Check pylint
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 60
     if: |
       github.event.inputs.mypy-only != 'true'
       || github.event.inputs.pylint-only == 'true'
     needs:
       - info
       - base
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO_ASTROID: cdce8p/astroid
+      REPO_PYLINT: cdce8p/pylint
+      BRANCH_ASTROID: dev
+      BRANCH_PYLINT: dev
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v3.5.3
@@ -580,6 +588,30 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON }}
           check-latest: true
+
+      - name: Fetch astroid sha
+        id: fetch-astroid-sha
+        run: |
+          echo "Checking astroid branch: ${{ env.BRANCH_ASTROID }}"
+          sha=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ env.REPO_ASTROID }}/git/ref/heads/${{ env.BRANCH_ASTROID }} | \
+            jq -r '.object.sha')
+          echo "sha=$sha" >> $GITHUB_OUTPUT
+          echo "name=(${{ env.BRANCH_ASTROID }} -- $sha)" >> $GITHUB_OUTPUT
+          echo "Found sha: $sha"
+      - name: Fetch pylint sha
+        id: fetch-pylint-sha
+        run: |
+          echo "Checking pylint branch: ${{ env.BRANCH_PYLINT }}"
+          sha=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ env.REPO_PYLINT }}/git/ref/heads/${{ env.BRANCH_PYLINT }} | \
+            jq -r '.object.sha')
+          echo "sha=$sha" >> $GITHUB_OUTPUT
+          echo "name=(${{ env.BRANCH_PYLINT }} -- $sha)" >> $GITHUB_OUTPUT
+          echo "Found sha: $sha"
+
       - name: Restore full Python ${{ env.DEFAULT_PYTHON }} virtual environment
         id: cache-venv
         uses: actions/cache/restore@v3.3.1
@@ -589,6 +621,68 @@ jobs:
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
             needs.info.outputs.python_cache_key }}
+      - name: Remove old pylint + astroid versions
+        run: |
+          . venv/bin/activate
+          pip uninstall -y pylint astroid
+
+      - name: Restore custom astroid version in venv ${{ steps.fetch-astroid-sha.outputs.name }}
+        id: cache-venv-astroid
+        uses: actions/cache/restore@v3.3.1
+        with:
+          path: |
+            venv/lib/python*/site-packages/astroid*
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_astroid-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-astroid-sha.outputs.sha }}
+      - name: Install custom astroid
+        if: steps.cache-venv-astroid.outputs.cache-hit != 'true'
+        run: |
+          . venv/bin/activate
+          pip install --no-deps -U git+https://github.com/${{ env.REPO_ASTROID }}.git@${{ env.BRANCH_ASTROID }}
+      - name: Save astroid version in venv
+        if: steps.cache-venv-astroid.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3.3.1
+        with:
+          path: |
+            venv/lib/python*/site-packages/astroid*
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_astroid-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-astroid-sha.outputs.sha }}
+
+      - name: Restore custom pylint version in venv ${{ steps.fetch-pylint-sha.outputs.name }}
+        id: cache-venv-pylint
+        uses: actions/cache/restore@v3.3.1
+        with:
+          path: |
+            venv/lib/python*/site-packages/pylint*
+            venv/bin/pylint
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_pylint-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-pylint-sha.outputs.sha }}
+      - name: Install custom pylint
+        if: steps.cache-venv-pylint.outputs.cache-hit != 'true'
+        run: |
+          . venv/bin/activate
+          pip install --no-deps -U git+https://github.com/${{ env.REPO_PYLINT }}.git@${{ env.BRANCH_PYLINT }}
+      - name: Save pylint version in venv
+        if: steps.cache-venv-pylint.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3.3.1
+        with:
+          path: |
+            venv/lib/python*/site-packages/pylint*
+            venv/bin/pylint
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_pylint-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-pylint-sha.outputs.sha }}
+
+      - name: Run pip check
+        continue-on-error: true
+        run: |
+          . venv/bin/activate
+          pip list | grep 'astroid \|pylint '
+          echo "------"
+          pip check
       - name: Register pylint problem matcher
         run: |
           echo "::add-matcher::.github/workflows/matchers/pylint.json"
@@ -597,7 +691,8 @@ jobs:
         run: |
           . venv/bin/activate
           python --version
-          pylint --ignore-missing-annotations=y homeassistant
+          git branch --show-current
+          pylint --ignore-missing-annotations=y --fail-on=useless-suppression homeassistant
       - name: Run pylint (partially)
         if: needs.info.outputs.test_full_suite == 'false'
         shell: bash
@@ -671,6 +766,7 @@ jobs:
   pytest:
     runs-on: ubuntu-22.04
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
@@ -795,6 +891,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
@@ -902,6 +999,7 @@ jobs:
           POSTGRES_PASSWORD: password
         options: --health-cmd="pg_isready -hlocalhost -Upostgres" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
