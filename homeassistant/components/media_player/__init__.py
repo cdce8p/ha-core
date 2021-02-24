@@ -185,8 +185,8 @@ def is_on(hass, entity_id=None):
     Check all media player if no entity_id specified.
     """
     entity_ids = [entity_id] if entity_id else hass.states.entity_ids(DOMAIN)
-    return any(
-        not hass.states.is_state(entity_id, STATE_OFF) for entity_id in entity_ids
+    return not all(
+        hass.states.is_state(entity_id, STATE_OFF) for entity_id in entity_ids
     )
 
 

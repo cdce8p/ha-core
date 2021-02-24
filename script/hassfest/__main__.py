@@ -136,7 +136,7 @@ def main():
         invalid_itg = [
             itg
             for itg in integrations.values()
-            if any(not error.fixable for error in itg.errors)
+            if not all(error.fixable for error in itg.errors)
         ]
     else:
         # action == validate

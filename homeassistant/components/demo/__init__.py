@@ -126,7 +126,7 @@ async def async_setup(hass, config):
 
     results = await asyncio.gather(*tasks)
 
-    if any(not result for result in results):
+    if not all(result for result in results):
         return False
 
     # Set up example persistent notification
