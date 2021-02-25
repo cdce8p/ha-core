@@ -110,7 +110,7 @@ async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry):
 
     await coordinator.async_refresh()
 
-    if all(not bool(device.states) for device in coordinator.data.values()):
+    if not any(bool(device.states) for device in coordinator.data.values()):
         _LOGGER.debug(
             "All devices have assumed state. Update interval has been reduced to: %s",
             SCAN_INTERVAL_ALL_ASSUMED_STATE,

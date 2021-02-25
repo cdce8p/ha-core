@@ -163,8 +163,8 @@ async def test_lights_turn_on_when_coming_home_after_sun_set_person(hass, scanne
         hass.states.async_set(device_2, STATE_NOT_HOME)
         await hass.async_block_till_done()
 
-        assert all(
-            not light.is_on(hass, ent_id)
+        assert not any(
+            light.is_on(hass, ent_id)
             for ent_id in hass.states.async_entity_ids("light")
         )
         assert hass.states.get(device_1).state == "not_home"
