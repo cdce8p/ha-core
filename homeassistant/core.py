@@ -153,7 +153,6 @@ def is_callback(func: Callable[..., Any]) -> bool:
 
 @enum.unique
 class HassJobType(enum.Enum):
-    # pylint: disable=invalid-name
     """Represent a job type."""
 
     Coroutinefunction = 1
