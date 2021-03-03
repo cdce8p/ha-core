@@ -1,4 +1,6 @@
 """Support for Buienradar.nl weather service."""
+from __future__ import annotations
+
 import logging
 
 from buienradar.constants import (
@@ -41,9 +43,10 @@ from homeassistant.components.weather import (
 from homeassistant.const import CONF_LATITUDE, CONF_LONGITUDE, CONF_NAME, TEMP_CELSIUS
 from homeassistant.helpers import config_validation as cv
 
-# Reuse data and API logic from the sensor implementation
 from .const import DEFAULT_TIMEFRAME
 from .util import BrData
+
+# Reuse data and API logic from the sensor implementation
 
 _LOGGER = logging.getLogger(__name__)
 

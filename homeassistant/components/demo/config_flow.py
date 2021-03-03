@@ -1,12 +1,15 @@
 """Config flow to configure demo component."""
+from __future__ import annotations
+
 import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
 
-# pylint: disable=unused-import
 from . import DOMAIN
+
+# pylint: disable=unused-import
 
 CONF_STRING = "string"
 CONF_BOOLEAN = "bool"
