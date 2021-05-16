@@ -10,7 +10,7 @@ on:
   pull_request: ~
 
 env:
-  CACHE_VERSION: 1
+  CACHE_VERSION: 2
   DEFAULT_PYTHON: 3.8
   PRE_COMMIT_CACHE: ~/.cache/pre-commit
   SQLALCHEMY_WARN_20: 1
@@ -21,6 +21,7 @@ jobs:
   prepare-base:
     name: Prepare base dependencies
     runs-on: ubuntu-latest
+    if: false
     outputs:
       python-key: ${{ steps.generate-python-key.outputs.key }}
       pre-commit-key: ${{ steps.generate-pre-commit-key.outputs.key }}
@@ -162,6 +163,7 @@ jobs:
     name: Check codespell
     runs-on: ubuntu-latest
     needs: prepare-base
+    if: false
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2.3.4
@@ -487,6 +489,7 @@ jobs:
     name: Check hassfest
     runs-on: ubuntu-latest
     needs: prepare-tests
+    if: false
     strategy:
       matrix:
         python-version: [3.8]
@@ -589,6 +592,7 @@ jobs:
     name: Check pylint
     runs-on: ubuntu-latest
     needs: prepare-tests
+    if: false
     strategy:
       matrix:
         python-version: [3.8]
@@ -620,6 +624,7 @@ jobs:
     name: Check mypy
     runs-on: ubuntu-latest
     needs: prepare-tests
+    if: false
     strategy:
       matrix:
         python-version: [3.8]
@@ -650,6 +655,7 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     needs: prepare-tests
+    if: false
     strategy:
       fail-fast: false
       matrix:
