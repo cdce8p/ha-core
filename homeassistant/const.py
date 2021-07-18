@@ -232,21 +232,23 @@ EVENT_TIME_CHANGED: Final = "time_changed"
 
 
 # #### DEVICE CLASSES ####
-DEVICE_CLASS_BATTERY: Final = "battery"
-DEVICE_CLASS_CO: Final = "carbon_monoxide"
-DEVICE_CLASS_CO2: Final = "carbon_dioxide"
-DEVICE_CLASS_CURRENT: Final = "current"
-DEVICE_CLASS_ENERGY: Final = "energy"
-DEVICE_CLASS_HUMIDITY: Final = "humidity"
-DEVICE_CLASS_ILLUMINANCE: Final = "illuminance"
-DEVICE_CLASS_MONETARY: Final = "monetary"
-DEVICE_CLASS_POWER_FACTOR: Final = "power_factor"
-DEVICE_CLASS_POWER: Final = "power"
-DEVICE_CLASS_PRESSURE: Final = "pressure"
-DEVICE_CLASS_SIGNAL_STRENGTH: Final = "signal_strength"
-DEVICE_CLASS_TEMPERATURE: Final = "temperature"
-DEVICE_CLASS_TIMESTAMP: Final = "timestamp"
-DEVICE_CLASS_VOLTAGE: Final = "voltage"
+DeviceClassT = NewType("DeviceClassT", str)
+DEVICE_CLASS_BATTERY: Final[DeviceClassT] = DeviceClassT("battery")
+DEVICE_CLASS_CO: Final[DeviceClassT] = DeviceClassT("carbon_monoxide")
+DEVICE_CLASS_CO2: Final[DeviceClassT] = DeviceClassT("carbon_dioxide")
+DEVICE_CLASS_CURRENT: Final[DeviceClassT] = DeviceClassT("current")
+DEVICE_CLASS_ENERGY: Final[DeviceClassT] = DeviceClassT("energy")
+DEVICE_CLASS_HUMIDITY: Final[DeviceClassT] = DeviceClassT("humidity")
+DEVICE_CLASS_ILLUMINANCE: Final[DeviceClassT] = DeviceClassT("illuminance")
+DEVICE_CLASS_MONETARY: Final[DeviceClassT] = DeviceClassT("monetary")
+DEVICE_CLASS_POWER_FACTOR: Final[DeviceClassT] = DeviceClassT("power_factor")
+DEVICE_CLASS_POWER: Final[DeviceClassT] = DeviceClassT("power")
+DEVICE_CLASS_PRESSURE: Final[DeviceClassT] = DeviceClassT("pressure")
+DEVICE_CLASS_SIGNAL_STRENGTH: Final[DeviceClassT] = DeviceClassT("signal_strength")
+DEVICE_CLASS_TEMPERATURE: Final[DeviceClassT] = DeviceClassT("temperature")
+DEVICE_CLASS_TIMESTAMP: Final[DeviceClassT] = DeviceClassT("timestamp")
+DEVICE_CLASS_VOLTAGE: Final[DeviceClassT] = DeviceClassT("voltage")
+
 
 # #### STATES ####
 STATE_ON: Final = "on"
