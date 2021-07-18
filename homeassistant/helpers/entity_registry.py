@@ -27,6 +27,7 @@ from homeassistant.const import (
     MAX_LENGTH_STATE_DOMAIN,
     MAX_LENGTH_STATE_ENTITY_ID,
     STATE_UNAVAILABLE,
+    DeviceClassT,
 )
 from homeassistant.core import (
     Event,
@@ -101,7 +102,7 @@ class RegistryEntry:
     )
     capabilities: Mapping[str, Any] | None = attr.ib(default=None)
     supported_features: int = attr.ib(default=0)
-    device_class: str | None = attr.ib(default=None)
+    device_class: DeviceClassT | None = attr.ib(default=None)
     unit_of_measurement: str | None = attr.ib(default=None)
     # As set by integration
     original_name: str | None = attr.ib(default=None)
@@ -252,7 +253,7 @@ class EntityRegistry:
         area_id: str | None = None,
         capabilities: Mapping[str, Any] | None = None,
         supported_features: int | None = None,
-        device_class: str | None = None,
+        device_class: DeviceClassT | None = None,
         unit_of_measurement: str | None = None,
         original_name: str | None = None,
         original_icon: str | None = None,

@@ -28,6 +28,7 @@ from homeassistant.const import (
     STATE_UNKNOWN,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
+    DeviceClassT,
 )
 from homeassistant.core import CALLBACK_TYPE, Context, HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError, NoEntitySpecifiedError
@@ -223,7 +224,7 @@ class Entity(ABC):
     _attr_assumed_state: bool = False
     _attr_available: bool = True
     _attr_context_recent_time: timedelta = timedelta(seconds=5)
-    _attr_device_class: str | None = None
+    _attr_device_class: DeviceClassT | None = None
     _attr_device_info: DeviceInfo | None = None
     _attr_entity_picture: str | None = None
     _attr_entity_registry_enabled_default: bool = True
@@ -307,7 +308,7 @@ class Entity(ABC):
         return self._attr_device_info
 
     @property
-    def device_class(self) -> str | None:
+    def device_class(self) -> DeviceClassT | None:
         """Return the class of this device, from component DEVICE_CLASSES."""
         return self._attr_device_class
 
