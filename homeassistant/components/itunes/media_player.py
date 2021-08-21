@@ -127,7 +127,7 @@ class Itunes:
         found_playlists = [
             playlist
             for playlist in playlists
-            if (playlist_id_or_name in [playlist["name"], playlist["id"]])
+            if playlist_id_or_name in [playlist["name"], playlist["id"]]
         ]
 
         if found_playlists:
