@@ -342,6 +342,7 @@ def setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
         # Convert value into correct XML-RPC Type.
         # https://docs.python.org/3/library/xmlrpc.client.html#xmlrpc.client.ServerProxy
+        # pylint: disable-next=consider-using-assignment-expr
         if value_type:
             if value_type == "int":
                 value = int(value)

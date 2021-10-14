@@ -61,7 +61,7 @@ def setup(hass: HomeAssistant, config: ConfigType) -> bool:
         api_key = rtm_config[CONF_API_KEY]
         shared_secret = rtm_config[CONF_SHARED_SECRET]
         token = stored_rtm_config.get_token(account_name)
-        if token:
+        if token:  # pylint: disable=consider-using-assignment-expr
             _LOGGER.debug("found token for account %s", account_name)
             _create_instance(
                 hass,

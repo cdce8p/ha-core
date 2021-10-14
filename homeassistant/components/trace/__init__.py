@@ -130,6 +130,7 @@ async def async_list_traces(
         traces: list[dict[str, Any]] = []
         for key in _get_data(hass):
             domain = key.split(".", 1)[0]
+            # pylint: disable-next=consider-using-assignment-expr
             if domain == wanted_domain:
                 traces.extend(_get_debug_traces(hass, key))
     else:

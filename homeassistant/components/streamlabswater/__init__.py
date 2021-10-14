@@ -50,6 +50,7 @@ def setup(hass: HomeAssistant, config: ConfigType) -> bool:
     client = streamlabswater.StreamlabsClient(api_key)
     locations = client.get_locations().get("locations")
 
+    # pylint: disable-next=consider-using-assignment-expr
     if locations is None:
         _LOGGER.error("Unable to retrieve locations. Verify API key")
         return False
