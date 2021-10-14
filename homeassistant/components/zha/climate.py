@@ -457,6 +457,7 @@ class Thermostat(ZhaEntity, ClimateEntity):
         temp = kwargs.get(ATTR_TEMPERATURE)
         hvac_mode = kwargs.get(ATTR_HVAC_MODE)
 
+        # pylint: disable-next=consider-using-assignment-expr
         if hvac_mode is not None:
             await self.async_set_hvac_mode(hvac_mode)
 

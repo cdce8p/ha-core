@@ -166,6 +166,7 @@ class Life360Scanner:
         self._errs[key] = 0
 
     def _err(self, key, err_msg):
+        # pylint: disable=consider-using-assignment-expr
         _errs = self._errs.get(key, 0)
         if _errs < self._max_errs:
             self._errs[key] = _errs = _errs + 1

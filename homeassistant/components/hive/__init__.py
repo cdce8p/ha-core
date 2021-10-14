@@ -87,6 +87,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     for ha_type, hive_type in PLATFORM_LOOKUP.items():
         device_list = devices.get(hive_type)
+        # pylint: disable-next=consider-using-assignment-expr
         if device_list:
             hass.async_create_task(
                 hass.config_entries.async_forward_entry_setup(entry, ha_type)

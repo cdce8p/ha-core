@@ -165,6 +165,7 @@ class SonarrSensor(SonarrEntity, SensorEntity):
         attrs = {}
         key = self.entity_description.key
 
+        # pylint: disable=consider-using-assignment-expr
         if key == "diskspace":
             for disk in self.sonarr.app.disks:
                 free = disk.free / 1024 ** 3
@@ -201,6 +202,7 @@ class SonarrSensor(SonarrEntity, SensorEntity):
         """Return the state of the sensor."""
         key = self.entity_description.key
 
+        # pylint: disable=consider-using-assignment-expr
         if key == "diskspace":
             total_free = sum(disk.free for disk in self.sonarr.app.disks)
             free = total_free / 1024 ** 3

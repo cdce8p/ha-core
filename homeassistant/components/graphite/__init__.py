@@ -57,6 +57,7 @@ def setup(hass: HomeAssistant, config: ConfigType) -> bool:
     port = conf.get(CONF_PORT)
     protocol = conf.get(CONF_PROTOCOL)
 
+    # pylint: disable-next=consider-using-assignment-expr
     if protocol == PROTOCOL_TCP:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:

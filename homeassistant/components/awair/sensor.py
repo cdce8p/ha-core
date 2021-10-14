@@ -176,6 +176,7 @@ class AwairSensor(CoordinatorEntity, SensorEntity):
         state: float
         sensor_type = self.entity_description.key
 
+        # pylint: disable=consider-using-assignment-expr
         # Special-case for "SCORE", which we treat as the AQI
         if sensor_type == API_SCORE:
             state = self._air_data.score

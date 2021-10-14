@@ -67,6 +67,7 @@ def setup_platform(
     printers = config[CONF_PRINTERS]
     is_cups = config[CONF_IS_CUPS_SERVER]
 
+    # pylint: disable-next=consider-using-assignment-expr
     if is_cups:
         data = CupsData(host, port, None)
         data.update()

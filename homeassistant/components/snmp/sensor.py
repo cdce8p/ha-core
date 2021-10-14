@@ -106,6 +106,7 @@ async def async_setup_platform(
     default_value = config.get(CONF_DEFAULT_VALUE)
     value_template = config.get(CONF_VALUE_TEMPLATE)
 
+    # pylint: disable-next=consider-using-assignment-expr
     if value_template is not None:
         value_template.hass = hass
 

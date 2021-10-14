@@ -183,6 +183,7 @@ class DSMRFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         """Step when user initializes a integration."""
         if user_input is not None:
             user_selection = user_input[CONF_TYPE]
+            # pylint: disable-next=consider-using-assignment-expr
             if user_selection == "Serial":
                 return await self.async_step_setup_serial()
 

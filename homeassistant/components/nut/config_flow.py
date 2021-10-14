@@ -72,6 +72,8 @@ def _format_host_port_alias(user_input):
     host = user_input[CONF_HOST]
     port = user_input[CONF_PORT]
     alias = user_input.get(CONF_ALIAS)
+
+    # pylint: disable-next=consider-using-assignment-expr
     if alias:
         return f"{alias}@{host}:{port}"
     return f"{host}:{port}"

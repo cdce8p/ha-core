@@ -138,7 +138,7 @@ class EpsonProjectorMediaPlayer(MediaPlayerEntity):
             source = await self._projector.get_property(SOURCE)
             self._source = SOURCE_LIST.get(source, self._source)
             volume = await self._projector.get_property(VOLUME)
-            if volume:
+            if volume:  # pylint: disable=consider-using-assignment-expr
                 self._volume = volume
         elif power_state == BUSY:
             self._state = STATE_ON

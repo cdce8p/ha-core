@@ -141,6 +141,7 @@ class EverLightsLight(LightEntity):
         brightness = kwargs.get(ATTR_BRIGHTNESS, self._brightness)
         effect = kwargs.get(ATTR_EFFECT)
 
+        # pylint: disable-next=consider-using-assignment-expr
         if effect is not None:
             colors = await self._api.set_pattern_by_id(self._channel, effect)
 
