@@ -143,22 +143,37 @@ runtime-typing = false
 
 [tool.pylint.CODE_STYLE]
 max-line-length-suggestions = 72
-assignment-expr-not = false
-assignment-expr-compare-none = false
-assignment-expr-compare-const = false
+assignment-expr-not = true
+assignment-expr-compare-none = true
+assignment-expr-compare-const = true
 assignment-expr-compare-in = false
 assignment-expr-compare-call = false
-assignment-expr-assign-not = false
-assignment-expr-assign-getitem = false
+assignment-expr-assign-not = true
+assignment-expr-assign-getitem = true
 assignment-expr-assign-annotation = false
-assignment-expr-assign-await = false
+assignment-expr-assign-await = true
 assignment-expr-assign-ifexp = false
 assignment-expr-assign-comprehension = false
 assignment-expr-assign-lambda = false
 assignment-expr-assign-compare = false
 assignment-expr-assign-boolop = false
 assignment-expr-assign-binop = false
-assignment-expr-assign-call = false
+assignment-expr-assign-call = true
+assignment-expr-assign-call-func-names= [
+    "get",
+    "async_get",
+    "async_get_last_state",
+    "search",
+    "match",
+    "parse_datetime",
+    "parse_time",
+    "parse_date",
+    "async_load",
+    "get_entity",
+    "async_prepare_reload",
+    "pop",
+    "getattr",
+]
 
 [tool.pytest.ini_options]
 testpaths = [
