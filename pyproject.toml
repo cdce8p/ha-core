@@ -89,7 +89,6 @@ good-names = [
 # ---
 # Enable once current issues are fixed:
 # consider-using-namedtuple-or-dataclass (Pylint CodeStyle extension)
-# consider-using-assignment-expr (Pylint CodeStyle extension)
 disable = [
     "format",
     "abstract-class-little-used",
@@ -114,7 +113,6 @@ disable = [
     "wrong-import-order",
     "consider-using-f-string",
     "consider-using-namedtuple-or-dataclass",
-    "consider-using-assignment-expr",
 ]
 enable = [
     "useless-suppression",  # temporarily every now and then to clean them up
@@ -145,6 +143,22 @@ runtime-typing = false
 
 [tool.pylint.CODE_STYLE]
 max-line-length-suggestions = 72
+assignment-expr-not = false
+assignment-expr-compare-none = false
+assignment-expr-compare-const = false
+assignment-expr-compare-in = false
+assignment-expr-compare-call = false
+assignment-expr-assign-not = false
+assignment-expr-assign-getitem = false
+assignment-expr-assign-annotation = false
+assignment-expr-assign-await = false
+assignment-expr-assign-ifexp = false
+assignment-expr-assign-comprehension = false
+assignment-expr-assign-lambda = false
+assignment-expr-assign-compare = false
+assignment-expr-assign-boolop = false
+assignment-expr-assign-binop = false
+assignment-expr-assign-call = false
 
 [tool.pytest.ini_options]
 testpaths = [
