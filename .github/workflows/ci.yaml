@@ -578,7 +578,7 @@ jobs:
       REPO_ASTROID: cdce8p/astroid
       REPO_PYLINT: cdce8p/pylint
       BRANCH_ASTROID: dev
-      BRANCH_PYLINT: dev
+      BRANCH_PYLINT: dev-customize_walrus
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v3.5.3
