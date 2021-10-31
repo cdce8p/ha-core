@@ -159,20 +159,24 @@ assignment-expr-assign-compare = false
 assignment-expr-assign-boolop = false
 assignment-expr-assign-binop = false
 assignment-expr-assign-call = true
-assignment-expr-assign-call-func-names= [
-    "get",
-    "async_get",
-    "async_get_last_state",
+assignment-expr-assign-call-func-names = [
+#    "get",
+#    "async_get",
+#    "async_get_last_state",
     "search",
     "match",
     "parse_datetime",
     "parse_time",
     "parse_date",
     "async_load",
-    "get_entity",
+#    "get_entity",
     "async_prepare_reload",
     "pop",
     "getattr",
+]
+assignment-expr-assign-call-func-names-rgxs = [
+    "^_?(async_)?get(_.*)?$",
+    "^_?convert(_.*)?$",
 ]
 
 [tool.pytest.ini_options]
