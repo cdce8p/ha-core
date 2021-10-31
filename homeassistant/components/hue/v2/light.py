@@ -228,9 +228,8 @@ class HueLight(HueBaseEntity, LightEntity):
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the light off."""
         transition = normalize_hue_transition(kwargs.get(ATTR_TRANSITION))
-        flash = kwargs.get(ATTR_FLASH)
 
-        if flash is not None:
+        if (flash := kwargs.get(ATTR_FLASH)) is not None:
             await self.async_set_flash(flash)
             # flash cannot be sent with other commands at the same time or result will be flaky
             # Hue's default behavior is that a light returns to its previous state for short
