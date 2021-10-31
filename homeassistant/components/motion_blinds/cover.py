@@ -235,6 +235,7 @@ class MotionBaseDevice(MotionCoordinatorEntity, CoverEntity):
         """Move the cover to a specific absolute position (see TDBU)."""
         position = kwargs[ATTR_ABSOLUTE_POSITION]
         angle = kwargs.get(ATTR_TILT_POSITION)
+        # pylint: disable-next=consider-using-assignment-expr
         if angle is not None:
             angle = angle * 180 / 100
         async with self._api_lock:

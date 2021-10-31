@@ -192,9 +192,8 @@ class GroupedHueLight(HueBaseEntity, LightEntity):
         transition = normalize_hue_transition(kwargs.get(ATTR_TRANSITION))
         if transition is not None:
             self._restore_brightness = self._brightness_pct
-        flash = kwargs.get(ATTR_FLASH)
 
-        if flash is not None:
+        if (flash := kwargs.get(ATTR_FLASH)) is not None:
             await self.async_set_flash(flash)
             # flash cannot be sent with other commands at the same time
             return
