@@ -319,9 +319,8 @@ class HueLight(HueBaseEntity, LightEntity):
         transition = normalize_hue_transition(kwargs.get(ATTR_TRANSITION))
         if transition is not None and self.resource.dimming:
             self._last_brightness = self.resource.dimming.brightness
-        flash = kwargs.get(ATTR_FLASH)
 
-        if flash is not None:
+        if (flash := kwargs.get(ATTR_FLASH)) is not None:
             await self.async_set_flash(flash)
             # flash cannot be sent with other commands at the same
             # time or result will be flaky. Hue's default behavior
