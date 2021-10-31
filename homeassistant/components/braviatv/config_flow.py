@@ -59,6 +59,7 @@ class BraviaTVConfigFlow(ConfigFlow, domain=DOMAIN):
         pin = self.device_config[CONF_PIN]
         use_psk = self.device_config[CONF_USE_PSK]
 
+        # pylint: disable-next=consider-using-assignment-expr
         if use_psk:
             await self.client.connect(psk=pin)
         else:
