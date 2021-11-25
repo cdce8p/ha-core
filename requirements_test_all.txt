@@ -1377,6 +1377,9 @@ twilio==6.32.0
 # homeassistant.components.twinkly
 twinkly-client==0.0.2
 
+# homeassistant.components.xiaomi_miio
+tzlocal==4.0
+
 # homeassistant.components.rainforest_eagle
 uEagle==0.0.2
 
