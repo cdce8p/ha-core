@@ -564,6 +564,7 @@ jobs:
           pip install -e .
       - name: Print requirements
         run: |
+          . venv/bin/activate
           pip list | grep 'tzlocal'
 
   pylint:
