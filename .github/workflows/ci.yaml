@@ -102,8 +102,7 @@ jobs:
           # Or, in case core files are touched, for the full suite as well.
           if [[ "${{ github.ref }}" == "refs/heads/dev" ]] \
             || [[ "${{ github.ref }}" == "refs/heads/master" ]] \
-            || [[ "${{ github.ref }}" == "refs/heads/rc" ]] \
-            || [[ "${{ steps.core.outputs.any }}" == "true" ]];
+            || [[ "${{ github.ref }}" == "refs/heads/rc" ]];
           then
             test_groups="[1, 2, 3, 4, 5, 6]"
             test_group_count=6
