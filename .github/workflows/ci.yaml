@@ -563,6 +563,9 @@ jobs:
           pip install -r requirements_all.txt
           pip install -r requirements_test.txt
           pip install -e .
+      - name: Print requirements
+        run: |
+          pip list | grep 'tzlocal'
 
   pylint:
     name: Check pylint
