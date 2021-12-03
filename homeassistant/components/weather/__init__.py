@@ -7,7 +7,12 @@ import logging
 from typing import Final, TypedDict, final
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PRECISION_TENTHS, PRECISION_WHOLE, TEMP_CELSIUS
+from homeassistant.const import (
+    PRECISION_TENTHS,
+    PRECISION_WHOLE,
+    TEMP_CELSIUS,
+    Platform,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.config_validation import (  # noqa: F401
     PLATFORM_SCHEMA,
@@ -55,7 +60,7 @@ ATTR_WEATHER_VISIBILITY = "visibility"
 ATTR_WEATHER_WIND_BEARING = "wind_bearing"
 ATTR_WEATHER_WIND_SPEED = "wind_speed"
 
-DOMAIN = "weather"
+DOMAIN = Platform.WEATHER
 
 ENTITY_ID_FORMAT = DOMAIN + ".{}"
 

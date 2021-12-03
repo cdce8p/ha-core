@@ -1,7 +1,9 @@
 """STT constante."""
 from enum import Enum
 
-DOMAIN = "stt"
+from homeassistant.const import Platform
+
+DOMAIN = Platform.STT
 
 
 class AudioCodecs(str, Enum):

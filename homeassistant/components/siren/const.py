@@ -1,8 +1,9 @@
 """Constants for the siren component."""
-
 from typing import Final
 
-DOMAIN: Final = "siren"
+from homeassistant.const import Platform
+
+DOMAIN = Platform.SIREN
 
 ATTR_TONE: Final = "tone"
 

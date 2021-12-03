@@ -21,6 +21,7 @@ from homeassistant.const import (
     STATE_ON,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
@@ -38,7 +39,7 @@ from homeassistant.util.temperature import convert as convert_temperature
 DEFAULT_MIN_TEMP = 110
 DEFAULT_MAX_TEMP = 140
 
-DOMAIN = "water_heater"
+DOMAIN = Platform.WATER_HEATER
 
 ENTITY_ID_FORMAT = DOMAIN + ".{}"
 SCAN_INTERVAL = timedelta(seconds=60)

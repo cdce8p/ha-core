@@ -10,14 +10,14 @@ import voluptuous as vol
 
 from homeassistant.components.light import ATTR_TRANSITION
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_PLATFORM, SERVICE_TURN_ON
+from homeassistant.const import CONF_PLATFORM, SERVICE_TURN_ON, Platform
 from homeassistant.core import DOMAIN as HA_DOMAIN, HomeAssistant
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
 
 # mypy: allow-untyped-defs, no-check-untyped-defs
 
-DOMAIN = "scene"
+DOMAIN = Platform.SCENE
 STATE = "scening"
 STATES = "states"
 

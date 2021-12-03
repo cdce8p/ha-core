@@ -6,7 +6,7 @@ import logging
 from typing import Final, final
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
+from homeassistant.const import CONCENTRATION_MICROGRAMS_PER_CUBIC_METER, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.config_validation import (  # noqa: F401
     PLATFORM_SCHEMA,
@@ -30,7 +30,7 @@ ATTR_PM_10: Final = "particulate_matter_10"
 ATTR_PM_2_5: Final = "particulate_matter_2_5"
 ATTR_SO2: Final = "sulphur_dioxide"
 
-DOMAIN: Final = "air_quality"
+DOMAIN = Platform.AIR_QUALITY
 
 ENTITY_ID_FORMAT: Final = DOMAIN + ".{}"
 

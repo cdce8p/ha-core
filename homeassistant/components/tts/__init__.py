@@ -31,6 +31,7 @@ from homeassistant.const import (
     CONF_NAME,
     CONF_PLATFORM,
     PLATFORM_FORMAT,
+    Platform,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
@@ -68,7 +69,7 @@ CONF_FIELDS = "fields"
 DEFAULT_CACHE = True
 DEFAULT_CACHE_DIR = "tts"
 DEFAULT_TIME_MEMORY = 300
-DOMAIN = "tts"
+DOMAIN = Platform.TTS
 
 MEM_CACHE_FILENAME = "filename"
 MEM_CACHE_VOICE = "voice"

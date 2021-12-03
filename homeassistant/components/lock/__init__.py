@@ -21,6 +21,7 @@ from homeassistant.const import (
     STATE_LOCKING,
     STATE_UNLOCKED,
     STATE_UNLOCKING,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
@@ -37,7 +38,7 @@ _LOGGER = logging.getLogger(__name__)
 
 ATTR_CHANGED_BY = "changed_by"
 
-DOMAIN = "lock"
+DOMAIN = Platform.LOCK
 SCAN_INTERVAL = timedelta(seconds=30)
 
 ENTITY_ID_FORMAT = DOMAIN + ".{}"

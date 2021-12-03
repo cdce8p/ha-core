@@ -17,6 +17,7 @@ from homeassistant.const import (
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
     STATE_ON,
+    Platform,
 )
 from homeassistant.core import HomeAssistant, HomeAssistantError, callback
 from homeassistant.helpers import config_validation as cv, entity_registry as er
@@ -32,7 +33,7 @@ import homeassistant.util.color as color_util
 
 # mypy: allow-untyped-defs, no-check-untyped-defs
 
-DOMAIN = "light"
+DOMAIN = Platform.LIGHT
 SCAN_INTERVAL = timedelta(seconds=30)
 DATA_PROFILES = "light_profiles"
 

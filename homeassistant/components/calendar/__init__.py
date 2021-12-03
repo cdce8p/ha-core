@@ -11,7 +11,7 @@ from aiohttp import web
 
 from homeassistant.components import http
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_OFF, STATE_ON
+from homeassistant.const import STATE_OFF, STATE_ON, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.config_validation import (  # noqa: F401
     PLATFORM_SCHEMA,
@@ -27,7 +27,7 @@ from homeassistant.util import dt
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "calendar"
+DOMAIN = Platform.CALENDAR
 ENTITY_ID_FORMAT = DOMAIN + ".{}"
 SCAN_INTERVAL = timedelta(seconds=60)
 

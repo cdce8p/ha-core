@@ -3,6 +3,7 @@ import logging
 
 import voluptuous as vol
 
+from homeassistant.const import Platform
 import homeassistant.helpers.config_validation as cv
 
 ATTR_DATA = "data"
@@ -16,7 +17,7 @@ ATTR_TARGET = "target"
 # Title of notification
 ATTR_TITLE = "title"
 
-DOMAIN = "notify"
+DOMAIN = Platform.NOTIFY
 
 LOGGER = logging.getLogger(__package__)
 

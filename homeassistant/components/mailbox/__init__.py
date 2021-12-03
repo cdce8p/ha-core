@@ -10,6 +10,7 @@ from aiohttp.web_exceptions import HTTPNotFound
 import async_timeout
 
 from homeassistant.components.http import HomeAssistantView
+from homeassistant.const import Platform
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_per_platform, discovery
@@ -21,7 +22,7 @@ from homeassistant.setup import async_prepare_setup_platform
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "mailbox"
+DOMAIN = Platform.MAILBOX
 
 EVENT = "mailbox_updated"
 CONTENT_TYPE_MPEG = "audio/mpeg"

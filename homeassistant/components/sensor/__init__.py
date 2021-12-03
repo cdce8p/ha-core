@@ -45,6 +45,7 @@ from homeassistant.const import (  # noqa: F401
     DEVICE_CLASS_VOLTAGE,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.config_validation import (  # noqa: F401
@@ -62,7 +63,7 @@ _LOGGER: Final = logging.getLogger(__name__)
 ATTR_LAST_RESET: Final = "last_reset"  # Deprecated, to be removed in 2021.11
 ATTR_STATE_CLASS: Final = "state_class"
 
-DOMAIN: Final = "sensor"
+DOMAIN = Platform.SENSOR
 
 ENTITY_ID_FORMAT: Final = DOMAIN + ".{}"
 

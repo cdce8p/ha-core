@@ -12,6 +12,7 @@ from homeassistant.const import (
     CONF_ENTITY_ID,
     CONF_NAME,
     CONF_SOURCE,
+    Platform,
 )
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
@@ -25,7 +26,7 @@ from homeassistant.util.async_ import run_callback_threadsafe
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "image_processing"
+DOMAIN = Platform.IMAGE_PROCESSING
 SCAN_INTERVAL = timedelta(seconds=10)
 
 DEVICE_CLASSES = [

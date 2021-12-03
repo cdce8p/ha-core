@@ -16,6 +16,7 @@ from homeassistant.const import (
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
     STATE_ON,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
@@ -36,7 +37,7 @@ from homeassistant.util.percentage import (
 
 _LOGGER = logging.getLogger(__name__)
 
-DOMAIN = "fan"
+DOMAIN = Platform.FAN
 SCAN_INTERVAL = timedelta(seconds=30)
 
 ENTITY_ID_FORMAT = DOMAIN + ".{}"

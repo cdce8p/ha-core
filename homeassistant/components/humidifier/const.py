@@ -1,4 +1,6 @@
 """Provides the constants needed for component."""
+from homeassistant.const import Platform
+
 MODE_NORMAL = "normal"
 MODE_ECO = "eco"
 MODE_AWAY = "away"
@@ -17,7 +19,7 @@ ATTR_MIN_HUMIDITY = "min_humidity"
 DEFAULT_MIN_HUMIDITY = 0
 DEFAULT_MAX_HUMIDITY = 100
 
-DOMAIN = "humidifier"
+DOMAIN = Platform.HUMIDIFIER
 
 # DEVICE_CLASS_* below are deprecated as of 2021.12
 # use the HumidifierDeviceClass enum instead.

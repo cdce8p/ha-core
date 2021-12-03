@@ -19,6 +19,7 @@ from homeassistant.const import (
     SERVICE_ALARM_ARM_VACATION,
     SERVICE_ALARM_DISARM,
     SERVICE_ALARM_TRIGGER,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
@@ -38,7 +39,7 @@ from .const import (
 
 _LOGGER: Final = logging.getLogger(__name__)
 
-DOMAIN: Final = "alarm_control_panel"
+DOMAIN = Platform.ALARM_CONTROL_PANEL
 SCAN_INTERVAL: Final = timedelta(seconds=30)
 ATTR_CHANGED_BY: Final = "changed_by"
 FORMAT_TEXT: Final = "text"

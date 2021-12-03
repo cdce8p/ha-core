@@ -6,7 +6,7 @@ import logging
 from typing import final
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE
+from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.config_validation import (  # noqa: F401
     PLATFORM_SCHEMA,
@@ -22,7 +22,7 @@ _LOGGER = logging.getLogger(__name__)
 ATTR_DISTANCE = "distance"
 ATTR_SOURCE = "source"
 
-DOMAIN = "geo_location"
+DOMAIN = Platform.GEO_LOCATION
 
 ENTITY_ID_FORMAT = DOMAIN + ".{}"
 

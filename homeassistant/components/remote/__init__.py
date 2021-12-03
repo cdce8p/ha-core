@@ -17,6 +17,7 @@ from homeassistant.const import (
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
     STATE_ON,
+    Platform,
 )
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
@@ -45,7 +46,7 @@ ATTR_HOLD_SECS = "hold_secs"
 ATTR_ALTERNATIVE = "alternative"
 ATTR_TIMEOUT = "timeout"
 
-DOMAIN = "remote"
+DOMAIN = Platform.REMOTE
 SCAN_INTERVAL = timedelta(seconds=30)
 
 ENTITY_ID_FORMAT = DOMAIN + ".{}"
