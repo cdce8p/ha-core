@@ -21,6 +21,7 @@ from homeassistant.components.climate import (
 )
 from homeassistant.components.climate.const import HVAC_MODE_AUTO
 from homeassistant.const import ATTR_ENTITY_ID
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.util.dt import utcnow
 
@@ -141,7 +142,7 @@ async def test_climate_set_unsupported_hvac_mode(hass, init_integration):
         )
 
 
-async def test_climate_set_temperature(hass, init_integration):
+async def test_climate_set_temperature(hass: HomeAssistant, init_integration):
     """Test set temperature climate."""
     init_integration
     entity_registry = er.async_get(hass)
@@ -174,6 +175,7 @@ async def test_climate_set_temperature(hass, init_integration):
 
     await hass.async_block_till_done()
     state = hass.states.get(entity_id)
+    await hass.async_block_till_done()
     assert state.attributes[ATTR_TEMPERATURE] == 21
 
 
