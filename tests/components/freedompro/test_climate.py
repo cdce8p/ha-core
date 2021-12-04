@@ -180,8 +180,8 @@ async def test_climate_set_temperature(hass, init_integration):
         async_fire_time_changed(hass, utcnow() + timedelta(hours=2))
         await hass.async_block_till_done()
 
-        state = hass.states.get(entity_id)
-        assert state.attributes[ATTR_TEMPERATURE] == 21
+    state = hass.states.get(entity_id)
+    assert state.attributes[ATTR_TEMPERATURE] == 21
 
 
 async def test_climate_set_temperature_unsupported_hvac_mode(hass, init_integration):
