@@ -14,7 +14,7 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [
+PLATFORMS = [  # some comment
     "binary_sensor",
     "climate",
     "cover",
