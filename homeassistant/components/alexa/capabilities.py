@@ -86,28 +86,23 @@ class AlexaCapability:
         """Return the Alexa API name of this interface."""
         raise NotImplementedError
 
-    @staticmethod
-    def properties_supported() -> list[dict]:
+    def properties_supported(self) -> list[dict]:  # pylint: disable=no-self-use
         """Return what properties this entity supports."""
         return []
 
-    @staticmethod
-    def properties_proactively_reported() -> bool:
+    def properties_proactively_reported(self) -> bool:  # pylint: disable=no-self-use
         """Return True if properties asynchronously reported."""
         return False
 
-    @staticmethod
-    def properties_retrievable() -> bool:
+    def properties_retrievable(self) -> bool:  # pylint: disable=no-self-use
         """Return True if properties can be retrieved."""
         return False
 
-    @staticmethod
-    def properties_non_controllable() -> bool | None:
+    def properties_non_controllable(self) -> bool | None:  # pylint: disable=no-self-use
         """Return True if non controllable."""
         return None
 
-    @staticmethod
-    def get_property(name):
+    def get_property(self, name):  # pylint: disable=no-self-use
         """Read and return a property.
 
         Return value should be a dict, or raise UnsupportedProperty.
@@ -117,13 +112,11 @@ class AlexaCapability:
         """
         raise UnsupportedProperty(name)
 
-    @staticmethod
-    def supports_deactivation():
+    def supports_deactivation(self):  # pylint: disable=no-self-use
         """Applicable only to scenes."""
         return None
 
-    @staticmethod
-    def capability_proactively_reported():
+    def capability_proactively_reported(self):  # pylint: disable=no-self-use
         """Return True if the capability is proactively reported.
 
         Set properties_proactively_reported() for proactively reported properties.
@@ -131,16 +124,14 @@ class AlexaCapability:
         """
         return None
 
-    @staticmethod
-    def capability_resources():
+    def capability_resources(self):  # pylint: disable=no-self-use
         """Return the capability object.
 
         Applicable to ToggleController, RangeController, and ModeController interfaces.
         """
         return []
 
-    @staticmethod
-    def configuration():
+    def configuration(self):  # pylint: disable=no-self-use
         """Return the configuration object.
 
         Applicable to the ThermostatController, SecurityControlPanel, ModeController, RangeController,
@@ -148,8 +139,7 @@ class AlexaCapability:
         """
         return []
 
-    @staticmethod
-    def configurations():
+    def configurations(self):  # pylint: disable=no-self-use
         """Return the configurations object.
 
         The plural configurations object is different that the singular configuration object.
@@ -157,31 +147,29 @@ class AlexaCapability:
         """
         return []
 
-    @staticmethod
-    def inputs():
+    def inputs(self):  # pylint: disable=no-self-use
         """Applicable only to media players."""
         return []
 
-    @staticmethod
-    def semantics():
+    def semantics(self):  # pylint: disable=no-self-use
         """Return the semantics object.
 
         Applicable to ToggleController, RangeController, and ModeController interfaces.
         """
         return []
 
-    @staticmethod
-    def supported_operations():
+    def supported_operations(self):  # pylint: disable=no-self-use
         """Return the supportedOperations object."""
         return []
 
-    @staticmethod
-    def camera_stream_configurations():
+    def camera_stream_configurations(self):  # pylint: disable=no-self-use
         """Applicable only to CameraStreamController."""
         return None
 
     def serialize_discovery(self):
         """Serialize according to the Discovery API."""
+        # pylint: disable=assignment-from-none
+        # Methods may be overridden and return a value.
         result = {"type": "AlexaInterface", "interface": self.name(), "version": "3"}
 
         if (instance := self.instance) is not None:

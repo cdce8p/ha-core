@@ -210,8 +210,7 @@ class AlexaCapabilityResource:
         """Return capabilityResources object serialized for an API response."""
         return self.serialize_labels(self._resource_labels)
 
-    @staticmethod
-    def serialize_configuration():
+    def serialize_configuration(self):  # pylint: disable=no-self-use
         """Return ModeResources, PresetResources friendlyNames serialized for an API response."""
         return []
 
