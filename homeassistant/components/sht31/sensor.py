@@ -61,11 +61,7 @@ SENSOR_TYPES = (
         name="Humidity",
         device_class=SensorDeviceClass.HUMIDITY,
         native_unit_of_measurement=PERCENTAGE,
-        value_fn=lambda sensor: (
-            round(val)  # pylint: disable=undefined-variable
-            if (val := sensor.humidity)
-            else None
-        ),
+        value_fn=lambda sensor: round(val) if (val := sensor.humidity) else None,
     ),
 )
 SENSOR_KEYS: list[str] = [desc.key for desc in SENSOR_TYPES]
