@@ -21,7 +21,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.service import async_register_admin_service
 
-from .const import DOMAIN
+from .const import DOMAIN  # some comment
 
 SERVICE_START = "start"
 SERVICE_MEMORY = "memory"
