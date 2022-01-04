@@ -286,10 +286,8 @@ def async_register_services(  # noqa: C901
             data["due_lang"] = call.data[DUE_DATE_LANG]
 
         if DUE_DATE in call.data:
-            due_date = dt_util.parse_datetime(call.data[DUE_DATE])
-            if due_date is None:
-                due = dt_util.parse_date(call.data[DUE_DATE])
-                if due is None:
+            if (due_date := dt_util.parse_datetime(call.data[DUE_DATE])) is None:
+                if (due := dt_util.parse_date(call.data[DUE_DATE])) is None:
                     raise ValueError(f"Invalid due_date: {call.data[DUE_DATE]}")
                 due_date = datetime(due.year, due.month, due.day)
             # Format it in the manner Todoist expects
