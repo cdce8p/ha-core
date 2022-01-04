@@ -211,10 +211,8 @@ def setup_platform(
             _due["lang"] = call.data[DUE_DATE_LANG]
 
         if DUE_DATE in call.data:
-            due_date = dt.parse_datetime(call.data[DUE_DATE])
-            if due_date is None:
-                due = dt.parse_date(call.data[DUE_DATE])
-                if due is None:
+            if (due_date := dt.parse_datetime(call.data[DUE_DATE])) is None:
+                if (due := dt.parse_date(call.data[DUE_DATE])) is None:
                     raise ValueError(f"Invalid due_date: {call.data[DUE_DATE]}")
                 due_date = datetime(due.year, due.month, due.day)
             # Format it in the manner Todoist expects
