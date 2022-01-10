@@ -34,6 +34,7 @@ GENERAL_SETTINGS: Final[dict[str, str]] = {
     "plugins": ", ".join(["pydantic.mypy"]),
     "show_error_codes": "true",
     "follow_imports": "silent",
+    "show_traceback": "true",
     # Enable some checks globally.
     "ignore_missing_imports": "true",
     "local_partial_types": "true",
