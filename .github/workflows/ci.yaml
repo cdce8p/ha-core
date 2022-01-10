@@ -524,7 +524,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.8]
     outputs:
       python-key: ${{ steps.generate-python-key.outputs.key }}
     container: homeassistant/ci-azure:${{ matrix.python-version }}
@@ -667,7 +667,8 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    # if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    if: false
     needs:
       - changes
       - gen-requirements-all
