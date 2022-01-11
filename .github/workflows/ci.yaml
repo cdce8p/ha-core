@@ -667,7 +667,8 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    # if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    if: false
     needs:
       - changes
       - gen-requirements-all
