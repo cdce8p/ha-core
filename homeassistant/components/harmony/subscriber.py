@@ -9,7 +9,7 @@ from homeassistant.core import callback
 
 _LOGGER = logging.getLogger(__name__)
 
-NoParamCallback = Optional[Callable[[object], Any]]
+NoParamCallback = Optional[Callable[[Any], Any]]
 ActivityCallback = Optional[Callable[[object, tuple], Any]]
 
 
