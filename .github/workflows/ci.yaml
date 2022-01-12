@@ -721,6 +721,7 @@ jobs:
         timeout-minutes: 45
         run: |
           . venv/bin/activate
+          python --version
           python3 -X dev -m pytest \
             -qq \
             --timeout=9 \
