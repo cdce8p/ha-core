@@ -131,6 +131,7 @@ jobs:
   # This prevent upcoming jobs to do the same individually
   prepare-base:
     name: Prepare base dependencies
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -586,6 +587,7 @@ jobs:
 
   pylint:
     name: Check pylint
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs:
@@ -627,6 +629,7 @@ jobs:
 
   mypy:
     name: Check mypy
+    if: false
     runs-on: ubuntu-latest
     needs:
       - changes
@@ -670,12 +673,12 @@ jobs:
     if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
     needs:
       - changes
-      - gen-requirements-all
-      - hassfest
-      - lint-black
-      - lint-other
-      - lint-isort
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-black
+      # - lint-other
+      # - lint-isort
+      # - mypy
       - prepare-tests
     strategy:
       fail-fast: false
