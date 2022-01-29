@@ -59,9 +59,7 @@ def deflection_entities_list(
         _LOGGER.debug("The FRITZ!Box has no %s options", SWITCH_TYPE_DEFLECTION)
         return []
 
-    deflection_list = avm_wrapper.get_ontel_deflections()
-
-    if not deflection_list:
+    if not (deflection_list := avm_wrapper.get_ontel_deflections()):
         return []
 
     items = xmltodict.parse(deflection_list["NewDeflectionList"])["List"]["Item"]
@@ -81,8 +79,7 @@ def port_entities_list(
 
     _LOGGER.debug("Setting up %s switches", SWITCH_TYPE_PORTFORWARD)
     entities_list: list[FritzBoxPortSwitch] = []
-    connection_type = avm_wrapper.get_default_connection()
-    if not connection_type:
+    if not (connection_type := avm_wrapper.get_default_connection()):
         _LOGGER.debug("The FRITZ!Box has no %s options", SWITCH_TYPE_PORTFORWARD)
         return []
 
@@ -90,8 +87,7 @@ def port_entities_list(
     con_type: str = connection_type["NewDefaultConnectionService"][2:][:-2]
 
     # Query port forwardings and setup a switch for each forward for the current device
-    resp = avm_wrapper.get_num_port_mapping(con_type)
-    if not resp:
+    if not (resp := avm_wrapper.get_num_port_mapping(con_type)):
         _LOGGER.debug("The FRITZ!Box has no %s options", SWITCH_TYPE_DEFLECTION)
         return []
 
@@ -107,8 +103,7 @@ def port_entities_list(
 
     for i in range(port_forwards_count):
 
-        portmap = avm_wrapper.get_port_mapping(con_type, i)
-        if not portmap:
+        if not (portmap := avm_wrapper.get_port_mapping(con_type, i)):
             _LOGGER.debug("The FRITZ!Box has no %s options", SWITCH_TYPE_DEFLECTION)
             continue
 
@@ -154,8 +149,7 @@ def wifi_entities_list(
         if not ("WLANConfiguration" + str(i)) in avm_wrapper.connection.services:
             continue
 
-        network_info = avm_wrapper.get_wlan_configuration(i)
-        if network_info:
+        if network_info := avm_wrapper.get_wlan_configuration(i):
             ssid = network_info["NewSSID"]
             _LOGGER.debug("SSID from device: <%s>", ssid)
             if (
