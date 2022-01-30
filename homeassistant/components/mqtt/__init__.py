@@ -1049,7 +1049,7 @@ class MQTT:
         """Message received callback."""
         self.hass.add_job(self._mqtt_handle_message, msg)
 
-    @lru_cache(2048)
+    @lru_cache(2048)  # pylint: disable=lru-cache-decorating-method
     def _matching_subscriptions(self, topic):
         subscriptions = []
         for subscription in self.subscriptions:
