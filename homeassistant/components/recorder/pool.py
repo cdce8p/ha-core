@@ -11,7 +11,7 @@ class RecorderPool(StaticPool, NullPool):
     When called from any other thread, acts like NullPool
     """
 
-    def __init__(self, *args, **kw):  # pylint: disable=super-init-not-called
+    def __init__(self, *args, **kw):
         """Create the pool."""
         self._tid = threading.current_thread().ident
         StaticPool.__init__(self, *args, **kw)
