@@ -163,7 +163,7 @@ def _evict_purged_states_from_old_states_cache(
 ) -> None:
     """Evict purged states from the old states cache."""
     # Make a map from old_state_id to entity_id
-    old_states = instance._old_states  # pylint: disable=protected-access
+    old_states = instance._old_states
     old_state_reversed = {
         old_state.state_id: entity_id
         for entity_id, old_state in old_states.items()
