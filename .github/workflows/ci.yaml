@@ -615,6 +615,10 @@ jobs:
           pip show google-api-core
           echo "---"
           pip show hyperframe
+          echo "---"
+          pip show h2
+          echo "---"
+          pip show hyper
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v2.3.1
         with:
