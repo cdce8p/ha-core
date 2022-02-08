@@ -74,9 +74,7 @@ class ZWaveMeRGB(ZWaveMeEntity, LightEntity):
 
     def turn_on(self, **kwargs: Any) -> None:
         """Turn the device on."""
-        color = kwargs.get(ATTR_RGB_COLOR)
-
-        if color is None:
+        if (color := kwargs.get(ATTR_RGB_COLOR)) is None:
             brightness = kwargs.get(ATTR_BRIGHTNESS)
             if brightness is None:
                 self.controller.zwave_api.send_command(self.device.id, "on")
