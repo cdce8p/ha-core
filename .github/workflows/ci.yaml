@@ -18,6 +18,9 @@ on:
         description: 'Skip pytest'
         default: false
         type: boolean
+      test:
+        description: Some new option
+        required: true
 
 env:
   CACHE_VERSION: 7
