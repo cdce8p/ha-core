@@ -28,6 +28,9 @@ env:
   PIP_CACHE: /tmp/pip-cache
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
+  DEBUG_FULL: ${{ github.event.inputs.full }}
+  DEBUG_LINT: ${{ github.event.inputs.lint-only }}
+  DEBUG_LINT_2: ${{ !github.event.inputs.lint-only }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -119,7 +122,7 @@ jobs:
             || [[ "${{ github.ref }}" == "refs/heads/master" ]] \
             || [[ "${{ github.ref }}" == "refs/heads/rc" ]] \
             || [[ "${{ steps.core.outputs.any }}" == "true" ]] \
-            || [[ "${{ github.event.inputs.full }} " ]];
+            || [[ "${{ github.event.inputs.full }}" ]];
           then
             test_groups="[1, 2, 3, 4, 5, 6]"
             test_group_count=6
