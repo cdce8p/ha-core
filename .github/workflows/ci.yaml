@@ -30,7 +30,6 @@ env:
   PYTHONASYNCIODEBUG: 1
   DEBUG_FULL: ${{ github.event.inputs.full }}
   DEBUG_LINT: ${{ github.event.inputs.lint-only }}
-  DEBUG_UNKNOWN: ${{ github.events.invalid.full }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -754,6 +753,9 @@ jobs:
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2.4.0
+      - run: |
+          echo "${{ github.event.inputs.lint-only }} != 'true' && (
+            needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob)"
       - name: Restore full Python ${{ matrix.python-version }} virtual environment
         id: cache-venv
         uses: actions/cache@v2.1.7
