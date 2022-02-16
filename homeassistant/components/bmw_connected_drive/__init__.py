@@ -44,6 +44,8 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = "bmw_connected_drive"
 ATTR_VIN = "vin"
 
+# Some new comment
+
 ACCOUNT_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): cv.string,
