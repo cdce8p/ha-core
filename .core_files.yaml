@@ -121,7 +121,7 @@ tests: &tests
   - tests/util/**
 
 other: &other
-  - .github/workflows/*
+  # - .github/workflows/*
   - homeassistant/scripts/**
 
 requirements:
