@@ -115,11 +115,6 @@ jobs:
             test_full_suite="false"
           fi
 
-          if [[ ${{ github.event.inputs.full }} == "true" ]]; then
-            echo "Inputs: true"
-          else
-            echo "Inputs: false"
-          fi
           if [[ "${{ github.event.inputs.full }}" == "true" ]]; then
             echo "Inputs2: true"
           else
