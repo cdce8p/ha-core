@@ -731,7 +731,7 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.lint-only }} != 'true' && (
+    if: github.event.inputs.lint-only != 'true' && (
       needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob)
     needs:
       - changes
@@ -755,7 +755,9 @@ jobs:
         uses: actions/checkout@v2.4.0
       - run: |
           echo "${{ github.event.inputs.lint-only }} != 'true' && (
-            needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob)"
+            ${{ needs.changes.outputs.test_full_suite }} == 'true' || ${{ needs.changes.outputs.tests_glob }})"
+          echo "${{ github.event.inputs.lint-only != 'true' && (
+            needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob ) }}"
       - name: Restore full Python ${{ matrix.python-version }} virtual environment
         id: cache-venv
         uses: actions/cache@v2.1.7
