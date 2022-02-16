@@ -30,6 +30,7 @@ env:
   PYTHONASYNCIODEBUG: 1
   DEBUG_FULL: ${{ github.event.inputs.full }}
   DEBUG_LINT: ${{ github.event.inputs.lint-only }}
+  DEBUG_UNKNOWN: ${{ github.events.invalid.full }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
