@@ -8,6 +8,16 @@ on:
       - rc
       - master
   pull_request: ~
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Full run (regardless of changes)'
+        default: false
+        type: boolean
+      lint-only:
+        description: 'Skip pytest'
+        default: false
+        type: boolean
 
 env:
   CACHE_VERSION: 7
