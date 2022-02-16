@@ -30,7 +30,6 @@ env:
   PYTHONASYNCIODEBUG: 1
   DEBUG_FULL: ${{ github.event.inputs.full }}
   DEBUG_LINT: ${{ github.event.inputs.lint-only }}
-  DEBUG_LINT_2: ${{ !github.event.inputs.lint-only }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -116,13 +115,24 @@ jobs:
             test_full_suite="false"
           fi
 
+          if [[ ${{ github.event.inputs.full }} == "true" ]]; then
+            echo "Inputs: true"
+          else
+            echo "Inputs: false"
+          fi
+          if [[ "${{ github.event.inputs.full }}" == "true" ]]; then
+            echo "Inputs2: true"
+          else
+            echo "Inputs2: false"
+          fi
+
           # We need to run the full suite on certain branches.
           # Or, in case core files are touched, for the full suite as well.
           if [[ "${{ github.ref }}" == "refs/heads/dev" ]] \
             || [[ "${{ github.ref }}" == "refs/heads/master" ]] \
             || [[ "${{ github.ref }}" == "refs/heads/rc" ]] \
             || [[ "${{ steps.core.outputs.any }}" == "true" ]] \
-            || [[ "${{ github.event.inputs.full }}" ]];
+            || [[ "${{ github.event.inputs.full }}" == "true" ]];
           then
             test_groups="[1, 2, 3, 4, 5, 6]"
             test_group_count=6
@@ -721,16 +731,16 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    if: ${{ !github.event.inputs.lint-only }} && (
+    if: ${{ github.event.inputs.lint-only }} != 'true' && (
       needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob)
     needs:
       - changes
-      - gen-requirements-all
-      - hassfest
-      - lint-black
-      - lint-other
-      - lint-isort
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-black
+      # - lint-other
+      # - lint-isort
+      # - mypy
       - prepare-tests
     strategy:
       fail-fast: false
