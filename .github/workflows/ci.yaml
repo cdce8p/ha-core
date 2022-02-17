@@ -19,9 +19,9 @@ env:
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   changes:
@@ -467,6 +467,7 @@ jobs:
 
   hassfest:
     name: Check hassfest
+    if: false
     runs-on: ubuntu-latest
     needs: prepare-tests
     strategy:
