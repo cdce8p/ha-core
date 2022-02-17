@@ -647,6 +647,11 @@ jobs:
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v2.4.0
+      - name: Set up Python 3.9.10
+        uses: actions/setup-python@v2.3.2
+        id: python
+        with:
+          python-version: 3.9.10
       - name: Restore full Python ${{ matrix.python-version }} virtual environment
         id: cache-venv
         uses: actions/cache@v2.1.7
