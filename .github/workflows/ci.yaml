@@ -10,7 +10,7 @@ on:
   pull_request: ~
 
 env:
-  CACHE_VERSION: 9
+  CACHE_VERSION: 21
   PIP_CACHE_VERSION: 3
   HA_SHORT_VERSION: 2022.3
   DEFAULT_PYTHON: 3.9
@@ -134,6 +134,7 @@ jobs:
   prepare-base:
     name: Prepare base dependencies
     runs-on: ubuntu-latest
+    if: false
     timeout-minutes: 20
     outputs:
       python-key: ${{ steps.generate-python-key.outputs.key }}
@@ -591,6 +592,7 @@ jobs:
   pylint:
     name: Check pylint
     runs-on: ubuntu-latest
+    if: false
     timeout-minutes: 20
     needs:
       - changes
@@ -660,13 +662,14 @@ jobs:
         run: |
           echo "::add-matcher::.github/workflows/matchers/mypy.json"
       - name: Run mypy (fully)
-        if: needs.changes.outputs.test_full_suite == 'true'
+        # if: needs.changes.outputs.test_full_suite == 'true'
         run: |
           . venv/bin/activate
           python --version
           mypy homeassistant
       - name: Run mypy (partially)
-        if: needs.changes.outputs.test_full_suite == 'false'
+        if: false
+        # if: needs.changes.outputs.test_full_suite == 'false'
         shell: bash
         run: |
           . venv/bin/activate
@@ -675,7 +678,7 @@ jobs:
 
   pip-check:
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.requirements == 'true'
+    # if: needs.changes.outputs.requirements == 'true'
     needs:
       - changes
       - prepare-tests
@@ -700,6 +703,15 @@ jobs:
         run: |
           echo "Failed to restore Python virtual environment from cache"
           exit 1
+      - name: Run pip freeze
+        run: |
+          . venv/bin/activate
+          pip freeze > packages.txt
+      - name: Upload pip freeze result
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: installed-packages
+          path: packages.txt
       - name: Run pip check
         run: |
           . venv/bin/activate
@@ -707,7 +719,8 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
+    if: false
+    # if: needs.changes.outputs.test_full_suite == 'true' || needs.changes.outputs.tests_glob
     needs:
       - changes
       - gen-requirements-all
