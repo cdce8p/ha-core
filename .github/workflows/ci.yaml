@@ -529,7 +529,7 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.9"]
     outputs:
       python-key: ${{ steps.generate-python-key.outputs.key }}
     container: homeassistant/ci-azure:${{ matrix.python-version }}
@@ -713,6 +713,9 @@ jobs:
         with:
           name: installed-packages
           path: packages.txt
+      - name: ls
+        run: |
+          ls -Rl venv/lib/python3.9/site-packages/google/
       - name: Run pip check
         run: |
           . venv/bin/activate
