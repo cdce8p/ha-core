@@ -42,6 +42,7 @@ env:
   MYPY_CACHE_VERSION: 9
   HA_SHORT_VERSION: "2024.11"
   DEFAULT_PYTHON: "3.12"
+  # Only use default version below
   ALL_PYTHON_VERSIONS: "['3.12']"
   # 10.3 is the oldest supported version
   # - 10.3.32 is the version currently shipped with Synology (as of 17 Feb 2022)
@@ -65,9 +66,9 @@ env:
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -486,6 +487,7 @@ jobs:
         with:
           path: venv
           lookup-only: true
+          fail-on-cache-miss: true
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
             needs.info.outputs.python_cache_key }}
@@ -750,6 +752,11 @@ jobs:
     needs:
       - info
       - base
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CACHING: true
+      REMOTE: cdce8p
+      BRANCH: dev
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v4.2.2
@@ -759,10 +766,32 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON }}
           check-latest: true
+
+      - name: Fetch mypy version string (${{ env.BRANCH }})
+        id: fetch-version
+        run: |
+          echo "Checking mypy branch: ${{ env.BRANCH }}"
+          base=$(curl -sS \
+            https://raw.githubusercontent.com/${{ env.REMOTE }}/mypy/${{ env.BRANCH }}/mypy/version.py | \
+            grep -e ^__version__ | \
+            cut -d '=' -f2 | tr -d ' "')
+          sha=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ env.REMOTE }}/mypy/git/ref/heads/${{ env.BRANCH }} | \
+            jq -r '.object.sha')
+          if [[ $base == *"+dev" ]]; then
+            version="v$base.$sha"
+          else
+            version="v$base"
+          fi
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "name=(${{ env.BRANCH }} -- $version)" >> $GITHUB_OUTPUT
+          echo "Found: $version"
+
       - name: Generate partial mypy restore key
         id: generate-mypy-key
         run: |
-          mypy_version=$(cat requirements_test.txt | grep mypy | cut -d '=' -f 3)
+          mypy_version=${{ steps.fetch-version.outputs.version }}
           echo "version=$mypy_version" >> $GITHUB_OUTPUT
           echo "key=mypy-${{ env.MYPY_CACHE_VERSION }}-$mypy_version-${{
             env.HA_SHORT_VERSION }}-$(date -u '+%Y-%m-%dT%H:%M:%s')" >> $GITHUB_OUTPUT
@@ -775,8 +804,109 @@ jobs:
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
             needs.info.outputs.python_cache_key }}
+
+      - name: Remove old mypy version
+        run: |
+          . venv/bin/activate
+          pip uninstall -y mypy
+      - name: Restore custom mypy version in venv ${{ steps.fetch-version.outputs.name }}
+        id: cache-venv-mypy
+        uses: actions/cache/restore@v4.1.2
+        with:
+          path: |
+            venv/lib/python*/site-packages/*__mypyc.cpython-*.so
+            venv/lib/python*/site-packages/mypy*
+            venv/bin/mypy
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_mypy-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-version.outputs.version }}-compiled
+          restore-keys: |
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_mypy-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-version.outputs.version }}-compiled-custom
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_mypy-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-version.outputs.version }}
+      - name: Install compiled version if available
+        if: steps.cache-venv-mypy.outputs.cache-hit != 'true'
+        id: install-compiled
+        continue-on-error: true
+        run: |
+          . venv/bin/activate
+          tag=${{ steps.fetch-version.outputs.version }}
+          echo "$tag"
+          res=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/mypyc/mypy_mypyc-wheels/releases/tags/$tag)
+          py=$(echo ${{ env.DEFAULT_PYTHON }} | cut -d '.' -f 1,2 | tr -d '.')
+          wheel_name=$py-manylinux
+          echo "$wheel_name"
+          url=$(echo $res | jq -r \
+            --arg search_name "$wheel_name" \
+            '.assets[] | select(.name | test($search_name)) .browser_download_url')
+          if [[ -n $url ]]; then
+            echo "Found compiled version"
+            pip install -U $url
+            echo "status=done" >> $GITHUB_OUTPUT
+            echo "key-suffix=-compiled" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      - name: Install compiled version if available (custom)
+        if: |
+          steps.cache-venv-mypy.outputs.cache-hit != 'true'
+          && steps.install-compiled.outputs.status != 'done'
+          && endsWith( steps.cache-venv-mypy.outputs.cache-matched-key, '-compiled-custom' ) != true
+        id: install-compiled-custom
+        continue-on-error: true
+        run: |
+          . venv/bin/activate
+          tag=${{ steps.fetch-version.outputs.version }}
+          echo "$tag"
+          res=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ env.REMOTE }}/mypy-wheels/releases/tags/$tag)
+          py=$(echo ${{ env.DEFAULT_PYTHON }} | cut -d '.' -f 1,2 | tr -d '.')
+          wheel_name=$py-manylinux
+          echo "$wheel_name"
+          url=$(echo $res | jq -r \
+            --arg search_name "$wheel_name" \
+            '.assets[] | select(.name | test($search_name)) .browser_download_url')
+          if [[ -n $url ]]; then
+            echo "Found compiled version"
+            pip install -U $url
+            echo "status=done" >> $GITHUB_OUTPUT
+            echo "key-suffix=-compiled-custom" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+      - name: Install custom dependencies
+        if: |
+          steps.cache-venv-mypy.outputs.cache-matched-key == ''
+          && steps.install-compiled.outputs.status != 'done'
+          && steps.install-compiled-custom.outputs.status != 'done'
+        run: |
+          . venv/bin/activate
+          python --version
+          pip install -U git+https://github.com/${{ env.REMOTE }}/mypy.git@${{ env.BRANCH }}
+      - name: Save mypy version in venv
+        if: |
+          steps.cache-venv-mypy.outputs.cache-hit != 'true'
+          && (
+            steps.cache-venv-mypy.outputs.cache-matched-key == ''
+            || steps.install-compiled.outputs.status == 'done'
+            || steps.install-compiled-custom.outputs.status == 'done'
+          )
+        uses: actions/cache/save@v4.1.2
+        with:
+          path: |
+            venv/lib/python*/site-packages/*__mypyc.cpython-*.so
+            venv/lib/python*/site-packages/mypy*
+            venv/bin/mypy
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_mypy-${{
+            env.CACHE_VERSION }}-${{ steps.fetch-version.outputs.version }}${{
+            steps.install-compiled.outputs.key-suffix || steps.install-compiled-custom.outputs.key-suffix }}
+
       - name: Restore mypy cache
-        uses: actions/cache@v4.1.2
+        if: env.CACHING != 'false'
+        uses: actions/cache/restore@v4.1.2
         with:
           path: .mypy_cache
           key: >-
@@ -794,6 +924,9 @@ jobs:
         run: |
           . venv/bin/activate
           python --version
+          git branch --show-current
+          # For issues with serialize, add --cache-dir=/dev/null
+          # To install types: --install-types --non-interactive
           mypy homeassistant pylint
       - name: Run mypy (partially)
         if: needs.info.outputs.test_full_suite == 'false'
@@ -802,6 +935,14 @@ jobs:
           . venv/bin/activate
           python --version
           mypy homeassistant/components/${{ needs.info.outputs.integrations_glob }}
+      - name: Save mypy cache
+        if: success() || failure()
+        uses: actions/cache/save@v4.1.2
+        with:
+          path: .mypy_cache
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+            steps.generate-mypy-key.outputs.key }}
 
   prepare-pytest-full:
     runs-on: ubuntu-24.04
