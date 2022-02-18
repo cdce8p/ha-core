@@ -42,10 +42,13 @@ GENERAL_SETTINGS: Final[dict[str, str]] = {
     ),
     "show_error_codes": "true",
     "follow_imports": "normal",
+    "show_traceback": "true",
     "native_parser": "true",
     "num_workers": "2",  # Use a conservative value here
-    # "enable_incomplete_feature": ", ".join(
-    #     []
+    # "enable_incomplete_feature": ", ".join(  # noqa: FLY002, RUF100
+    #     [
+    #         "PreciseTupleTypes"
+    #     ]
     # ),
     # Enable some checks globally.
     "local_partial_types": "true",
