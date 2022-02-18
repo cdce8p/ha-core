@@ -21,6 +21,7 @@ repos:
     rev: v1.29.0
     hooks:
       - id: zizmor
+        stages: [manual]
         args:
           - --pedantic
         exclude: ^\.github/workflows/.*\.lock\.yml$
