@@ -39,6 +39,7 @@ GENERAL_SETTINGS: Final[dict[str, str]] = {
     "python_version": ".".join(str(x) for x in REQUIRED_PYTHON_VER[:2]),
     "show_error_codes": "true",
     "follow_imports": "silent",
+    "show_traceback": "true",
     # Enable some checks globally.
     "ignore_missing_imports": "true",
     "strict_equality": "true",

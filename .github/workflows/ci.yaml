@@ -694,6 +694,12 @@ jobs:
       - name: Register mypy problem matcher
         run: |
           echo "::add-matcher::.github/workflows/matchers/mypy.json"
+      - name: Install custom dependencies
+        run: |
+          . venv/bin/activate
+          python --version
+          pip uninstall -y mypy
+          pip install -U git+https://github.com/cdce8p/mypy.git@dev
       - name: Run mypy (fully)
         if: needs.info.outputs.test_full_suite == 'true'
         run: |
@@ -748,6 +754,7 @@ jobs:
   pytest:
     runs-on: ubuntu-20.04
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && (needs.info.outputs.test_full_suite == 'true' || needs.info.outputs.tests_glob)
@@ -872,6 +879,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && needs.info.outputs.test_full_suite == 'true'
