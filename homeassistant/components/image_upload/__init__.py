@@ -262,8 +262,7 @@ def _validate_size_from_filename(filename: str) -> tuple[int, int]:
     Traceback (most recent call last):
     ...
     """
-    image_size = filename.partition("-")[0]
-    if not image_size:
+    if not (image_size := filename.partition("-")[0]):
         raise ValueError("Invalid filename")
     width_s, _, height_s = image_size.partition("x")
     width = int(width_s)

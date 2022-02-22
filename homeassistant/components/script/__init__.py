@@ -768,9 +768,7 @@ def websocket_config(
     """Get script config."""
     component: EntityComponent[BaseScriptEntity] = hass.data[DOMAIN]
 
-    script = component.get_entity(msg["entity_id"])
-
-    if script is None:
+    if (script := component.get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )

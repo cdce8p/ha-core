@@ -308,8 +308,7 @@ class HyperionLight(LightEntity):
     @callback
     def _update_priorities(self, _: dict[str, Any] | None = None) -> None:
         """Update Hyperion priorities."""
-        priority = self._get_priority_entry_that_dictates_state()
-        if priority:
+        if priority := self._get_priority_entry_that_dictates_state():
             component_id = priority.get(const.KEY_COMPONENTID)
             if component_id == const.KEY_COMPONENTID_EFFECT:
                 # Owner is the effect name.

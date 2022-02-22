@@ -459,9 +459,7 @@ class EsphomeFlowHandler(ConfigFlow, domain=DOMAIN):
         if not dashboard.last_update_success:
             return False
 
-        device = dashboard.data.get(self._device_name)
-
-        if device is None:
+        if (device := dashboard.data.get(self._device_name)) is None:
             return False
 
         try:

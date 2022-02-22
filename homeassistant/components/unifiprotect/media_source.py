@@ -209,8 +209,7 @@ class ProtectMediaSource(MediaSource):
         except (KeyError, IndexError) as err:
             _bad_identifier(item.identifier, err)
 
-        event = data.api.bootstrap.events.get(parts[2])
-        if event is None:
+        if (event := data.api.bootstrap.events.get(parts[2])) is None:
             try:
                 event = await data.api.get_event(parts[2])
             except NvrError as err:

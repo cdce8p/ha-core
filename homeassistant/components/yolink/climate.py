@@ -96,8 +96,7 @@ class YoLinkClimateEntity(YoLinkEntity, ClimateEntity):
     @callback
     def update_entity_state(self, state: dict[str, Any]) -> None:
         """Update HA Entity State."""
-        normal_state = state.get("state")
-        if normal_state is not None:
+        if (normal_state := state.get("state")) is not None:
             self._attr_current_temperature = normal_state.get("temperature")
             self._attr_current_humidity = normal_state.get("humidity")
             self._attr_target_temperature_low = normal_state.get("lowTemp")
@@ -105,8 +104,7 @@ class YoLinkClimateEntity(YoLinkEntity, ClimateEntity):
             self._attr_fan_mode = normal_state.get("fan")
             self._attr_hvac_mode = YOLINK_MODEL_2_HA.get(normal_state.get("mode"))
             self._attr_hvac_action = YOLINK_ACTION_2_HA.get(normal_state.get("running"))
-        eco_setting = state.get("eco")
-        if eco_setting is not None:
+        if (eco_setting := state.get("eco")) is not None:
             self._attr_preset_mode = (
                 PRESET_NONE if eco_setting.get("mode") == "on" else PRESET_ECO
             )

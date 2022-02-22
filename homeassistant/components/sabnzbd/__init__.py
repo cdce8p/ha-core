@@ -144,8 +144,7 @@ async def migrate_unique_id(hass: HomeAssistant, entry: ConfigEntry):
         Old: description.key
         New: {entry_id}_description.key
         """
-        entry_id = entity_entry.config_entry_id
-        if entry_id is None:
+        if (entry_id := entity_entry.config_entry_id) is None:
             return None
         if entity_entry.unique_id.startswith(entry_id):
             return None
@@ -166,9 +165,7 @@ async def migrate_unique_id(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up the SabNzbd Component."""
-
-    sab_api = await get_client(hass, entry.data)
-    if not sab_api:
+    if not (sab_api := await get_client(hass, entry.data)):
         raise ConfigEntryNotReady
 
     await migrate_unique_id(hass, entry)

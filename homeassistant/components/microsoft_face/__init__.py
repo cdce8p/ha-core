@@ -106,8 +106,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         try:
             await face.call_api("put", f"persongroups/{g_id}", {"name": name})
             face.store[g_id] = {}
-            old_entity = entities.pop(g_id, None)
-            if old_entity:
+            if old_entity := entities.pop(g_id, None):
                 await component.async_remove_entity(old_entity.entity_id)
 
             entities[g_id] = MicrosoftFaceGroupEntity(hass, face, g_id, name)
@@ -275,8 +274,7 @@ class MicrosoftFace:
         for group in groups:
             g_id = group["personGroupId"]
             self._store[g_id] = {}
-            old_entity = self._entities.pop(g_id, None)
-            if old_entity:
+            if old_entity := self._entities.pop(g_id, None):
                 remove_tasks.append(
                     self._component.async_remove_entity(old_entity.entity_id)
                 )

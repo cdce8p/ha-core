@@ -569,8 +569,7 @@ class ShellyRpcCoordinator(ShellyCoordinatorBase[RpcDevice]):
         """Handle device events."""
         events: list[dict[str, Any]] = event_data["events"]
         for event in events:
-            event_type = event.get("event")
-            if event_type is None:
+            if (event_type := event.get("event")) is None:
                 continue
 
             for event_callback in self._event_listeners:

@@ -689,8 +689,7 @@ class SonosSpeaker:
     @soco_error()
     def fetch_battery_info(self) -> dict[str, Any]:
         """Fetch battery_info for the speaker."""
-        battery_info = self.soco.get_battery_info()
-        if not battery_info:
+        if not (battery_info := self.soco.get_battery_info()):
             # S1 firmware returns an empty payload
             raise S1BatteryMissing
         return battery_info

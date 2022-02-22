@@ -96,8 +96,7 @@ class RadioMediaSource(MediaSource):
     @staticmethod
     def _async_get_station_mime_type(station: Station) -> str | None:
         """Determine mime type of a radio station."""
-        mime_type = CODEC_TO_MIMETYPE.get(station.codec)
-        if not mime_type:
+        if not (mime_type := CODEC_TO_MIMETYPE.get(station.codec)):
             mime_type, _ = mimetypes.guess_type(station.url)
         return mime_type
 

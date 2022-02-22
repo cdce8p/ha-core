@@ -1381,8 +1381,7 @@ def async_load_api(hass: HomeAssistant) -> None:
         args: list | None = service.data.get(ATTR_ARGS)
         params: dict | None = service.data.get(ATTR_PARAMS)
         manufacturer: int | None = service.data.get(ATTR_MANUFACTURER)
-        zha_device = zha_gateway.get_device(ieee)
-        if zha_device is not None:
+        if (zha_device := zha_gateway.get_device(ieee)) is not None:
             if cluster_id >= MFG_CLUSTER_ID_START and manufacturer is None:
                 manufacturer = zha_device.manufacturer_code
 

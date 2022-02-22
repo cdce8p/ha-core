@@ -45,8 +45,7 @@ class LaCrosseSensorEntityDescription(SensorEntityDescription):
 
 def get_value(sensor: Sensor, field: str) -> float | int | str | None:
     """Get the value of a sensor field."""
-    field_data = sensor.data.get(field)
-    if field_data is None:
+    if (field_data := sensor.data.get(field)) is None:
         return None
     value = field_data["values"][-1]["s"]
     try:
@@ -160,8 +159,7 @@ async def async_setup_entry(
     sensor_list = []
     for i, sensor in enumerate(sensors):
         for field in sensor.sensor_field_names:
-            description = SENSOR_DESCRIPTIONS.get(field)
-            if description is None:
+            if (description := SENSOR_DESCRIPTIONS.get(field)) is None:
                 message = (
                     f"Unsupported sensor field: {field}\nPlease create an issue on "
                     "GitHub."

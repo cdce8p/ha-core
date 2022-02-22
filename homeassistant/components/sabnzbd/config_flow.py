@@ -39,8 +39,7 @@ class SABnzbdConfigFlow(ConfigFlow, domain=DOMAIN):
     async def _async_validate_input(self, user_input):
         """Validate the user input allows us to connect."""
         errors = {}
-        sab_api = await get_client(self.hass, user_input)
-        if not sab_api:
+        if not await get_client(self.hass, user_input):
             errors["base"] = "cannot_connect"
 
         return errors
