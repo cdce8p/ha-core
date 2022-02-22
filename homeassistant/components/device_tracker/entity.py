@@ -403,8 +403,7 @@ class TrackerEntity(
         if (
             self.latitude is not None and self.longitude is not None
         ) or self.__in_zones is not None:
-            zone_state = self.__active_zone
-            if zone_state is None:
+            if (zone_state := self.__active_zone) is None:
                 state = STATE_NOT_HOME
             elif zone_state.entity_id == zone.ENTITY_ID_HOME:
                 state = STATE_HOME

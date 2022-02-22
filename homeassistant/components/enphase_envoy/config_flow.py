@@ -63,8 +63,7 @@ def token_lifetime(token: str) -> str:
     days_left = UNKNOWN_TOKEN_TEXT
     try:
         jwt_payload = jwt.decode(token, options={"verify_signature": False})
-        exp = jwt_payload.get("exp")
-        if exp is not None:
+        if (exp := jwt_payload.get("exp")) is not None:
             days_left = str(int((int(exp) - dt_util.utcnow().timestamp()) / 86400))
     except jwt.PyJWTError, KeyError, TypeError, ValueError:
         days_left = UNKNOWN_TOKEN_TEXT

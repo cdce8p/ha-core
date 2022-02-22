@@ -215,8 +215,7 @@ class DenonRS232MediaPlayer(MediaPlayerEntity):
             if volume_max is not None and volume_max > volume_min:
                 self._volume_range = volume_max - volume_min
 
-        volume = self._player.volume
-        if volume is not None:
+        if (volume := self._player.volume) is not None:
             self._attr_volume_level = (volume - self._volume_min) / self._volume_range
         else:
             self._attr_volume_level = None

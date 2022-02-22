@@ -296,8 +296,7 @@ class EcovacsVacuum(
         for room in self._room_event.rooms:
             # convert room name to snake_case to meet the convention
             room_name = slugify(room.name)
-            room_values = rooms.get(room_name)
-            if room_values is None:
+            if (room_values := rooms.get(room_name)) is None:
                 rooms[room_name] = room.id
             elif isinstance(room_values, list):
                 room_values.append(room.id)
@@ -419,8 +418,7 @@ class EcovacsVacuum(
     @callback
     def _check_segments_changed(self) -> None:
         """Check if segments have changed and create repair issue."""
-        last_seen = self.last_seen_segments
-        if last_seen is None:
+        if (last_seen := self.last_seen_segments) is None:
             return
 
         last_seen_ids = {seg.id for seg in last_seen}

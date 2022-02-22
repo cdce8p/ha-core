@@ -434,8 +434,7 @@ class VoipAssistSatellite(VoIPEntity, AssistSatelliteEntity, RtpDatagramProtocol
             while True:
                 try:
                     async with asyncio.timeout(self._audio_chunk_timeout):
-                        chunk = await self._audio_queue.get()
-                        if not chunk:
+                        if not (chunk := await self._audio_queue.get()):
                             _LOGGER.debug("STT stream got None")
                             break
 

@@ -54,8 +54,7 @@ def _get_lowest_price_night_time(
     """Return timestamp of the lowest-priced night hour (18:00-06:00)."""
     now = dt_util.now()
     now_h = now.hour
-    hour = api.get_lowest_price_night_with_hour(data)[1]
-    if hour is None:
+    if (hour := api.get_lowest_price_night_with_hour(data)[1]) is None:
         return None
 
     if now_h < 6:

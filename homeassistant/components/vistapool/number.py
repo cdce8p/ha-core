@@ -46,8 +46,7 @@ def _max_electrolysis(coordinator: VistapoolDataUpdateCoordinator) -> float:
     """Read the cell's hardware max, falling back to a safe default."""
     # The path is typed in the library's coercion map, so an unparsable value
     # already comes back as None rather than reaching float().
-    raw = coordinator.get_value("hidro.maxAllowedValue")
-    if raw is None:
+    if (raw := coordinator.get_value("hidro.maxAllowedValue")) is None:
         return 50.0
     return float(raw) / 10
 

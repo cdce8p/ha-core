@@ -93,8 +93,7 @@ def _setup_entities(
 
 
 def _get_ha_mode(vs_mode: str) -> str | None:
-    ha_mode = VS_TO_HA_MODE_MAP.get(vs_mode)
-    if ha_mode is None:
+    if (ha_mode := VS_TO_HA_MODE_MAP.get(vs_mode)) is None:
         _LOGGER.warning("Unknown mode '%s'", vs_mode)
     return ha_mode
 

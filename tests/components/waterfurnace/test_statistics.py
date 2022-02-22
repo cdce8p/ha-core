@@ -70,8 +70,7 @@ async def _get_last_stat(hass: HomeAssistant) -> StatisticsRow | None:
     last = await hass.async_add_executor_job(
         get_last_statistics, hass, 1, STATISTIC_ID, True, {"sum"}
     )
-    rows = last.get(STATISTIC_ID)
-    if not rows:
+    if not (rows := last.get(STATISTIC_ID)):
         return None
     return rows[0]
 

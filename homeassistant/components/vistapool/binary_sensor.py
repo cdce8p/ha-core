@@ -266,11 +266,11 @@ class VistapoolDosingTankBinarySensor(VistapoolEntity, BinarySensorEntity):
     @override
     def is_on(self) -> bool | None:
         """Return true if any tank is low, or None if no tank data is available."""
-        values: list[Any] = []
-        for path in TANK_MODULE_PATHS:
-            value = self.coordinator.get_value(path)
-            if value is not None:
-                values.append(value)
+        values: list[Any] = [
+            value
+            for path in TANK_MODULE_PATHS
+            if (value := self.coordinator.get_value(path)) is not None
+        ]
         if not values:
             return None
         return any(value in (True, "1") for value in values)

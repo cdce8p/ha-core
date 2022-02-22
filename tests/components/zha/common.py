@@ -132,8 +132,7 @@ def find_entity_id(
     This is used to get the entity id in order to get the state from the state
     machine so that we can test state changes.
     """
-    entities = find_entity_ids(domain, zha_device, hass)
-    if not entities:
+    if not (entities := find_entity_ids(domain, zha_device, hass)):
         return None
     if qualifier:
         for entity_id in entities:

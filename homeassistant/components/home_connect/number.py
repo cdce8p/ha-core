@@ -272,8 +272,7 @@ class HomeConnectOptionNumberEntity(HomeConnectOptionEntity, NumberEntity):
                     or candidate_unit != self._attr_native_unit_of_measurement
                 ):
                     self._attr_native_unit_of_measurement = candidate_unit
-            option_constraints = option_definition.constraints
-            if option_constraints:
+            if option_constraints := option_definition.constraints:
                 if (
                     not hasattr(self, "_attr_native_min_value")
                     or self._attr_native_min_value != option_constraints.min

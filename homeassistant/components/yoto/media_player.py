@@ -98,8 +98,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
     @override
     def state(self) -> MediaPlayerState:
         """Return the playback state."""
-        status = self.player.last_event.playback_status
-        if status is None:
+        if (status := self.player.last_event.playback_status) is None:
             return MediaPlayerState.IDLE
         return PLAYBACK_STATE_MAP.get(status, MediaPlayerState.IDLE)
 
@@ -157,8 +156,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
 
     def _current_card(self) -> Card | None:
         """Return the cached library card for the currently active media."""
-        card_id = self.player.last_event.card_id
-        if not card_id:
+        if not (card_id := self.player.last_event.card_id):
             return None
         return self.coordinator.client.library.get(card_id)
 
@@ -218,8 +216,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
             ) from err
 
         client = self.coordinator.client
-        card = client.library.get(card_id)
-        if card is None:
+        if (card := client.library.get(card_id)) is None:
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="unknown_card",
@@ -238,8 +235,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
                         translation_placeholders={"error": str(err)},
                     ) from err
 
-            chapter = card.chapters.get(chapter_key)
-            if chapter is None:
+            if (chapter := card.chapters.get(chapter_key)) is None:
                 raise ServiceValidationError(
                     translation_domain=DOMAIN,
                     translation_key="unknown_chapter",
@@ -298,8 +294,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
                     translation_key="invalid_media_id",
                     translation_placeholders={"media_id": media_content_id},
                 ) from err
-            group = client.groups.get(group_id)
-            if group is None:
+            if (group := client.groups.get(group_id)) is None:
                 raise BrowseError(
                     translation_domain=DOMAIN,
                     translation_key="unknown_group",
@@ -316,8 +311,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
                 translation_placeholders={"media_id": media_content_id},
             ) from err
 
-        card = client.library.get(card_id)
-        if card is None:
+        if (card := client.library.get(card_id)) is None:
             raise BrowseError(
                 translation_domain=DOMAIN,
                 translation_key="unknown_card",
@@ -335,8 +329,7 @@ class YotoMediaPlayer(YotoPlayerEntity, MediaPlayerEntity):
                 ) from err
 
         if chapter_key is not None:
-            chapter = card.chapters.get(chapter_key)
-            if chapter is None:
+            if (chapter := card.chapters.get(chapter_key)) is None:
                 raise BrowseError(
                     translation_domain=DOMAIN,
                     translation_key="unknown_chapter",

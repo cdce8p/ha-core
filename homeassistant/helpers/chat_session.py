@@ -127,8 +127,7 @@ def async_get_chat_session(
         # to another LLM.
         session = None
 
-    all_sessions = hass.data.get(DATA_CHAT_SESSION)
-    if all_sessions is None:
+    if (all_sessions := hass.data.get(DATA_CHAT_SESSION)) is None:
         all_sessions = {}
         hass.data[DATA_CHAT_SESSION] = all_sessions
         hass.data[DATA_CHAT_SESSION_CLEANUP] = SessionCleanup(hass)

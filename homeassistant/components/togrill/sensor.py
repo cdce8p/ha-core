@@ -71,10 +71,7 @@ def _get_ambient_temperature(packet: Packet) -> StateType:
     if not packet.temperatures:
         return None
     # Ambient is always the last temperature value
-    temperature = packet.temperatures[-1]
-    if temperature is None:
-        return None
-    return temperature
+    return packet.temperatures[-1]
 
 
 def _ambient_supported(config: Mapping[str, Any]) -> bool:

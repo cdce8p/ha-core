@@ -69,9 +69,7 @@ class QbusStepper(QbusEntity, SelectEntity):
     @override
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        value = self._name_to_value.get(option)
-
-        if value is None:
+        if (value := self._name_to_value.get(option)) is None:
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="invalid_option",

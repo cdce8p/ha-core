@@ -920,8 +920,7 @@ class YeelightColorLightSupport(YeelightBaseLight):
     @override
     def color_mode(self) -> ColorMode:
         """Return the color mode."""
-        raw_color_mode = self._get_property("color_mode")
-        if raw_color_mode is None:
+        if (raw_color_mode := self._get_property("color_mode")) is None:
             # an ambilight stops reporting its mode while the main light is off
             return ColorMode.UNKNOWN
         color_mode = int(raw_color_mode)

@@ -170,8 +170,7 @@ def get_datetime_from_future_time(time_str: str | None) -> datetime | None:
     """Get datetime from future time provided."""
     if time_str is None:
         return None
-    time = dt_util.parse_time(time_str)
-    if time is None:
+    if (time := dt_util.parse_time(time_str)) is None:
         return None
     now = dt_util.utcnow()
     if time <= now.time():

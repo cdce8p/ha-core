@@ -354,8 +354,7 @@ class SimpliSafe:
 
     async def _async_cancel_websocket_loop(self) -> None:
         """Cancel the websocket loop task, if running."""
-        task = self._websocket_task
-        if not task:
+        if not (task := self._websocket_task):
             return
 
         self._websocket_task = None

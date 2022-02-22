@@ -181,8 +181,7 @@ def update_listeners(hass: HomeAssistant, entry: EnergyIDConfigEntry) -> None:
         if not (entity_uuid and energyid_key):
             continue
 
-        entity_entry = ent_reg.async_get(entity_uuid)
-        if not entity_entry:
+        if not (entity_entry := ent_reg.async_get(entity_uuid)):
             _LOGGER.warning(
                 "Entity with UUID %s does not exist, skipping mapping to %s",
                 entity_uuid,

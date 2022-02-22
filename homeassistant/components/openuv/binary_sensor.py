@@ -55,9 +55,7 @@ class OpenUvBinarySensor(OpenUvEntity, BinarySensorEntity):
 
     @override
     def _update_attrs(self) -> None:
-        data = self.coordinator.data
-
-        if not data:
+        if not (data := self.coordinator.data):
             LOGGER.warning("Skipping update due to missing data")
             return
 

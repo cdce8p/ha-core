@@ -133,8 +133,7 @@ class TradfriLight(TradfriBaseEntity, LightEntity):
     @override
     def hs_color(self) -> tuple[float, float] | None:
         """HS color of the light."""
-        hsbxy = self._device_data.hsb_xy_color
-        if hsbxy is None:
+        if (hsbxy := self._device_data.hsb_xy_color) is None:
             return None
         hue = hsbxy[0] / (self._device_control.max_hue / 360)
         sat = hsbxy[1] / (self._device_control.max_saturation / 100)

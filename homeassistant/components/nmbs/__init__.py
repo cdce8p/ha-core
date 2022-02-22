@@ -29,8 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # retried instead of failing permanently.
     if not hass.data.get(DOMAIN):
         api_client = iRail(session=async_get_clientsession(hass))
-        station_response = await api_client.get_stations()
-        if station_response is None:
+        if (station_response := await api_client.get_stations()) is None:
             raise ConfigEntryNotReady(
                 "Unable to fetch the NMBS station list; the iRail API is unavailable"
             )

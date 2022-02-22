@@ -73,8 +73,7 @@ class MockYouTube:
         channels = await async_load_json_object_fixture(
             self.hass, self._playlist_items_fixture, DOMAIN
         )
-        items = channels["items"]
-        if not items:
+        if not (items := channels["items"]):
             self.playlist_item_requests += 1
             return
         index = 0

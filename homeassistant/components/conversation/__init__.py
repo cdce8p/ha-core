@@ -155,9 +155,7 @@ def async_get_conversation_languages(
     agents: list[ConversationEntity | AbstractConversationAgent]
 
     if agent_id:
-        agent = async_get_agent(hass, agent_id)
-
-        if agent is None:
+        if (agent := async_get_agent(hass, agent_id)) is None:
             raise ValueError(f"Agent {agent_id} not found")
 
         # Shortcut
@@ -193,9 +191,7 @@ def async_get_agent_info(
     agent_id: str | None = None,
 ) -> AgentInfo | None:
     """Get information on the agent or None if not found."""
-    agent = async_get_agent(hass, agent_id)
-
-    if agent is None:
+    if (agent := async_get_agent(hass, agent_id)) is None:
         return None
 
     if isinstance(agent, ConversationEntity):
@@ -221,9 +217,7 @@ async def async_prepare_agent(
     hass: HomeAssistant, agent_id: str | None, language: str
 ) -> None:
     """Prepare given agent."""
-    agent = async_get_agent(hass, agent_id)
-
-    if agent is None:
+    if (agent := async_get_agent(hass, agent_id)) is None:
         raise ValueError("Invalid agent specified")
 
     await agent.async_prepare(language)
@@ -299,15 +293,13 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     async def handle_reload(service: ServiceCall) -> None:
         """Reload intents."""
-        language = service.data.get(ATTR_LANGUAGE)
-        if language is None:
+        if (language := service.data.get(ATTR_LANGUAGE)) is None:
             conf = await async_integration_yaml_config(hass, DOMAIN)
             if conf is not None:
                 config_intents = _get_config_intents(conf, hass_config_path)
                 manager.update_config_intents(config_intents)
 
-        agent = manager.default_agent
-        if agent is not None:
+        if (agent := manager.default_agent) is not None:
             await agent.async_reload(language=language)
 
     hass.services.async_register(

@@ -948,8 +948,7 @@ class EntityPlatform:
                 entity.add_to_platform_abort()
                 return None
 
-        entity_name = entity.name
-        if entity_name is UNDEFINED:
+        if (entity_name := entity.name) is UNDEFINED:
             entity_name = None
 
         suggested_object_id: str | None = None

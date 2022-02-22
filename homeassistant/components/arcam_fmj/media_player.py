@@ -72,8 +72,7 @@ class ArcamFmj(ArcamFmjEntity, MediaPlayerEntity):
         not yet reported a power state; this is distinct from a real
         powered-off state and must not be collapsed to ``OFF``.
         """
-        power = self._state.get_power()
-        if power is None:
+        if (power := self._state.get_power()) is None:
             return None
         return MediaPlayerState.ON if power else MediaPlayerState.OFF
 

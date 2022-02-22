@@ -200,8 +200,7 @@ class RTMConfigFlow(ConfigFlow, domain=DOMAIN):
         """
         name = import_info.pop(CONF_NAME)
         self._async_abort_entries_match({CONF_USERNAME: name})
-        token = import_info.get(CONF_TOKEN)
-        if token is None:
+        if (token := import_info.get(CONF_TOKEN)) is None:
             return self.async_abort(reason="invalid_auth")
         auth = self._get_auth(
             import_info[CONF_API_KEY], import_info[CONF_SHARED_SECRET], token
