@@ -214,8 +214,7 @@ class PM10Sensor(AirQualitySensor):
     @callback
     def async_update_state(self, new_state):
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -241,8 +240,7 @@ class PM25Sensor(AirQualitySensor):
     @callback
     def async_update_state(self, new_state):
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -270,8 +268,7 @@ class NitrogenDioxideSensor(AirQualitySensor):
     @callback
     def async_update_state(self, new_state):
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -307,8 +304,7 @@ class VolatileOrganicCompoundsSensor(AirQualitySensor):
     @callback
     def async_update_state(self, new_state):
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)

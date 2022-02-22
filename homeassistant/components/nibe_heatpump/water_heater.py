@@ -178,8 +178,7 @@ class WaterHeater(CoordinatorEntity[Coordinator], WaterHeaterEntity):
         if not self._coil_temporary_lux:
             raise HomeAssistantError("Not supported")
 
-        lux = self._operation_mode_to_lux.get(operation_mode)
-        if not lux:
+        if not (lux := self._operation_mode_to_lux.get(operation_mode)):
             raise ValueError(f"Unsupported operation mode {operation_mode}")
 
         await self.coordinator.async_write_coil(self._coil_temporary_lux, lux)

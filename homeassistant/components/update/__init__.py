@@ -451,9 +451,8 @@ async def websocket_release_notes(
 ) -> None:
     """Get the full release notes for a entity."""
     component: EntityComponent[UpdateEntity] = hass.data[DOMAIN]
-    entity = component.get_entity(msg["entity_id"])
 
-    if entity is None:
+    if (entity := component.get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.const.ERR_NOT_FOUND, "Entity not found"
         )

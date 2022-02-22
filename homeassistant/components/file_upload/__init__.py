@@ -160,8 +160,7 @@ class FileUploadView(HomeAssistantView):
             file_dir.mkdir()
             with (file_dir / _file_name).open("wb") as file_handle:
                 while True:
-                    _chunk = sync_q.get()
-                    if _chunk is None:
+                    if (_chunk := sync_q.get()) is None:
                         break
 
                     file_handle.write(_chunk)

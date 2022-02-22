@@ -268,8 +268,7 @@ async def _async_get_entry(
     hass: HomeAssistant, connection: ActiveConnection, msg: dict, entry_id: str
 ) -> tuple[ConfigEntry | None, Client | None, Driver | None]:
     """Get config entry and client from message data."""
-    entry = hass.config_entries.async_get_entry(entry_id)
-    if entry is None:
+    if (entry := hass.config_entries.async_get_entry(entry_id)) is None:
         connection.send_error(
             msg[ID], ERR_NOT_FOUND, f"Config entry {entry_id} not found"
         )

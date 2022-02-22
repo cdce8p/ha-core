@@ -119,9 +119,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 def _create_rfx(config: Mapping[str, Any]) -> rfxtrxmod.Connect:
     """Construct a rfx object based on config."""
 
-    modes = config.get(CONF_PROTOCOLS)
-
-    if modes:
+    if modes := config.get(CONF_PROTOCOLS):
         _LOGGER.debug("Using modes: %s", ",".join(modes))
     else:
         _LOGGER.debug("No modes defined, using device configuration")

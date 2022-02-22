@@ -1202,9 +1202,8 @@ async def websocket_browse_media(
     MediaPlayerEntity.async_browse_media()
     """
     component: EntityComponent[MediaPlayerEntity] = hass.data[DOMAIN]
-    player = component.get_entity(msg["entity_id"])
 
-    if player is None:
+    if (player := component.get_entity(msg["entity_id"])) is None:
         connection.send_error(msg["id"], "entity_not_found", "Entity not found")
         return
 

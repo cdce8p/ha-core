@@ -298,11 +298,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     except asyncio.TimeoutError as exc:
         raise ConfigEntryNotReady(f"Timed out connecting to {conf[CONF_HOST]}") from exc
 
-    elk_temp_unit = elk.panel.temperature_units
-    if elk_temp_unit == "C":
-        temperature_unit = UnitOfTemperature.CELSIUS
-    else:
-        temperature_unit = UnitOfTemperature.FAHRENHEIT
+    temperature_unit = (
+        UnitOfTemperature.CELSIUS
+        if elk.panel.temperature_units == "C"
+        else UnitOfTemperature.FAHRENHEIT
+    )
     config["temperature_unit"] = temperature_unit
     hass.data[DOMAIN][entry.entry_id] = {
         "elk": elk,

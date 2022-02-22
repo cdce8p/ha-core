@@ -582,8 +582,7 @@ class EntityPlatform:
         suggested_object_id: str | None = None
         generate_new_entity_id = False
 
-        entity_name = entity.name
-        if entity_name is UNDEFINED:
+        if (entity_name := entity.name) is UNDEFINED:
             entity_name = None
 
         # Get entity_id from unique ID registration

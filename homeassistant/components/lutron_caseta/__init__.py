@@ -377,9 +377,8 @@ def _get_button_name(keypad: LutronKeypad, bridge_button: dict[str, Any]) -> str
     """Get the LEAP button name and check for override."""
 
     button_number = bridge_button["button_number"]
-    button_name = bridge_button.get("device_name")
 
-    if button_name is None:
+    if (button_name := bridge_button.get("device_name")) is None:
         # This is a Caseta Button retrieve name from hardcoded trigger definitions.
         return _get_button_name_from_triggers(keypad, button_number)
 
@@ -420,8 +419,7 @@ def _construct_area_name_from_id(
 ) -> str:
     """Recursively construct the full area name including parent(s)."""
     area = areas[area_id]
-    parent_area_id = area["parent_id"]
-    if parent_area_id is None:
+    if (parent_area_id := area["parent_id"]) is None:
         # This is the root area, return last area
         return " ".join(labels)
 

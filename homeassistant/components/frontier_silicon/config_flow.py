@@ -91,8 +91,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_ssdp(self, discovery_info: ssdp.SsdpServiceInfo) -> FlowResult:
         """Process entity discovered via SSDP."""
 
-        device_url = discovery_info.ssdp_location
-        if device_url is None:
+        if (device_url := discovery_info.ssdp_location) is None:
             return self.async_abort(reason="cannot_connect")
 
         device_hostname = hostname_from_url(device_url)

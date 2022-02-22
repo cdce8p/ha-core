@@ -148,9 +148,7 @@ class Life360DataUpdateCoordinator(DataUpdateCoordinator[Life360Data]):
 
                 member_id = member["id"]
 
-                first = member["firstName"]
-                last = member["lastName"]
-                if first and last:
+                if (first := member["firstName"]) and (last := member["lastName"]):
                     name = " ".join([first, last])
                 else:
                     name = first or last

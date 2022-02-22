@@ -52,9 +52,7 @@ class RadioMediaSource(MediaSource):
 
     async def async_resolve_media(self, item: MediaSourceItem) -> PlayMedia:
         """Resolve selected Radio station to a streaming URL."""
-        radios = self.radios
-
-        if radios is None:
+        if (radios := self.radios) is None:
             raise Unresolvable("Radio Browser not initialized")
 
         station = await radios.station(uuid=item.identifier)
@@ -74,9 +72,7 @@ class RadioMediaSource(MediaSource):
         item: MediaSourceItem,
     ) -> BrowseMediaSource:
         """Return media."""
-        radios = self.radios
-
-        if radios is None:
+        if (radios := self.radios) is None:
             raise BrowseError("Radio Browser not initialized")
 
         return BrowseMediaSource(
@@ -100,8 +96,7 @@ class RadioMediaSource(MediaSource):
     @staticmethod
     def _async_get_station_mime_type(station: Station) -> str | None:
         """Determine mime type of a radio station."""
-        mime_type = CODEC_TO_MIMETYPE.get(station.codec)
-        if not mime_type:
+        if not (mime_type := CODEC_TO_MIMETYPE.get(station.codec)):
             mime_type, _ = mimetypes.guess_type(station.url)
         return mime_type
 

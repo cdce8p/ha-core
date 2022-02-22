@@ -133,8 +133,7 @@ async def async_setup_entry(
         # with extra options like offsets or search criteria.
         num_entities = len(calendar_info[CONF_ENTITIES])
         for data in calendar_info[CONF_ENTITIES]:
-            entity_enabled = data.get(CONF_TRACK, True)
-            if not entity_enabled:
+            if not (entity_enabled := data.get(CONF_TRACK, True)):
                 _LOGGER.warning(
                     "The 'track' option in google_calendars.yaml has been deprecated."
                     " The setting has been imported to the UI, and should now be"

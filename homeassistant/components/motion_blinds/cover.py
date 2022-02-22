@@ -427,8 +427,7 @@ class MotionTiltOnlyDevice(MotionTiltDevice):
 
     async def async_set_absolute_position(self, **kwargs):
         """Move the cover to a specific absolute position (see TDBU)."""
-        angle = kwargs.get(ATTR_TILT_POSITION)
-        if angle is not None:
+        if (angle := kwargs.get(ATTR_TILT_POSITION)) is not None:
             angle = angle * 180 / 100
             async with self._api_lock:
                 await self.hass.async_add_executor_job(

@@ -90,8 +90,7 @@ class DataUpdateCoordinator(BaseDataUpdateCoordinatorProtocol, Generic[_DataT]):
 
         self._listeners: dict[CALLBACK_TYPE, tuple[CALLBACK_TYPE, object | None]] = {}
         job_name = "DataUpdateCoordinator"
-        type_name = type(self).__name__
-        if type_name != job_name:
+        if (type_name := type(self).__name__) != job_name:
             job_name += f" {type_name}"
         job_name += f" {name}"
         if entry := self.config_entry:

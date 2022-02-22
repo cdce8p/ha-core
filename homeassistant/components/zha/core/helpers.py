@@ -241,8 +241,7 @@ def async_cluster_exists(hass, cluster_id, skip_coordinator=True):
 def async_get_zha_device(hass: HomeAssistant, device_id: str) -> ZHADevice:
     """Get a ZHA device for the given device registry id."""
     device_registry = dr.async_get(hass)
-    registry_device = device_registry.async_get(device_id)
-    if not registry_device:
+    if not (registry_device := device_registry.async_get(device_id)):
         _LOGGER.error("Device id `%s` not found in registry", device_id)
         raise KeyError(f"Device id `{device_id}` not found in registry.")
     zha_gateway: ZHAGateway = hass.data[DATA_ZHA][DATA_ZHA_GATEWAY]

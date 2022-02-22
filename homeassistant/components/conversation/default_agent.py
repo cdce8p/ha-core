@@ -391,9 +391,7 @@ class DefaultAgent(AbstractConversationAgent):
         self, language: str, hass_components: set[str]
     ) -> LanguageIntents | None:
         """Load all intents for language (run inside executor)."""
-        lang_intents = self._lang_intents.get(language)
-
-        if lang_intents is None:
+        if (lang_intents := self._lang_intents.get(language)) is None:
             intents_dict: dict[str, Any] = {}
             loaded_components: set[str] = set()
         else:
@@ -598,8 +596,7 @@ class DefaultAgent(AbstractConversationAgent):
         areas = ar.async_get(self.hass)
         area_names = []
         for area_id in area_ids_with_entities:
-            area = areas.async_get_area(area_id)
-            if area is None:
+            if (area := areas.async_get_area(area_id)) is None:
                 continue
 
             area_names.append((area.name, area.id))

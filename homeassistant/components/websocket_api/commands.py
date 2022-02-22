@@ -435,8 +435,7 @@ async def handle_manifest_list(
     hass: HomeAssistant, connection: ActiveConnection, msg: dict[str, Any]
 ) -> None:
     """Handle integrations command."""
-    wanted_integrations = msg.get("integrations")
-    if wanted_integrations is None:
+    if (wanted_integrations := msg.get("integrations")) is None:
         wanted_integrations = async_get_loaded_integrations(hass)
 
     ints_or_excs = await async_get_integrations(hass, wanted_integrations)

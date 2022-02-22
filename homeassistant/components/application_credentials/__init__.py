@@ -217,8 +217,7 @@ async def _async_provide_implementation(
 ) -> list[config_entry_oauth2_flow.AbstractOAuth2Implementation]:
     """Return registered OAuth implementations."""
 
-    platform = await _get_platform(hass, domain)
-    if not platform:
+    if not (platform := await _get_platform(hass, domain)):
         return []
 
     storage_collection = hass.data[DOMAIN][DATA_STORAGE]

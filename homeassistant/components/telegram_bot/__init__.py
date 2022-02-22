@@ -857,8 +857,7 @@ class TelegramNotificationService:
     def send_sticker(self, target=None, **kwargs):
         """Send a sticker from a telegram sticker pack."""
         params = self._get_msg_kwargs(kwargs)
-        stickerid = kwargs.get(ATTR_STICKER_ID)
-        if stickerid:
+        if stickerid := kwargs.get(ATTR_STICKER_ID):
             for chat_id in self._get_target_chat_ids(target):
                 self._send_msg(
                     self.bot.send_sticker,

@@ -219,9 +219,8 @@ def async_get_node_from_device_id(
         )
 
     client: ZwaveClient = hass.data[DOMAIN][entry.entry_id][DATA_CLIENT]
-    driver = client.driver
 
-    if driver is None:
+    if (driver := client.driver) is None:
         raise ValueError("Driver is not ready.")
 
     # Get node ID from device identifier, perform some validation, and then get the

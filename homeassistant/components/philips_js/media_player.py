@@ -272,8 +272,7 @@ class PhilipsTVMediaPlayer(PhilipsJsEntity, MediaPlayerEntity):
     ) -> BrowseMedia:
         """Return channel media objects."""
         if expanded:
-            favorites = self._tv.favorite_lists.get(list_id)
-            if favorites:
+            if favorites := self._tv.favorite_lists.get(list_id):
 
                 def get_name(channel):
                     channel_data = self._tv.channels.get(str(channel["ccid"]))

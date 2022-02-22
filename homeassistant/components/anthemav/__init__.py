@@ -59,9 +59,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
-    avr = hass.data[DOMAIN][entry.entry_id]
-
-    if avr is not None:
+    if (avr := hass.data[DOMAIN][entry.entry_id]) is not None:
         _LOGGER.debug("Close avr connection")
         avr.close()
 

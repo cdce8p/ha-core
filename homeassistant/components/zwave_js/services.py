@@ -436,8 +436,7 @@ class ZWaveServices:
         nodes_list = list(nodes)
         for node, result in get_valid_responses_from_results(nodes_list, results):
             zwave_value = result[0]
-            cmd_status = result[1]
-            if cmd_status == CommandStatus.ACCEPTED:
+            if result[1] == CommandStatus.ACCEPTED:
                 msg = "Set configuration parameter %s on Node %s with value %s"
             else:
                 msg = (

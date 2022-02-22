@@ -27,8 +27,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up the Aladdin Connect platform."""
     acc: AladdinConnectClient = hass.data[DOMAIN][config_entry.entry_id]
-    doors = await acc.get_doors()
-    if doors is None:
+    if (doors := await acc.get_doors()) is None:
         raise PlatformNotReady("Error from Aladdin Connect getting doors")
     async_add_entities(
         (AladdinDevice(acc, door, config_entry) for door in doors),

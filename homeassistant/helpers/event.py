@@ -397,8 +397,7 @@ def _async_track_event(
     job = HassJob(action, f"track {event_type} event {keys}")
 
     for key in keys:
-        callback_list = callbacks.get(key)
-        if callback_list:
+        if callback_list := callbacks.get(key):
             callback_list.append(job)
         else:
             callbacks[key] = [job]

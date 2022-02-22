@@ -297,9 +297,8 @@ class LIFXManager:
 
         elif service == SERVICE_EFFECT_MORPH:
             theme_name = kwargs.get(ATTR_THEME, "exciting")
-            palette = kwargs.get(ATTR_PALETTE, None)
 
-            if palette is not None:
+            if (palette := kwargs.get(ATTR_PALETTE, None)) is not None:
                 theme = Theme()
                 for hsbk in palette:
                     theme.add_hsbk(hsbk[0], hsbk[1], hsbk[2], hsbk[3])

@@ -78,10 +78,8 @@ class RoborockCoordinatedEntity(
     @property
     def _device_status(self) -> Status:
         """Return the status of the device."""
-        data = self.coordinator.data
-        if data:
-            status = data.status
-            if status:
+        if data := self.coordinator.data:
+            if status := data.status:
                 return status
         return Status({})
 

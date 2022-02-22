@@ -69,8 +69,7 @@ async def ban_middleware(
         _LOGGER.error("IP Ban middleware loaded but banned IPs not loaded")
         return await handler(request)
 
-    ip_bans_lookup = ban_manager.ip_bans_lookup
-    if ip_bans_lookup:
+    if ip_bans_lookup := ban_manager.ip_bans_lookup:
         # Verify if IP is not banned
         ip_address_ = ip_address(request.remote)  # type: ignore[arg-type]
         if ip_address_ in ip_bans_lookup:

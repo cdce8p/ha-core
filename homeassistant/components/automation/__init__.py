@@ -1081,9 +1081,7 @@ def websocket_config(
     """Get automation config."""
     component: EntityComponent[BaseAutomationEntity] = hass.data[DOMAIN]
 
-    automation = component.get_entity(msg["entity_id"])
-
-    if automation is None:
+    if (automation := component.get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.const.ERR_NOT_FOUND, "Entity not found"
         )

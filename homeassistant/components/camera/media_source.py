@@ -36,9 +36,8 @@ class CameraMediaSource(MediaSource):
     async def async_resolve_media(self, item: MediaSourceItem) -> PlayMedia:
         """Resolve media to a url."""
         component: EntityComponent[Camera] = self.hass.data[DOMAIN]
-        camera = component.get_entity(item.identifier)
 
-        if not camera:
+        if not (camera := component.get_entity(item.identifier)):
             raise Unresolvable(f"Could not resolve media item: {item.identifier}")
 
         if (stream_type := camera.frontend_stream_type) is None:
@@ -76,9 +75,7 @@ class CameraMediaSource(MediaSource):
         children = []
         not_shown = 0
         for camera in component.entities:
-            stream_type = camera.frontend_stream_type
-
-            if stream_type is None:
+            if (stream_type := camera.frontend_stream_type) is None:
                 content_type = camera.content_type
 
             elif can_stream_hls and stream_type == StreamType.HLS:

@@ -630,8 +630,9 @@ class TibberDataCoordinator(DataUpdateCoordinator[None]):
                         else home.hourly_consumption_data
                     )
 
-                    from_time = dt_util.parse_datetime(hourly_data[0]["from"])
-                    if from_time is None:
+                    if (
+                        from_time := dt_util.parse_datetime(hourly_data[0]["from"])
+                    ) is None:
                         continue
                     start = from_time - timedelta(hours=1)
                     stat = await get_instance(self.hass).async_add_executor_job(
