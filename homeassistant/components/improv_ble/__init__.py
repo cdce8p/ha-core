@@ -41,8 +41,7 @@ def async_register_next_flow(hass: HomeAssistant, ble_mac: str, flow_id: str) ->
     registry = async_get_provisioning_futures(hass)
     normalized_mac = format_mac(ble_mac)
 
-    future = registry.get(normalized_mac)
-    if not future:
+    if not (future := registry.get(normalized_mac)):
         _LOGGER.debug(
             "No provisioning future found for %s (flow_id %s)",
             normalized_mac,

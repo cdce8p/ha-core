@@ -78,15 +78,13 @@ def async_get_transmitters(
         HomeAssistantError: If the component is not loaded or if no
             transmitters exist.
     """
-    component = hass.data.get(DATA_COMPONENT)
-    if component is None:
+    if (component := hass.data.get(DATA_COMPONENT)) is None:
         raise HomeAssistantError(
             translation_domain=DOMAIN,
             translation_key="component_not_loaded",
         )
 
-    entities = list(component.entities)
-    if not entities:
+    if not (entities := list(component.entities)):
         raise HomeAssistantError(
             translation_domain=DOMAIN,
             translation_key="no_transmitters",

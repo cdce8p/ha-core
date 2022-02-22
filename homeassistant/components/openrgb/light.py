@@ -154,8 +154,7 @@ class OpenRGBLight(CoordinatorEntity[OpenRGBCoordinator], LightEntity):
     def _update_attrs(self) -> None:
         """Update the attributes based on the current device state."""
         mode_data = self.device.modes[self.device.active_mode]
-        mode = mode_data.name
-        if mode == OpenRGBMode.OFF:
+        if (mode := mode_data.name) == OpenRGBMode.OFF:
             mode = None
             mode_supports_colors = False
         else:

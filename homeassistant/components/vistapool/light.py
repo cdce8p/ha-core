@@ -58,8 +58,7 @@ class VistapoolLight(VistapoolEntity, LightEntity):
     @override
     def is_on(self) -> bool | None:
         """Return true if the light is on."""
-        value = self.coordinator.get_value(_VALUE_PATH)
-        if value is None:
+        if (value := self.coordinator.get_value(_VALUE_PATH)) is None:
             return None
         return value in (True, "1")
 

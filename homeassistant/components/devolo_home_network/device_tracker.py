@@ -111,8 +111,7 @@ class DevoloScannerEntity(
             return {}
 
         assert self.mac_address
-        station = self.coordinator.data.get(self.mac_address)
-        if station:
+        if station := self.coordinator.data.get(self.mac_address):
             attrs["wifi"] = WIFI_APTYPE.get(station.vap_type, STATE_UNKNOWN)
             attrs["band"] = (
                 f"{WIFI_BANDS.get(station.band)} {UnitOfFrequency.GIGAHERTZ}"

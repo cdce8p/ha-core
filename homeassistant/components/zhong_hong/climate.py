@@ -304,8 +304,7 @@ class ZhongHongClimate(CoordinatorEntity[ZhongHongCoordinator], ClimateEntity):
     @override
     async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Set new target fan mode."""
-        mapped_mode = FAN_MODE_MAP.get(fan_mode)
-        if not mapped_mode:
+        if not (mapped_mode := FAN_MODE_MAP.get(fan_mode)):
             LOGGER.error("Unsupported fan mode: %s", fan_mode)
             return
 

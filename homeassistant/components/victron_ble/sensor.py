@@ -148,8 +148,7 @@ def error_to_state(value: float | str | None) -> str | None:
         "network_c": "network",
         "network_d": "network",
     }
-    mapped = value_map.get(value)
-    if mapped is not None:
+    if (mapped := value_map.get(value)) is not None:
         return mapped
     return value if isinstance(value, str) and value in CHARGER_ERROR_OPTIONS else None
 

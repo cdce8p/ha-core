@@ -201,8 +201,7 @@ class MeteoLtWeatherEntity(CoordinatorEntity[MeteoLtUpdateCoordinator], WeatherE
 
         daily_forecasts = []
         for date in sorted(forecasts_by_date.keys()):
-            day_forecasts = forecasts_by_date[date]
-            if not day_forecasts:
+            if not (day_forecasts := forecasts_by_date[date]):
                 continue
 
             temps = [

@@ -112,8 +112,7 @@ class CollectionImageImageEntity(ImageEntity):
     async def get_random_image(self) -> None:
         """Update the image entity with a random image from the source media."""
 
-        filtered = await self.get_valid_images()
-        if not filtered:
+        if not (filtered := await self.get_valid_images()):
             self.set_unavailable()
             return
 
@@ -150,8 +149,7 @@ class CollectionImageImageEntity(ImageEntity):
     async def _get_image_at_position(self, position: Literal[0, -1]) -> None:
         """Get the first or last image."""
 
-        filtered = await self.get_valid_images()
-        if not filtered:
+        if not (filtered := await self.get_valid_images()):
             self.set_unavailable()
             return
 
@@ -164,8 +162,7 @@ class CollectionImageImageEntity(ImageEntity):
     ) -> None:
         """Get the next or previous image."""
 
-        filtered = await self.get_valid_images()
-        if not filtered:
+        if not (filtered := await self.get_valid_images()):
             self.set_unavailable()
             return
 

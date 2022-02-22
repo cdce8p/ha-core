@@ -61,9 +61,8 @@ class CameraMediaSource(MediaSource):
     async def async_resolve_media(self, item: MediaSourceItem) -> PlayMedia:
         """Resolve media to a url."""
         component = self.hass.data[DATA_COMPONENT]
-        camera = component.get_entity(item.identifier)
 
-        if not camera:
+        if not (camera := component.get_entity(item.identifier)):
             raise Unresolvable(f"Could not resolve media item: {item.identifier}")
 
         if not (stream_types := camera.camera_capabilities.frontend_stream_types):
@@ -98,8 +97,7 @@ class CameraMediaSource(MediaSource):
         can_stream_hls = "stream" in self.hass.config.components
 
         async def _filter_browsable_camera(camera: Camera) -> BrowseMediaSource | None:
-            stream_types = camera.camera_capabilities.frontend_stream_types
-            if not stream_types:
+            if not (stream_types := camera.camera_capabilities.frontend_stream_types):
                 return _media_source_for_camera(self.hass, camera, camera.content_type)
             if not can_stream_hls:
                 return None

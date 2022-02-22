@@ -41,8 +41,7 @@ def _get_tuya_device(
 ) -> tuple[CustomerDevice, Manager]:
     """Get a Tuya device and manager from a Home Assistant device registry ID."""
     device_registry = dr.async_get(hass)
-    device_entry = device_registry.async_get(device_id)
-    if device_entry is None:
+    if (device_entry := device_registry.async_get(device_id)) is None:
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="device_not_found",

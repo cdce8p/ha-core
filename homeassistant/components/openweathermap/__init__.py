@@ -33,9 +33,8 @@ async def async_setup_entry(
     """Set up OpenWeatherMap as config entry."""
     api_key = entry.data[CONF_API_KEY]
     language = entry.options[CONF_LANGUAGE]
-    mode = entry.options[CONF_MODE]
 
-    if mode not in OWM_MODES:
+    if (mode := entry.options[CONF_MODE]) not in OWM_MODES:
         async_create_issue(hass, entry.entry_id)
     else:
         async_delete_issue(hass, entry.entry_id)

@@ -148,8 +148,7 @@ async def satellite(
 
     yield satellite
 
-    task = satellite._sender_task
-    if task is not None:
+    if (task := satellite._sender_task) is not None:
         task.cancel()
     satellite.disconnect()
     if task is not None:

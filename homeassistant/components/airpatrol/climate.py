@@ -130,8 +130,7 @@ class AirPatrolClimate(AirPatrolEntity, ClimateEntity):
     @override
     def fan_mode(self) -> str | None:
         """Return the current fan mode."""
-        fan_speed = self.params.get("FanSpeed")
-        if fan_speed:
+        if fan_speed := self.params.get("FanSpeed"):
             return AP_TO_HA_FAN_MODES.get(fan_speed)
         return None
 
@@ -139,8 +138,7 @@ class AirPatrolClimate(AirPatrolEntity, ClimateEntity):
     @override
     def swing_mode(self) -> str | None:
         """Return the current swing mode."""
-        swing = self.params.get("Swing")
-        if swing:
+        if swing := self.params.get("Swing"):
             return AP_TO_HA_SWING_MODES.get(swing)
         return None
 

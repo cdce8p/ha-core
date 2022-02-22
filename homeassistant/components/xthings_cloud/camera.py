@@ -221,8 +221,7 @@ class XthingsCloudCamera(CoordinatorEntity[XthingsCloudCoordinator], Camera):
             )
             return
 
-        kvs_client = self._kvs_sessions.get(session_id)
-        if kvs_client:
+        if kvs_client := self._kvs_sessions.get(session_id):
             try:
                 await kvs_client.async_send_ice_candidate(
                     candidate=candidate.candidate,

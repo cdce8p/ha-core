@@ -37,9 +37,7 @@ def _zone_delay_value(coordinator: YardianUpdateCoordinator) -> StateType:
     if not isinstance(val, int):
         return None
 
-    delay = val
-
-    if delay > _OPER_INFO_ABSOLUTE_THRESHOLD:
+    if (delay := val) > _OPER_INFO_ABSOLUTE_THRESHOLD:
         now = int(dt_util.utcnow().timestamp())
         return max(0, delay - now)
 

@@ -12,8 +12,7 @@ async def async_get_solar_forecast(
         entry := hass.config_entries.async_get_entry(config_entry_id)
     ) is None or entry.state is not ConfigEntryState.LOADED:
         return None
-    data = entry.runtime_data.data.solar
-    if data is None:
+    if (data := entry.runtime_data.data.solar) is None:
         return None
 
     return {"wh_hours": data.get_dict_isoformat}

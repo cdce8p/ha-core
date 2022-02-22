@@ -626,8 +626,7 @@ class ProtectRelayOutputSwitch(SwitchEntity):
     @callback
     def _update_from_relay(self, relay: Relay) -> None:
         """Refresh ``_attr_is_on`` and availability from the cached relay."""
-        output = relay.get_output(self._output_id)
-        if output is None:
+        if (output := relay.get_output(self._output_id)) is None:
             self._attr_available = False
             self._attr_is_on = None
             return

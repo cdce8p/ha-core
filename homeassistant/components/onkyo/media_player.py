@@ -136,8 +136,7 @@ async def async_setup_entry(
 
         zone = message.zone
 
-        entity = entities.get(zone)
-        if entity is not None:
+        if (entity := entities.get(zone)) is not None:
             if entity.enabled:
                 entity.process_update(message)
         elif not isinstance(message, status.NotAvailable):

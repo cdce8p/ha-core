@@ -2029,8 +2029,7 @@ def get_sensor_display_state(
     assert state
     value = state.state
 
-    entity_entry = entity_registry.async_get(entity_id)
-    if entity_entry is None:
+    if (entity_entry := entity_registry.async_get(entity_id)) is None:
         return value
 
     if (

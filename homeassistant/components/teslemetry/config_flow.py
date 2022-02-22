@@ -420,8 +420,7 @@ class VehicleSubentryFlowHandler(ConfigSubentryFlow):
 
     async def _async_disconnect(self) -> None:
         """Disconnect the BLE link, if any, and drop the reference to it."""
-        vehicle = self._vehicle
-        if vehicle is not None:
+        if (vehicle := self._vehicle) is not None:
             try:
                 await vehicle.disconnect()
             except (BleakError, TeslaFleetError, TimeoutError) as err:

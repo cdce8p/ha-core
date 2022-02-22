@@ -667,8 +667,7 @@ async def test_agent_upload(
     upload_progress_events: list[dict[str, Any]] = []
     while True:
         response = await ws_client.receive_json()
-        event = response.get("event")
-        if event is None:
+        if (event := response.get("event")) is None:
             continue
         if "uploaded_bytes" in event and event.get("agent_id") == "hassio.local":
             upload_progress_events.append(event)
