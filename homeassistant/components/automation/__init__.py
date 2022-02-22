@@ -1205,9 +1205,7 @@ def websocket_config(
     msg: dict[str, Any],
 ) -> None:
     """Get automation config."""
-    automation = hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])
-
-    if automation is None:
+    if (automation := hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )

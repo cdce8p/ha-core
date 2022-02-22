@@ -1193,9 +1193,7 @@ def websocket_list_engine_voices(
     engine_id = msg["engine_id"]
     language = msg["language"]
 
-    engine_instance = get_engine_instance(hass, engine_id)
-
-    if not engine_instance:
+    if not (engine_instance := get_engine_instance(hass, engine_id)):
         connection.send_error(
             msg["id"],
             websocket_api.ERR_NOT_FOUND,

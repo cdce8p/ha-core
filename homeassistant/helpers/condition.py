@@ -189,8 +189,7 @@ async def _async_get_condition_platform(
     hass: HomeAssistant, config: ConfigType
 ) -> ConditionProtocol | None:
     platform = config[CONF_CONDITION]
-    platform = _PLATFORM_ALIASES.get(platform, platform)
-    if platform is None:
+    if (platform := _PLATFORM_ALIASES.get(platform, platform)) is None:
         return None
     try:
         integration = await async_get_integration(hass, platform)

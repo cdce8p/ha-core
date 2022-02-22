@@ -113,8 +113,7 @@ async def _async_setup_local_entry(hass: HomeAssistant, entry: ConfigEntry) -> b
 
     async def _partition(partition_id: int, partition: Partition) -> None:
         _LOGGER.debug("Risco partition update for %d", partition_id)
-        callback = local_data.partition_updates.get(partition_id)
-        if callback:
+        if callback := local_data.partition_updates.get(partition_id):
             callback()
 
     entry.async_on_unload(risco.add_partition_handler(_partition))

@@ -140,8 +140,7 @@ class Analytics:
 
     async def load(self) -> None:
         """Load preferences."""
-        stored = await self._store.async_load()
-        if stored:
+        if stored := await self._store.async_load():
             self._data = AnalyticsData.from_dict(stored)
 
         if (

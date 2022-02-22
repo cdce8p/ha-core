@@ -84,8 +84,7 @@ class VelbusCover(VelbusEntity, CoverEntity):
         None is unknown, 0 is closed, 100 is fully open
         Velbus: 100 = closed, 0 = open
         """
-        pos = self._channel.get_position()
-        if pos is not None:
+        if (pos := self._channel.get_position()) is not None:
             return 100 - pos
         return None
 

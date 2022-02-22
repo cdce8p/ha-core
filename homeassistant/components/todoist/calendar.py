@@ -675,8 +675,7 @@ class TodoistProjectData:
         for task in project_task_data:
             if task.due is None:
                 continue
-            start = get_start(task.due)
-            if start is None:
+            if (start := get_start(task.due)) is None:
                 continue
             event = CalendarEvent(
                 summary=task.content,
@@ -747,8 +746,7 @@ class TodoistProjectData:
 def get_start(due: Due) -> datetime | date | None:
     """Return the task due date as a start date or date time."""
     if due.datetime:
-        start = dt_util.parse_datetime(due.datetime)
-        if not start:
+        if not (start := dt_util.parse_datetime(due.datetime)):
             return None
         return dt_util.as_local(start)
     if due.date:

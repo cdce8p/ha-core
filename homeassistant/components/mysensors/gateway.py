@@ -328,9 +328,7 @@ def _gw_callback_factory(
         _LOGGER.debug("Node update: node %s child %s", msg.node_id, msg.child_id)
 
         msg_type = msg.gateway.const.MessageType(msg.type)
-        msg_handler = HANDLERS.get(msg_type.name)
-
-        if msg_handler is None:
+        if (msg_handler := HANDLERS.get(msg_type.name)) is None:
             return
 
         msg_handler(hass, gateway_id, msg)

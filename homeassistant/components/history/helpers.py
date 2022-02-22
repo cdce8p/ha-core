@@ -15,8 +15,7 @@ def entities_may_have_state_changes_after(
 ) -> bool:
     """Check the state machine to see if entities have changed since start time."""
     for entity_id in entity_ids:
-        state = hass.states.get(entity_id)
-        if state is None:
+        if (state := hass.states.get(entity_id)) is None:
             return True
 
         state_time = state.last_changed if no_attributes else state.last_updated

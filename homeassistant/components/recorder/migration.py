@@ -224,8 +224,7 @@ def validate_db_schema(
     """
     schema_errors: set[str] = set()
 
-    current_version = get_schema_version(session_maker)
-    if current_version is None:
+    if (current_version := get_schema_version(session_maker)) is None:
         return None
 
     if is_current := _schema_is_current(current_version):

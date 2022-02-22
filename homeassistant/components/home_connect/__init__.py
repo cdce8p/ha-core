@@ -104,12 +104,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
         options = []
 
-        option_key = call.data.get(ATTR_KEY)
-        if option_key is not None:
+        if (option_key := call.data.get(ATTR_KEY)) is not None:
             option = {ATTR_KEY: option_key, ATTR_VALUE: call.data[ATTR_VALUE]}
 
-            option_unit = call.data.get(ATTR_UNIT)
-            if option_unit is not None:
+            if (option_unit := call.data.get(ATTR_UNIT)) is not None:
                 option[ATTR_UNIT] = option_unit
 
             options.append(option)
