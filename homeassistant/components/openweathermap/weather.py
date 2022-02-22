@@ -57,9 +57,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up OpenWeatherMap weather entity based on a config entry."""
     domain_data = config_entry.runtime_data
-    mode = domain_data.mode
 
-    if mode != OWM_MODE_AIRPOLLUTION:
+    if (mode := domain_data.mode) != OWM_MODE_AIRPOLLUTION:
         weather_coordinator = domain_data.coordinator
 
         unique_id = f"{config_entry.unique_id}"

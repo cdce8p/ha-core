@@ -112,8 +112,7 @@ class OmadaControllerUpdate(OmadaControllerEntity, UpdateEntity):
 
     def _update_attrs(self) -> None:
         """Update installed and latest controller versions."""
-        update = self._update_data
-        if update is None:
+        if (update := self._update_data) is None:
             self._attr_installed_version = self.coordinator.data.current_version
             self._attr_latest_version = self._attr_installed_version
             self._attr_supported_features = UpdateEntityFeature(0)

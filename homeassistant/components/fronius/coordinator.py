@@ -370,8 +370,7 @@ class FroniusModbusSettingsUpdateCoordinator(FroniusModbusCoordinatorBase):
         a fresh read, so a limit released on the device since the last poll
         is not taken back here.
         """
-        controls = self.modbus_inverter.controls
-        if controls is None:
+        if (controls := self.modbus_inverter.controls) is None:
             return
         try:
             async with self._device_lock:

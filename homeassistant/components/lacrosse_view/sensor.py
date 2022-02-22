@@ -168,8 +168,7 @@ async def async_setup_entry(
     sensor_list = []
     for i, sensor in enumerate(coordinator.data):
         for field in sensor.sensor_field_names:
-            description = SENSOR_DESCRIPTIONS.get(field)
-            if description is None:
+            if (description := SENSOR_DESCRIPTIONS.get(field)) is None:
                 message = (
                     f"Unsupported sensor field: {field}\nPlease create an issue on "
                     "GitHub."

@@ -101,8 +101,7 @@ class SAJConfigFlow(ConfigFlow, domain=DOMAIN):
             if not done:
                 raise CannotConnect("Failed to read sensor data")
 
-            serial_number = saj.serialnumber
-            if not serial_number:
+            if not (serial_number := saj.serialnumber):
                 raise CannotConnect("Device did not return a serial number")
             return serial_number
 

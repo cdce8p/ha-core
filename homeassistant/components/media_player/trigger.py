@@ -97,8 +97,7 @@ class VolumeTriggerMixin(EntityNumericalStateTriggerBase):
     @override
     def _get_tracked_value(self, state: State) -> float | None:
         """Get tracked volume as a percentage."""
-        value = super()._get_tracked_value(state)
-        if value is None:
+        if (value := super()._get_tracked_value(state)) is None:
             return None
         # Convert 0.0-1.0 range to percentage (0-100)
         return value * 100.0

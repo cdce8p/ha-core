@@ -279,8 +279,7 @@ class AirzoneDeviceClimate(AirzoneClimate):
 
         self._speeds = {}
         for key, value in fan_speeds.items():
-            _key = azd_speeds.get(key)
-            if _key is not None:
+            if (_key := azd_speeds.get(key)) is not None:
                 self._speeds[_key] = value
 
         self._speeds_reverse = {v: k for k, v in self._speeds.items()}
@@ -321,8 +320,7 @@ class AirzoneDeviceClimate(AirzoneClimate):
     @override
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        hvac_mode = kwargs.get(ATTR_HVAC_MODE)
-        if hvac_mode is not None:
+        if (hvac_mode := kwargs.get(ATTR_HVAC_MODE)) is not None:
             await self.async_set_hvac_mode(hvac_mode)
 
         params: dict[str, Any] = {}
@@ -381,8 +379,7 @@ class AirzoneDeviceGroupClimate(AirzoneClimate):
     @override
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        hvac_mode = kwargs.get(ATTR_HVAC_MODE)
-        if hvac_mode is not None:
+        if (hvac_mode := kwargs.get(ATTR_HVAC_MODE)) is not None:
             await self.async_set_hvac_mode(hvac_mode)
 
         params: dict[str, Any] = {}

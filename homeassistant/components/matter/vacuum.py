@@ -95,8 +95,7 @@ class MatterVacuum(MatterEntity, StateVacuumEntity):
         # We simply set the RvcRunMode to the first runmode
         # that has the idle tag to stop the vacuum cleaner.
         # this is compatible with both Matter 1.2 and 1.3+ devices.
-        mode = self._get_run_mode_by_tag(ModeTag.IDLE)
-        if mode is None:
+        if (mode := self._get_run_mode_by_tag(ModeTag.IDLE)) is None:
             raise HomeAssistantError(
                 "No supported run mode found to stop the vacuum cleaner."
             )

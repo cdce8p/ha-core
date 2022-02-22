@@ -201,8 +201,7 @@ async def async_setup_entry(
     coordinator = entry.runtime_data
     # uuid was added in emoncms database 11.5.7
     unique_id = entry.unique_id or entry.entry_id
-    elems = coordinator.data
-    if not elems:
+    if not (elems := coordinator.data):
         return
     sensors: list[EmonCmsSensor] = []
 
@@ -277,7 +276,6 @@ class EmonCmsSensor(CoordinatorEntity[EmoncmsCoordinator], SensorEntity):
     @override
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        data = self.coordinator.data
-        if data:
+        if data := self.coordinator.data:
             self._update_attributes(data[self.idx])
         super()._handle_coordinator_update()

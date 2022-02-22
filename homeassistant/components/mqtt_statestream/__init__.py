@@ -93,8 +93,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         @callback
         def _event_filter(event_data: EventStateChangedData) -> bool:
             entity_id = event_data["entity_id"]
-            new_state = event_data["new_state"]
-            if new_state is None:
+            if event_data["new_state"] is None:
                 return False
             if not publish_filter(entity_id):
                 return False

@@ -292,8 +292,7 @@ class WaterFurnaceEnergyCoordinator(DataUpdateCoordinator[None]):
             all_readings.extend(parsed)
             consecutive_empty_days = 0
 
-            batch_end = batch_start
-            if batch_end > start_dt:
+            if (batch_end := batch_start) > start_dt:
                 await asyncio.sleep(
                     random.uniform(
                         BACKFILL_DELAY_MIN_SECONDS, BACKFILL_DELAY_MAX_SECONDS

@@ -795,8 +795,7 @@ class WyomingAssistSatellite(WyomingSatelliteEntity, AssistSatelliteEntity):
 
     async def _stream_tts(self, tts_result: tts.ResultStream) -> None:
         """Stream TTS WAV audio to satellite in chunks."""
-        client = self._client
-        if client is None:
+        if (client := self._client) is None:
             # Satellite disconnected, cannot stream
             return
 

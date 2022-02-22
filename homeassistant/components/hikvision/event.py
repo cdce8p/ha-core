@@ -72,14 +72,12 @@ async def async_setup_entry(
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up Hikvision events from a config entry."""
-    sensors = entry.runtime_data.camera.current_event_states
-    if not sensors:
+    if not (sensors := entry.runtime_data.camera.current_event_states):
         return
 
     entities: list[HikvisionEvent] = []
     for sensor_type, channel_list in sensors.items():
-        description = EVENT_DESCRIPTIONS.get(sensor_type)
-        if description is None:
+        if (description := EVENT_DESCRIPTIONS.get(sensor_type)) is None:
             continue
         # pyhik can report the same channel more than once for a sensor type
         # (e.g. when a channel has several notification methods enabled), so

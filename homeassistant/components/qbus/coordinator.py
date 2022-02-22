@@ -77,9 +77,8 @@ class QbusControllerCoordinator(DataUpdateCoordinator[QbusMqttDevice | None]):
         """Update the controller based on the config."""
         _LOGGER.debug("%s - Updating config", self.config_entry.unique_id)
         serial = self.config_entry.data.get(CONF_SERIAL_NUMBER, "")
-        controller = config.get_device_by_serial(serial)
 
-        if controller is None:
+        if (controller := config.get_device_by_serial(serial)) is None:
             _LOGGER.warning(
                 "%s - Controller with serial %s not found",
                 self.config_entry.unique_id,

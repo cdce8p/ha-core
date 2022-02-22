@@ -141,9 +141,7 @@ async def websocket_entity_info(
     hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
 ) -> None:
     """Get info about wake word entity."""
-    entity = hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])
-
-    if entity is None:
+    if (entity := hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )

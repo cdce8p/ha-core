@@ -187,9 +187,8 @@ class TVTrainConfigFlow(ConfigFlow, domain=DOMAIN):
             self._to_stations, to_errors = await validate_station(
                 self.hass, api_key, train_to, CONF_TO
             )
-            errors = {**from_errors, **to_errors}
 
-            if not errors:
+            if not (errors := {**from_errors, **to_errors}):
                 if len(self._from_stations) == 1 and len(self._to_stations) == 1:
                     self._async_abort_entries_match(
                         {

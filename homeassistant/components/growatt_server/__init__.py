@@ -428,8 +428,7 @@ async def async_setup_entry(
             _LOGGER.debug("Coordinator refresh failed during device scan, skipping")
             return
 
-        current_devices = total_coordinator.device_list
-        if current_devices is None:
+        if (current_devices := total_coordinator.device_list) is None:
             _LOGGER.debug(
                 "Device list not populated after coordinator refresh, skipping scan"
             )

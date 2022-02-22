@@ -439,8 +439,7 @@ class ValveBase(HomeAccessory):
             )
             return self.get_duration() if self.char_in_use.value else 0
 
-        end_time = dt_util.parse_datetime(end_time_state)
-        if end_time is None:
+        if (end_time := dt_util.parse_datetime(end_time_state)) is None:
             _LOGGER.debug("%s: Cannot parse linked end time entity", self.entity_id)
             return self.get_duration() if self.char_in_use.value else 0
 
@@ -451,8 +450,7 @@ class ValveBase(HomeAccessory):
         """Fetch the state of a linked entity."""
         if entity_id is None:
             return None
-        state = self.hass.states.get(entity_id)
-        if state is None:
+        if (state := self.hass.states.get(entity_id)) is None:
             return None
         return state.state
 
