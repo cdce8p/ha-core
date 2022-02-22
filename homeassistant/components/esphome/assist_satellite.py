@@ -229,8 +229,7 @@ class EsphomeAssistSatellite(
 
     async def _update_satellite_config(self) -> None:
         """Get the latest satellite configuration from the device."""
-        wake_words = await async_get_custom_wake_words(self.hass)
-        if wake_words:
+        if wake_words := await async_get_custom_wake_words(self.hass):
             _LOGGER.debug("Found custom wake words: %s", sorted(wake_words.keys()))
 
         try:
@@ -781,8 +780,7 @@ class EsphomeAssistSatellite(
     async def _wrap_audio_stream(self) -> AsyncIterable[bytes]:
         """Yield audio chunks from the queue until None."""
         while True:
-            chunk = await self._audio_queue.get()
-            if not chunk:
+            if not (chunk := await self._audio_queue.get()):
                 break
 
             yield chunk

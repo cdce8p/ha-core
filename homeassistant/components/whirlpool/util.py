@@ -41,8 +41,7 @@ def deprecate_entity(
         async_delete_issue(hass, DOMAIN, issue_id)
         return False
 
-    entity_entry = entity_registry.async_get(entity_id)
-    if entity_entry is None:
+    if (entity_entry := entity_registry.async_get(entity_id)) is None:
         async_delete_issue(hass, DOMAIN, issue_id)
         return False
 

@@ -362,8 +362,7 @@ def _post(
 
     media_data: MediaAttachment | None = None
 
-    media_path = kwargs.get("media_path")
-    if media_path:
+    if media_path := kwargs.get("media_path"):
         if not hass.config.is_allowed_path(media_path):
             raise HomeAssistantError(
                 translation_domain=DOMAIN,

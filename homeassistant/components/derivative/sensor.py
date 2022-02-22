@@ -349,8 +349,7 @@ class DerivativeSensor(RestoreSensor, SensorEntity):
         self.async_write_ha_state()
 
     async def _handle_restore(self) -> None:
-        restored_data = await self.async_get_last_sensor_data()
-        if restored_data:
+        if restored_data := await self.async_get_last_sensor_data():
             if self._attr_native_unit_of_measurement is None:
                 # Only restore the unit if it's not assigned from YAML
                 self._attr_native_unit_of_measurement = (
@@ -364,8 +363,7 @@ class DerivativeSensor(RestoreSensor, SensorEntity):
             except InvalidOperation, TypeError:
                 self._attr_native_value = None
 
-        last_state = await self.async_get_last_state()
-        if last_state:
+        if last_state := await self.async_get_last_state():
             self._attr_device_class = last_state.attributes.get(
                 EntityStateAttribute.DEVICE_CLASS
             )
@@ -470,8 +468,7 @@ class DerivativeSensor(RestoreSensor, SensorEntity):
                 return
 
             schedule_max_sub_interval_exceeded(new_state)
-            old_state = event.data["old_state"]
-            if old_state is not None:
+            if (old_state := event.data["old_state"]) is not None:
                 calc_derivative(
                     new_state,
                     old_state.state,

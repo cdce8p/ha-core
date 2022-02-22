@@ -156,8 +156,7 @@ class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         Further derived keys will be added by follow-up platform PRs that
         consume them.
         """
-        enabled = self._get_enabled_timers(data)
-        if not enabled:
+        if not (enabled := self._get_enabled_timers(data)):
             return
         timers = await self.client.read_all_timers(enabled_timers=enabled)
         for t_name, t in timers.items():

@@ -75,8 +75,7 @@ async def async_setup_entry(
             if node.general.node_type not in VENTILATION_CAPABLE_NODE_TYPES:
                 continue
 
-            options = options_by_node.get(node.node_id)
-            if options is None:
+            if (options := options_by_node.get(node.node_id)) is None:
                 continue
 
             known_nodes.add(node.node_id)

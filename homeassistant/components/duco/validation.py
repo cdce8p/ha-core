@@ -23,8 +23,7 @@ class UnsupportedBoardError(Exception):
 
 def validate_board_support(board_info: BoardInfo) -> None:
     """Raise UnsupportedBoardError if the board does not meet support requirements."""
-    version = board_info.public_api_version
-    if version is None:
+    if (version := board_info.public_api_version) is None:
         raise UnsupportedBoardError("Board did not report a public API version")
     try:
         parsed_version = AwesomeVersion(

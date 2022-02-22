@@ -42,8 +42,7 @@ class YoLinkEntity(CoordinatorEntity[YoLinkCoordinator]):
     @override
     def _handle_coordinator_update(self) -> None:
         """Update state."""
-        data = self.coordinator.data
-        if data is not None and len(data) > 0:
+        if (data := self.coordinator.data) is not None and len(data) > 0:
             self.update_entity_state(data)
 
     @property

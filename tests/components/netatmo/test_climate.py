@@ -1111,8 +1111,7 @@ async def test_thermostat_update_with_none_therm_setpoint_mode(
 
     def set_none_therm_setpoint_mode(payload: dict[str, Any]) -> None:
         """Set the thermostat setpoint mode to None in the backend response."""
-        home = payload.get("body", {}).get("home")
-        if home is None:
+        if (home := payload.get("body", {}).get("home")) is None:
             return
 
         for room in home.get("rooms", []):

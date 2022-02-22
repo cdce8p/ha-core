@@ -357,8 +357,7 @@ class HTTPConfigStore:
                 # Another coroutine may have loaded the config while we were waiting
                 # for the lock; check again to avoid unnecessary disk I/O.
                 return  # type: ignore[unreachable]
-            raw = await self._store.async_load()
-            if raw is not None:
+            if (raw := await self._store.async_load()) is not None:
                 self._stable = raw[KEY_STABLE]
                 self._pending = raw[KEY_PENDING]
                 self._yaml_migration_done = raw[KEY_YAML_MIGRATION_DONE]

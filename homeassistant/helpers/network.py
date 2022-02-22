@@ -232,8 +232,7 @@ def _get_request_host_port() -> tuple[str | None, int | None]:
     """Get the host address and resolved port of the current request."""
     if (request := http.current_request.get()) is None:
         raise NoURLAvailableError
-    host = request.headers.get(hdrs.HOST)
-    if host is None:
+    if (host := request.header.get(hdrs.HOST)) is None:
         return None, None
 
     # IPv6 addresses are enclosed in brackets

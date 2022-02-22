@@ -458,8 +458,7 @@ class _KnxClimate(ClimateEntity, _KnxEntityBase):
     @override
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        temperature = kwargs.get(ATTR_TEMPERATURE)
-        if temperature is not None:
+        if (temperature := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self._device.set_target_temperature(temperature)
             self.async_write_ha_state()
 

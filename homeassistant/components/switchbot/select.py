@@ -109,8 +109,7 @@ class SwitchBotStandingFanNightLightSelect(SwitchbotEntity, SelectEntity):
     @override
     def current_option(self) -> str | None:
         """Return current night light state."""
-        state = self._device.get_night_light_state()
-        if state is None:
+        if (state := self._device.get_night_light_state()) is None:
             return None
         return NIGHT_LIGHT_FROM_STATE.get(state)
 

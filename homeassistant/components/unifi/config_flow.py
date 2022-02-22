@@ -216,8 +216,7 @@ class UnifiFlowHandler(ConfigFlow, domain=DOMAIN):
         self, discovery_info: DiscoveryInfoType
     ) -> ConfigFlowResult:
         """Handle discovery via unifi_discovery."""
-        source_ip = discovery_info["source_ip"]
-        if not source_ip:
+        if not (source_ip := discovery_info["source_ip"]):
             return self.async_abort(reason="cannot_connect")
         mac_address = format_mac(discovery_info["hw_addr"])
         direct_connect_domain = discovery_info.get("direct_connect_domain")

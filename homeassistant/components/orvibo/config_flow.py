@@ -47,8 +47,7 @@ class S20ConfigFlow(ConfigFlow, domain=DOMAIN):
             # Build a new filtered dict
             filtered = {}
             for ip, info in switches.items():
-                mac_bytes = info.get("mac")
-                if not mac_bytes:
+                if not (mac_bytes := info.get("mac")):
                     continue  # skip if no MAC
 
                 unique_id = format_mac(mac_bytes.hex()).lower()

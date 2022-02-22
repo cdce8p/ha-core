@@ -44,8 +44,7 @@ class VistapoolNumberEntityDescription(NumberEntityDescription):
 
 def _max_electrolysis(coordinator: VistapoolDataUpdateCoordinator) -> float:
     """Read the cell's hardware max, falling back to a safe default."""
-    raw = coordinator.get_value("hidro.maxAllowedValue")
-    if raw is None:
+    if (raw := coordinator.get_value("hidro.maxAllowedValue")) is None:
         return 50.0
     try:
         return float(raw) / 10

@@ -80,8 +80,7 @@ class X10Light(LightEntity):
     @override
     def turn_on(self, **kwargs: Any) -> None:
         """Instruct the light to turn on."""
-        old_brightness = self._attr_brightness
-        if old_brightness == 0:
+        if (old_brightness := self._attr_brightness) == 0:
             # Dim down from max if applicable, also avoids
             # a "dim" command if an "on" is more appropriate
             old_brightness = 255

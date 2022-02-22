@@ -46,8 +46,7 @@ async def async_setup_entry(
         if model not in SUPPORTED_MODELS | SUPPORTED_SUB_MODELS:
             continue
 
-        device_id = device.get("_id")
-        if not device_id:
+        if not device.get("_id"):
             _LOGGER.warning("Skipping device without _id: %s", device.get("name"))
             continue
 
@@ -206,8 +205,7 @@ class MyNeoClimate(ClimateEntity):
     @override
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set the target temperature for the climate entity."""
-        temperature = kwargs.get(ATTR_TEMPERATURE)
-        if temperature is None:
+        if (temperature := kwargs.get(ATTR_TEMPERATURE)) is None:
             return
 
         if self._attr_preset_mode != "setpoint":
@@ -310,8 +308,7 @@ class MyNeoClimate(ClimateEntity):
     async def _set_device_mode(self, mode: str) -> bool:
         """Set the device mode via API."""
         try:
-            mode_value = PRESET_MODE_MAP.get(mode)
-            if mode_value is None:
+            if (mode_value := PRESET_MODE_MAP.get(mode)) is None:
                 _LOGGER.error(
                     "Attempt to set unknown mode %s for %s", mode, self.entity_id
                 )

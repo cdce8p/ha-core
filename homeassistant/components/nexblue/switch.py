@@ -87,8 +87,7 @@ class NexBlueChargingSwitch(
     @override
     def is_on(self) -> bool:
         """Return whether the charger is actively charging."""
-        assumed_is_on = self._assumed_is_on
-        if assumed_is_on is not None:
+        if (assumed_is_on := self._assumed_is_on) is not None:
             return assumed_is_on
 
         status = self.coordinator.data.get(self._serial_number)

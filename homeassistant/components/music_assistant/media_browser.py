@@ -682,8 +682,7 @@ async def async_search_media(
         search_results: SearchResults | None = None
 
         # Determine which media types to search
-        media_types = _get_media_types_from_query(query)
-        if not media_types:
+        if not (media_types := _get_media_types_from_query(query)):
             # the query ruled out everything we could have looked for
             return SearchMedia(result=[])
 

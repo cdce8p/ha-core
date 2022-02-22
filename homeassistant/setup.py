@@ -202,8 +202,7 @@ async def _async_process_dependencies(
     dependencies_tasks: dict[str, asyncio.Future[bool]] = {}
 
     for dep in integration.dependencies:
-        fut = setup_futures.get(dep)
-        if fut is None:
+        if (fut := setup_futures.get(dep)) is None:
             if dep in hass.config.components:
                 continue
             fut = create_eager_task(
@@ -221,8 +220,7 @@ async def _async_process_dependencies(
     for dep in integration.after_dependencies:
         if dep not in to_be_loaded or dep in dependencies_tasks:
             continue
-        fut = setup_futures.get(dep)
-        if fut is None:
+        if (fut := setup_futures.get(dep)) is None:
             if dep in hass.config.components:
                 continue
             fut = create_eager_task(

@@ -179,8 +179,7 @@ class LiebherrSelectEntity(LiebherrEntity, SelectEntity):
         self._attr_unique_id = f"{coordinator.device_id}_{description.key}_{zone_id}"
 
         # Set options from the control
-        control = self._select_control
-        if control is not None:
+        if (control := self._select_control) is not None:
             self._attr_options = description.options_fn(control)
 
         # Add zone suffix only for multi-zone devices

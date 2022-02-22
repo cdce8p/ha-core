@@ -243,8 +243,7 @@ def websocket_update_config_update(
     msg: dict[str, Any],
 ) -> None:
     """Update the stored backup config."""
-    entry = async_get_hassio_entry(hass)
-    if entry is None:
+    if (entry := async_get_hassio_entry(hass)) is None:
         connection.send_error(
             msg["id"],
             code=websocket_api.ERR_UNKNOWN_ERROR,

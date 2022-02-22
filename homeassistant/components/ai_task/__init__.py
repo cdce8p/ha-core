@@ -173,8 +173,7 @@ class AITaskPreferences:
 
     async def async_load(self) -> None:
         """Load the data from the store."""
-        data = await self._store.async_load()
-        if data is None:
+        if (data := await self._store.async_load()) is None:
             return
         for key in self.KEYS:
             setattr(self, key, data.get(key))

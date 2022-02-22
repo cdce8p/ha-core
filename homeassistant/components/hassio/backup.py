@@ -691,8 +691,7 @@ class SupervisorBackupReaderWriter(BackupReaderWriter):
                     )
                 return
 
-            restore_errors = data.get("errors", [])
-            if restore_errors:
+            if restore_errors := data.get("errors", []):
                 _LOGGER.warning("Restore backup failed: %s", restore_errors)
                 # We should add more specific error handling here in the future
                 on_progress(

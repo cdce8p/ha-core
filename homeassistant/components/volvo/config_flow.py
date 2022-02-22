@@ -242,7 +242,5 @@ class VolvoOAuth2FlowHandler(AbstractOAuth2FlowHandler, domain=DOMAIN):
         vins = await api.async_get_vehicles()
 
         for vin in vins:
-            vehicle = await api.async_get_vehicle_details(vin)
-
-            if vehicle:
+            if vehicle := await api.async_get_vehicle_details(vin):
                 self._vehicles.append(vehicle)

@@ -52,8 +52,7 @@ class WyomingSatelliteAutoGainNumber(WyomingSatelliteEntity, RestoreNumber):
         """When entity is added to Home Assistant."""
         await super().async_added_to_hass()
 
-        state = await self.async_get_last_state()
-        if state is not None:
+        if (state := await self.async_get_last_state()) is not None:
             await self.async_set_native_value(float(state.state))
 
     @override

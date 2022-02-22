@@ -179,8 +179,7 @@ def get_vehicle_proxy(service_call: ServiceCall) -> RenaultVehicleProxy:
     """Get vehicle from service_call data."""
     device_registry = dr.async_get(service_call.hass)
     device_id = service_call.data[RenaultServiceArgument.VEHICLE]
-    device_entry = device_registry.async_get(device_id)
-    if device_entry is None:
+    if (device_entry := device_registry.async_get(device_id)) is None:
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="invalid_device_id",

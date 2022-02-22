@@ -311,7 +311,7 @@ def async_get_node_from_device_id(
     client = entry.runtime_data.client
     driver = client.driver
 
-    if driver is None:
+    if (driver := client.driver) is None:
         raise ValueError("Driver is not ready.")
 
     # Get node ID from device identifier, perform some validation, and then get the
@@ -369,10 +369,7 @@ async def async_get_provisioning_entry_from_device_id(
     if entry.state is not ConfigEntryState.LOADED:
         raise ValueError(f"Device {device_id} config entry is not loaded")
 
-    client = entry.runtime_data.client
-    driver = client.driver
-
-    if driver is None:
+    if (driver := entry.runtime_data.client.driver) is None:
         raise ValueError("Driver is not ready.")
 
     provisioning_entries = await driver.controller.async_get_provisioning_entries()

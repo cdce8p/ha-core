@@ -536,8 +536,7 @@ def db_event_to_native(event: Events, validate_entity_id: bool = True) -> Event 
 
 def db_event_data_to_native(event_data: EventData) -> dict[str, Any]:
     """Convert to an event data dictionary."""
-    shared_data = event_data.shared_data
-    if shared_data is None:
+    if (shared_data := event_data.shared_data) is None:
         return {}
     return cast(dict[str, Any], json_loads(shared_data))
 
@@ -578,8 +577,7 @@ def db_state_to_native(state: States, validate_entity_id: bool = True) -> State 
 
 def db_state_attributes_to_native(state_attrs: StateAttributes) -> dict[str, Any]:
     """Convert to a state attributes dictionary."""
-    shared_attrs = state_attrs.shared_attrs
-    if shared_attrs is None:
+    if (shared_attrs := state_attrs.shared_attrs) is None:
         return {}
     return cast(dict[str, Any], json_loads(shared_attrs))
 

@@ -225,8 +225,7 @@ class MatterAlarmEnabledSwitch(MatterSwitch):
         """Set the enabled state for an alarm mode."""
         state = ALARM_ENABLED_STATES.setdefault(self._endpoint, _AlarmEnabledState())
         async with state.lock:
-            alarms_enabled = state.pending_alarms_enabled
-            if alarms_enabled is None:
+            if (alarms_enabled := state.pending_alarms_enabled) is None:
                 alarms_enabled = (
                     self.get_matter_attribute_value(
                         clusters.BooleanStateConfiguration.Attributes.AlarmsEnabled

@@ -1071,8 +1071,7 @@ class HomeKit:
         dev_reg = dr.async_get(self.hass)
         valid_device_ids = []
         for device_id in self._devices:
-            device = dev_reg.async_get(device_id)
-            if device is None:
+            if (device := dev_reg.async_get(device_id)) is None:
                 _LOGGER.warning(
                     (
                         "HomeKit %s cannot add device %s because it is missing from the"

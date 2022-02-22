@@ -718,16 +718,14 @@ def _get_homeassistant_url(hass: HomeAssistant) -> URL | None:
 
 async def get_coiot_address(hass: HomeAssistant) -> str | None:
     """Return the CoIoT ip address."""
-    url = _get_homeassistant_url(hass)
-    if url is None or url.host is None:
+    if (url := _get_homeassistant_url(hass)) is None or url.host is None:
         return None
     return await async_get_source_ip(hass, url.host)
 
 
 def get_rpc_ws_url(hass: HomeAssistant) -> str | None:
     """Return the RPC websocket URL."""
-    url = _get_homeassistant_url(hass)
-    if url is None:
+    if (url := _get_homeassistant_url(hass)) is None:
         return None
     ws_url = url.with_scheme("wss" if url.scheme == "https" else "ws")
     return str(ws_url.joinpath(API_WS_URL.removeprefix("/")))
@@ -1040,8 +1038,7 @@ async def check_coiot_config(device: BlockDevice, hass: HomeAssistant) -> bool:
     if not coiot_config.get("enabled"):
         return False
 
-    coiot_address = await get_coiot_address(hass)
-    if coiot_address is None:
+    if (coiot_address := await get_coiot_address(hass)) is None:
         LOGGER.debug(
             "Skipping CoIoT peer check for device %s as no local address is available",
             device.name,

@@ -595,8 +595,7 @@ def _get_cached_action_parameters(
         fields = action_desc.get("fields", {})
 
         for field, config in fields.items():
-            field_description = config.get("description")
-            if not field_description:
+            if not (field_description := config.get("description")):
                 field_description = config.get("name")
             key: vol.Marker
             if config.get("required"):

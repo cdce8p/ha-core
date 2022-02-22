@@ -850,8 +850,7 @@ class SpeechManager:
         token: str,
     ) -> ResultStream | None:
         """Return a result stream given a token."""
-        stream = self.token_to_stream.get(token, None)
-        if stream:
+        if stream := self.token_to_stream.get(token, None):
             stream.last_used = monotonic()
         return stream
 
@@ -1338,18 +1337,14 @@ class TextToSpeechView(HomeAssistantView):
 
         Check whether the token (file) exists and return its content type.
         """
-        stream = self.manager.token_to_stream.get(token)
-
-        if stream is None:
+        if (stream := self.manager.token_to_stream.get(token)) is None:
             return web.Response(status=HTTPStatus.NOT_FOUND)
 
         return web.Response(content_type=stream.content_type)
 
     async def get(self, request: web.Request, token: str) -> web.StreamResponse:
         """Start a get request."""
-        stream = self.manager.token_to_stream.get(token)
-
-        if stream is None:
+        if (stream := self.manager.token_to_stream.get(token)) is None:
             return web.Response(status=HTTPStatus.NOT_FOUND)
 
         response: web.StreamResponse | None = None
@@ -1484,9 +1479,7 @@ def websocket_list_engine_voices(
     engine_id = msg["engine_id"]
     language = msg["language"]
 
-    engine_instance = get_engine_instance(hass, engine_id)
-
-    if not engine_instance:
+    if not (engine_instance := get_engine_instance(hass, engine_id)):
         connection.send_error(
             msg["id"],
             websocket_api.ERR_NOT_FOUND,

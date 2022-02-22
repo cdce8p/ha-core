@@ -206,10 +206,8 @@ def _humanize(err: Exception, data: Any) -> str:
 
 async def _process_config(hass: HomeAssistant, hass_config: ConfigType) -> None:
     """Process config."""
-    coordinators = hass.data.pop(DATA_COORDINATORS, None)
-
     # Remove old ones
-    if coordinators:
+    if coordinators := hass.data.pop(DATA_COORDINATORS, None):
         for coordinator in coordinators:
             await coordinator.async_shutdown()
 

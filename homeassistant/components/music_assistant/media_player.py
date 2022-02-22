@@ -440,8 +440,7 @@ class MusicAssistantPlayer(MusicAssistantEntity, MediaPlayerEntity):
     @override
     async def async_select_source(self, source: str) -> None:
         """Select input source."""
-        source_id = self._source_list_mapping.get(source)
-        if source_id is None:
+        if (source_id := self._source_list_mapping.get(source)) is None:
             raise ServiceValidationError(
                 f"Source '{source}' not found for player {self.name}"
             )

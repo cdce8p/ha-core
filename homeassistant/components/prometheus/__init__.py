@@ -401,9 +401,7 @@ class PrometheusMetrics:
     ) -> None:
         """Listen for changes to areas."""
 
-        area_id = event.data.get("area_id")
-
-        if area_id is None:
+        if (area_id := event.data.get("area_id")) is None:
             return
 
         action = event.data["action"]
@@ -443,9 +441,7 @@ class PrometheusMetrics:
     ) -> None:
         """Listen for changes to floors."""
 
-        floor_id = event.data.get("floor_id")
-
-        if floor_id is None:
+        if (floor_id := event.data.get("floor_id")) is None:
             return
 
         action = event.data["action"]
@@ -671,8 +667,7 @@ class PrometheusMetrics:
         metric_description: str,
         true_values: set[Any] | None = None,
     ) -> None:
-        value = state.attributes.get(attr)
-        if value is None:
+        if (value := state.attributes.get(attr)) is None:
             return
 
         result = bool(value) if true_values is None else value in true_values
@@ -690,8 +685,7 @@ class PrometheusMetrics:
         metric_name: str,
         metric_description: str,
     ) -> None:
-        value = state.attributes.get(attr)
-        if value is None:
+        if (value := state.attributes.get(attr)) is None:
             return
 
         self._metric(

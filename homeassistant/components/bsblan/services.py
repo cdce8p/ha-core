@@ -86,11 +86,8 @@ def _convert_time_slots_to_day_schedule(
 
     time_slots = []
     for slot in slots:
-        start_time = slot["start_time"]
-        end_time = slot["end_time"]
-
         # Validate that end time is after start time
-        if end_time <= start_time:
+        if (end_time := slot["end_time"]) <= (start_time := slot["start_time"]):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="end_time_before_start_time",

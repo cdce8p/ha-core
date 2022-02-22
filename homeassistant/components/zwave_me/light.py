@@ -72,8 +72,7 @@ class ZWaveMeRGB(ZWaveMeEntity, LightEntity):
     def turn_off(self, **kwargs: Any) -> None:
         """Turn the device off."""
         command = "off"
-        transition = kwargs.get(ATTR_TRANSITION)
-        if transition is not None:
+        if (transition := kwargs.get(ATTR_TRANSITION)) is not None:
             command = f"exactSmooth?level=0&duration={self._transition_to_duration(transition)}"
         self.controller.zwave_api.send_command(self.device.id, command)
 

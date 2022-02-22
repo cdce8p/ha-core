@@ -188,8 +188,7 @@ class RoborockVacuum(RoborockCoordinatedEntityV1, StateVacuumEntity):
         # Avoid creating false-alarm issues if home map info is not yet loaded
         if self._home_trait.home_map_info is None:
             return
-        last_seen = self.last_seen_segments
-        if last_seen is None:
+        if (last_seen := self.last_seen_segments) is None:
             # No area mapping has been configured yet; nothing to check.
             return
         current_ids = {
@@ -296,8 +295,7 @@ class RoborockVacuum(RoborockCoordinatedEntityV1, StateVacuumEntity):
     @override
     async def async_get_segments(self) -> list[Segment]:
         """Get the segments that can be cleaned."""
-        home_map_info = self._home_trait.home_map_info
-        if not home_map_info:
+        if not (home_map_info := self._home_trait.home_map_info):
             return []
         return [
             Segment(

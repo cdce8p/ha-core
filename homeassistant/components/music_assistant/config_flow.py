@@ -120,8 +120,7 @@ class MusicAssistantConfigFlow(ConfigFlow, domain=DOMAIN):
                     data={CONF_URL: self.url},
                 )
 
-        suggested_values = user_input
-        if suggested_values is None:
+        if (suggested_values := user_input) is None:
             suggested_values = {CONF_URL: DEFAULT_URL}
 
         return self.async_show_form(

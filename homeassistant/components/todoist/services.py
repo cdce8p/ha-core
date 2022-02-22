@@ -147,8 +147,7 @@ async def handle_new_task(call: ServiceCall) -> None:
     if DUE_DATE in call.data:
         due_date = dt_util.parse_datetime(call.data[DUE_DATE])
         if due_date is None:
-            due = dt_util.parse_date(call.data[DUE_DATE])
-            if due is None:
+            if (due := dt_util.parse_date(call.data[DUE_DATE])) is None:
                 raise ValueError(f"Invalid due_date: {call.data[DUE_DATE]}")
             due_date = datetime(due.year, due.month, due.day)
         # Pass the datetime object directly - the library handles formatting

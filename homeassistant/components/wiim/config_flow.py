@@ -119,8 +119,7 @@ class WiimConfigFlow(ConfigFlow, domain=DOMAIN):
         )
 
         host = discovery_info.host
-        udn_from_txt = discovery_info.properties.get("uuid")
-        if udn_from_txt:
+        if udn_from_txt := discovery_info.properties.get("uuid"):
             await self.async_set_unique_id(udn_from_txt)
             self._abort_if_unique_id_configured(updates={CONF_HOST: host})
 

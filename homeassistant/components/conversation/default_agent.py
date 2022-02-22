@@ -1577,8 +1577,7 @@ class DefaultAgent(ConversationEntity):
         response_text = ""
         response_set_by_trigger = False
         for trigger_future in asyncio.as_completed(trigger_callbacks):
-            trigger_response = await trigger_future
-            if trigger_response is None:
+            if (trigger_response := await trigger_future) is None:
                 continue
 
             response_text = trigger_response

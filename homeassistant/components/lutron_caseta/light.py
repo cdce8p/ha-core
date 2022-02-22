@@ -141,12 +141,10 @@ class LutronCasetaLight(LutronCasetaUpdatableEntity, LightEntity):
 
     def _sync_prev_brightness_from_device(self) -> None:
         """Keep previous brightness in sync with device state."""
-        current_level = self._device.get("current_state")
-        if current_level is None:
+        if (current_level := self._device.get("current_state")) is None:
             return
 
-        hass_brightness = to_hass_level(current_level)
-        if hass_brightness > 0:
+        if (hass_brightness := to_hass_level(current_level)) > 0:
             # Any non-zero brightness (HA or physical) becomes the new last level
             self._prev_brightness = hass_brightness
 
@@ -214,10 +212,9 @@ class LutronCasetaLight(LutronCasetaUpdatableEntity, LightEntity):
 
         brightness: int | None
         if ATTR_BRIGHTNESS in kwargs:
-            brightness = kwargs.pop(ATTR_BRIGHTNESS)
             # Only remember non-zero levels, so a later turn-on without an
             # explicit brightness never restores the light to "off"
-            if brightness:
+            if brightness := kwargs.pop(ATTR_BRIGHTNESS):
                 self._prev_brightness = brightness
         elif color is not None:
             # Color-only change: pass None so the device keeps its brightness

@@ -136,8 +136,7 @@ def _read_file_contents(
     results = []
     for full_path, relative_path in files:
         path = Path(full_path)
-        file_size = path.stat().st_size
-        if file_size > CONTENT_SIZE_LIMIT:
+        if (file_size := path.stat().st_size) > CONTENT_SIZE_LIMIT:
             raise HomeAssistantError(
                 translation_domain=DOMAIN,
                 translation_key="file_too_large",

@@ -40,8 +40,7 @@ async def async_change_channel(
 
     Does nothing if not configured.
     """
-    zha_url = _get_zha_url(hass)
-    if not zha_url:
+    if not _get_zha_url(hass):
         # ZHA is not configured
         return None
 
@@ -58,8 +57,7 @@ async def async_get_channel(hass: HomeAssistant) -> int | None:
 
     Returns None if not configured.
     """
-    zha_url = _get_zha_url(hass)
-    if not zha_url:
+    if not _get_zha_url(hass):
         # ZHA is not configured
         return None
 
@@ -71,8 +69,7 @@ async def async_using_multipan(hass: HomeAssistant) -> bool:
 
     Returns False if not configured.
     """
-    zha_url = _get_zha_url(hass)
-    if not zha_url:
+    if not (zha_url := _get_zha_url(hass)):
         # ZHA is not configured
         return False
 

@@ -92,8 +92,7 @@ class ShellyCameraEntity(ShellyRpcAttributeEntity, Camera):
     @property
     def available(self) -> bool:
         """Available."""
-        available = super().available
-        if not available:
+        if not super().available:
             return False
 
         return not self.status["privacy"]

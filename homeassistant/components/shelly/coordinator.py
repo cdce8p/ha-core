@@ -638,8 +638,7 @@ class ShellyRpcCoordinator(ShellyCoordinatorBase[RpcDevice]):
             if component is not None and component.startswith("button"):
                 continue
 
-            event_type = event.get("event")
-            if event_type is None:
+            if (event_type := event.get("event")) is None:
                 continue
 
             for event_callback in self._event_listeners:

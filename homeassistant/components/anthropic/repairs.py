@@ -148,12 +148,10 @@ class ModelDeprecatedRepairFlow(RepairsFlow):
 
             # Verify that the entry/subentry still exists and the model is still
             # deprecated. This may have changed since we started the repair flow.
-            entry = self.hass.config_entries.async_get_entry(entry_id)
-            if entry is None:
+            if (entry := self.hass.config_entries.async_get_entry(entry_id)) is None:
                 continue
 
-            subentry = entry.subentries.get(subentry_id)
-            if subentry is None:
+            if (subentry := entry.subentries.get(subentry_id)) is None:
                 continue
 
             model = subentry.data.get(CONF_CHAT_MODEL)

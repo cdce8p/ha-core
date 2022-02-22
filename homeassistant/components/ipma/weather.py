@@ -137,9 +137,7 @@ class IPMAWeather(WeatherEntity, IPMADevice):
 
         Only available on the hourly forecast data.
         """
-        forecast = self._hourly_forecast
-
-        if not forecast:
+        if not (forecast := self._hourly_forecast):
             return None
 
         return self._condition_conversion(forecast[0].weather_type.id, None)

@@ -43,11 +43,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: OSOEnergyConfigEntry) ->
 
     entry.runtime_data = osoenergy
 
-    platforms = set()
-    for ha_type, oso_type in PLATFORM_LOOKUP.items():
-        device_list = devices.get(oso_type, [])
-        if device_list:
-            platforms.add(ha_type)
+    platforms = {
+        ha_type
+        for ha_type, oso_type in PLATFORM_LOOKUP.items()
+        if devices.get(oso_type)
+    }
     if platforms:
         await hass.config_entries.async_forward_entry_setups(entry, platforms)
     return True

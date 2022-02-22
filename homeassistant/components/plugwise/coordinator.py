@@ -182,8 +182,7 @@ class PlugwiseDataUpdateCoordinator(DataUpdateCoordinator[dict[str, GwEntityData
             # wiping stored firmware on partial or transient updates.
             if "firmware" not in device:
                 continue
-            new_firmware = device.get("firmware")
-            if new_firmware is None:
+            if (new_firmware := device.get("firmware")) is None:
                 continue
             if (
                 device_id in self._firmware_list

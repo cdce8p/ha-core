@@ -47,8 +47,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     nasweb_data = NASwebData()
     nasweb_data.initialize(hass)
     try:
-        webio_serial = webio_api.get_serial_number()
-        if webio_serial is None:
+        if (webio_serial := webio_api.get_serial_number()) is None:
             raise MissingNASwebData("Device serial number is not available")
 
         coordinator = NASwebCoordinator(hass, webio_api)

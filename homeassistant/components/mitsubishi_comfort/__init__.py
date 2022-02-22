@@ -153,8 +153,7 @@ async def async_setup_entry(
         if not is_fully_credentialed(info):
             incomplete.append(info.label)
             continue
-        address = addresses.get(dr.format_mac(info.mac))
-        if not address:
+        if not (address := addresses.get(dr.format_mac(info.mac))):
             no_address.append(info.label)
             continue
         _LOGGER.debug("Setting up %s at %s", info.label, address)

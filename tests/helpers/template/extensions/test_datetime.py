@@ -150,8 +150,7 @@ async def test_timestamp_local(hass: HomeAssistant) -> None:
 )
 def test_as_datetime(hass: HomeAssistant, input) -> None:
     """Test converting a timestamp string to a date object."""
-    expected = dt_util.parse_datetime(input)
-    if expected is not None:
+    if (expected := dt_util.parse_datetime(input)) is not None:
         expected = str(expected)
     assert render(hass, f"{{{{ as_datetime('{input}') }}}}") == expected
     assert render(hass, f"{{{{ '{input}' | as_datetime }}}}") == expected

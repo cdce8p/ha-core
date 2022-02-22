@@ -280,8 +280,7 @@ class KNXConfigStore:
     async def update_time_server_config(self, config: KNXTimeServerStoreModel) -> None:
         """Update time server configuration."""
         self.data["time_server"] = config
-        knx_module = self.hass.data[KNX_MODULE_KEY]
-        if knx_module:
+        if knx_module := self.hass.data[KNX_MODULE_KEY]:
             knx_module.ui_time_server_controller.start(knx_module.xknx, config)
         await self._store.async_save(self.data)
 

@@ -55,8 +55,7 @@ class QubeSensorEntityDescription(SensorEntityDescription):
 
 def _status_value(data: QubeData) -> StateType:
     """Return status string from status code."""
-    code = data.state.status_code
-    if code is None:
+    if (code := data.state.status_code) is None:
         return None
     return STATUS_MAP.get(code)
 

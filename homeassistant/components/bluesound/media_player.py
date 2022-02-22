@@ -241,8 +241,7 @@ class BluesoundPlayer(CoordinatorEntity[BluesoundCoordinator], MediaPlayerEntity
         if self.available is False or (self.is_grouped and not self.is_leader):
             return None
 
-        url = self._status.image
-        if url is None:
+        if (url := self._status.image) is None:
             return None
 
         if url[0] == "/":
@@ -261,8 +260,7 @@ class BluesoundPlayer(CoordinatorEntity[BluesoundCoordinator], MediaPlayerEntity
         if self._last_status_update is None or mediastate == MediaPlayerState.IDLE:
             return None
 
-        position = self._status.seconds
-        if position is None:
+        if (position := self._status.seconds) is None:
             return None
 
         if mediastate == MediaPlayerState.PLAYING:
@@ -277,8 +275,7 @@ class BluesoundPlayer(CoordinatorEntity[BluesoundCoordinator], MediaPlayerEntity
         if self.available is False or (self.is_grouped and not self.is_leader):
             return None
 
-        duration = self._status.total_seconds
-        if duration is None:
+        if (duration := self._status.total_seconds) is None:
             return None
 
         return int(duration)

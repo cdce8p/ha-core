@@ -425,9 +425,8 @@ class LIFXManager:
         **kwargs: Any,
     ) -> None:
         """Start the firmware-based Sky effect."""
-        palette = kwargs.get(ATTR_PALETTE)
         theme = Theme()
-        if palette is not None:
+        if (palette := kwargs.get(ATTR_PALETTE)) is not None:
             for hsbk in palette:
                 theme.add_hsbk(hsbk[0], hsbk[1], hsbk[2], hsbk[3])
 

@@ -235,8 +235,7 @@ class AveaLight(LightEntity):
             self._light.set_brightness(_ha_brightness_to_avea(self._last_brightness))
         else:
             if ATTR_BRIGHTNESS in kwargs:
-                brightness = kwargs[ATTR_BRIGHTNESS]
-                if brightness:
+                if brightness := kwargs[ATTR_BRIGHTNESS]:
                     self._last_brightness = brightness
                 self._light.set_brightness(_ha_brightness_to_avea(brightness))
             if ATTR_HS_COLOR in kwargs:

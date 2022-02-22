@@ -60,8 +60,7 @@ def _pool_cover_open(data: dict[str, Any], hass: HomeAssistant) -> bool | None:
     """
     if data.get("Filtration Pump") is not True:
         return None
-    value = data.get("Pool Cover")
-    if value is None:
+    if (value := data.get("Pool Cover")) is None:
         return None
     return not bool(value)
 
