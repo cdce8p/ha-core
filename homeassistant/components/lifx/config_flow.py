@@ -155,8 +155,7 @@ class LifXConfigFlow(ConfigFlow, domain=DOMAIN):
         """Handle the initial step."""
         errors = {}
         if user_input is not None:
-            host = user_input[CONF_HOST]
-            if not host:
+            if not (host := user_input[CONF_HOST]):
                 return await self.async_step_pick_device()
             if (
                 device := await self._async_try_connect(host, raise_on_progress=False)

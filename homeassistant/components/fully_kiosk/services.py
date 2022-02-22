@@ -33,8 +33,7 @@ async def async_setup_services(hass: HomeAssistant) -> None:
         config_entries = list[ConfigEntry]()
         registry = dr.async_get(hass)
         for target in device_ids:
-            device = registry.async_get(target)
-            if device:
+            if device := registry.async_get(target):
                 device_entries = list[ConfigEntry]()
                 for entry_id in device.config_entries:
                     entry = hass.config_entries.async_get_entry(entry_id)

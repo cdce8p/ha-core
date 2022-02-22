@@ -51,8 +51,7 @@ async def async_start_discovery_service(
     hass: HomeAssistant,
 ) -> AbstractDiscoveryService:
     """Set up the pescea internal discovery."""
-    discovery_service = hass.data.get(DATA_DISCOVERY_SERVICE)
-    if discovery_service:
+    if discovery_service := hass.data.get(DATA_DISCOVERY_SERVICE):
         # Already started
         return discovery_service
 
@@ -68,8 +67,7 @@ async def async_start_discovery_service(
 
 async def async_stop_discovery_service(hass: HomeAssistant) -> None:
     """Stop the discovery service."""
-    discovery_service = hass.data.get(DATA_DISCOVERY_SERVICE)
-    if not discovery_service:
+    if not (discovery_service := hass.data.get(DATA_DISCOVERY_SERVICE)):
         return
 
     await discovery_service.close()

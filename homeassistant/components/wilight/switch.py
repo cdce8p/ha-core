@@ -275,8 +275,7 @@ class WiLightValvePauseSwitch(WiLightDevice, SwitchEntity):
 
         None is unknown, 1 is minimum, 24 is maximum.
         """
-        pause_time = self._status.get("timer_target")
-        if pause_time is not None:
+        if (pause_time := self._status.get("timer_target")) is not None:
             return wilight_to_hass_pause_time(pause_time)
         return pause_time
 

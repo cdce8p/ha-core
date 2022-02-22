@@ -89,9 +89,7 @@ def get_entities_for_valves[_T: EntityDescription](
 
     # This device may not have 4 valves total, but the library will only expose the right number of valves
     for i in range(1, 5):
-        valve = coordinator.data[f"zone{i}"]
-
-        if valve is not None:
+        if (valve := coordinator.data[f"zone{i}"]) is not None:
             entities.extend(
                 function(valve, description) for description in descriptions
             )

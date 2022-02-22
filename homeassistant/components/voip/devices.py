@@ -137,9 +137,8 @@ class VoIPDevices:
 
         dev_reg = dr.async_get(self.hass)
         voip_id = call_info.caller_ip
-        voip_device = self.devices.get(voip_id)
 
-        if voip_device is not None:
+        if (voip_device := self.devices.get(voip_id)) is not None:
             device = dev_reg.async_get(voip_device.device_id)
             if device and fw_version and device.sw_version != fw_version:
                 dev_reg.async_update_device(device.id, sw_version=fw_version)

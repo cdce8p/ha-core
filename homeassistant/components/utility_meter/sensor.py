@@ -134,8 +134,7 @@ async def async_setup_entry(
     cron_pattern = None
     delta_values = config_entry.options[CONF_METER_DELTA_VALUES]
     meter_offset = timedelta(days=config_entry.options[CONF_METER_OFFSET])
-    meter_type = config_entry.options[CONF_METER_TYPE]
-    if meter_type == "none":
+    if (meter_type := config_entry.options[CONF_METER_TYPE]) == "none":
         meter_type = None
     name = config_entry.title
     net_consumption = config_entry.options[CONF_METER_NET_CONSUMPTION]
@@ -146,9 +145,8 @@ async def async_setup_entry(
     )
 
     meters = []
-    tariffs = config_entry.options[CONF_TARIFFS]
 
-    if not tariffs:
+    if not (tariffs := config_entry.options[CONF_TARIFFS]):
         # Add single sensor, not gated by a tariff selector
         meter_sensor = UtilityMeterSensor(
             cron_pattern=cron_pattern,

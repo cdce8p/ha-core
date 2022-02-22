@@ -114,9 +114,7 @@ def _create_rfx(
 ) -> rfxtrxmod.Connect:
     """Construct a rfx object based on config."""
 
-    modes = config.get(CONF_PROTOCOLS)
-
-    if modes:
+    if modes := config.get(CONF_PROTOCOLS):
         _LOGGER.debug("Using modes: %s", ",".join(modes))
     else:
         _LOGGER.debug("No modes defined, using device configuration")

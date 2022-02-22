@@ -82,8 +82,7 @@ def async_discovery_data_from_service(
     vendor_name = try_decode(service_properties.get(b"vn"))
 
     unconfigured = None
-    brand = KNOWN_BRANDS.get(vendor_name)
-    if brand == "homeassistant":
+    if (brand := KNOWN_BRANDS.get(vendor_name)) == "homeassistant":
         # Attempt to detect incomplete configuration
         if (state_bitmap_b := service_properties.get(b"sb")) is not None:
             try:

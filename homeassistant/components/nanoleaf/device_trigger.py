@@ -40,8 +40,7 @@ async def async_get_triggers(
 ) -> list[dict[str, str]]:
     """List device triggers for Nanoleaf devices."""
     device_registry = dr.async_get(hass)
-    device_entry = device_registry.async_get(device_id)
-    if device_entry is None:
+    if (device_entry := device_registry.async_get(device_id)) is None:
         raise DeviceNotFound(f"Device ID {device_id} is not valid")
     if device_entry.model not in TOUCH_MODELS:
         return []

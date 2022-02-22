@@ -127,9 +127,7 @@ async def build_item_response(
 
 def fetch_item(client: JellyfinClient, item_id: str) -> dict[str, Any] | None:
     """Fetch item from Jellyfin server."""
-    result = client.jellyfin.get_item(item_id)
-
-    if not result:
+    if not (result := client.jellyfin.get_item(item_id)):
         return None
 
     item: dict[str, Any] = result

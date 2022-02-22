@@ -1027,8 +1027,7 @@ class Entity(
         If has_entity_name is False, this returns self.name
         If has_entity_name is True, this returns device.name + self.name
         """
-        name = self.name
-        if name is UNDEFINED:
+        if (name := self.name) is UNDEFINED:
             name = None
 
         if not self.has_entity_name or not (device_entry := self.device_entry):

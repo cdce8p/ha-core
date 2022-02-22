@@ -232,11 +232,9 @@ async def _async_create_bridge_with_updated_data(
 
     if not model:
         LOGGER.debug("Attempting to get model for %s", host)
-        if info:
-            model = info.get("device", {}).get("modelName")
-            if model:
-                LOGGER.debug("Updated model to %s for %s", model, host)
-                updated_data[CONF_MODEL] = model
+        if info and (model := info.get("device", {}).get("modelName")):
+            LOGGER.debug("Updated model to %s for %s", model, host)
+            updated_data[CONF_MODEL] = model
 
     if model_requires_encryption(model) and method != METHOD_ENCRYPTED_WEBSOCKET:
         LOGGER.debug(

@@ -73,8 +73,7 @@ class DynaliteBase(RestoreEntity, ABC):
         # register for device specific update
         await super().async_added_to_hass()
 
-        cur_state = await self.async_get_last_state()
-        if cur_state:
+        if cur_state := await self.async_get_last_state():
             self.initialize_state(cur_state)
         else:
             LOGGER.warning("Restore state not available for %s", self.entity_id)

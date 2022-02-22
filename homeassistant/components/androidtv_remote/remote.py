@@ -76,8 +76,7 @@ class AndroidTVRemoteEntity(AndroidTVRemoteBaseEntity, RemoteEntity):
         """Turn the Android TV on."""
         if not self.is_on:
             self._send_key_command("POWER")
-        activity = kwargs.get(ATTR_ACTIVITY, "")
-        if activity:
+        if activity := kwargs.get(ATTR_ACTIVITY, ""):
             activity = next(
                 (
                     app_id

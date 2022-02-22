@@ -934,8 +934,7 @@ class AllStates:
         with_unit: bool = False,
     ) -> str:
         """Return the states."""
-        state = _get_state(self._hass, entity_id)
-        if state is None:
+        if (state := _get_state(self._hass, entity_id)) is None:
             return STATE_UNKNOWN
         if rounded is _SENTINEL:
             rounded = with_unit
@@ -1180,8 +1179,7 @@ class TemplateStateFromEntityId(TemplateStateBase):
 
     @property
     def _state(self) -> State:  # type: ignore[override]
-        state = self._hass.states.get(self._entity_id)
-        if not state:
+        if not (state := self._hass.states.get(self._entity_id)):
             state = State(self._entity_id, STATE_UNKNOWN)
         return state
 

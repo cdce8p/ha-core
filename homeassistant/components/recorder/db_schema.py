@@ -395,8 +395,7 @@ class EventData(Base):
 
     def to_native(self) -> dict[str, Any]:
         """Convert to an event data dictionary."""
-        shared_data = self.shared_data
-        if shared_data is None:
+        if (shared_data := self.shared_data) is None:
             return {}
         try:
             return cast(dict[str, Any], json_loads(shared_data))
@@ -638,8 +637,7 @@ class StateAttributes(Base):
 
     def to_native(self) -> dict[str, Any]:
         """Convert to a state attributes dictionary."""
-        shared_attrs = self.shared_attrs
-        if shared_attrs is None:
+        if (shared_attrs := self.shared_attrs) is None:
             return {}
         try:
             return cast(dict[str, Any], json_loads(shared_attrs))

@@ -447,8 +447,7 @@ def _is_dmr_device(discovery_info: ssdp.SsdpServiceInfo) -> bool:
     if not discovery_service_list:
         return False
 
-    services = discovery_service_list.get("service")
-    if not services:
+    if not (services := discovery_service_list.get("service")):
         discovery_service_ids: set[str] = set()
     elif isinstance(services, list):
         discovery_service_ids = {service.get("serviceId") for service in services}

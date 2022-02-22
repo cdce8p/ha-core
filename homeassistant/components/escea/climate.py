@@ -205,8 +205,7 @@ class ControllerEntity(ClimateEntity):
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        temp = kwargs.get(ATTR_TEMPERATURE)
-        if temp is not None:
+        if (temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self.wrap_and_catch(self._controller.set_desired_temp(temp))
 
     async def async_set_fan_mode(self, fan_mode: str) -> None:

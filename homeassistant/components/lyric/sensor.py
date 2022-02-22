@@ -149,8 +149,7 @@ def get_setpoint_status(status: str, time: str) -> str | None:
 
 def get_datetime_from_future_time(time_str: str) -> datetime:
     """Get datetime from future time provided."""
-    time = dt_util.parse_time(time_str)
-    if time is None:
+    if (time := dt_util.parse_time(time_str)) is None:
         raise ValueError(f"Unable to parse time {time_str}")
     now = dt_util.utcnow()
     if time <= now.time():

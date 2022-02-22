@@ -135,8 +135,7 @@ async def get_owntone_content(
     # Query API for next level
     if media_content.type == MEDIA_TYPE_DIRECTORY:
         # returns tracks, directories, and playlists
-        directory_path = media_content.id_or_path
-        if directory_path:
+        if directory_path := media_content.id_or_path:
             result = await master.api.get_directory(directory=directory_path)
         else:
             result = await master.api.get_directory()

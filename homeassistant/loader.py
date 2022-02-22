@@ -1415,8 +1415,7 @@ async def async_get_integrations(
             _resolve_integrations_from_root, hass, components, needed
         )
         for domain, future in needed.items():
-            int_or_exc = integrations.get(domain)
-            if not int_or_exc:
+            if not (int_or_exc := integrations.get(domain)):
                 cache.pop(domain)
                 results[domain] = IntegrationNotFound(domain)
             elif isinstance(int_or_exc, Exception):

@@ -139,8 +139,7 @@ class LoggerSettings:
 
     async def async_load(self) -> None:
         """Load stored settings."""
-        stored_config = await self._store.async_load()
-        if not stored_config:
+        if not (stored_config := await self._store.async_load()):
             self._stored_config = {STORAGE_LOG_KEY: {}}
             return
 

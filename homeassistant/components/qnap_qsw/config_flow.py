@@ -50,8 +50,7 @@ class QNapQSWConfigFlow(ConfigFlow, domain=DOMAIN):
             except QswError:
                 errors[CONF_URL] = "cannot_connect"
             else:
-                mac = system_board.get_mac()
-                if mac is None:
+                if (mac := system_board.get_mac()) is None:
                     raise AbortFlow("invalid_id")
 
                 await self.async_set_unique_id(format_mac(mac), raise_on_progress=False)

@@ -186,8 +186,7 @@ class VideoProxyView(ProtectProxyView):
         if isinstance(data, web.Response):
             return data
 
-        camera = self._async_get_camera(data, camera_id)
-        if camera is None:
+        if (camera := self._async_get_camera(data, camera_id)) is None:
             return _404(f"Invalid camera ID: {camera_id}")
         if not camera.can_read_media(data.api.bootstrap.auth_user):
             return _403(f"User cannot read media from camera: {camera.id}")

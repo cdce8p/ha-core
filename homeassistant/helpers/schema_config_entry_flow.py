@@ -480,11 +480,9 @@ def wrapped_entity_config_entry_title(
     registry = er.async_get(hass)
     entity_id = er.async_validate_entity_id(registry, entity_id_or_uuid)
     object_id = split_entity_id(entity_id)[1]
-    entry = registry.async_get(entity_id)
-    if entry:
+    if entry := registry.async_get(entity_id):
         return entry.name or entry.original_name or object_id
-    state = hass.states.get(entity_id)
-    if state:
+    if state := hass.states.get(entity_id):
         return state.name or object_id
     return object_id
 

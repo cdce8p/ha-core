@@ -225,9 +225,7 @@ class MultiprotocolAddonManager(WaitingAddonManager):
 
     async def async_load(self) -> None:
         """Load the store."""
-        data = await self._store.async_load()
-
-        if data is not None:
+        if (data := await self._store.async_load()) is not None:
             self._channel = data["channel"]
 
     @callback

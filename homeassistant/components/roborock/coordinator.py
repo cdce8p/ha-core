@@ -97,8 +97,7 @@ class RoborockDataUpdateCoordinator(DataUpdateCoordinator[DeviceProp]):
 
     async def _update_device_prop(self) -> None:
         """Update device properties."""
-        device_prop = await self.api.get_prop()
-        if device_prop:
+        if device_prop := await self.api.get_prop():
             if self.roborock_device_info.props:
                 self.roborock_device_info.props.update(device_prop)
             else:

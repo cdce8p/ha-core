@@ -495,8 +495,7 @@ class RainMachineZone(RainMachineActivitySwitch):
     async def async_turn_on_when_active(self, **kwargs: Any) -> None:
         """Turn the switch on when its associated activity is active."""
         # 1. Use duration parameter if provided from service call
-        duration = kwargs.get(CONF_DURATION)
-        if not duration:
+        if not (duration := kwargs.get(CONF_DURATION)):
             if (
                 self._entry.options[CONF_USE_APP_RUN_TIMES]
                 and ATTR_ZONE_RUN_TIME in self._attr_extra_state_attributes

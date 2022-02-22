@@ -91,8 +91,7 @@ class FrontierSiliconConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Process entity discovered via SSDP."""
 
-        device_url = discovery_info.ssdp_location
-        if device_url is None:
+        if (device_url := discovery_info.ssdp_location) is None:
             return self.async_abort(reason="cannot_connect")
 
         device_hostname = hostname_from_url(device_url)

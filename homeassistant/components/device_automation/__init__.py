@@ -332,8 +332,7 @@ def async_get_entity_registry_entry_or_raise(
 ) -> er.RegistryEntry:
     """Get an entity registry entry from entry ID or raise."""
     entity_registry = er.async_get(hass)
-    entry = entity_registry.async_get(entity_registry_id)
-    if entry is None:
+    if (entry := entity_registry.async_get(entity_registry_id)) is None:
         raise EntityNotFound
     return entry
 

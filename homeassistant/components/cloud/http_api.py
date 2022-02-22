@@ -637,9 +637,8 @@ async def google_assistant_get(
     cloud = hass.data[DATA_CLOUD]
     gconf = await cloud.client.get_google_config()
     entity_id: str = msg["entity_id"]
-    state = hass.states.get(entity_id)
 
-    if not state:
+    if not (state := hass.states.get(entity_id)):
         connection.send_error(
             msg["id"],
             websocket_api.ERR_NOT_FOUND,

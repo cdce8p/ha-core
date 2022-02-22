@@ -1022,9 +1022,8 @@ class MqttEntityDeviceInfo(Entity):
         self._device_specifications = config.get(CONF_DEVICE)
         device_registry = dr.async_get(self.hass)
         config_entry_id = self._config_entry.entry_id
-        device_info = self.device_info
 
-        if device_info is not None:
+        if (device_info := self.device_info) is not None:
             device_registry.async_get_or_create(
                 config_entry_id=config_entry_id, **device_info
             )

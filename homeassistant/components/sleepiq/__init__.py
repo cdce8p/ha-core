@@ -148,9 +148,8 @@ async def _async_migrate_unique_ids(
 
         sensor_type = next(filter(old_unique_id.endswith, sensor_types))
         sleeper_name = "_".join(parts[1:]).removesuffix(f"_{sensor_type}")
-        sleeper_id = names_to_ids.get(sleeper_name)
 
-        if not sleeper_id:
+        if not (sleeper_id := names_to_ids.get(sleeper_name)):
             return None
 
         new_unique_id = f"{sleeper_id}_{sensor_type}"

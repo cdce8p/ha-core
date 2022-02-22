@@ -165,8 +165,7 @@ class RfxtrxChime(RfxtrxCommandEntity, SirenEntity, RfxtrxOffDelayMixin):
         """Apply a received event."""
         super()._apply_event(event)
 
-        sound = event.values.get("Sound")
-        if sound is not None:
+        if event.values.get("Sound") is not None:
             self._cancel_timeout()
             self._setup_timeout()
 

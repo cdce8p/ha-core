@@ -63,8 +63,7 @@ class YoLinkHomeMessageListener(MessageListener):
         entry_data = self._hass.data[DOMAIN].get(self._entry.entry_id)
         if not entry_data:
             return
-        device_coordinators = entry_data.device_coordinators
-        if not device_coordinators:
+        if not (device_coordinators := entry_data.device_coordinators):
             return
         device_coordinator: YoLinkCoordinator = device_coordinators.get(
             device.device_id
