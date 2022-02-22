@@ -44,8 +44,7 @@ async def async_setup_entry(
     data = entry.runtime_data
 
     # Only create water heater entity if DHW (Domestic Hot Water) is available
-    dhw_data = data.fast_coordinator.data.dhw
-    if dhw_data is None:
+    if (dhw_data := data.fast_coordinator.data.dhw) is None:
         # Device does not support DHW, skip water heater setup
         return
     if (

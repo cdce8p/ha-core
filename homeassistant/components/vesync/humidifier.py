@@ -86,8 +86,7 @@ def _setup_entities(
 
 
 def _get_ha_mode(vs_mode: str) -> str | None:
-    ha_mode = VS_TO_HA_MODE_MAP.get(vs_mode)
-    if ha_mode is None:
+    if (ha_mode := VS_TO_HA_MODE_MAP.get(vs_mode)) is None:
         _LOGGER.warning("Unknown mode '%s'", vs_mode)
     return ha_mode
 
@@ -122,8 +121,7 @@ class VeSyncHumidifierHA(VeSyncBaseEntity[VeSyncHumidifier], HumidifierEntity):
 
         # Populate maps once.
         for vs_mode in self.device.mist_modes:
-            ha_mode = _get_ha_mode(vs_mode)
-            if ha_mode:
+            if ha_mode := _get_ha_mode(vs_mode):
                 self._available_modes.append(ha_mode)
                 self._ha_to_vs_mode_map[ha_mode] = vs_mode
 
@@ -179,10 +177,9 @@ class VeSyncHumidifierHA(VeSyncBaseEntity[VeSyncHumidifier], HumidifierEntity):
             raise HomeAssistantError(
                 f"Invalid mode {mode}. Available modes: {self.available_modes}"
             )
-        set_mode = self._get_vs_mode(mode)
-        if set_mode is None:
+        if (set_mode := self._get_vs_mode(mode)) is None:
             raise HomeAssistantError(f"Could not map mode {mode} to VeSync mode.")
-        if not await self.device.set_mode(self._get_vs_mode(mode)):
+        if not await self.device.set_mode(set_mode):
             if self.device.last_response:
                 raise HomeAssistantError(self.device.last_response.message)
             raise HomeAssistantError("Failed to set mode.")

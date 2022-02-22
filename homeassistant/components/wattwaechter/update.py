@@ -55,8 +55,7 @@ class WattwaechterUpdateEntity(WattwaechterEntity, UpdateEntity):
     @override
     def latest_version(self) -> str | None:
         """Return the latest available firmware version."""
-        ota = self.coordinator.data.ota
-        if ota is None:
+        if (ota := self.coordinator.data.ota) is None:
             return None
         if ota.update_available:
             return ota.version
@@ -65,8 +64,7 @@ class WattwaechterUpdateEntity(WattwaechterEntity, UpdateEntity):
     @override
     def release_notes(self) -> str | None:
         """Return the release notes for the available firmware."""
-        ota = self.coordinator.data.ota
-        if ota is None:
+        if (ota := self.coordinator.data.ota) is None:
             return None
         return ota.release_note_en or None
 

@@ -76,8 +76,7 @@ class SlideCoverLocal(SlideEntity, CoverEntity):
     @override
     def current_cover_position(self) -> int | None:
         """Return the current position of cover shutter."""
-        pos = self.coordinator.data["pos"]
-        if pos is not None:
+        if (pos := self.coordinator.data["pos"]) is not None:
             if (1 - pos) <= DEFAULT_OFFSET or pos <= DEFAULT_OFFSET:
                 pos = round(pos)
             pos = int(pos * 100)

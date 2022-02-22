@@ -64,8 +64,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HikvisionConfigEntry) ->
     except requests.exceptions.RequestException as err:
         raise ConfigEntryNotReady(f"Unable to connect to {host}") from err
 
-    device_id = camera.get_id
-    if device_id is None:
+    if (device_id := camera.get_id) is None:
         raise ConfigEntryNotReady(f"Unable to get device ID from {host}")
 
     device_name = camera.get_name or host

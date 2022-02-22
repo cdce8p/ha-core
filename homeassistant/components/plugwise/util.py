@@ -50,8 +50,7 @@ def deprecate_entity(
         async_delete_issue(hass, DOMAIN, issue_id)
         return False
 
-    entity_entry = entity_registry.async_get(entity_id)
-    if entity_entry is None:
+    if entity_registry.async_get(entity_id) is None:
         async_delete_issue(hass, DOMAIN, issue_id)
         return False
 
@@ -86,8 +85,7 @@ def _async_check_deprecated_entity(
     translation_key: str,
 ) -> bool:
     """Check whether a deprecated entity should remain in the registry."""
-    entity_entry = entity_registry.async_get(entity_id)
-    if entity_entry is None:
+    if (entity_entry := entity_registry.async_get(entity_id)) is None:
         async_delete_issue(hass, DOMAIN, issue_id)
         return False
 

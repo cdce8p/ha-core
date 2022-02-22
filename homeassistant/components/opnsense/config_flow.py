@@ -152,8 +152,7 @@ class OPNsenseConfigFlow(ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
-            unique_id = await client.get_device_unique_id()
-            if not unique_id:
+            if not (unique_id := await client.get_device_unique_id()):
                 return self.async_abort(reason="no_unique_id")
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()

@@ -46,8 +46,7 @@ async def async_send_command(
         HomeAssistantError: If the radio_frequency component is not loaded or the
             resolved entity is not found.
     """
-    component = hass.data.get(DATA_COMPONENT)
-    if component is None:
+    if (component := hass.data.get(DATA_COMPONENT)) is None:
         raise HomeAssistantError(
             translation_domain=DOMAIN,
             translation_key="component_not_loaded",
@@ -100,8 +99,7 @@ def async_subscribe_receiver(
     Raises:
         HomeAssistantError: If the receiver entity is not found.
     """
-    component = hass.data.get(DATA_COMPONENT)
-    if component is None:
+    if (component := hass.data.get(DATA_COMPONENT)) is None:
         raise HomeAssistantError(
             translation_domain=DOMAIN,
             translation_key="component_not_loaded",

@@ -681,8 +681,7 @@ async def _get_most_recent_chat(
         return (service.app.most_recent_chat_id, chat.effective_name)
 
     # broadcast bot
-    updates = await service.bot.get_updates(offset=0)
-    if updates:
+    if updates := await service.bot.get_updates(offset=0):
         last_update = updates[-1]
         if last_update.effective_chat:
             chat_name = last_update.effective_chat.effective_name

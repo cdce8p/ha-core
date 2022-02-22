@@ -913,9 +913,8 @@ class TelegramNotificationService:
     ) -> dict[str, JsonValueType]:
         """Send a sticker from a telegram sticker pack."""
         params = self._get_msg_kwargs(kwargs)
-        stickerid = kwargs.get(TelegramBotServiceArgument.STICKER_ID)
 
-        if stickerid:
+        if stickerid := kwargs.get(TelegramBotServiceArgument.STICKER_ID):
             return await self._send_msg_formatted(
                 self.bot.send_sticker,
                 params[ATTR_MESSAGE_TAG],

@@ -43,8 +43,7 @@ def _measurement(value: Measurement | None, unit: str) -> float | None:
 
 def _condition(code: str | None, time: datetime, data: WeatherData) -> str | None:
     """Use the forecast location's solar times to distinguish clear nights."""
-    result = CONDITIONS.get(code or "")
-    if result == "sunny":
+    if (result := CONDITIONS.get(code or "")) == "sunny":
         for day in data.iter_daily():
             rise, setting = day.sunrise, day.sunset
             if (

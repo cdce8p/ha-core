@@ -1238,8 +1238,7 @@ class TemperatureControlTrait(_Trait):
     def query_attributes(self) -> dict[str, Any]:
         """Return temperature states."""
         response = {}
-        domain = self.state.domain
-        if domain == WATER_HEATER_DOMAIN:
+        if (domain := self.state.domain) == WATER_HEATER_DOMAIN:
             unit = self.state.attributes[
                 WaterHeaterCapabilityAttribute.TEMPERATURE_UNIT
             ]

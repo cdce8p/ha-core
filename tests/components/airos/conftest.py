@@ -20,8 +20,7 @@ from . import AirOSData
 @pytest.fixture
 def ap_firmware_fixture(request: pytest.FixtureRequest) -> AirOSUpdateData:
     """Return fixture for AP firmware data."""
-    available = getattr(request, "param", False)
-    if available:
+    if getattr(request, "param", False):
         return load_json_object_fixture("firmware_update_available.json", DOMAIN)
     return load_json_object_fixture("firmware_update_latest.json", DOMAIN)
 

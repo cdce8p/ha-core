@@ -81,8 +81,7 @@ class NovyCookerHoodFan(NovyCookerHoodEntity, FanEntity, RestoreEntity):
     async def async_added_to_hass(self) -> None:
         """Restore the last known speed level from the saved percentage."""
         await super().async_added_to_hass()
-        last = await self.async_get_last_state()
-        if last is None:
+        if (last := await self.async_get_last_state()) is None:
             return
         last_pct = last.attributes.get(FanEntityStateAttribute.PERCENTAGE)
         if isinstance(last_pct, (int, float)) and last_pct > 0:

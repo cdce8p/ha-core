@@ -25,8 +25,7 @@ def deprecate_entity(
     if entity_id := entity_registry.async_get_entity_id(
         platform_domain, DOMAIN, entity_unique_id
     ):
-        entity_entry = entity_registry.async_get(entity_id)
-        if not entity_entry:
+        if not (entity_entry := entity_registry.async_get(entity_id)):
             return False
         if entity_entry.disabled:
             entity_registry.async_remove(entity_id)

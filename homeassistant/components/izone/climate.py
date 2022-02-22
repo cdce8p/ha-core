@@ -186,8 +186,7 @@ class ControllerDevice(IZoneCoordinatorEntity, ClimateEntity):
         owner = self.controller.control_setpoint_owner
         if not isinstance(owner, Zone):
             return None
-        zone_device = self.zones.get(owner)
-        if zone_device is None:
+        if (zone_device := self.zones.get(owner)) is None:
             return None
         if TYPE_CHECKING:
             assert zone_device.unique_id is not None

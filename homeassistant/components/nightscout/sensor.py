@@ -94,7 +94,6 @@ class NightscoutSensor(CoordinatorEntity[NightscoutGlucoseCoordinator], SensorEn
     @override
     def icon(self) -> str:
         """Return an icon matching the trend direction."""
-        reading = self.coordinator.data
-        if reading is None:
+        if (reading := self.coordinator.data) is None:
             return "mdi:cloud-question"
         return TREND_ICONS.get(reading.direction, "mdi:cloud-question")

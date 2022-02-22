@@ -917,8 +917,7 @@ def _async_get_zigbee_device(
     zha_gateway: Gateway, connection: ActiveConnection, msg_id: int, ieee: EUI64
 ) -> ZigbeeDevice | None:
     """Return the Zigbee device, or send an error if it is missing or not Zigbee."""
-    zha_device = zha_gateway.get_device(ieee)
-    if zha_device is None:
+    if (zha_device := zha_gateway.get_device(ieee)) is None:
         connection.send_error(
             msg_id, websocket_api.ERR_NOT_FOUND, "ZHA Device not found"
         )
