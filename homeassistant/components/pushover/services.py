@@ -29,8 +29,7 @@ async def _async_cancel_service_handler(call: ServiceCall) -> None:
     if entry is None:
         raise ServiceValidationError(f"Pushover config entry {entry_id} does not exist")
 
-    notify_service = entry.runtime_data.notify_service
-    if notify_service is None:
+    if (notify_service := entry.runtime_data.notify_service) is None:
         raise ServiceValidationError(
             f"Pushover config entry {entry_id} has no notify service set up"
         )

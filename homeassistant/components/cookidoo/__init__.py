@@ -139,8 +139,7 @@ async def async_migrate_entry(
                 translation_key="setup_request_exception",
             ) from e
 
-        old_unique_id = config_entry.unique_id
-        if old_unique_id:
+        if old_unique_id := config_entry.unique_id:
             _migrate_identifiers(hass, config_entry, old_unique_id, user_info.id)
         hass.config_entries.async_update_entry(
             config_entry, unique_id=user_info.id, minor_version=3

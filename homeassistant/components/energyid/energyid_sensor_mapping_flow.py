@@ -77,8 +77,7 @@ def _validate_mapping_input(
         return errors
 
     # Check if entity exists
-    entity_entry = ent_reg.async_get(ha_entity_id)
-    if not entity_entry:
+    if not (entity_entry := ent_reg.async_get(ha_entity_id)):
         errors["base"] = "entity_not_found"
         return errors
 
@@ -116,8 +115,7 @@ class EnergyIDSensorMappingFlowHandler(ConfigSubentryFlow):
 
             if not errors and ha_entity_id:
                 # Get entity registry entry
-                entity_entry = ent_reg.async_get(ha_entity_id)
-                if entity_entry:
+                if entity_entry := ent_reg.async_get(ha_entity_id):
                     energyid_key = ha_entity_id.split(".", 1)[-1]
 
                     subentry_data = {

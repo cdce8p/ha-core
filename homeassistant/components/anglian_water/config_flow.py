@@ -288,8 +288,7 @@ class AnglianWaterConfigFlow(ConfigFlow, domain=DOMAIN):
         if TYPE_CHECKING:
             assert self.authenticator
         entry = self._get_reauth_entry()
-        account_error = await self._async_get_accounts()
-        if account_error:
+        if account_error := await self._async_get_accounts():
             return self.async_show_form(
                 step_id="reauth_confirm",
                 data_schema=STEP_USER_DATA_SCHEMA,

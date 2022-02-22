@@ -74,14 +74,13 @@ async def _async_handle_reload(service: ServiceCall) -> None:
     hass = service.hass
     manager = get_agent_manager(hass)
     language = service.data.get(ATTR_LANGUAGE)
-    if language is None:
+    if (language := service.data.get(ATTR_LANGUAGE)) is None:
         conf = await async_integration_yaml_config(hass, DOMAIN)
         if conf is not None:
             config_intents = get_config_intents(conf, hass.config.path())
             manager.update_config_intents(config_intents)
 
-    agent = manager.default_agent
-    if agent is not None:
+    if (agent := manager.default_agent) is not None:
         await agent.async_reload(language=language)
 
 

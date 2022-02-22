@@ -365,12 +365,10 @@ class SolarEdgeStorageDataService(SolarEdgeDataService):
             start_of_day,
             now,
         )
-        storage_data = data.get("storageData")
-        if storage_data is None:
+        if (storage_data := data.get("storageData")) is None:
             raise UpdateFailed("Storage data not available from API")
 
-        batteries = storage_data.get("batteries")
-        if batteries is None:
+        if (batteries := storage_data.get("batteries")) is None:
             raise UpdateFailed("Battery data not available from API")
 
         self.data = {}
@@ -385,14 +383,11 @@ class SolarEdgeStorageDataService(SolarEdgeDataService):
         total_discharge_energy = 0.0
 
         for battery in batteries:
-            serial = battery.get("serialNumber")
-            if not serial:
+            if not (serial := battery.get("serialNumber")):
                 LOGGER.debug("Skipping battery without serialNumber")
                 continue
 
-            telemetries = battery.get("telemetries", [])
-
-            if not telemetries:
+            if not (telemetries := battery.get("telemetries", [])):
                 continue
 
             latest = telemetries[-1]

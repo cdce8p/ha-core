@@ -69,8 +69,7 @@ class TodoListEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     @override
     def state(self) -> int | None:
         """Return the entity state as the count of incomplete items."""
-        items = self.todo_items
-        if items is None:
+        if (items := self.todo_items) is None:
             return None
         return sum([item.status == TodoItemStatus.NEEDS_ACTION for item in items])
 
@@ -123,8 +122,7 @@ class TodoListEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     @callback
     def async_update_listeners(self) -> None:
         """Push updated To-do items to all listeners."""
-        items = self.todo_items
-        if items == self._last_broadcast_items:
+        if (items := self.todo_items) == self._last_broadcast_items:
             return
         self._last_broadcast_items = (
             [copy.copy(item) for item in items] if items is not None else None

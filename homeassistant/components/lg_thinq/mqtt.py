@@ -169,8 +169,7 @@ class ThinQMQTT:
             if message["deviceType"] == DeviceType.WASHTOWER
             else message["deviceId"]
         )
-        coordinator = self.coordinators.get(unique_id)
-        if coordinator is None:
+        if (coordinator := self.coordinators.get(unique_id)) is None:
             _LOGGER.error("Failed to handle device event: No device")
             return
 

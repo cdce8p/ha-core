@@ -333,8 +333,7 @@ class GrowattCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             combined = {**sph_detail, **sph_energy}
 
             # Parse last update timestamp from sph_energy "time" field
-            time_str = sph_energy.get("time")
-            if time_str:
+            if time_str := sph_energy.get("time"):
                 try:
                     parsed = datetime.datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
                     combined["lastdataupdate"] = parsed.replace(

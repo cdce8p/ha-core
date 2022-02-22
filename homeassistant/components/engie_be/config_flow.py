@@ -123,8 +123,7 @@ class EngieBeConfigFlow(ConfigFlow, domain=DOMAIN):
             if not errors and tokens is not None:
                 access_token, refresh_token = tokens
                 assert self._client is not None
-                subject = self._client.subject
-                if subject is None:
+                if (subject := self._client.subject) is None:
                     return self.async_show_form(
                         step_id="mfa",
                         data_schema=_CODE_SCHEMA,

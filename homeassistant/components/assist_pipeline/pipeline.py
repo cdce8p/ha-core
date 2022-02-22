@@ -473,8 +473,7 @@ class PipelineStorageCollectionWebsocket(
         self, hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
     ) -> None:
         """Get an item."""
-        item_id = msg.get(self.item_id_key)
-        if item_id is None:
+        if (item_id := msg.get(self.item_id_key)) is None:
             item_id = self.storage_collection.async_get_preferred_item()
 
         if item_id.startswith("conversation.") and hass.states.get(item_id):

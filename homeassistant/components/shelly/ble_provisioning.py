@@ -59,8 +59,7 @@ def async_register_zeroconf_discovery(
     registry = async_get_provisioning_registry(hass)
     normalized_mac = format_mac(mac)
 
-    state = registry.get(normalized_mac)
-    if not state:
+    if not (state := registry.get(normalized_mac)):
         LOGGER.debug(
             "No BLE provisioning state found for %s (host %s, port %s)",
             normalized_mac,

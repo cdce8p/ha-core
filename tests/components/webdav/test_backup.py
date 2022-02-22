@@ -240,9 +240,7 @@ async def test_agents_upload_emits_progress_events(
     reached_idle = False
     for _ in range(20):
         response = await ws_client.receive_json()
-        event = response.get("event")
-
-        if event is None:
+        if (event := response.get("event")) is None:
             continue
 
         if (

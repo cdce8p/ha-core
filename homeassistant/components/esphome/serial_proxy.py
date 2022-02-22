@@ -75,8 +75,7 @@ class HassESPHomeSerial(ESPHomeSerial):
 
             self._port_name = parsed.query["port_name"]
 
-            hass_loop = _HASS_LOOP
-            if hass_loop is None:
+            if (hass_loop := _HASS_LOOP) is None:
                 raise InvalidSettingsError(
                     "ESPHome integration has not registered its event loop"
                 )

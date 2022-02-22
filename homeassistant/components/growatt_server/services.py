@@ -40,9 +40,7 @@ def _get_coordinator(
     hass: HomeAssistant, device_id: str, device_type: str
 ) -> GrowattCoordinator:
     """Get coordinator by device registry ID and device type."""
-    coordinators = _get_coordinators(hass, device_type)
-
-    if not coordinators:
+    if not (coordinators := _get_coordinators(hass, device_type)):
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="no_devices_configured",
@@ -50,9 +48,8 @@ def _get_coordinator(
         )
 
     device_registry = dr.async_get(hass)
-    device_entry = device_registry.async_get(device_id)
 
-    if not device_entry:
+    if not (device_entry := device_registry.async_get(device_id)):
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="device_not_found",

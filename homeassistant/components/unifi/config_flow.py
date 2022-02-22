@@ -106,8 +106,7 @@ class UnifiFlowHandler(ConfigFlow, domain=DOMAIN):
                 self.sites = await self._async_update_sites(self.config)
                 return await self.async_step_site()
         else:
-            host = self.config.get(CONF_HOST)
-            if not host:
+            if not (host := self.config.get(CONF_HOST)):
                 host = await _async_discover_unifi(self.hass)
             if not host:
                 host = DEFAULT_HOST
@@ -205,8 +204,7 @@ class UnifiFlowHandler(ConfigFlow, domain=DOMAIN):
         self, discovery_info: DiscoveryInfoType
     ) -> ConfigFlowResult:
         """Handle discovery via unifi_discovery."""
-        source_ip = discovery_info["source_ip"]
-        if not source_ip:
+        if not (source_ip := discovery_info["source_ip"]):
             return self.async_abort(reason="cannot_connect")
         mac_address = format_mac(discovery_info["hw_addr"])
         direct_connect_domain = discovery_info.get("direct_connect_domain")

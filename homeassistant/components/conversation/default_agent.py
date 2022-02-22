@@ -1564,8 +1564,7 @@ class DefaultAgent(ConversationEntity):
         response_text = ""
         response_set_by_trigger = False
         for trigger_future in asyncio.as_completed(trigger_callbacks):
-            trigger_response = await trigger_future
-            if trigger_response is None:
+            if (trigger_response := await trigger_future) is None:
                 continue
 
             response_text = trigger_response
@@ -1863,8 +1862,7 @@ def _get_match_error_response(
 ) -> tuple[ErrorKey | str, dict[str, Any]]:
     """Return key and template arguments for error when target matching fails."""
     constraints, result = match_error.constraints, match_error.result
-    reason = result.no_match_reason
-    if reason is None:
+    if (reason := result.no_match_reason) is None:
         return ErrorKey.NO_INTENT, {}
 
     match reason:

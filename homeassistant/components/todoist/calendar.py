@@ -517,8 +517,7 @@ class TodoistProjectData:
         for task in project_task_data:
             if task.due is None:
                 continue
-            start = parse_due_date(task.due)
-            if start is None:
+            if (start := parse_due_date(task.due)) is None:
                 continue
             duration = (
                 timedelta(minutes=30)

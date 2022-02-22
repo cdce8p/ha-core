@@ -44,8 +44,7 @@ class HassIOBaseAuth(HomeAssistantView):
 
     def _check_access(self, request: web.Request) -> None:
         """Check if this call is from Supervisor."""
-        user = self.hass.data.get(DATA_SUPERVISOR_USER)
-        if user is None:
+        if (user := self.hass.data.get(DATA_SUPERVISOR_USER)) is None:
             raise HTTPServiceUnavailable
 
         # Requests over the Supervisor Unix socket are authenticated by the

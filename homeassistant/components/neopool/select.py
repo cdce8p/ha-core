@@ -109,8 +109,9 @@ def _cell_boost_options(data: dict[str, Any]) -> list[str]:
 
 def _decode_cell_boost(data: dict[str, Any]) -> str | None:
     """Surface the current cell boost mode via the lib decoder."""
-    reg_val = data.get("MBF_CELL_BOOST")
-    if reg_val is None:  # pragma: no cover - register always present once polled
+    if (
+        reg_val := data.get("MBF_CELL_BOOST")
+    ) is None:  # pragma: no cover - register always present once polled
         return None
     return decode_cell_boost(reg_val) or CELL_BOOST_MODE_LABELS[0]
 
@@ -129,8 +130,7 @@ def _resolve_config_value(
 ) -> int | None:
     """Reverse-lookup the option label to its register value, or None if unmapped."""
     reverse_map = {v: k for k, v in desc.options_map.items()}
-    value = reverse_map.get(option)
-    if value is None:
+    if (value := reverse_map.get(option)) is None:
         try:  # pragma: no cover - mapped_register options cover every value
             value = int(option.rstrip("ms"))
         except ValueError:  # pragma: no cover - option list is numeric
@@ -651,8 +651,9 @@ class NeoPoolSelect(NeoPoolEntity, SelectEntity):
     @override
     async def async_select_option(self, option: str) -> None:
         """Handle option selection by dispatching to the description write_fn."""
-        write_fn = self.entity_description.write_fn
-        if write_fn is None:  # pragma: no cover - every description wires write_fn
+        if (
+            write_fn := self.entity_description.write_fn
+        ) is None:  # pragma: no cover - every description wires write_fn
             return
         try:
             await write_fn(self, self.coordinator.client, option)
@@ -750,21 +751,21 @@ class NeoPoolSelect(NeoPoolEntity, SelectEntity):
             return current_option_fn(data)
 
         if desc.select_type == "timer_period":
-            value = data.get(self._key)
-            if value is None:  # pragma: no cover - timer block present once polled
+            if (
+                value := data.get(self._key)
+            ) is None:  # pragma: no cover - timer block present once polled
                 return None
-            int_value = int(value)
-            if int_value == 0:
+            if (int_value := int(value)) == 0:
                 return _NO_REPEAT
             return PERIOD_SECONDS_TO_KEY.get(int_value, str(int_value))
 
         if desc.select_type == "relay_mode":
             timer_name = self._key.rsplit("_", 1)[0]
-            value = data.get(f"{timer_name}_enable")
-            if value is None:  # pragma: no cover - enable key present once polled
+            if (
+                value := data.get(f"{timer_name}_enable")
+            ) is None:  # pragma: no cover - enable key present once polled
                 return None
-            int_value = int(value)
-            if int_value == 0:
+            if (int_value := int(value)) == 0:
                 return "disabled"
             if int_value == 2:  # pragma: no cover - auto_linked out of scope
                 return "auto_linked"
@@ -775,8 +776,9 @@ class NeoPoolSelect(NeoPoolEntity, SelectEntity):
             )  # pragma: no cover - value is 0/2/manual
 
         if desc.select_type == "filtvalve_mode":
-            value = data.get(self._key)
-            if value is None:  # pragma: no cover - register present once polled
+            if (
+                value := data.get(self._key)
+            ) is None:  # pragma: no cover - register present once polled
                 return None
             int_value = int(value)
             if int_value == 0:
@@ -786,13 +788,15 @@ class NeoPoolSelect(NeoPoolEntity, SelectEntity):
             return desc.options_map.get(int_value)
 
         if desc.select_type == "mapped_register":
-            value = data.get(self._key)
-            if value is None:  # pragma: no cover - register present once polled
+            if (
+                value := data.get(self._key)
+            ) is None:  # pragma: no cover - register present once polled
                 return None
             suffix = desc.fallback_suffix
             return desc.options_map.get(int(value), f"{value}{suffix}")
 
-        value = data.get(self._key)
-        if value is None:  # pragma: no cover - register present once polled
+        if (
+            value := data.get(self._key)
+        ) is None:  # pragma: no cover - register present once polled
             return None
         return desc.options_map.get(value)

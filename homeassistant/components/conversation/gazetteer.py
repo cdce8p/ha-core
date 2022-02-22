@@ -175,8 +175,7 @@ def async_targets_from_intent(
     }
 
     for target_type, build in _TARGET_SCOPES:
-        ids = resolved.get(target_type)
-        if not ids:
+        if not (ids := resolved.get(target_type)):
             continue
         if len(ids) > 1:
             # Nothing a pronoun picks out, and the matcher reuses one selector.
@@ -247,8 +246,7 @@ class GazetteerFallback:
         conversation was about lasts exactly as long as the conversation.
         """
         if conversation_id not in self._previous_targets:
-            session = chat_session.current_session.get()
-            if session is None:
+            if (session := chat_session.current_session.get()) is None:
                 # Nothing would ever clean this up, so do not start it.
                 return
             session.async_on_cleanup(partial(self.async_forget, conversation_id))

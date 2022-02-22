@@ -87,8 +87,7 @@ def async_conversation_trace_append(
     event_type: ConversationTraceEventType, event_data: dict[str, Any]
 ) -> None:
     """Append a ConversationTraceEvent to the current active trace."""
-    trace = _current_trace.get()
-    if not trace:
+    if not (trace := _current_trace.get()):
         return
     trace.add_event(ConversationTraceEvent(event_type, event_data))
 

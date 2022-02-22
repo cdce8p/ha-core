@@ -240,8 +240,7 @@ class CompitClimate(CoordinatorEntity[CompitDataUpdateCoordinator], ClimateEntit
     @override
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        temp = kwargs.get(ATTR_TEMPERATURE)
-        if temp is None:
+        if (temp := kwargs.get(ATTR_TEMPERATURE)) is None:
             raise ServiceValidationError("Temperature argument missing")
         await self.set_parameter_value(CompitParameter.SET_TARGET_TEMPERATURE, temp)
 

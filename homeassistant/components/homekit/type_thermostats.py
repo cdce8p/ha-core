@@ -636,8 +636,7 @@ class WaterHeater(HomeAccessory):
                     WATER_HEATER_DOMAIN, SERVICE_TURN_ON, params, "on"
                 )
             elif self._off_mode_available and self._supports_operation_mode:
-                state = self.hass.states.get(self.entity_id)
-                if not state:
+                if not (state := self.hass.states.get(self.entity_id)):
                     return
                 current_operation_mode = state.attributes.get(
                     WaterHeaterStateAttribute.OPERATION_MODE

@@ -102,8 +102,7 @@ class GardenaBluetoothSelectEntity(GardenaBluetoothDescriptorEntity, SelectEntit
     def current_option(self) -> str | None:
         """Return the selected entity option to represent the entity state."""
         char = self.entity_description.char
-        value = self.coordinator.get_cached(char)
-        if value is None:
+        if (value := self.coordinator.get_cached(char)) is None:
             return None
         return self.entity_description.number_to_option.get(value)
 

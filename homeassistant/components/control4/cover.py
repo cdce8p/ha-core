@@ -154,11 +154,9 @@ class Control4Cover(Control4Entity, CoverEntity):
     @override
     def current_cover_position(self) -> int | None:
         """Return current position of cover (0 closed, 100 open)."""
-        data = self._cover_data
-        if data is None:
+        if (data := self._cover_data) is None:
             return None
-        level = data.get(CONTROL4_LEVEL)
-        if level is None:
+        if (level := data.get(CONTROL4_LEVEL)) is None:
             return None
         return int(level)
 
@@ -166,13 +164,11 @@ class Control4Cover(Control4Entity, CoverEntity):
     @override
     def is_closed(self) -> bool | None:
         """Return if the cover is closed."""
-        data = self._cover_data
-        if data is None:
+        if (data := self._cover_data) is None:
             return None
         if (fully_closed := data.get(CONTROL4_FULLY_CLOSED)) is not None:
             return bool(fully_closed)
-        position = self.current_cover_position
-        if position is None:
+        if (position := self.current_cover_position) is None:
             return None
         return position == 0
 
@@ -180,11 +176,9 @@ class Control4Cover(Control4Entity, CoverEntity):
     @override
     def is_opening(self) -> bool | None:
         """Return if the cover is opening."""
-        data = self._cover_data
-        if data is None:
+        if (data := self._cover_data) is None:
             return None
-        opening = data.get(CONTROL4_OPENING)
-        if opening is None:
+        if (opening := data.get(CONTROL4_OPENING)) is None:
             return None
         return bool(opening)
 
@@ -192,11 +186,9 @@ class Control4Cover(Control4Entity, CoverEntity):
     @override
     def is_closing(self) -> bool | None:
         """Return if the cover is closing."""
-        data = self._cover_data
-        if data is None:
+        if (data := self._cover_data) is None:
             return None
-        closing = data.get(CONTROL4_CLOSING)
-        if closing is None:
+        if (closing := data.get(CONTROL4_CLOSING)) is None:
             return None
         return bool(closing)
 

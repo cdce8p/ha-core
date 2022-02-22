@@ -146,8 +146,7 @@ class RtmTodoCoordinator(DataUpdateCoordinator[dict[int, RtmList]]):
         changed = False
         try:
             for list_id, rtm_list in lists.items():
-                subentry = existing.get(list_id)
-                if subentry is None:
+                if (subentry := existing.get(list_id)) is None:
                     self.hass.config_entries.async_add_subentry(
                         entry,
                         ConfigSubentry(

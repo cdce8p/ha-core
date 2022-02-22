@@ -36,8 +36,7 @@ class SamsungIrConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Handle the initial step."""
-        emitter_entity_ids = async_get_emitters(self.hass)
-        if not emitter_entity_ids:
+        if not (emitter_entity_ids := async_get_emitters(self.hass)):
             return self.async_abort(reason="no_emitters")
 
         if user_input is not None:

@@ -49,8 +49,7 @@ def _async_scan_serial_ports(
         if not entry_data.available:
             continue
 
-        device_info = entry_data.device_info
-        if device_info is None:
+        if (device_info := entry_data.device_info) is None:
             continue
 
         manufacturer, model = async_get_manufacturer_model(device_info)

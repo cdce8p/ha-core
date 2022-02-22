@@ -54,8 +54,7 @@ class HuumDevice(HuumBaseEntity, ClimateEntity):
     @override
     def min_temp(self) -> int:
         """Return configured minimal temperature."""
-        sauna_config = self.coordinator.data.sauna_config
-        if sauna_config is None:
+        if (sauna_config := self.coordinator.data.sauna_config) is None:
             return CONFIG_DEFAULT_MIN_TEMP
         return sauna_config.min_temp or CONFIG_DEFAULT_MIN_TEMP
 
@@ -63,8 +62,7 @@ class HuumDevice(HuumBaseEntity, ClimateEntity):
     @override
     def max_temp(self) -> int:
         """Return configured maximum temperature."""
-        sauna_config = self.coordinator.data.sauna_config
-        if sauna_config is None:
+        if (sauna_config := self.coordinator.data.sauna_config) is None:
             return CONFIG_DEFAULT_MAX_TEMP
         return sauna_config.max_temp or CONFIG_DEFAULT_MAX_TEMP
 
@@ -103,8 +101,9 @@ class HuumDevice(HuumBaseEntity, ClimateEntity):
     @override
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        temperature = kwargs.get(ATTR_TEMPERATURE)
-        if temperature is None or self.hvac_mode != HVACMode.HEAT:
+        if (
+            temperature := kwargs.get(ATTR_TEMPERATURE)
+        ) is None or self.hvac_mode != HVACMode.HEAT:
             return
         temperature = int(temperature)
 

@@ -86,8 +86,7 @@ def resolve_live_activity_push(
 ) -> LiveActivityPush | None:
     """Return Live Activity token routing data for a notification, or ``None``."""
     notification_data = data.get(ATTR_DATA) or {}
-    tag = notification_data.get(ATTR_TAG)
-    if not tag:
+    if not (tag := notification_data.get(ATTR_TAG)):
         return None
 
     webhook_id = registration[ATTR_WEBHOOK_ID]

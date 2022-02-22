@@ -145,8 +145,7 @@ def _lock_supports_usr_feature(endpoint: MatterEndpoint) -> bool:
     The USR feature indicates the lock supports user and credential management
     commands like SetUser, GetUser, SetCredential, etc.
     """
-    feature_map = _get_feature_map(endpoint)
-    if feature_map is None:
+    if (feature_map := _get_feature_map(endpoint)) is None:
         return False
     return bool(feature_map & DoorLockFeature.kUser)
 
@@ -193,8 +192,7 @@ def _format_user_response(user_data: Any) -> LockUserData | None:
     if user_data is None:
         return None
 
-    user_status = _get_attr(user_data, "userStatus")
-    if user_status is None:
+    if (user_status := _get_attr(user_data, "userStatus")) is None:
         return None
 
     creds = _get_attr(user_data, "credentials")
@@ -255,8 +253,7 @@ class SetCredentialFailedError(HomeAssistantError):
 
 def _get_lock_endpoint_or_raise(node: MatterNode) -> MatterEndpoint:
     """Get the DoorLock endpoint from a node or raise an error."""
-    lock_endpoint = _get_lock_endpoint_from_node(node)
-    if lock_endpoint is None:
+    if (lock_endpoint := _get_lock_endpoint_from_node(node)) is None:
         raise LockEndpointNotFoundError("No lock endpoint found on this device")
     return lock_endpoint
 

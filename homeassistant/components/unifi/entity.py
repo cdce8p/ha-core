@@ -225,8 +225,7 @@ class UnifiEntity[HandlerT: APIHandler, ItemT: ApiItem](Entity):
     @callback
     def _async_coordinator_updated(self) -> None:
         """Skip coordinator updates that changed a different object."""
-        coordinator_data = self.coordinator.data
-        if coordinator_data is None:
+        if (coordinator_data := self.coordinator.data) is None:
             event = ItemEvent.CHANGED
             changed_obj_id = None
         else:

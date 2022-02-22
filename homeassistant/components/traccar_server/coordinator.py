@@ -127,8 +127,7 @@ class TraccarServerCoordinator(DataUpdateCoordinator[TraccarServerCoordinatorDat
                 )
                 continue
 
-            attr = get_custom_attrs(device, position)
-            if attr is None:
+            if (attr := get_custom_attrs(device, position)) is None:
                 self.logger.debug(
                     "Skipping position update %s for %s due to accuracy filter",
                     position["id"],

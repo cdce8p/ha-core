@@ -755,8 +755,7 @@ class OverkizCover(OverkizDescriptiveEntity, CoverEntity):
         state_name = self.entity_description.current_tilt_position_state
 
         if state_name and (state := self.device.states.get(state_name)):
-            position = state.value_as_int
-            if position is None:
+            if (position := state.value_as_int) is None:
                 return None
 
             if self.entity_description.invert_tilt_position:

@@ -88,8 +88,7 @@ class OPNsenseDeviceTrackerEntity(
     @override
     def ip_address(self) -> str | None:
         """Return the primary IP address of the device."""
-        device_data = self.device_data
-        if device_data:
+        if device_data := self.device_data:
             return device_data.get("ip")
         return None
 
@@ -97,8 +96,7 @@ class OPNsenseDeviceTrackerEntity(
     @override
     def hostname(self) -> str | None:
         """Return hostname of the device."""
-        device_data = self.device_data
-        if device_data:
+        if device_data := self.device_data:
             hostname = device_data.get("hostname")
             return hostname or None
         return None
