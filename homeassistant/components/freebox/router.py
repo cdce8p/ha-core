@@ -106,8 +106,7 @@ def is_invalid_token_error(error: Exception) -> bool:
 
 def is_home_unsupported_error(error: HttpRequestError) -> bool:
     """Return whether the Freebox Home API reports an unavailable endpoint."""
-    match = re.search(r"\(APIResponse: (.+)\)$", str(error))
-    if not match:
+    if not (match := re.search(r"\(APIResponse: (.+)\)$", str(error))):
         return False
 
     try:

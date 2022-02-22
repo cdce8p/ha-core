@@ -68,8 +68,7 @@ def _pool_cover_open(data: dict[str, Any], hass: HomeAssistant) -> bool | None:
     """
     if not int(data.get("MBF_PAR_HIDRO_COVER_ENABLE", 0) or 0) & HIDRO_COVER_ENABLE_BIT:
         return None
-    value = data.get("Pool Cover")
-    if value is None:
+    if (value := data.get("Pool Cover")) is None:
         return None
     return not bool(value)
 

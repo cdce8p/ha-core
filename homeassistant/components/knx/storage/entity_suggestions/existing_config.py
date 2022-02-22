@@ -318,8 +318,7 @@ class ExistingConfigSuggestionProvider(SuggestionProvider):
         self, hass: HomeAssistant, knx: KNXModule
     ) -> ProviderResult:
         """Generate entity suggestions from the stored UI configurations."""
-        project = await knx.project.get_knxproject()
-        if project is None:
+        if (project := await knx.project.get_knxproject()) is None:
             return ProviderResult(
                 suggestions=[],
                 hints=ExistingConfigHints(state=ExistingConfigState.NO_PROJECT),

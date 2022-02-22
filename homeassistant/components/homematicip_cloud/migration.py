@@ -198,8 +198,7 @@ def _migrate_unique_id(old_unique_id: str) -> str | None:
     device_id: str
 
     # Check for Channel{N}_{rest} pattern
-    channel_match = _CHANNEL_RE.match(remainder)
-    if channel_match:
+    if channel_match := _CHANNEL_RE.match(remainder):
         channel = int(channel_match.group(1))
         device_id = channel_match.group(2)
     elif matched_class in (
@@ -207,8 +206,7 @@ def _migrate_unique_id(old_unique_id: str) -> str | None:
         "HomematicipNotificationLightV2",
     ):
         # Check for Top/Bottom pattern
-        notif_match = _NOTIFICATION_LIGHT_RE.match(remainder)
-        if notif_match:
+        if notif_match := _NOTIFICATION_LIGHT_RE.match(remainder):
             channel = _NOTIFICATION_LIGHT_CHANNEL_MAP[notif_match.group(1)]
             device_id = notif_match.group(2)
         else:

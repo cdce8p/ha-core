@@ -115,8 +115,7 @@ class ElectroluxSwitch[T: HBAppliance](ElectroluxBaseEntity[T], SwitchEntity):
     @override
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the switch off."""
-        turn_off_fn = self.entity_description.turn_off_fn
-        if turn_off_fn is None:
+        if (turn_off_fn := self.entity_description.turn_off_fn) is None:
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="unsupported_operation",

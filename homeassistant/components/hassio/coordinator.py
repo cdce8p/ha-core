@@ -937,8 +937,7 @@ def get_info(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_INFO)
-    if info is None:
+    if (info := hass.data.get(DATA_INFO)) is None:
         raise HassioNotReadyError
     return info.to_dict()
 
@@ -949,8 +948,7 @@ def get_host_info(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_HOST_INFO)
-    if info is None:
+    if (info := hass.data.get(DATA_HOST_INFO)) is None:
         raise HassioNotReadyError
     return info.to_dict()
 
@@ -961,8 +959,7 @@ def get_store(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_STORE)
-    if info is None:
+    if (info := hass.data.get(DATA_STORE)) is None:
         raise HassioNotReadyError
     return info.to_dict()
 
@@ -973,8 +970,7 @@ def get_supervisor_info(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_SUPERVISOR_INFO)
-    if info is None:
+    if (info := hass.data.get(DATA_SUPERVISOR_INFO)) is None:
         raise HassioNotReadyError
     result = info.to_dict()
     # Deprecated 2026.4.0: Folding repositories and addons into supervisor_info
@@ -992,8 +988,7 @@ def get_network_info(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_NETWORK_INFO)
-    if info is None:
+    if (info := hass.data.get(DATA_NETWORK_INFO)) is None:
         raise HassioNotReadyError
     return info.to_dict()
 
@@ -1038,8 +1033,7 @@ def get_addons_list(hass: HomeAssistant) -> list[dict[str, Any]]:
 
     Async friendly.
     """
-    addons = hass.data.get(DATA_ADDONS_LIST)
-    if addons is None:
+    if (addons := hass.data.get(DATA_ADDONS_LIST)) is None:
         raise HassioNotReadyError
     return [addon.to_dict() for addon in addons]
 
@@ -1083,8 +1077,7 @@ def get_os_info(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_OS_INFO)
-    if info is None:
+    if (info := hass.data.get(DATA_OS_INFO)) is None:
         raise HassioNotReadyError
     return info.to_dict()
 
@@ -1095,8 +1088,7 @@ def get_core_info(hass: HomeAssistant) -> dict[str, Any]:
 
     Async friendly.
     """
-    info = hass.data.get(DATA_CORE_INFO)
-    if info is None:
+    if (info := hass.data.get(DATA_CORE_INFO)) is None:
         raise HassioNotReadyError
     return info.to_dict()
 

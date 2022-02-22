@@ -448,16 +448,14 @@ class SolarEdgeStorageDataService(SolarEdgeDataService):
                     "status": str(ex.status),
                 },
             ) from None
-        storage_data = data.get("storageData")
-        if storage_data is None:
+        if (storage_data := data.get("storageData")) is None:
             raise UpdateFailed(
                 translation_domain=DOMAIN,
                 translation_key="data_unavailable",
                 translation_placeholders={"service": "storage"},
             )
 
-        batteries = storage_data.get("batteries")
-        if batteries is None:
+        if (batteries := storage_data.get("batteries")) is None:
             raise UpdateFailed(
                 translation_domain=DOMAIN,
                 translation_key="data_unavailable",
@@ -476,14 +474,11 @@ class SolarEdgeStorageDataService(SolarEdgeDataService):
         total_discharge_energy = 0.0
 
         for battery in batteries:
-            serial = battery.get("serialNumber")
-            if not serial:
+            if not (serial := battery.get("serialNumber")):
                 LOGGER.debug("Skipping battery without serialNumber")
                 continue
 
-            telemetries = battery.get("telemetries", [])
-
-            if not telemetries:
+            if not (telemetries := battery.get("telemetries", [])):
                 continue
 
             latest = telemetries[-1]

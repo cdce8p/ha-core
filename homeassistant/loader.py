@@ -721,8 +721,7 @@ async def async_get_lorawan(
     integrations = await async_get_custom_components(hass)
     for integration in integrations.values():
         registrations.pop(integration.domain, None)
-        vendors = integration.lorawan
-        if vendors is None:
+        if (vendors := integration.lorawan) is None:
             continue
         try:
             vendors = LORAWAN_MANIFEST_SCHEMA(integration.manifest)["lorawan"]

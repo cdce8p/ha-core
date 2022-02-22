@@ -211,8 +211,7 @@ class DemoCover(CoverEntity):
     @override
     async def async_close_cover_tilt(self, **kwargs: Any) -> None:
         """Close the cover tilt."""
-        tilt = self._tilt_position
-        if tilt is None:
+        if (tilt := self._tilt_position) is None:
             return
         closed_position = self._resolved_closed_tilt_positions()[0]
         if tilt == closed_position:

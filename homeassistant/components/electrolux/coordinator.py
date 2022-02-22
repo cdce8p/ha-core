@@ -89,8 +89,7 @@ class ElectroluxDataUpdateCoordinator(DataUpdateCoordinator[ApplianceState]):
     def callback_handle_event(self, event: dict) -> None:
         """Handle an incoming SSE event. Event will look like: {"userId": "...", "applianceId": "...", "property": "timeToEnd", "value": 720}."""
 
-        current_state = self.data
-        if current_state is None:
+        if (current_state := self.data) is None:
             return
 
         updated_state = apply_sse_update(

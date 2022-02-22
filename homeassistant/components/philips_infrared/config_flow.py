@@ -30,8 +30,7 @@ class PhilipsIrConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Handle emitter selection."""
-        emitter_entity_ids = async_get_emitters(self.hass)
-        if not emitter_entity_ids:
+        if not (emitter_entity_ids := async_get_emitters(self.hass)):
             return self.async_abort(reason="no_infrared_emitters")
 
         if user_input is not None:

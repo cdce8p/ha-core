@@ -792,8 +792,7 @@ def _get_homeassistant_url(hass: HomeAssistant) -> URL | None:
 
 def get_rpc_ws_url(hass: HomeAssistant) -> str | None:
     """Return the RPC websocket URL."""
-    url = _get_homeassistant_url(hass)
-    if url is None:
+    if (url := _get_homeassistant_url(hass)) is None:
         return None
     ws_url = url.with_scheme("wss" if url.scheme == "https" else "ws")
     return str(ws_url.joinpath(API_WS_URL.removeprefix("/")))

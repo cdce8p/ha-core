@@ -59,8 +59,7 @@ def _in_mm_per_hour(forecasts: list[RadarForecast]) -> list[RadarForecast]:
     """Convert radar rain rates to mm/h, dropping frames in an unknown unit."""
     converted: list[RadarForecast] = []
     for forecast in forecasts:
-        factor = MM_PER_HOUR_FACTOR.get(forecast["unit"])
-        if factor is None:
+        if (factor := MM_PER_HOUR_FACTOR.get(forecast["unit"])) is None:
             _LOGGER.debug(
                 "Dropping a radar frame reported in unknown unit %s", forecast["unit"]
             )

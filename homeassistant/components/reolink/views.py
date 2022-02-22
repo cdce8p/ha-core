@@ -71,8 +71,7 @@ class PlaybackProxyView(HomeAssistantView):
         if playback is None or not secrets.compare_digest(playback.token, token):
             raise web.HTTPNotFound
 
-        path = await playback.async_get_file(filename)
-        if path is None:
+        if (path := await playback.async_get_file(filename)) is None:
             raise web.HTTPNotFound
 
         if filename == HLS_PLAYLIST:

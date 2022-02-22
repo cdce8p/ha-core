@@ -107,9 +107,7 @@ class KacoRs485ConfigFlow(ConfigFlow, domain=DOMAIN):
         assert self._port is not None
         assert self._result is not None
 
-        supported = self._result.supported
-
-        if not supported:
+        if not (supported := self._result.supported):
             if unsupported := self._result.unsupported:
                 return self.async_abort(
                     reason="only_unsupported",

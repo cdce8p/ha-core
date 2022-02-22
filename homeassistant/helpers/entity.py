@@ -1187,8 +1187,7 @@ class Entity(
         if (icon := (entry and entry.icon) or self.icon) is not None:
             attr[EntityStateAttribute.ICON] = icon
 
-        original_name = self.name
-        if original_name is Undefined:
+        if (original_name := self.name) is Undefined:
             original_name = None
 
         # Use cached friendly name if available and original_name hasn't changed.

@@ -129,8 +129,7 @@ async def async_setup_entry(
     def _async_sync_profiles() -> None:
         """Add panels for new profiles and remove those of deleted ones."""
         profiles = api.public_bootstrap.external_arm_profiles
-        live = api.is_external_arm_profiles_live
-        if live:
+        if live := api.is_external_arm_profiles_live:
             known_profile_ids.intersection_update(profiles)
         if new_profile_ids := profiles.keys() - known_profile_ids:
             known_profile_ids.update(new_profile_ids)

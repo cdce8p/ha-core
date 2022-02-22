@@ -380,8 +380,7 @@ class TimerManager:
 
     async def async_cancel_timer(self, timer_id: str) -> None:
         """Cancel a timer."""
-        timer = self.timers.pop(timer_id, None)
-        if timer is None:
+        if (timer := self.timers.pop(timer_id, None)) is None:
             raise TimerNotFoundError
 
         if timer.is_active:
@@ -402,8 +401,7 @@ class TimerManager:
 
     async def async_add_time(self, timer_id: str, duration: timedelta) -> None:
         """Add time to a timer, or remove it if duration is negative."""
-        timer = self.timers.get(timer_id)
-        if timer is None:
+        if (timer := self.timers.get(timer_id)) is None:
             raise TimerNotFoundError
 
         seconds = round(duration.total_seconds())
@@ -442,8 +440,7 @@ class TimerManager:
 
     async def async_pause_timer(self, timer_id: str) -> None:
         """Pauses a timer."""
-        timer = self.timers.get(timer_id)
-        if timer is None:
+        if (timer := self.timers.get(timer_id)) is None:
             raise TimerNotFoundError
 
         if not timer.is_active:
@@ -466,8 +463,7 @@ class TimerManager:
 
     async def async_unpause_timer(self, timer_id: str) -> None:
         """Unpause a timer."""
-        timer = self.timers.get(timer_id)
-        if timer is None:
+        if (timer := self.timers.get(timer_id)) is None:
             raise TimerNotFoundError
 
         if timer.is_active:
@@ -906,16 +902,14 @@ async def _async_find_timers(
 
     # Use device id to order remaining timers
     device_registry = dr.async_get(hass)
-    device = device_registry.async_get(device_id)
-    if device is None:
+    if (device := device_registry.async_get(device_id)) is None:
         return matching_timers
     area_id = dr.async_get_effective_area_id(hass, device)
     if area_id is None:
         return matching_timers
 
     area_registry = ar.async_get(hass)
-    area = area_registry.async_get_area(area_id)
-    if area is None:
+    if (area := area_registry.async_get_area(area_id)) is None:
         return matching_timers
 
     def area_floor_sort(timer: _VoiceTimer) -> int:

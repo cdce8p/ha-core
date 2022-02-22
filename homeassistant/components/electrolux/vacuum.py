@@ -121,8 +121,7 @@ async def _get_interactive_maps_segments(
         for zone in zones:
             zone_id = zone.get("id")
             zone_name = zone.get("name")
-            zone_type = zone.get("zoneType")
-            if zone_type == "clean":
+            if zone.get("zoneType") == "clean":
                 segments.append(
                     Segment(id=f"{map_id}_{zone_id}", name=f"{map_name}: {zone_name}")
                 )
@@ -331,8 +330,7 @@ class RvcEntity(ElectroluxBaseEntity[RVCAppliance], StateVacuumEntity):
         if raw_mode is None:
             return None
 
-        mode = ELECTROLUX_TO_HA_FAN_MODES.get(raw_mode)
-        if mode is None:
+        if (mode := ELECTROLUX_TO_HA_FAN_MODES.get(raw_mode)) is None:
             _LOGGER.warning("Unmapped RVC mode found: %s", raw_mode)
             return None
         return mode

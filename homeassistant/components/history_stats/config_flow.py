@@ -69,8 +69,7 @@ VISIBLE_IF_DURATION: FieldCondition = {
 
 
 def _validate_period(user_input: dict[str, Any]) -> None:
-    period = user_input[CONF_PERIOD]
-    if period == Period.CUSTOM:
+    if (period := user_input[CONF_PERIOD]) == Period.CUSTOM:
         if sum(param in user_input for param in CONF_PERIOD_KEYS) != 2:
             raise SchemaFlowError("only_two_keys_allowed")
     elif period == Period.ROLLING_WINDOW and not user_input.get(CONF_DURATION):

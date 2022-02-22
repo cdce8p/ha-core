@@ -343,8 +343,7 @@ class AtlanticElectricalTowelDryerHeatingLevel(
         """Return the current preset mode."""
         if self._boost_end is not None:
             return PRESET_BOOST
-        level = self._level
-        if level == OverkizCommandParam.BOOST:
+        if (level := self._level) == OverkizCommandParam.BOOST:
             # Boost not started from Home Assistant and already over
             return PRESET_COMFORT
         return OVERKIZ_TO_PRESET_MODE.get(level)

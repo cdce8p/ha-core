@@ -119,8 +119,7 @@ def _last_hour(observation: Observation) -> ObservedHourlyPrecipitation | None:
 
 def _last_hour_start(observation: Observation) -> datetime | None:
     """Return when the station's last full hour began, unless it is stale."""
-    hour = observation.latest_hourly_precipitation
-    if hour is None:
+    if (hour := observation.latest_hourly_precipitation) is None:
         return None
     return _window_start(observation, hour.endtime, ONE_HOUR)
 

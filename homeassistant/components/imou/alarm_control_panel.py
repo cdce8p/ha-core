@@ -41,8 +41,7 @@ ALARM_PANEL_DESCRIPTION = AlarmControlPanelEntityDescription(
 
 def _device_has_alarm_panel(device: ImouHaDevice) -> bool:
     """Return whether the device exposes a usable arming panel."""
-    panel = device.alarm_control_panel
-    if panel is None:
+    if (panel := device.alarm_control_panel) is None:
         return False
     supported = panel.get(PARAM_SUPPORTED, [])
     if not isinstance(supported, list):
@@ -122,8 +121,7 @@ class ImouAlarmControlPanel(ImouEntity, AlarmControlPanelEntity):
         mode = panel.get(PARAM_STATE)
         if not isinstance(mode, str):
             return None
-        mapped = _MODE_TO_STATE.get(mode)
-        if mapped is None:
+        if (mapped := _MODE_TO_STATE.get(mode)) is None:
             _LOGGER.debug("Unknown alarm mode %r for %s", mode, self._device_key)
             return None
         return mapped

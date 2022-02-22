@@ -96,8 +96,7 @@ class LastFMDataUpdateCoordinator(DataUpdateCoordinator[dict[str, LastFMUserData
         """Fetch the data of all users."""
         res = {}
         for username in self.config_entry.options[CONF_USERS]:
-            data = self._get_user_data(username)
-            if data is not None:
+            if (data := self._get_user_data(username)) is not None:
                 res[username] = data
         return res
 

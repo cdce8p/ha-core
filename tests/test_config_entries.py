@@ -160,8 +160,7 @@ async def test_setup_race_only_setup_once(hass: HomeAssistant) -> None:
 
     async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Mock setup entry."""
-        slow = entry.data["slow"]
-        if slow:
+        if entry.data["slow"]:
             await slow_config_entry_setup_future
             return
         nonlocal attempts

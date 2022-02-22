@@ -81,8 +81,7 @@ async def _ssrf_redirect_middleware(
     ):
         return resp
 
-    location = resp.headers.get(hdrs.LOCATION, "")
-    if not location:
+    if not (location := resp.headers.get(hdrs.LOCATION, "")):
         return resp
 
     redirect_url = URL(location)

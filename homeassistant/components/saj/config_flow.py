@@ -104,8 +104,7 @@ class SAJConfigFlow(ConfigFlow, domain=DOMAIN):
 
             # aiosaj keeps reading when the info page is unavailable and leaves
             # the serial at its placeholder, which is not a usable unique ID.
-            serial_number = saj.serialnumber
-            if serial_number == aiosaj.UNKNOWN_SERIAL:
+            if (serial_number := saj.serialnumber) == aiosaj.UNKNOWN_SERIAL:
                 raise CannotConnect("Device did not return a serial number")
             return serial_number
 

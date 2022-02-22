@@ -85,8 +85,7 @@ class DehumidifierEntity(ElectroluxBaseEntity[DHAppliance], HumidifierEntity):
     def _update_attr_state(self) -> bool:
         state_changed = False
 
-        new_mode = self._get_current_mode()
-        if new_mode != self._attr_mode:
+        if (new_mode := self._get_current_mode()) != self._attr_mode:
             self._attr_mode = new_mode
             state_changed = True
 

@@ -73,8 +73,7 @@ def async_schedule_api_key_expiration_issue(
     if not isinstance(api_key, str):
         return None
 
-    expiration = get_api_key_expiration(api_key)
-    if expiration is None:
+    if (expiration := get_api_key_expiration(api_key)) is None:
         return None
 
     warning_start = expiration - timedelta(days=API_KEY_EXPIRATION_WARNING_DAYS)

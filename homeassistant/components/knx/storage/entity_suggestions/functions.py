@@ -582,8 +582,7 @@ class FunctionSuggestionProvider(SuggestionProvider):
         self, hass: HomeAssistant, knx: KNXModule
     ) -> ProviderResult:
         """Generate entity suggestions from project data."""
-        project = await knx.project.get_knxproject()
-        if project is None:
+        if (project := await knx.project.get_knxproject()) is None:
             return ProviderResult(
                 suggestions=[],
                 hints=FunctionHints(state=FunctionsState.NO_PROJECT),

@@ -32,8 +32,7 @@ async def async_setup_entry(
 
     def add_player_options(player_id: str) -> None:
         """Add entities for the player options that do not have one yet."""
-        player = mass.players.get(player_id)
-        if player is None:
+        if (player := mass.players.get(player_id)) is None:
             return
         entities: list[MusicAssistantPlayerConfigText] = []
         added_option_keys = added_option_keys_by_player.setdefault(player_id, set())

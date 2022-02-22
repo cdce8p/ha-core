@@ -151,10 +151,8 @@ def _async_should_expose_legacy(
     else:
         auxiliary_entity = False
 
-    default_expose = prefs.google_default_expose
-
     # Backwards compat
-    if default_expose is None:
+    if (default_expose := prefs.google_default_expose) is None:
         return not auxiliary_entity and _supported_legacy(hass, entity_id)
 
     return (

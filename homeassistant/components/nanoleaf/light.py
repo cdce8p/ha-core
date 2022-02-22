@@ -70,8 +70,7 @@ class NanoleafLight(NanoleafEntity, LightEntity):
         # The effects *Static* and *Dynamic* are not supported by Home Assistant.
         # These reserved effects are implicitly set and are not in the effect_list.
         # https://forum.nanoleaf.me/docs/openapi#_byoot0bams8f
-        effect = self._nanoleaf.effect
-        if effect == EMERSION_EFFECT:
+        if (effect := self._nanoleaf.effect) == EMERSION_EFFECT:
             # Screen Mirroring modes (1D, 2D, 3D, 4D) are offered as effects.
             return self._nanoleaf.selected_emersion
         return None if not effect or effect in RESERVED_EFFECTS else effect

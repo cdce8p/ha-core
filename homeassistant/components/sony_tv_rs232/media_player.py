@@ -133,8 +133,7 @@ class SonyTVRS232MediaPlayer(CoordinatorEntity[SonyTVCoordinator], MediaPlayerEn
     @override
     def state(self) -> MediaPlayerState | None:
         """Return on/off from the last known power state."""
-        power = self.coordinator.data.power
-        if power is None:
+        if (power := self.coordinator.data.power) is None:
             return None
         return MediaPlayerState.ON if power is PowerState.ON else MediaPlayerState.OFF
 

@@ -158,8 +158,7 @@ class IntelliClimaVMCFan(IntelliClimaECOEntity, FanEntity):
             return
 
         # Keep the commanded mode, defaulting to alternate when turned off
-        mode = self._device_data.mode_set
-        if mode == FanMode.off:
+        if (mode := self._device_data.mode_set) == FanMode.off:
             mode = FanMode.alternate
 
         speed = FanSpeed(

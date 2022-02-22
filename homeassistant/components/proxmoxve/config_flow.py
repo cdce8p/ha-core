@@ -133,9 +133,7 @@ async def _get_nodes_data(
     except PVEConnectionError as err:
         raise ProxmoxConnectionError from err
 
-    nodes = cluster_resources.nodes
-
-    if not nodes:
+    if not (nodes := cluster_resources.nodes):
         raise ProxmoxNoNodesFound(
             translation_domain=DOMAIN, translation_key="no_nodes_found"
         )
