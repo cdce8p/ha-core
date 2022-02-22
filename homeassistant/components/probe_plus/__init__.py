@@ -43,8 +43,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ProbePlusConfigEntry) 
     )
 
     if entry.version == 1 and entry.minor_version < 2:
-        mac = entry.unique_id
-        if mac is None:
+        if (mac := entry.unique_id) is None:
             raise ConfigEntryError(
                 translation_domain=DOMAIN,
                 translation_key="migration_no_unique_id",

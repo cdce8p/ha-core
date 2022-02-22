@@ -52,8 +52,7 @@ async def async_get_device_diagnostics(
     hass: HomeAssistant, entry: IcloudConfigEntry, device: AnyDeviceEntry
 ) -> dict[str, Any]:
     """Return diagnostics for a device."""
-    icloud_device = _get_icloud_device(entry, device)
-    if icloud_device is None:
+    if (icloud_device := _get_icloud_device(entry, device)) is None:
         # The account device carries the calendars and to-do lists of the
         # account, and devices iCloud no longer reports have no data at all.
         return async_redact_data({"account": _account_diagnostics(entry)}, TO_REDACT)

@@ -141,8 +141,7 @@ class AirSensor(SensorEntity):
     async def async_update(self) -> None:
         """Update the sensor."""
         await self._api_data.async_update()
-        data = self._api_data.data
-        if data is None:
+        if (data := self._api_data.data) is None:
             self._attr_native_value = None
             return
         authority = data.authorities.get(self._key)

@@ -129,8 +129,7 @@ class LibreSyncMediaPlayer(LibreSyncEntity, MediaPlayerEntity):
         The time is moved back by the fraction of a second that the whole
         seconds leave out, so the frontend's extrapolation is exact.
         """
-        position = state.position_ms
-        if position is None:
+        if (position := state.position_ms) is None:
             self._attr_media_position = None
             self._attr_media_position_updated_at = None
         else:

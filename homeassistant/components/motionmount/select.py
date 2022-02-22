@@ -132,8 +132,7 @@ class MotionMountPresets(MotionMountEntity, SelectEntity):
     @override
     async def async_select_option(self, option: str) -> None:
         """Set the new option."""
-        index = self._name_to_index.get(option)
-        if index is None:
+        if (index := self._name_to_index.get(option)) is None:
             raise HomeAssistantError(f"Unknown preset selected: {option}")
 
         try:

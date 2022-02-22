@@ -114,8 +114,7 @@ def reconcile_model_options(options: dict[str, Any], model_info: ModelInfo) -> N
                 options[CONF_THINKING_BUDGET], model_info.max_tokens - 1
             )
 
-    thinking_types = get_supported_thinking_types(capabilities)
-    if thinking_types:
+    if thinking_types := get_supported_thinking_types(capabilities):
         if options.get(CONF_THINKING_TYPE) not in thinking_types:
             thinking_type = next(
                 value

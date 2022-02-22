@@ -232,8 +232,7 @@ class PM10Sensor(AirQualitySensor):
     @override
     def async_update_state(self, new_state: State) -> None:
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -261,8 +260,7 @@ class PM25Sensor(AirQualitySensor):
     @override
     def async_update_state(self, new_state: State) -> None:
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -292,8 +290,7 @@ class NitrogenDioxideSensor(AirQualitySensor):
     @override
     def async_update_state(self, new_state: State) -> None:
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -331,8 +328,7 @@ class VolatileOrganicCompoundsSensor(AirQualitySensor):
     @override
     def async_update_state(self, new_state: State) -> None:
         """Update accessory after state change."""
-        density = convert_to_float(new_state.state)
-        if density is None:
+        if (density := convert_to_float(new_state.state)) is None:
             return
         if self.char_density.value != density:
             self.char_density.set_value(density)
@@ -366,8 +362,7 @@ class GasConcentrationSensor(AirQualitySensor):
     @override
     def async_update_state(self, new_state: State) -> None:
         """Update accessory after state change."""
-        value = convert_to_float(new_state.state)
-        if value is None:
+        if (value := convert_to_float(new_state.state)) is None:
             return
         unit = new_state.attributes.get(EntityStateAttribute.UNIT_OF_MEASUREMENT)
         if unit not in self.converter.VALID_UNITS:

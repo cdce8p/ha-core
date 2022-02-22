@@ -53,8 +53,7 @@ def count_total_satellites_fn(agps_thread: AGPS3mechanism) -> int | None:
 
 def count_used_satellites_fn(agps_thread: AGPS3mechanism) -> int | None:
     """Count the number of used satellites."""
-    satellites = agps_thread.data_stream.satellites
-    if satellites == "n/a":
+    if (satellites := agps_thread.data_stream.satellites) == "n/a":
         return None
 
     return sum(

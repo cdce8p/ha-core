@@ -310,9 +310,8 @@ class ThermostatEntity(ClimateEntity):
         hvac_mode = self.hvac_mode
         low_temp = kwargs.get(ATTR_TARGET_TEMP_LOW)
         high_temp = kwargs.get(ATTR_TARGET_TEMP_HIGH)
-        temp = kwargs.get(ATTR_TEMPERATURE)
 
-        if temp:
+        if temp := kwargs.get(ATTR_TEMPERATURE):
             temperature_description = f"temperature to {temp}"
         else:
             temperature_description = f"temperature range {low_temp} to {high_temp}"

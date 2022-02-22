@@ -69,8 +69,7 @@ async def async_list_traces(
     if not wanted_key:
         traces: list[dict[str, Any]] = []
         for key in hass.data[DATA_TRACE]:
-            domain = key.split(".", 1)[0]
-            if domain == wanted_domain:
+            if key.split(".", 1)[0] == wanted_domain:
                 traces.extend(_get_debug_traces(hass, key))
     else:
         traces = _get_debug_traces(hass, wanted_key)

@@ -281,8 +281,7 @@ class ISYSensorEntity(ISYNodeEntity, SensorEntity):
             return cast(str, self.target.formatted)
 
         # Handle ISY precision and rounding
-        value = convert_isy_value_to_hass(value, uom, self.target.prec)
-        if value is None:
+        if (value := convert_isy_value_to_hass(value, uom, self.target.prec)) is None:
             return None
 
         # Convert temperatures to Home Assistant's unit

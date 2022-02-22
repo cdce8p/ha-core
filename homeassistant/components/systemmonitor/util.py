@@ -133,8 +133,7 @@ def parse_pressure_file(file_path: str) -> dict[str, dict[str, float | int]] | N
     lines = content.strip().split("\n")
 
     for line in lines:
-        match = pattern.match(line)
-        if match:
+        if match := pattern.match(line):
             line_type, values_str = match.groups()
             values: dict[str, float | int] = {}
             for item in values_str.split():

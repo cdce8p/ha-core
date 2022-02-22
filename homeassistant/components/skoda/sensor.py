@@ -98,8 +98,7 @@ def _mileage_value(entity: SkodaEntity) -> int | None:
 
 
 def _fuel_level_value(entity: SkodaEntity) -> int | None:
-    driving_range = entity.open_api_driving_range
-    if driving_range is not None:
+    if (driving_range := entity.open_api_driving_range) is not None:
         primary_engine = driving_range.primary_engine_range
         if (
             primary_engine is not None
@@ -135,8 +134,7 @@ def _battery_percentage_value(entity: SkodaEntity) -> int | None:
 
 
 def _total_range_value(entity: SkodaEntity) -> int | float | None:
-    driving_range = entity.open_api_driving_range
-    if driving_range is not None:
+    if (driving_range := entity.open_api_driving_range) is not None:
         return driving_range.total_range_in_km
     return None
 
@@ -191,8 +189,7 @@ def _remaining_time_to_full_charge_value(entity: SkodaEntity) -> datetime | None
     if charging.status.state != ChargingState.CHARGING:
         return None
 
-    target_timestamp = charging.status.fully_charged_at
-    if target_timestamp is None:
+    if (target_timestamp := charging.status.fully_charged_at) is None:
         return None
 
     parsed_dt = dt_util.parse_datetime(target_timestamp)

@@ -58,8 +58,7 @@ async def _get_coordinator(
     not met.
     """
     loaded = hass.config_entries.async_loaded_entries(DOMAIN)
-    device_id = call.data.get(CommonServiceArgument.DEVICE_ID)
-    if device_id is not None:
+    if (device_id := call.data.get(CommonServiceArgument.DEVICE_ID)) is not None:
         target_ids = await async_extract_config_entry_ids(call)
         entry = next((e for e in loaded if e.entry_id in target_ids), None)
         if entry is None:

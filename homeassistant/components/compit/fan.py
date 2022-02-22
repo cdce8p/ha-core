@@ -168,8 +168,7 @@ class CompitFan(CoordinatorEntity[CompitDataUpdateCoordinator], FanEntity):
                 percentage,
             )
         )
-        mode = HA_STATE_TO_COMPIT.get(gear)
-        if mode is None:
+        if (mode := HA_STATE_TO_COMPIT.get(gear)) is None:
             return
 
         await self.coordinator.connector.select_device_option(

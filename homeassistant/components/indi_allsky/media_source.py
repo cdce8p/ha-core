@@ -279,8 +279,7 @@ class IndiAllSkyMediaSource(MediaSource):
                     url, allow_redirects=False, timeout=REDIRECT_TIMEOUT
                 ) as resp:
                     if resp.status in (301, 302, 303, 307, 308):
-                        location = resp.headers.get("Location")
-                        if location:
+                        if location := resp.headers.get("Location"):
                             try:
                                 target_url = url_obj.join(yarl.URL(location))
                                 if _is_same_origin(url_obj, target_url):

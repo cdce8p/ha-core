@@ -86,8 +86,7 @@ def format_queue(
     # Group queue items by download ID to handle season packs
     downloads: dict[str, list[Any]] = {}
     for item in queue.records:
-        download_id = getattr(item, "downloadId", None)
-        if download_id:
+        if download_id := getattr(item, "downloadId", None):
             if download_id not in downloads:
                 downloads[download_id] = []
             downloads[download_id].append(item)

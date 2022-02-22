@@ -32,8 +32,7 @@ async def async_setup_entry(
     """Set up Hive thermostat based on a config entry."""
 
     hive = entry.runtime_data
-    devices = hive.session.deviceList.get("light")
-    if not devices:
+    if not (devices := hive.session.deviceList.get("light")):
         return
     async_add_entities(
         (HiveDeviceLight(hass, entry, hive, dev) for dev in devices), True

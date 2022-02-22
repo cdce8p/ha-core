@@ -341,8 +341,7 @@ async def async_get_credential_capabilities(
 
     supported_credential_types: dict[str, CredentialTypeCapability] = {}
     for cred_type, capability in cred_caps.supported_credential_types.items():
-        type_str = CREDENTIAL_TYPE_MAP.get(cred_type)
-        if type_str is None:
+        if (type_str := CREDENTIAL_TYPE_MAP.get(cred_type)) is None:
             continue
         supported_credential_types[type_str] = CredentialTypeCapability(
             num_slots=capability.number_of_credential_slots,

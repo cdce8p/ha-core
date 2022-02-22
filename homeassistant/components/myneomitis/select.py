@@ -182,8 +182,7 @@ class MyNeoSelect(SelectEntity):
         # Check for state updates using the description's state_key
         state_key = self.entity_description.state_key
         if state_key in new_state:
-            mode = new_state.get(state_key)
-            if mode is not None:
+            if (mode := new_state.get(state_key)) is not None:
                 self._attr_current_option = (
                     self.entity_description.reverse_preset_mode_map.get(mode)
                 )

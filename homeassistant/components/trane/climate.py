@@ -87,8 +87,7 @@ class TraneClimateEntity(TraneZoneEntity, ClimateEntity):
         super().__init__(hass, conn, entry_id, zone_id, "zone")
         modes: list[HVACMode] = []
         for zone_mode in conn.state.supported_modes:
-            ha_mode = ZONE_MODE_TO_HA.get(zone_mode)
-            if ha_mode is None:
+            if (ha_mode := ZONE_MODE_TO_HA.get(zone_mode)) is None:
                 continue
             modes.append(ha_mode)
             # AUTO in steamloop maps to both AUTO (schedule) and HEAT_COOL (manual hold)
@@ -132,8 +131,7 @@ class TraneClimateEntity(TraneZoneEntity, ClimateEntity):
         # heating_active and cooling_active are system-level strings from the
         # protocol ("0"=off, "1"=idle, "2"=running); filter by zone mode so
         # a zone in COOL never reports HEATING and vice versa
-        zone_mode = self._zone.mode
-        if zone_mode == ZoneMode.OFF:
+        if (zone_mode := self._zone.mode) == ZoneMode.OFF:
             return HVACAction.OFF
         state = self._conn.state
         if zone_mode != ZoneMode.HEAT and state.cooling_active == "2":
@@ -195,9 +193,8 @@ class TraneClimateEntity(TraneZoneEntity, ClimateEntity):
         """Set target temperature."""
         heat_temp = kwargs.get(ATTR_TARGET_TEMP_LOW)
         cool_temp = kwargs.get(ATTR_TARGET_TEMP_HIGH)
-        set_temp = kwargs.get(ATTR_TEMPERATURE)
 
-        if set_temp is not None:
+        if (set_temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             if self._zone.mode == ZoneMode.COOL:
                 cool_temp = set_temp
             elif self._zone.mode == ZoneMode.HEAT:

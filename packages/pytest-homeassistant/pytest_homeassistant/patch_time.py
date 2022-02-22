@@ -78,8 +78,7 @@ def ha_should_use_real_time() -> bool:
         if module_name and module_name.startswith(ignore):
             return True
 
-        frame = frame.f_back
-        if frame is None:
+        if (frame := frame.f_back) is None:
             break
 
     return False

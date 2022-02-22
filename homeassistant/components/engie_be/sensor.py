@@ -378,8 +378,7 @@ def _peak_end(entity: EngieBePeaksSensor) -> datetime | None:
 
 def _daily_peak_power_kw(entity: EngieBePeaksSensor) -> float | None:
     """Return the power of the most recent daily peak in kW."""
-    daily_peaks = entity.coordinator.data.monthly.daily_peaks
-    if not daily_peaks:
+    if not (daily_peaks := entity.coordinator.data.monthly.daily_peaks):
         return None
     return max(daily_peaks, key=lambda peak: peak.start).peak_kw
 
