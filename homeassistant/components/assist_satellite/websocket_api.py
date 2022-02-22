@@ -47,8 +47,7 @@ async def websocket_intercept_wake_word(
     msg: dict[str, Any],
 ) -> None:
     """Intercept the next wake word from a satellite."""
-    satellite = hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])
-    if satellite is None:
+    if (satellite := hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )
@@ -85,8 +84,7 @@ def websocket_get_configuration(
     msg: dict[str, Any],
 ) -> None:
     """Get the current satellite configuration."""
-    satellite = hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])
-    if satellite is None:
+    if (satellite := hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )
@@ -123,8 +121,7 @@ async def websocket_set_wake_words(
     msg: dict[str, Any],
 ) -> None:
     """Set the active wake words for the satellite."""
-    satellite = hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])
-    if satellite is None:
+    if (satellite := hass.data[DATA_COMPONENT].get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )
@@ -177,8 +174,7 @@ async def websocket_test_connection(
     Send an announcement to the device with a special media id.
     """
     component = hass.data[DATA_COMPONENT]
-    satellite = component.get_entity(msg["entity_id"])
-    if satellite is None:
+    if (satellite := component.get_entity(msg["entity_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.ERR_NOT_FOUND, "Entity not found"
         )

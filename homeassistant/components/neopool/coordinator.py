@@ -161,8 +161,7 @@ class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         active = {ctx for ctx in self.async_contexts() if isinstance(ctx, str)}
         enabled: list[str] = []
         for key in TIMER_BLOCKS:
-            option_key = _TIMER_OPTIONS.get(key)
-            if option_key is None:
+            if (option_key := _TIMER_OPTIONS.get(key)) is None:
                 # Filtration timers gate on context below, not an option.
                 continue
             if not options.get(option_key, False):
@@ -187,8 +186,7 @@ class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         the start/stop endpoints consumed by the time platform. Further derived
         keys will be added by follow-up platform PRs that consume them.
         """
-        enabled = self._get_enabled_timers(data)
-        if not enabled:
+        if not (enabled := self._get_enabled_timers(data)):
             return
         timers = await self.client.read_all_timers(enabled_timers=enabled)
         for t_name, t in timers.items():

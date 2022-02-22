@@ -27,8 +27,7 @@ class BrightnessCondition(EntityNumericalConditionBase):
     @override
     def _get_tracked_value(self, entity_state: State) -> Any:
         """Get brightness converted from uint8 (0-255) to percentage."""
-        raw = super()._get_tracked_value(entity_state)
-        if raw is None:
+        if (raw := super()._get_tracked_value(entity_state)) is None:
             return None
         try:
             return (float(raw) / 255.0) * 100.0

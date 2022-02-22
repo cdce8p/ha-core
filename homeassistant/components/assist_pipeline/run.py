@@ -432,8 +432,7 @@ def _pipeline_debug_recording_thread_proc(
         _LOGGER.debug("Saving wake/stt audio to %s", run_recording_dir)
         run_recording_dir.mkdir(parents=True, exist_ok=True)
         while True:
-            message = queue.get(timeout=message_timeout)
-            if message is None:
+            if (message := queue.get(timeout=message_timeout)) is None:
                 break
             if isinstance(message, str):
                 if wav_writer is not None:

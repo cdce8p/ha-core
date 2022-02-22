@@ -53,8 +53,7 @@ class SpecializedSensorEntityDescription(SensorEntityDescription):
 
 def _assist_level_name(snap: TelemetrySnapshot) -> str | None:
     """Return assist level as a lowercase string, or None if unknown."""
-    level = snap.motor.assist_level
-    if level is None:
+    if (level := snap.motor.assist_level) is None:
         return None
     if isinstance(level, AssistLevel):
         return level.name.lower()

@@ -386,8 +386,7 @@ class KeyboardRemoteConfigFlow(ConfigFlow, domain=DOMAIN):
         if descriptor:
             data[CONF_DEVICE_DESCRIPTOR] = descriptor
 
-        key_types = import_data[CONF_TYPE]
-        if not key_types:
+        if not (key_types := import_data[CONF_TYPE]):
             _LOGGER.warning(
                 "Imported %s lists no key types, using %s", CONF_TYPE, DEFAULT_KEY_TYPES
             )

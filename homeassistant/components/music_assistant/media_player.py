@@ -514,8 +514,7 @@ class MusicAssistantPlayer(MusicAssistantEntity, MediaPlayerEntity):
     @override
     async def async_select_source(self, source: str) -> None:
         """Select input source."""
-        source_id = self._source_list_mapping.get(source)
-        if source_id is None:
+        if (source_id := self._source_list_mapping.get(source)) is None:
             raise ServiceValidationError(
                 f"Source '{source}' not found for player {self.name}"
             )
@@ -749,11 +748,9 @@ class MusicAssistantPlayer(MusicAssistantEntity, MediaPlayerEntity):
 
     def _update_media_image_url(self, player: Player) -> None:
         """Update image URL."""
-        image_url = _get_player_artwork_url(self.mass, player)
-
         # check if the image is provided via music-assistant and therefore
         # not accessible from the outside
-        if image_url:
+        if image_url := _get_player_artwork_url(self.mass, player):
             self._attr_media_image_remotely_accessible = (
                 self.mass.server_url not in image_url
             )

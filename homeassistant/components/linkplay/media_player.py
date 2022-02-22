@@ -284,13 +284,11 @@ class LinkPlayMediaPlayerEntity(LinkPlayBaseEntity, MediaPlayerEntity):
         """Join `group_members` as a player group with the current player."""
 
         controller: LinkPlayController = self.hass.data[DOMAIN][SHARED_DATA].controller
-        multiroom = self._bridge.multiroom
-        if multiroom is None:
+        if (multiroom := self._bridge.multiroom) is None:
             multiroom = LinkPlayMultiroom(self._bridge)
 
         for group_member in group_members:
-            bridge = await self._get_linkplay_bridge(group_member)
-            if bridge:
+            if bridge := await self._get_linkplay_bridge(group_member):
                 await multiroom.add_follower(bridge)
 
         await controller.discover_multirooms()
@@ -316,8 +314,7 @@ class LinkPlayMediaPlayerEntity(LinkPlayBaseEntity, MediaPlayerEntity):
     @override
     def group_members(self) -> list[str]:
         """List of players which are grouped together."""
-        multiroom = self._bridge.multiroom
-        if multiroom is None:
+        if (multiroom := self._bridge.multiroom) is None:
             return []
 
         shared_data = self.hass.data[DOMAIN][SHARED_DATA]
@@ -362,8 +359,7 @@ class LinkPlayMediaPlayerEntity(LinkPlayBaseEntity, MediaPlayerEntity):
         """Remove this player from any group."""
         controller: LinkPlayController = self.hass.data[DOMAIN][SHARED_DATA].controller
 
-        multiroom = self._bridge.multiroom
-        if multiroom is not None:
+        if (multiroom := self._bridge.multiroom) is not None:
             await multiroom.remove_follower(self._bridge)
 
         await controller.discover_multirooms()

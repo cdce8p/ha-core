@@ -245,8 +245,7 @@ async def async_setup_entry(
     entities: list[SensorEntity] = []
     for coordinator in entry.runtime_data:
         if isinstance(coordinator, PowerfoxReportDataUpdateCoordinator):
-            gas_report = coordinator.data.gas
-            if gas_report is None:
+            if (gas_report := coordinator.data.gas) is None:
                 continue
             entities.extend(
                 PowerfoxGasSensorEntity(
