@@ -406,9 +406,7 @@ class GrowattServerConfigFlow(ConfigFlow, domain=DOMAIN):
                 )
                 return self.async_abort(reason=ERROR_CANNOT_CONNECT)
 
-            plant_data = plant_info["data"]
-
-            if not plant_data:
+            if not (plant_data := plant_info["data"]):
                 return self.async_abort(reason=ABORT_NO_PLANTS)
 
             plants = {plant["plantId"]: plant["plantName"] for plant in plant_data}

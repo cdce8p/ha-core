@@ -470,13 +470,11 @@ class UnifiAccessCoordinator(DataUpdateCoordinator[UnifiAccessData]):
     async def _handle_v2_device_update(self, msg: WebsocketMessage) -> None:
         """Handle V2 device update messages."""
         update = cast(V2DeviceUpdate, msg)
-        device_id = update.data.id
-        if not device_id:
+        if not (device_id := update.data.id):
             return
         first_valid_door_id: str | None = None
         for loc_state in update.data.location_states:
-            door_id = loc_state.location_id
-            if not door_id:
+            if not (door_id := loc_state.location_id):
                 continue
             if first_valid_door_id is None:
                 first_valid_door_id = door_id
@@ -493,8 +491,7 @@ class UnifiAccessCoordinator(DataUpdateCoordinator[UnifiAccessData]):
     async def _handle_insights_add(self, msg: WebsocketMessage) -> None:
         """Handle access insights events (entry/exit)."""
         insights = cast(InsightsAdd, msg)
-        door_entries = insights.data.metadata.door
-        if not door_entries:
+        if not (door_entries := insights.data.metadata.door):
             return
         event_type = (
             "access_granted" if insights.data.result == "ACCESS" else "access_denied"
@@ -516,8 +513,7 @@ class UnifiAccessCoordinator(DataUpdateCoordinator[UnifiAccessData]):
         """Handle access log events (entry/exit via access.logs.add)."""
         log = cast(LogAdd, msg)
         source = log.data.source
-        device_target = source.device_config
-        if device_target is None:
+        if (device_target := source.device_config) is None:
             return
         if device_target.id in self._device_to_door:
             door_id = self._device_to_door[device_target.id]

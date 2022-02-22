@@ -2659,8 +2659,7 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
                 "a child device must have at least one identifier",
             )
 
-        parent = self._device_data.get(parent_device_id)
-        if parent is None:
+        if (parent := self._device_data.get(parent_device_id)) is None:
             if parent_device_id in self._child_device_data:
                 raise DeviceInfoError(
                     domain,

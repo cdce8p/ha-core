@@ -367,9 +367,7 @@ async def async_setup_entry(
             )
 
         if solar_log_integration_data.device_data_coordinator is not None:
-            device_data = solar_log_integration_data.device_data_coordinator.data
-
-            if device_data:
+            if device_data := solar_log_integration_data.device_data_coordinator.data:
                 entities.extend(
                     SolarLogInverterSensor(
                         solar_log_integration_data.device_data_coordinator,

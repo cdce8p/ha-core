@@ -1304,8 +1304,7 @@ async def _async_get_condition_platform(
 ) -> tuple[str, ConditionProtocol | None]:
     platform_and_sub_type = condition_key.split(".")
     platform: str | None = platform_and_sub_type[0]
-    platform = _PLATFORM_ALIASES.get(platform, platform)
-    if platform is None:
+    if (platform := _PLATFORM_ALIASES.get(platform, platform)) is None:
         return "", None
 
     try:

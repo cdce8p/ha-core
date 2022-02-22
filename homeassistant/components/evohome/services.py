@@ -121,9 +121,7 @@ def _resolve_ctl_unique_id(
         )
         return tcs_id
 
-    entry = er.async_get(hass).async_get(entity_id)
-
-    if entry is None:
+    if (entry := er.async_get(hass).async_get(entity_id)) is None:
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="entity_not_found",

@@ -69,9 +69,8 @@ def _create_daily_event(
 
     # Time-based daily events using enum properties
     daily_event = DailyCalendarEventType(event_type)
-    time_value = zmanim.zmanim.get(daily_event.value)
 
-    if time_value is not None:
+    if (time_value := zmanim.zmanim.get(daily_event.value)) is not None:
         return CalendarEvent(
             start=time_value.utc,
             end=time_value.utc,

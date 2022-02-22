@@ -121,8 +121,7 @@ def _zone_temperature_lists(device: Appliance) -> tuple[list[str], list[str]]:
 
 def _supports_zone_temperature_control(device: Appliance) -> bool:
     """Return True if the device exposes zone temperature settings."""
-    zones = device.zones
-    if not zones:
+    if not (zones := device.zones):
         return False
     heating, cooling = _zone_temperature_lists(device)
     return bool(
@@ -135,8 +134,7 @@ def _supports_zone_temperature_control(device: Appliance) -> bool:
 
 def _system_target_temperature(device: Appliance) -> float | None:
     """Return the system target temperature when available."""
-    target = device.target_temperature
-    if target is None:
+    if (target := device.target_temperature) is None:
         return None
     try:
         return float(target)

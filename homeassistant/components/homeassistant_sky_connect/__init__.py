@@ -71,9 +71,8 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
         for device in added | removed:
             path = device.device
-            entry = current_entries_by_path.get(path)
 
-            if entry is not None:
+            if (entry := current_entries_by_path.get(path)) is not None:
                 _LOGGER.debug(
                     "Device %r has changed state, reloading config entry %s",
                     path,

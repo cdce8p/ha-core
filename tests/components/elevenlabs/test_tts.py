@@ -127,8 +127,7 @@ def stream_sentence_helpers():
 
         async def message_gen() -> AsyncIterator[str]:
             while True:
-                part = await queue.get()
-                if part is None:
+                if (part := await queue.get()) is None:
                     break
                 yield part
 

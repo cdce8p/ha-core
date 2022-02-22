@@ -320,8 +320,7 @@ class WattwaechterDiagnosticSensor(WattwaechterEntity, SensorEntity):
     @override
     def native_value(self) -> StateType:
         """Return the current diagnostic value."""
-        system = self.coordinator.data.system
-        if system is None:
+        if (system := self.coordinator.data.system) is None:
             return None
         raw = system.get_value(
             self.entity_description.section, self.entity_description.field

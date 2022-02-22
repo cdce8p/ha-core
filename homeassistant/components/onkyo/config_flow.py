@@ -204,9 +204,7 @@ class OnkyoConfigFlow(ConfigFlow, domain=DOMAIN):
             _LOGGER.error("SSDP location is None")
             return self.async_abort(reason="unknown")
 
-        host = URL(discovery_info.ssdp_location).host
-
-        if host is None:
+        if (host := URL(discovery_info.ssdp_location).host) is None:
             _LOGGER.error("SSDP host is None")
             return self.async_abort(reason="unknown")
 
@@ -298,8 +296,7 @@ class OnkyoConfigFlow(ConfigFlow, domain=DOMAIN):
 
         _LOGGER.debug("Configuring receiver, info: %s", self._receiver_info)
 
-        suggested_values = user_input
-        if suggested_values is None:
+        if (suggested_values := user_input) is None:
             if reconfigure_entry is None:
                 suggested_values = {
                     OPTION_VOLUME_RESOLUTION: OPTION_VOLUME_RESOLUTION_DEFAULT,
@@ -422,8 +419,7 @@ class OnkyoOptionsFlowHandler(OptionsFlowWithReload):
 
                 return await self.async_step_names()
 
-        suggested_values = user_input
-        if suggested_values is None:
+        if (suggested_values := user_input) is None:
             suggested_values = {
                 OPTION_MAX_VOLUME: entry_options[OPTION_MAX_VOLUME],
                 OPTION_INPUT_SOURCES: [

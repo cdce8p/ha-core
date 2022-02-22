@@ -214,8 +214,7 @@ class PhotoCache:
     def get(self, photo_id: str) -> PhotoAsset | None:
         """Get a photo from the cache."""
         with self._lock:
-            photo = self._cache.get(photo_id)
-            if photo is not None:
+            if (photo := self._cache.get(photo_id)) is not None:
                 # Move the accessed item to the end to show that it was recently used
                 self._cache.move_to_end(photo_id)
             return photo

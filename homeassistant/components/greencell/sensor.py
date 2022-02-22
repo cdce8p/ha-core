@@ -339,7 +339,6 @@ class HabuSingleSensor(HabuSensor):
     @override
     def native_value(self) -> StateType:
         """Return the state of the sensor."""
-        raw_value = self._value.data
-        if raw_value is None:
+        if (raw_value := self._value.data) is None:
             return None
         return self.entity_description.value_fn(raw_value)

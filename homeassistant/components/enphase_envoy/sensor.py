@@ -1372,8 +1372,7 @@ class EnvoyInverterEntity(EnvoySensorBaseEntity):
         """Initialize Envoy inverter entity."""
         super().__init__(coordinator, description)
         self._serial_number = serial_number
-        key = description.key
-        if key == INVERTERS_KEY:
+        if (key := description.key) == INVERTERS_KEY:
             # Originally there was only one inverter sensor, so we don't want to
             # break existing installations by changing the unique_id.
             self._attr_unique_id = serial_number
@@ -1588,8 +1587,7 @@ class EnvoyACBAggregateSleepStateEntity(EnvoyACBAggregateEntity, SensorEntity):
     @override
     def native_value(self) -> str | None:
         """Return the aggregate sleep state across all ACB batteries."""
-        acb_inventory = self.data.acb_inventory
-        if not acb_inventory:
+        if not (acb_inventory := self.data.acb_inventory):
             return None
         return aggregate_acb_sleep_state(acb_inventory.values())
 

@@ -76,9 +76,7 @@ def get_update_callback(mock_client: MagicMock):
 
     """
     # Get all the calls made to set_update_callback
-    calls = mock_client.set_update_callback.call_args_list
-
-    if not calls:
+    if not (calls := mock_client.set_update_callback.call_args_list):
         raise ValueError("set_update_callback was not called on the mock client")
 
     # Get the first (and usually only) call

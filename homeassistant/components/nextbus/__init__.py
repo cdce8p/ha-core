@@ -26,8 +26,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: NextBusConfigEntry) -> b
     coordinator_key = f"{entry_agency}-{entry_stop}"
 
     coordinators = hass.data.setdefault(NEXTBUS_KEY, {})
-    coordinator = coordinators.get(coordinator_key)
-    if coordinator is None:
+    if (coordinator := coordinators.get(coordinator_key)) is None:
         coordinator = NextBusDataUpdateCoordinator(hass, entry_agency)
         coordinators[coordinator_key] = coordinator
     entry.runtime_data = coordinator

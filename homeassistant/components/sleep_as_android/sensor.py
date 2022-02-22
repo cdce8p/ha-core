@@ -94,8 +94,7 @@ class SleepAsAndroidSensorEntity(SleepAsAndroidEntity, RestoreSensor):
     @override
     async def async_added_to_hass(self) -> None:
         """Restore entity state."""
-        state = await self.async_get_last_sensor_data()
-        if state:
+        if state := await self.async_get_last_sensor_data():
             self._attr_native_value = state.native_value
 
         await super().async_added_to_hass()

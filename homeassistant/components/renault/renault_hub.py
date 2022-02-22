@@ -201,14 +201,12 @@ class RenaultHub:
 
     async def get_account_ids(self) -> list[str]:
         """Get Kamereon account ids."""
-        accounts = []
-        for account in await self._client.get_api_accounts():
-            vehicle_links = await _get_filtered_vehicles(account)
-
+        return [
+            account.account_id
+            for account in await self._client.get_api_accounts()
             # Only add the account if it has linked vehicles.
-            if vehicle_links:
-                accounts.append(account.account_id)
-        return accounts
+            if await _get_filtered_vehicles(account)
+        ]
 
     @property
     def vehicles(self) -> dict[str, RenaultVehicleProxy]:

@@ -91,9 +91,7 @@ async def async_converse(
     if agent_id is None:
         agent_id = HOME_ASSISTANT_AGENT
 
-    agent = async_get_agent(hass, agent_id)
-
-    if agent is None:
+    if (agent := async_get_agent(hass, agent_id)) is None:
         raise ValueError(f"Agent {agent_id} not found")
 
     if isinstance(agent, ConversationEntity):

@@ -124,8 +124,7 @@ async def async_setup_entry(
     if not (infrared_entity_id := entry.data.get(CONF_INFRARED_ENTITY_ID)):
         return
 
-    device_type = entry.data[CONF_DEVICE_TYPE]
-    if device_type == LGDeviceType.TV:
+    if entry.data[CONF_DEVICE_TYPE] == LGDeviceType.TV:
         async_add_entities(
             LgIrButton(entry, infrared_entity_id, description)
             for description in TV_BUTTON_DESCRIPTIONS

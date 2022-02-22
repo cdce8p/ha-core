@@ -173,8 +173,7 @@ class GoogleConfig(AbstractConfig):
         exposed_domains = self._config.get(CONF_EXPOSED_DOMAINS)
 
         entity_registry = er.async_get(self.hass)
-        registry_entry = entity_registry.async_get(entity_id)
-        if registry_entry:
+        if registry_entry := entity_registry.async_get(entity_id):
             auxiliary_entity = (
                 registry_entry.entity_category is not None
                 or registry_entry.hidden_by is not None

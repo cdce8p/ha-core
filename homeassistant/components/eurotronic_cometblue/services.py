@@ -158,8 +158,7 @@ async def get_schedule(
 
     week_schedule: JsonObjectType = {}
     for day in ATTR_ALL_DAYS:
-        day_schedule = device_schedule.get(day, {})
-        if day_schedule:
+        if day_schedule := device_schedule.get(day, {}):
             curr_day_schedule: JsonArrayType = [
                 {
                     ATTR_FROM: start,

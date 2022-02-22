@@ -86,8 +86,7 @@ class MediaPlayerIsVolumeCondition(EntityNumericalConditionBase):
     @override
     def _get_tracked_value(self, entity_state: State) -> Any:
         """Get the volume value converted from 0.0-1.0 to percentage (0-100)."""
-        raw = super()._get_tracked_value(entity_state)
-        if raw is None:
+        if (raw := super()._get_tracked_value(entity_state)) is None:
             return None
         try:
             return float(raw) * 100.0

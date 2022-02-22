@@ -455,8 +455,7 @@ class RegistryEntry:
         if icon is not None:
             attrs[EntityStateAttribute.ICON] = icon
 
-        name = async_get_full_entity_name(hass, self)
-        if name:
+        if name := async_get_full_entity_name(hass, self):
             attrs[EntityStateAttribute.FRIENDLY_NAME] = name
 
         if self.supported_features is not None:
@@ -471,8 +470,7 @@ class RegistryEntry:
 @callback
 def async_get_unprefixed_name(hass: HomeAssistant, entry: RegistryEntry) -> str:
     """Get the entity name with device name prefix stripped, if applicable."""
-    name = entry.name
-    if name is not None:
+    if (name := entry.name) is not None:
         if (
             entry.device_id is not None
             and (device := dr.async_get(hass).async_get(entry.device_id)) is not None
@@ -539,8 +537,7 @@ def _async_get_full_entity_name(
             ):
                 floor_name = floor.name
 
-        entity_name = name
-        if entity_name is None:
+        if (entity_name := name) is None:
             if original_name_unprefixed is UNDEFINED:
                 original_name_unprefixed = (
                     _async_strip_prefix_from_entity_name(original_name, device_name)
@@ -617,8 +614,7 @@ def async_get_entity_aliases(
 
     The returned list preserves the order set by the user.
     """
-    entry_aliases = entry.aliases
-    if not entry_aliases:
+    if not (entry_aliases := entry.aliases):
         if allow_empty:
             return []
         entry_aliases = [COMPUTED_NAME]
@@ -1364,8 +1360,7 @@ class EntityRegistry(BaseRegistry):
         Entity ID conflicts are checked against registered and currently
         existing entities, as well as provided `reserved_entity_ids`.
         """
-        parts = self.settings.entity_id_parts
-        if parts is None:
+        if (parts := self.settings.entity_id_parts) is None:
             parts = (EntityNamePart.AREA, EntityNamePart.DEVICE, EntityNamePart.ENTITY)
         object_id = _async_get_full_entity_name(
             self.hass,

@@ -85,8 +85,7 @@ class DemoInfraredEvent(InfraredReceiverConsumerEntity, EventEntity):
         command = NECCommand.from_raw_timings(signal.timings)
         if command is None or command.address != INFRARED_FAN_ADDRESS:
             return
-        event_type = COMMAND_EVENTS.get(command.command)
-        if event_type is None:
+        if (event_type := COMMAND_EVENTS.get(command.command)) is None:
             return
         self._trigger_event(event_type, {"raw_code": signal.timings})
         self.async_write_ha_state()

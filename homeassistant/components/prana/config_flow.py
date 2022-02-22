@@ -93,9 +93,8 @@ class PranaConfigFlow(ConfigFlow, domain=DOMAIN):
     async def _validate_device(self) -> PranaDeviceInfo:
         """Validate that a Prana device is reachable and valid."""
         client = PranaLocalApiClient(host=self._host, port=80)
-        device_info = await client.get_device_info()
 
-        if device_info is None:
+        if (device_info := await client.get_device_info()) is None:
             raise PranaApiCommunicationError("Device returned no data")
 
         if not device_info.isValid:

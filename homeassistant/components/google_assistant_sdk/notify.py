@@ -69,8 +69,7 @@ class BroadcastNotificationService(BaseNotificationService):
         )
 
         commands: list[str] = []
-        targets = kwargs.get(ATTR_TARGET)
-        if not targets:
+        if not (targets := kwargs.get(ATTR_TARGET)):
             commands.append(broadcast_commands(language_code)[0].format(message))
         else:
             commands.extend(

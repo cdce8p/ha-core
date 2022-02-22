@@ -227,8 +227,7 @@ class SwitchBotCloudAirConditioner(SwitchBotCloudEntity, ClimateEntity, RestoreE
 
         Uses the last known hvac_mode (if not OFF), otherwise defaults to FAN_ONLY.
         """
-        hvac_mode = self._attr_hvac_mode
-        if hvac_mode == HVACMode.OFF:
+        if (hvac_mode := self._attr_hvac_mode) == HVACMode.OFF:
             hvac_mode = HVACMode.FAN_ONLY
         await self.async_set_hvac_mode(hvac_mode)
 

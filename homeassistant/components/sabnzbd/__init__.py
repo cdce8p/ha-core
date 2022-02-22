@@ -16,8 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass: HomeAssistant, entry: SabnzbdConfigEntry) -> bool:
     """Set up the SabNzbd Component."""
 
-    sab_api = await get_client(hass, entry.data)
-    if not sab_api:
+    if not (sab_api := await get_client(hass, entry.data)):
         raise ConfigEntryNotReady
 
     coordinator = SabnzbdUpdateCoordinator(hass, entry, sab_api)

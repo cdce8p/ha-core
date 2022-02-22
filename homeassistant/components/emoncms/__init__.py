@@ -37,8 +37,7 @@ async def _check_unique_id_migration(
     hass: HomeAssistant, entry: EmonCMSConfigEntry, emoncms_client: EmoncmsClient
 ) -> None:
     """Check if we can migrate to the emoncms uuid."""
-    emoncms_unique_id = await emoncms_client.async_get_uuid()
-    if emoncms_unique_id:
+    if emoncms_unique_id := await emoncms_client.async_get_uuid():
         if entry.unique_id != emoncms_unique_id:
             _migrate_unique_id(hass, entry, emoncms_unique_id)
     else:

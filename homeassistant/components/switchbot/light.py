@@ -64,8 +64,7 @@ class SwitchbotAirPurifierLightEntity(SwitchbotEntity, LightEntity, RestoreEntit
     async def async_added_to_hass(self) -> None:
         """Call when entity is added to hass."""
         await super().async_added_to_hass()
-        last_state = await self.async_get_last_state()
-        if last_state:
+        if last_state := await self.async_get_last_state():
             self._attr_is_on = last_state.state == STATE_ON
 
     @property

@@ -159,8 +159,7 @@ def _check_deprecated_fan_speed_entity(
     ):
         return False
 
-    entity_entry = entity_registry.async_get(entity_id)
-    if not entity_entry:
+    if not (entity_entry := entity_registry.async_get(entity_id)):
         return False
 
     if entity_entry.disabled:

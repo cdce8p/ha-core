@@ -29,8 +29,7 @@ class BrightnessTriggerMixin(EntityNumericalStateTriggerBase):
     @override
     def _get_tracked_value(self, state: State) -> float | None:
         """Get tracked brightness as a percentage."""
-        value = super()._get_tracked_value(state)
-        if value is None:
+        if (value := super()._get_tracked_value(state)) is None:
             return None
         # Convert uint8 value (0-255) to a percentage (0-100)
         return (value / 255.0) * 100.0

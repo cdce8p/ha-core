@@ -92,10 +92,8 @@ class LyricRoomPrioritySelect(LyricDeviceEntity, SelectEntity):
             return OPTION_FOLLOW_ME
 
         if current.priority_type == PRIORITY_TYPE_PICK_A_ROOM:
-            selected = current.selected_rooms
-            if selected:
-                room = self._rooms.get(selected[0])
-                if room is not None:
+            if selected := current.selected_rooms:
+                if (room := self._rooms.get(selected[0])) is not None:
                     return room.room_name
 
         return None

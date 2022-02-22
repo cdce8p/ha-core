@@ -107,8 +107,7 @@ class FreeboxFlowHandler(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Initialize flow from zeroconf."""
         zeroconf_properties = discovery_info.properties
-        host = zeroconf_properties.get("api_domain")
-        if not host:
+        if not (host := zeroconf_properties.get("api_domain")):
             return self.async_abort(reason="missing_api_domain")
         port = zeroconf_properties.get("https_port") or discovery_info.port
         return await self.async_step_user({CONF_HOST: host, CONF_PORT: port})

@@ -833,8 +833,7 @@ class SensorEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
         DEFAULT_PRECISION_LIMIT.
         """
         display_precision = self.suggested_display_precision
-        device_class = self.device_class
-        if device_class is None:
+        if (device_class := self.device_class) is None:
             return display_precision
 
         default_unit_of_measurement = (
@@ -844,8 +843,7 @@ class SensorEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
         if default_unit_of_measurement is None:
             return display_precision
 
-        unit_of_measurement = self.unit_of_measurement
-        if unit_of_measurement is None:
+        if (unit_of_measurement := self.unit_of_measurement) is None:
             return display_precision
 
         if display_precision is not None:

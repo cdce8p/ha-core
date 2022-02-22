@@ -20,8 +20,7 @@ class PajGpsEntity(CoordinatorEntity[PajGpsCoordinator]):
         self._device_id = device_id
 
         model = None
-        device_models = self.device.device_models
-        if device_models:
+        if device_models := self.device.device_models:
             model = device_models[0].model
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, f"{coordinator.user_id}_{device_id}")},

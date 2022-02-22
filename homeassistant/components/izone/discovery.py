@@ -268,8 +268,7 @@ async def async_maybe_stop_discovery(hass: HomeAssistant) -> None:
 
 async def async_stop_discovery(hass: HomeAssistant) -> None:
     """Stop the shared discovery service and clear HA tracking."""
-    state = hass.data.pop(DATA_DISCOVERY_SERVICE, None)
-    if state is None:
+    if (state := hass.data.pop(DATA_DISCOVERY_SERVICE, None)) is None:
         return
 
     if state.starting is not None and not state.starting.done():

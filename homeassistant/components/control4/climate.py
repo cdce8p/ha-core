@@ -231,8 +231,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def temperature_unit(self) -> str:
         """Return the temperature unit based on the thermostat's SCALE setting."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return UnitOfTemperature.CELSIUS  # Default per HA conventions
         if data.get(CONTROL4_SCALE) == "FAHRENHEIT":
             return UnitOfTemperature.FAHRENHEIT
@@ -241,8 +240,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @property
     def _cool_setpoint(self) -> float | None:
         """Return the cooling setpoint from the appropriate variable."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
         if self.temperature_unit == UnitOfTemperature.CELSIUS:
             return data.get(CONTROL4_COOL_SETPOINT_C)
@@ -251,8 +249,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @property
     def _heat_setpoint(self) -> float | None:
         """Return the heating setpoint from the appropriate variable."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
         if self.temperature_unit == UnitOfTemperature.CELSIUS:
             return data.get(CONTROL4_HEAT_SETPOINT_C)
@@ -262,8 +259,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def current_temperature(self) -> float | None:
         """Return the current temperature."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
         if self.temperature_unit == UnitOfTemperature.CELSIUS:
             return data.get(CONTROL4_CURRENT_TEMPERATURE_C)
@@ -273,8 +269,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def current_humidity(self) -> int | None:
         """Return the current humidity."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
         humidity = data.get(CONTROL4_HUMIDITY)
         try:
@@ -286,8 +281,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def hvac_mode(self) -> HVACMode:
         """Return current HVAC mode."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return HVACMode.OFF
         c4_mode = data.get(CONTROL4_HVAC_MODE) or ""
         return C4_TO_HA_HVAC_MODE.get(c4_mode, HVACMode.OFF)
@@ -296,11 +290,9 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def hvac_action(self) -> HVACAction | None:
         """Return current HVAC action."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
-        c4_state = data.get(CONTROL4_HVAC_STATE)
-        if c4_state is None:
+        if (c4_state := data.get(CONTROL4_HVAC_STATE)) is None:
             return None
         action = C4_TO_HA_HVAC_ACTION.get(str(c4_state).lower())
         # Substring match for multi-stage systems that report
@@ -318,8 +310,7 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def target_temperature(self) -> float | None:
         """Return the target temperature."""
-        hvac_mode = self.hvac_mode
-        if hvac_mode == HVACMode.COOL:
+        if (hvac_mode := self.hvac_mode) == HVACMode.COOL:
             return self._cool_setpoint
         if hvac_mode == HVACMode.HEAT:
             return self._heat_setpoint
@@ -345,11 +336,9 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def fan_mode(self) -> str | None:
         """Return the current fan mode."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
-        c4_fan_mode = data.get(CONTROL4_FAN_MODE)
-        if c4_fan_mode is None:
+        if (c4_fan_mode := data.get(CONTROL4_FAN_MODE)) is None:
             return None
         return c4_fan_mode.lower()
 
@@ -357,11 +346,9 @@ class Control4Climate(Control4Entity, ClimateEntity):
     @override
     def fan_modes(self) -> list[str] | None:
         """Return the list of available fan modes."""
-        data = self._thermostat_data
-        if data is None:
+        if (data := self._thermostat_data) is None:
             return None
-        modes = data.get(CONTROL4_FAN_MODES_LIST)
-        if not modes:
+        if not (modes := data.get(CONTROL4_FAN_MODES_LIST)):
             return None
         return [m.strip().lower() for m in modes.split(",") if m.strip()]
 

@@ -141,8 +141,7 @@ class ConfigManagerEntryResourceReloadView(HomeAssistantView):
             raise Unauthorized(config_entry_id=entry_id, permission="remove")
 
         hass = request.app[KEY_HASS]
-        entry = hass.config_entries.async_get_entry(entry_id)
-        if not entry:
+        if not (entry := hass.config_entries.async_get_entry(entry_id)):
             return self.json_message("Invalid entry specified", HTTPStatus.NOT_FOUND)
         assert isinstance(entry, config_entries.ConfigEntry)
 
@@ -819,8 +818,7 @@ async def config_subentry_update(
         )
         return
 
-    subentry = entry.subentries.get(msg["subentry_id"])
-    if subentry is None:
+    if (subentry := entry.subentries.get(msg["subentry_id"])) is None:
         connection.send_error(
             msg["id"], websocket_api.const.ERR_NOT_FOUND, "Config subentry not found"
         )

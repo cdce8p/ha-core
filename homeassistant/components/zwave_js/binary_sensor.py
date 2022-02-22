@@ -477,8 +477,7 @@ def _async_check_legacy_entity_repair(
             ("script", entity_scripts),
         ):
             for eid in entity_ids:
-                item = ent_reg.async_get(eid)
-                if item:
+                if item := ent_reg.async_get(eid):
                     items.append(
                         f"- [{item.name or item.original_name or eid}]"
                         f"(/config/{domain}/edit/{item.unique_id})"
@@ -736,8 +735,7 @@ class ZWaveLegacyDoorStateBinarySensor(ZWaveBaseEntity, BinarySensorEntity):
         value = self.info.node.values.get(self._opening_state_value_id)
         if value is None:
             return None
-        opening_state = value.value
-        if opening_state is None:
+        if (opening_state := value.value) is None:
             return None
         try:
             return self.entity_description.parse_opening_state(
@@ -804,8 +802,7 @@ class ZWaveOpeningStateBinarySensor(ZWaveBaseEntity, BinarySensorEntity):
     @override
     def is_on(self) -> bool | None:
         """Return if the sensor is on or off."""
-        value = self.info.primary_value.value
-        if value is None:
+        if (value := self.info.primary_value.value) is None:
             return None
         try:
             return self.entity_description.parse_opening_state(OpeningState(int(value)))

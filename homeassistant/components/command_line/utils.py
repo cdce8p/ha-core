@@ -35,7 +35,7 @@ async def async_call_shell_with_timeout(
         return -1
 
     return_code = proc.returncode
-    if return_code == _EXEC_FAILED_CODE:
+    if (return_code := proc.returncode) == _EXEC_FAILED_CODE:
         LOGGER.error("Error trying to exec command: %s", command)
     elif log_return_code and return_code != 0:
         LOGGER.error(

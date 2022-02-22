@@ -406,9 +406,8 @@ async def async_remove_config_entry_device(
     if not isinstance(device_entry, dr.DeviceEntry):
         # This integration does not create child devices.
         return False
-    node = get_node_from_device_entry(hass, device_entry)
 
-    if node is None:
+    if (node := get_node_from_device_entry(hass, device_entry)) is None:
         # In case this was a bridge
         _remove_via_devices(hass, config_entry, device_entry)
         # Always allow users to remove orphan devices

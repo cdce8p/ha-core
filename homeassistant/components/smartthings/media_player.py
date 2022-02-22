@@ -127,8 +127,7 @@ class SmartThingsMediaPlayer(SmartThingsEntity, MediaPlayerEntity):
 
     def _build_source_map(self) -> None:
         """Build the source mapping from HA key to SmartThings ID."""
-        raw_sources = self._get_raw_source_list()
-        if not raw_sources:
+        if not (raw_sources := self._get_raw_source_list()):
             self._source_to_smartthings_id = {}
             return
         self._source_to_smartthings_id = {

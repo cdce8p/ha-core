@@ -56,11 +56,9 @@ class PooldoseConfigFlow(ConfigFlow, domain=DOMAIN):
         if api_status is RequestStatus.API_VERSION_UNSUPPORTED:
             return None, api_versions, {"base": "api_not_supported"}
 
-        device_info = client.device_info
-        if not device_info:
+        if not (device_info := client.device_info):
             return None, None, {"base": "no_device_info"}
-        serial_number = device_info.get("SERIAL_NUMBER")
-        if not serial_number:
+        if not (serial_number := device_info.get("SERIAL_NUMBER")):
             return None, None, {"base": "no_serial_number"}
 
         return serial_number, None, None

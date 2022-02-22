@@ -248,8 +248,7 @@ class WeatherKitWeather(
     @override
     def _async_forecast_daily(self) -> list[Forecast] | None:
         """Return the daily forecast."""
-        daily_forecast = self.data.get(ATTR_FORECAST_DAILY)
-        if not daily_forecast:
+        if not (daily_forecast := self.data.get(ATTR_FORECAST_DAILY)):
             return None
 
         forecast = daily_forecast.get("days")
@@ -259,8 +258,7 @@ class WeatherKitWeather(
     @override
     def _async_forecast_hourly(self) -> list[Forecast] | None:
         """Return the hourly forecast."""
-        hourly_forecast = self.data.get(ATTR_FORECAST_HOURLY)
-        if not hourly_forecast:
+        if not (hourly_forecast := self.data.get(ATTR_FORECAST_HOURLY)):
             return None
 
         forecast = hourly_forecast.get("hours")

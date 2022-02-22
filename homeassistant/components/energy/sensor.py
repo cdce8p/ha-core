@@ -224,8 +224,7 @@ class SensorManager:
 
         # Skip if the energy stat is not configured
         # (e.g., export-only or power-only grids)
-        stat_energy = config.get(adapter.stat_energy_key)
-        if not stat_energy:
+        if not (stat_energy := config.get(adapter.stat_energy_key)):
             return
 
         key = (adapter.source_type, adapter.flow_type, stat_energy)
@@ -262,8 +261,7 @@ class SensorManager:
         - number_energy_price_export instead of number_energy_price
         """
         # No export meter configured
-        stat_energy_to = config.get("stat_energy_to")
-        if stat_energy_to is None:
+        if (stat_energy_to := config.get("stat_energy_to")) is None:
             return
 
         # Already have a compensation stat

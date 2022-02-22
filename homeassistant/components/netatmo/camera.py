@@ -143,9 +143,8 @@ class NetatmoCamera(NetatmoModuleEntity, Camera):
         """Handle webhook events."""
         data = event["data"]
         event_type = data.get(ATTR_EVENT_TYPE)
-        push_type = data.get(WEBHOOK_PUSH_TYPE)
 
-        if not push_type:
+        if not (push_type := data.get(WEBHOOK_PUSH_TYPE)):
             _LOGGER.debug("Event has no push_type, returning")
             return
 

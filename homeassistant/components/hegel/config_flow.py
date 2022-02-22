@@ -85,13 +85,11 @@ class HegelConfigFlow(ConfigFlow, domain=DOMAIN):
         if not url:
             return self.async_abort(reason="no_host_found")
 
-        host = URL(url).host
-        if not host:
+        if not (host := URL(url).host):
             return self.async_abort(reason="no_host_found")
 
         # Use UDN as unique id (device UUID)
-        unique_id = discovery_info.ssdp_udn
-        if not unique_id:
+        if not (unique_id := discovery_info.ssdp_udn):
             return self.async_abort(reason="no_host_found")
 
         await self.async_set_unique_id(unique_id)

@@ -629,8 +629,7 @@ def _select_options_sub_validator(config: dict) -> dict:
         return config
 
     error_path: list[Hashable] = [SelectConf.OPTIONS_SOURCE, SelectConf.CUSTOM_OPTIONS]
-    options = source[SelectConf.CUSTOM_OPTIONS]
-    if not options:
+    if not (options := source[SelectConf.CUSTOM_OPTIONS]):
         raise probatio.Invalid("At least one option is required", path=error_path)
 
     dpt = source[SelectConf.GA_CUSTOM].get(CONF_DPT)

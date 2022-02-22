@@ -40,8 +40,7 @@ def async_subscribe_chat_logs(
     callback_func: Callable[[str, ChatLogEventType, dict[str, Any]], None],
 ) -> Callable[[], None]:
     """Subscribe to all chat logs."""
-    subscriptions = hass.data.get(DATA_SUBSCRIPTIONS)
-    if subscriptions is None:
+    if (subscriptions := hass.data.get(DATA_SUBSCRIPTIONS)) is None:
         subscriptions = []
         hass.data[DATA_SUBSCRIPTIONS] = subscriptions
 
@@ -95,8 +94,7 @@ def async_get_chat_log(
         yield chat_log
         return
 
-    all_chat_logs = hass.data.get(DATA_CHAT_LOGS)
-    if all_chat_logs is None:
+    if (all_chat_logs := hass.data.get(DATA_CHAT_LOGS)) is None:
         all_chat_logs = {}
         hass.data[DATA_CHAT_LOGS] = all_chat_logs
 

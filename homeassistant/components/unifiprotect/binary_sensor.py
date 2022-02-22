@@ -676,8 +676,7 @@ class ProtectEventBinarySensor(EventEntityMixin, BinarySensorEntity):
         prev_event_end = self._event_end
         super()._async_update_device_from_protect(device)
 
-        event = description.get_event_obj(device)
-        if event:
+        if event := description.get_event_obj(device):
             self._event = event
             self._event_end = event.end
 

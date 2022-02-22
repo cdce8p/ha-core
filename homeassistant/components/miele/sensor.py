@@ -94,8 +94,7 @@ def _convert_temperature(
     """Convert temperature object to readable value."""
     if index >= len(value_list):
         return None
-    raw = value_list[index].temperature
-    if raw is None:
+    if (raw := value_list[index].temperature) is None:
         return None
     try:
         raw_centi = int(raw)
@@ -1000,8 +999,7 @@ class MieleRestorableSensor(MieleSensor, RestoreSensor):
         await super().async_added_to_hass()
 
         # recover last value from cache when adding entity
-        last_data = await self.async_get_last_sensor_data()
-        if last_data:
+        if last_data := await self.async_get_last_sensor_data():
             self._attr_native_value = last_data.native_value  # type: ignore[assignment]
 
     @property

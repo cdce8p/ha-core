@@ -258,8 +258,7 @@ class MotionMountFlowHandler(ConfigFlow, domain=DOMAIN):
         try:
             await mm.connect()
 
-            can_authenticate = mm.can_authenticate
-            if can_authenticate is True:
+            if (can_authenticate := mm.can_authenticate) is True:
                 await mm.authenticate(data[CONF_PIN])
             else:
                 # The backoff is running, return the remaining time
@@ -267,8 +266,7 @@ class MotionMountFlowHandler(ConfigFlow, domain=DOMAIN):
         finally:
             await mm.disconnect()
 
-        can_authenticate = mm.can_authenticate
-        if can_authenticate is True:
+        if (can_authenticate := mm.can_authenticate) is True:
             return mm.is_authenticated
 
         return can_authenticate

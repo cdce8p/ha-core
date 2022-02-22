@@ -61,8 +61,7 @@ def get_absolute_description_key(domain: str, key: str) -> str:
     """Return the absolute description key."""
     if not key.startswith("_"):
         return f"{domain}.{key}"
-    key = key[1:]  # Remove leading underscore
-    if not key:
+    if not (key := key[1:]):  # Remove leading underscore
         return domain
     return key
 

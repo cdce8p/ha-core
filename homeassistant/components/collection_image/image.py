@@ -100,8 +100,7 @@ class CollectionImageImageEntity(ImageEntity):
     async def get_random_image(self) -> None:
         """Update the image entity with a random image from the source media."""
 
-        filtered = await self.get_valid_images()
-        if not filtered:
+        if not (filtered := await self.get_valid_images()):
             self.set_unavailable()
             return
 

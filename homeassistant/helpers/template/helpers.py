@@ -44,8 +44,7 @@ def resolve_area_id(hass: HomeAssistant, lookup_value: Any) -> str | None:
         return area.id
 
     # Check if it's an area alias
-    areas_list = area_reg.async_get_areas_by_alias(lookup_str)
-    if areas_list:
+    if areas_list := area_reg.async_get_areas_by_alias(lookup_str):
         return areas_list[0].id
 
     # Check if it's an entity ID

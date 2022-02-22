@@ -402,8 +402,7 @@ async def ws_query_telegrams(
     msg: dict,
 ) -> None:
     """Handle query telegrams command."""
-    start_time = msg.get("start_time")
-    if start_time is None:
+    if (start_time := msg.get("start_time")) is None:
         load_hours = knx.entry.options[CONF_KNX_TELEGRAM_DB_LOAD_HOURS]
         start_time = dt_util.now() - timedelta(hours=load_hours)
 

@@ -165,9 +165,9 @@ class EsphomeLight(EsphomeEntity[LightInfo, LightState], LightEntity):
         is 1.0.
         """
         static_info = self._static_info
-        min_mireds = static_info.min_mireds
-        max_mireds = static_info.max_mireds
-        if max_mireds <= min_mireds:
+        if (max_mireds := static_info.max_mireds) <= (
+            min_mireds := static_info.min_mireds
+        ):
             return 1.0, 1.0
         color_temp_clamped = min(max(color_temp_mired, min_mireds), max_mireds)
         ww_frac = (color_temp_clamped - min_mireds) / (max_mireds - min_mireds)

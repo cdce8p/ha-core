@@ -431,8 +431,7 @@ class Telegrams:
             self.hass, version=1, key="knx/telegrams_history.json"
         )
 
-        json_data = await history_store.async_load()
-        if json_data is None:
+        if (json_data := await history_store.async_load()) is None:
             return
 
         _LOGGER.info("Migrating KNX telegram history from JSON to KNX Telegram Store")
@@ -472,15 +471,13 @@ class Telegrams:
 
     def model_to_dict(self, m: StoredTelegram) -> TelegramDict:
         """Convert a StoredTelegram model to a TelegramDict."""
-        src_name = m.source_name
-        if not src_name:
+        if not (src_name := m.source_name):
             if (device := self.project.devices.get(m.source)) is not None:
                 src_name = f"{device['manufacturer_name']} {device['name']}"
             elif m.direction == TelegramDirection.OUTGOING.value:
                 src_name = "Home Assistant"
 
-        dst_name = m.destination_name
-        if not dst_name:
+        if not (dst_name := m.destination_name):
             if (ga_info := self.project.group_addresses.get(m.destination)) is not None:
                 dst_name = ga_info.name
 

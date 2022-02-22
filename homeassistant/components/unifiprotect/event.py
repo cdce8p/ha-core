@@ -127,8 +127,7 @@ class ProtectDevicePublicEventEntity(
         self, event: ProtectEvent, event_type: str, event_data: dict[str, Any]
     ) -> None:
         """Fire ``event_type`` once per event, ignoring repeat dispatches."""
-        fired = self._fired
-        if fired is None:
+        if (fired := self._fired) is None:
             fired = self._fired = {}
         # Pop-and-reinsert so any dispatch refreshes this event id's recency; a
         # long-running event that keeps updating is then not evicted below.
@@ -239,13 +238,11 @@ class ProtectDeviceFingerprintEventEntity(
             if (
                 event.metadata
                 and event.metadata.fingerprint
-                and event.metadata.fingerprint.ulp_id
+                and (ulp_id := event.metadata.fingerprint.ulp_id)
             ):
                 event_identified = EVENT_TYPE_FINGERPRINT_IDENTIFIED
-                ulp_id = event.metadata.fingerprint.ulp_id
-                if ulp_id:
-                    event_data[KEYRINGS_ULP_ID] = ulp_id
-                    _add_ulp_user_infos(self.data.api.bootstrap, event_data, ulp_id)
+                event_data[KEYRINGS_ULP_ID] = ulp_id
+                _add_ulp_user_infos(self.data.api.bootstrap, event_data, ulp_id)
 
             self._trigger_event(event_identified, event_data)
             self.async_write_ha_state()

@@ -420,8 +420,7 @@ class Timer(collection.CollectionEntity, RestoreEntity):
         if self._listener:
             self._listener()
             self._listener = None
-        end = self._end
-        if end is None:
+        if (end := self._end) is None:
             end = dt_util.utcnow().replace(microsecond=0)
         self._state = STATUS_IDLE
         self._end = None

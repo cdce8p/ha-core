@@ -362,8 +362,7 @@ class ProtectData:
         object (it reads as missing and entities go unavailable), while a frame
         the library could not merge leaves the previous object cached.
         """
-        new_obj = message.new_obj
-        if new_obj is None:
+        if (new_obj := message.new_obj) is None:
             old_obj = message.old_obj
             if isinstance(old_obj, PublicDeviceModel):
                 self._async_signal_public_update(old_obj.mac, None)
@@ -670,8 +669,7 @@ class ProtectData:
                 self._async_remove_device(message.old_obj)
             return
 
-        model_type = new_obj.model
-        if model_type is ModelType.EVENT:
+        if (model_type := new_obj.model) is ModelType.EVENT:
             if TYPE_CHECKING:
                 assert isinstance(new_obj, Event)
             if _LOGGER.isEnabledFor(logging.DEBUG):

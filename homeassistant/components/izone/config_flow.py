@@ -232,8 +232,7 @@ class IZoneConfigFlow(ConfigFlow, domain=DOMAIN):
         # A HomeKit advertisement implies a specific UID is on the LAN.  Wait for it.
         try:
             endpoints = await izone_discovery.async_discover_all_endpoints(self.hass)
-            endpoint = endpoints.get(device_uid)
-            if endpoint is None:
+            if (endpoint := endpoints.get(device_uid)) is None:
                 endpoint = await izone_discovery.async_discover_endpoint(
                     self.hass, device_uid
                 )

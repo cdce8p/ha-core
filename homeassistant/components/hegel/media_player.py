@@ -257,8 +257,7 @@ class HegelMediaPlayer(MediaPlayerEntity):
     @override
     def state(self) -> MediaPlayerState | None:
         """Return the current state of the media player."""
-        power = self._state.get("power")
-        if power is None:
+        if (power := self._state.get("power")) is None:
             return None
         return MediaPlayerState.ON if power else MediaPlayerState.OFF
 
@@ -266,8 +265,7 @@ class HegelMediaPlayer(MediaPlayerEntity):
     @override
     def volume_level(self) -> float | None:
         """Return the volume level."""
-        volume = self._state.get("volume")
-        if volume is None:
+        if (volume := self._state.get("volume")) is None:
             return None
         return float(volume)
 
@@ -346,8 +344,7 @@ class HegelMediaPlayer(MediaPlayerEntity):
     async def async_select_source(self, source: str) -> None:
         """Select input source."""
         inv = {v: k for k, v in self._source_map.items()}
-        idx = inv.get(source)
-        if idx is None:
+        if (idx := inv.get(source)) is None:
             raise ServiceValidationError(f"Unknown source: {source}")
         try:
             await self._client.send(COMMANDS["input_set"](idx), expect_reply=False)

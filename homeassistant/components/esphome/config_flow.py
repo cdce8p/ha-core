@@ -936,9 +936,7 @@ class EsphomeFlowHandler(ConfigFlow, domain=DOMAIN):
             )
             return None
 
-        device = dashboard.data.get(self._device_name)
-
-        if device is None:
+        if (device := dashboard.data.get(self._device_name)) is None:
             return None
 
         try:

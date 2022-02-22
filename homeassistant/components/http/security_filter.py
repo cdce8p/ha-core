@@ -55,10 +55,9 @@ def setup_security_filter(app: Application) -> None:
         request: Request, handler: Callable[[Request], Awaitable[StreamResponse]]
     ) -> StreamResponse:
         """Process request and block commonly known exploit attempts."""
-        query_string = request.query_string
         # Most requests (WebSocket/API traffic) have no query string; avoid the
         # concat and only scan the path in that case.
-        if query_string:
+        if query_string := request.query_string:
             path_with_query_string = f"{request.path}?{query_string}"
         else:
             path_with_query_string = request.path

@@ -175,8 +175,7 @@ def _setup_dynamic_discovery(
     @callback
     def _handle_metadata_update() -> None:
         """Handle metadata coordinator update - detect subscription changes."""
-        data = metadata_coordinator.data
-        if not data:
+        if not (data := metadata_coordinator.data):
             return
 
         current_vins, current_site_ids = _get_subscribed_ids_from_metadata(data)
@@ -251,8 +250,7 @@ def _setup_vehicle_repairs(
     @callback
     def _handle_metadata_update() -> None:
         """Re-evaluate vehicle repair issues when metadata changes."""
-        data = metadata_coordinator.data
-        if not data:
+        if not (data := metadata_coordinator.data):
             return
         _async_update_vehicle_repairs(hass, entry, vins, data["vehicles"])
 

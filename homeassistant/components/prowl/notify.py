@@ -67,8 +67,7 @@ class ProwlNotificationService(BaseNotificationService):
     @override
     async def async_send_message(self, message: str, **kwargs: Any) -> None:
         """Send the message to the user."""
-        data = kwargs.get(ATTR_DATA, {})
-        if data is None:
+        if (data := kwargs.get(ATTR_DATA, {})) is None:
             data = {}
 
         try:

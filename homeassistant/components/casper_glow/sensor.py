@@ -121,8 +121,7 @@ class CasperGlowDimmingEndTimeSensor(CasperGlowEntity, SensorEntity):
             self._reset_projected_end_time()
             return
 
-        remaining_ms = state.dimming_time_remaining_ms
-        if not remaining_ms:
+        if not (remaining_ms := state.dimming_time_remaining_ms):
             if remaining_ms == 0 or state.is_on is False:
                 self._reset_projected_end_time()
             return

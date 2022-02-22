@@ -161,8 +161,7 @@ def _resolve_referenced_devices(
 ) -> None:
     """Resolve targeted device ids into referenced device ids."""
     for device_id in device_ids:
-        device = dev_reg.async_get(device_id)
-        if device is None:
+        if (device := dev_reg.async_get(device_id)) is None:
             selected.missing_devices.add(device_id)
             selected.referenced_devices.add(device_id)
         elif isinstance(device, dr.ChildDeviceEntry):

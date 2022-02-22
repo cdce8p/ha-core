@@ -450,8 +450,7 @@ class TPLinkConfigFlow(ConfigFlow, domain=DOMAIN):
         assert device
 
         if user_input:
-            live_view = user_input[CONF_LIVE_VIEW]
-            if not live_view:
+            if not user_input[CONF_LIVE_VIEW]:
                 return self._async_create_or_update_entry_from_device(
                     device, camera_data={CONF_LIVE_VIEW: False}
                 )
