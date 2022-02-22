@@ -189,9 +189,7 @@ async def _async_get_modifier(
 ) -> AnalyticsModifier | None:
     """Get analytics modifier."""
     modifiers = _async_get_modifiers(hass)
-    modifier = modifiers.get(domain, Undefined)
-
-    if modifier is not Undefined:
+    if (modifier := modifiers.get(domain, Undefined)) is not Undefined:
         return modifier
 
     platform = await _async_get_analytics_platform(hass, domain)
@@ -294,8 +292,7 @@ class Analytics:
 
     async def load(self) -> None:
         """Load preferences."""
-        stored = await self._store.async_load()
-        if stored:
+        if stored := await self._store.async_load():
             self._data = AnalyticsData.from_dict(stored)
 
         if self.supervisor and not self.onboarded:

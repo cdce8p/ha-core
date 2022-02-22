@@ -68,8 +68,7 @@ def get_plex_server(
     """Retrieve a configured Plex server by name."""
     if DOMAIN not in hass.data:
         raise HomeAssistantError("Plex integration not configured")
-    servers = get_plex_servers(hass)
-    if not servers:
+    if not (servers := get_plex_servers(hass)):
         raise HomeAssistantError("No Plex servers available")
 
     if plex_server_id:

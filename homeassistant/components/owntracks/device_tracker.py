@@ -61,9 +61,7 @@ async def async_setup_entry(
     @callback
     def _receive_data(dev_id, **data):
         """Receive set location."""
-        entity = devices.get(dev_id)
-
-        if entity is not None:
+        if (entity := devices.get(dev_id)) is not None:
             entity.update_data(data)
             return
 

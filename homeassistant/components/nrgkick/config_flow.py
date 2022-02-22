@@ -93,12 +93,10 @@ async def validate_input(
     await api.test_connection()
     info = await api.get_info(["general"], raw=True)
 
-    device_name = info.get("general", {}).get("device_name")
-    if not device_name:
+    if not (device_name := info.get("general", {}).get("device_name")):
         device_name = "NRGkick"
 
-    serial = info.get("general", {}).get("serial_number")
-    if not serial:
+    if not (serial := info.get("general", {}).get("serial_number")):
         raise NRGkickInvalidResponseError("Device did not report a serial number")
 
     return {

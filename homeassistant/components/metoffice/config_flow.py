@@ -84,9 +84,7 @@ class MetOfficeConfigFlow(ConfigFlow, domain=DOMAIN):
                 api_key=user_input[CONF_API_KEY],
             )
 
-            errors = result["errors"]
-
-            if not errors:
+            if not (errors := result["errors"]):
                 user_input[CONF_NAME] = result["site_name"]
                 return self.async_create_entry(
                     title=user_input[CONF_NAME], data=user_input
@@ -137,9 +135,7 @@ class MetOfficeConfigFlow(ConfigFlow, domain=DOMAIN):
                 api_key=user_input[CONF_API_KEY],
             )
 
-            errors = result["errors"]
-
-            if not errors:
+            if not (errors := result["errors"]):
                 return self.async_update_reload_and_abort(
                     self._get_reauth_entry(),
                     data_updates=user_input,

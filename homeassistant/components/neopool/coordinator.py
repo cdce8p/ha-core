@@ -168,8 +168,7 @@ class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 active.update(ctx)
         enabled: list[str] = []
         for key in TIMER_BLOCKS:
-            option_key = _TIMER_OPTIONS.get(key)
-            if option_key is None:
+            if (option_key := _TIMER_OPTIONS.get(key)) is None:
                 # Filtration timers gate on context below, not an option.
                 continue
             if not options.get(option_key, False):
@@ -210,8 +209,7 @@ class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         consumed by the select platform, and the countdown aggregated into
         FILTRATION_REMAINING by the sensor platform.
         """
-        enabled = self._get_enabled_timers(data)
-        if enabled:
+        if enabled := self._get_enabled_timers(data):
             # FILTRATION_REMAINING must stay fresh while the pump runs, so
             # force-read the sensor's filtration blocks even if their countdown
             # looks static between polls. Scope this to the sensor's context so

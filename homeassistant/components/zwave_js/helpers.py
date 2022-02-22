@@ -282,8 +282,7 @@ def endpoint_devices(
 
     if node.endpoint_groups:
         for info in disc_infos:
-            endpoint_index = info.primary_value.endpoint
-            if not endpoint_index:
+            if not (endpoint_index := info.primary_value.endpoint):
                 continue
             group = node.get_endpoint_group(endpoint_index)
             if group is not None and not group.is_main_device:
@@ -330,8 +329,7 @@ def endpoint_device_for_late_value(
     make a previously non-colliding endpoint collide is not handled here and stays on
     the main device.
     """
-    endpoint_index = primary_value.endpoint
-    if not endpoint_index:
+    if not (endpoint_index := primary_value.endpoint):
         return None
     if node.endpoint_groups:
         group = node.get_endpoint_group(endpoint_index)
@@ -441,10 +439,7 @@ def async_get_node_from_device_id(hass: HomeAssistant, device_id: str) -> ZwaveN
     if config_entry.state is not ConfigEntryState.LOADED:
         raise ValueError(f"Device {device_id} config entry is not loaded")
 
-    client = config_entry.runtime_data.client
-    driver = client.driver
-
-    if driver is None:
+    if (driver := config_entry.runtime_data.client.driver) is None:
         raise DriverNotReadyError("Driver is not ready.")
 
     # Get node ID from device identifier, perform some validation, and then get the
@@ -495,10 +490,7 @@ async def async_get_provisioning_entry_from_device_id(
     if config_entry.state is not ConfigEntryState.LOADED:
         raise ValueError(f"Device {device_id} config entry is not loaded")
 
-    client = config_entry.runtime_data.client
-    driver = client.driver
-
-    if driver is None:
+    if (driver := config_entry.runtime_data.client.driver) is None:
         raise DriverNotReadyError("Driver is not ready.")
 
     provisioning_entries = await driver.controller.async_get_provisioning_entries()
@@ -623,8 +615,7 @@ def get_zwave_value_from_config(node: ZwaveNode, config: ConfigType) -> ZwaveVal
     endpoint = None
     if config.get(ATTR_ENDPOINT):
         endpoint = config[ATTR_ENDPOINT]
-    property_key = config.get(ATTR_PROPERTY_KEY)
-    if property_key == "":
+    if (property_key := config.get(ATTR_PROPERTY_KEY)) == "":
         property_key = None
     value_id = get_value_id_str(
         node,

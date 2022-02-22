@@ -189,13 +189,11 @@ def resolve_target_temp_range(
     low = current_low
     deadband_enforced = False
     if new_high is not None:
-        high = new_high
-        if high < low:
+        if (high := new_high) < low:
             low = high - HEAT_COOL_DEADBAND
             deadband_enforced = True
     if new_low is not None:
-        low = new_low
-        if low > high:
+        if (low := new_low) > high:
             high = low + HEAT_COOL_DEADBAND
             deadband_enforced = True
     high = min(high, max_temp)

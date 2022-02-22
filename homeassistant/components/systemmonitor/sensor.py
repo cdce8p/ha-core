@@ -131,8 +131,7 @@ def get_ip_address(
     entity: SystemMonitorSensor,
 ) -> str | None:
     """Return network ip address."""
-    addresses = entity.coordinator.data.addresses
-    if addresses is None:
+    if (addresses := entity.coordinator.data.addresses) is None:
         return None
     if entity.argument in addresses:
         for addr in addresses[entity.argument]:

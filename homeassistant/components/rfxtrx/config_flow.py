@@ -115,8 +115,7 @@ class RfxtrxSubentryFlowHandler(ConfigSubentryFlow):
 
         if user_input is not None:
             event_code = user_input[CONF_EVENT_CODE]
-            device_object = get_rfx_object(event_code)
-            if device_object is None:
+            if (device_object := get_rfx_object(event_code)) is None:
                 errors[CONF_EVENT_CODE] = "invalid_event_code"
             elif not self._can_add_device(device_object):
                 errors[CONF_EVENT_CODE] = "already_configured_device"
@@ -354,8 +353,7 @@ class RfxtrxSubentryFlowHandler(ConfigSubentryFlow):
         for code in current_data.get(CONF_EVENT_CODE, []):
             if code == self._event_code:
                 continue
-            old_event = get_rfx_object(code)
-            if old_event is None:
+            if (old_event := get_rfx_object(code)) is None:
                 continue
             old_device_id = get_device_tuple_from_device(
                 old_event.device, data_bits=data_bits

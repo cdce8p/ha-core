@@ -142,8 +142,7 @@ class ClimateControl(SHCEntity, ClimateEntity):
     @override
     def hvac_action(self) -> HVACAction:
         """Return the current HVAC action."""
-        hvac_mode = self.hvac_mode
-        if hvac_mode == HVACMode.OFF:
+        if (hvac_mode := self.hvac_mode) == HVACMode.OFF:
             return HVACAction.OFF
         if not self._device.has_demand:
             return HVACAction.IDLE

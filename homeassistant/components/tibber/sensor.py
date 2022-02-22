@@ -654,8 +654,7 @@ def _setup_data_api_sensors(
 ) -> None:
     """Set up sensors backed by the Tibber Data API."""
 
-    coordinator = entry.runtime_data.data_api_coordinator
-    if coordinator is None:
+    if (coordinator := entry.runtime_data.data_api_coordinator) is None:
         return
 
     entities: list[TibberDataAPISensor] = []

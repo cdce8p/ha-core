@@ -114,8 +114,7 @@ class ComelitCoverEntity(ComelitBridgeBaseEntity, RestoreEntity, CoverEntity):
         """Record the start of a cover movement toward the given target."""
         self._cancel_position_timer()
         self._update_cover_position()
-        start = self._attr_current_cover_position
-        if start is None:
+        if (start := self._attr_current_cover_position) is None:
             start = 0 if target > 0 else 100
         self._movement_start_position = start
         self._movement_target_position = target
@@ -246,8 +245,7 @@ class ComelitCoverEntity(ComelitBridgeBaseEntity, RestoreEntity, CoverEntity):
             return
 
         self._update_cover_position()
-        current = self._attr_current_cover_position
-        if current is None:
+        if (current := self._attr_current_cover_position) is None:
             current = 0
         if target == current:
             await self.async_stop_cover()

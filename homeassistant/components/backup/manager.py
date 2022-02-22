@@ -2247,8 +2247,7 @@ class CoreBackupReaderWriter(BackupReaderWriter):
         if not restore_result:
             return
 
-        success = restore_result["success"]
-        if not success:
+        if not (success := restore_result["success"]):
             LOGGER.warning(
                 "Backup restore failed with %s: %s",
                 restore_result["error_type"],

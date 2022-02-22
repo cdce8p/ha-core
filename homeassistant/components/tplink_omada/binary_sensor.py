@@ -47,8 +47,7 @@ async def async_setup_entry(
             assert gateway_coordinator is not None
 
         entities: list[Entity] = []
-        gateway = gateway_coordinator.data.get(device.mac)
-        if gateway:
+        if gateway := gateway_coordinator.data.get(device.mac):
             entities.extend(
                 OmadaGatewayPortBinarySensor(
                     gateway_coordinator, gateway, p.port_number, desc

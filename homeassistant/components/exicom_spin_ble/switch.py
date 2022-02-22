@@ -33,8 +33,7 @@ class SpinEvChargingSwitch(SpinEvEntity, SwitchEntity):
     @override
     def is_on(self) -> bool | None:
         """Return True while a session is open."""
-        state = self.coordinator.data.state
-        if state is None:
+        if (state := self.coordinator.data.state) is None:
             return None
         # A vehicle pausing resumes without a command, so a suspended session
         # stays on rather than flapping mid-charge.

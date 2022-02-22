@@ -50,7 +50,6 @@ class SkyHubCoordinator(DataUpdateCoordinator[dict[str, str]]):
     @override
     async def _async_update_data(self) -> dict[str, str]:
         """Fetch the connected devices."""
-        data = await self.router.async_get_skyhub_data()
-        if data is None:
+        if (data := await self.router.async_get_skyhub_data()) is None:
             raise UpdateFailed("Unable to fetch devices from Sky Hub")
         return {device.mac: device.name for device in data}

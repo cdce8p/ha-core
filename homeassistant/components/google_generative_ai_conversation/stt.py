@@ -350,6 +350,7 @@ class GoogleGenerativeAISttEntity(
         # mypy can't narrow create()'s return type here (an SDK typing gap);
         # the streaming variant can't happen since stream=False.
         output_text = interaction.output_text  # type: ignore[union-attr]
+        # pylint: disable-next=consider-using-assignment-expr
         if output_text:
             return stt.SpeechResult(output_text, stt.SpeechResultState.SUCCESS)
 

@@ -211,9 +211,8 @@ class IndiAllSkyConfigFlow(ConfigFlow, domain=DOMAIN):
         hostname = normalize_host(discovery_info.hostname)
         ssl = str(discovery_info.properties.get("ssl", "true")).lower() == "true"
         port = discovery_info.port or (443 if ssl else 80)
-        mac = discovery_info.properties.get("mac")
 
-        if mac:
+        if mac := discovery_info.properties.get("mac"):
             formatted_mac = format_mac(mac)
             current_entry = await self.async_set_unique_id(formatted_mac)
             if current_entry is None:

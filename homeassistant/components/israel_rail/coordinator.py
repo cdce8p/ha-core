@@ -101,8 +101,7 @@ class IsraelRailDataUpdateCoordinator(DataUpdateCoordinator[list[DataConnection]
         offset = 0
         now = dt_util.now()
         while offset < len(train_routes):
-            route = train_routes[offset]
-            if route is None:
+            if (route := train_routes[offset]) is None:
                 break
             if is_upcoming(route, now):
                 break

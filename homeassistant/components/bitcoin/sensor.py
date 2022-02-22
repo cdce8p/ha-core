@@ -228,8 +228,7 @@ async def async_setup_platform(
     )
 
     if result["type"] is FlowResultType.ABORT:
-        reason = result["reason"]
-        if reason != "single_instance_allowed":
+        if (reason := result["reason"]) != "single_instance_allowed":
             _async_create_import_issue(hass, f"{reason}_{currency}", reason, currency)
             return
 

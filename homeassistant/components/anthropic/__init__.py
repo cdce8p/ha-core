@@ -251,8 +251,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: AnthropicConfigEntry) 
             data = subentry.data.copy()
             if "thinking_effort" not in data:
                 continue
-            effort = data.pop("thinking_effort")
-            if effort == "none":
+            if (effort := data.pop("thinking_effort")) == "none":
                 data[CONF_THINKING_TYPE] = "disabled"
             else:
                 data[CONF_EFFORT] = effort

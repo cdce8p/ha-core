@@ -293,8 +293,7 @@ class PowersensorMessageDispatcher:
         entities.  Entities naturally become unavailable when their data
         update timeout fires.  From here on the user may delete the device.
         """
-        mac = event.get("mac")
-        if mac is None:
+        if (mac := event.get("mac")) is None:
             return
         self._present.discard(mac)
         _LOGGER.debug("Device lost: %s", mac)
@@ -303,8 +302,7 @@ class PowersensorMessageDispatcher:
         self, event_type: str, message: dict[str, Any]
     ) -> None:
         """Route a measurement event to the appropriate HA signals."""
-        mac = message.get("mac")
-        if mac is None:
+        if (mac := message.get("mac")) is None:
             return
 
         role = _filter_unknown(message.get("role"))

@@ -90,9 +90,8 @@ class WebControlProSlatRange(WebControlProGenericEntity, NumberEntity):
         """Return the current min/max value."""
         action = self._dest.action(ACTION_DESC.SlatRotate)
         # Pull the current min/max rotation from the custom overwrite if set
-        value = action[self._value_name]
         # -75 and 75 are community-provided sane defaults for various devices
-        if value is None:
+        if (value := action[self._value_name]) is None:
             value = self._value_func(-75, 75)
         return value
 
@@ -147,8 +146,7 @@ class WebControlProSlatRotation(WebControlProGenericEntity, NumberEntity):
     def native_value(self) -> float | None:
         """Return the current value."""
         action = self._dest.action(ACTION_DESC.SlatRotate)
-        rotation = action["rotation"]
-        if rotation is None:
+        if (rotation := action["rotation"]) is None:
             return None
         return rotation
 

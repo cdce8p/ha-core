@@ -257,8 +257,7 @@ def _async_get_automation_components_for_target(
                 # so we don't need to iterate further
                 break
 
-            entity_info = entity_infos.get(entity_id)
-            if entity_info is None:
+            if (entity_info := entity_infos.get(entity_id)) is None:
                 _LOGGER.debug("No entity source found for %s", entity_id)
                 continue
 

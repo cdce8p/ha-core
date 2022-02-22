@@ -139,8 +139,7 @@ class OllamaConfigFlow(ConfigFlow, domain=DOMAIN):
 
         errors = {}
         url = user_input[CONF_URL].strip()
-        api_key = user_input.get(CONF_API_KEY)
-        if api_key:
+        if api_key := user_input.get(CONF_API_KEY):
             api_key = api_key.strip()
 
         try:
@@ -191,8 +190,7 @@ class OllamaConfigFlow(ConfigFlow, domain=DOMAIN):
                 data_schema=STEP_REAUTH_DATA_SCHEMA,
             )
 
-        api_key = user_input.get(CONF_API_KEY)
-        if api_key:
+        if api_key := user_input.get(CONF_API_KEY):
             api_key = api_key.strip()
 
         errors = await self._async_validate_connection(

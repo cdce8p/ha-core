@@ -313,8 +313,7 @@ async def _async_discover_roombas(
             discovered: set[RoombaInfo] = set()
             try:
                 if host:
-                    device = await discovery.get(host)
-                    if device:
+                    if device := await discovery.get(host):
                         discovered.add(device)
                 else:
                     discovered = await discovery.get_all()

@@ -46,8 +46,7 @@ class AlphaBidetIrConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Handle the initial step - select IR emitter and bidet model."""
-        emitter_entity_ids = async_get_emitters(self.hass)
-        if not emitter_entity_ids:
+        if not (emitter_entity_ids := async_get_emitters(self.hass)):
             return self.async_abort(reason="no_emitters")
 
         if user_input is not None:
@@ -78,8 +77,7 @@ class AlphaBidetIrConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Handle reconfiguration of the infrared emitter."""
         entry = self._get_reconfigure_entry()
-        emitter_entity_ids = async_get_emitters(self.hass)
-        if not emitter_entity_ids:
+        if not (emitter_entity_ids := async_get_emitters(self.hass)):
             return self.async_abort(reason="no_emitters")
 
         if user_input is not None:

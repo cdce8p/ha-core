@@ -82,8 +82,7 @@ def _parse_timestamp(device: VitesyDevice, label: str, value: str) -> datetime |
 
 def _last_update(device: VitesyDevice) -> datetime | None:
     """Return when the device last reported a measurement."""
-    timestamp = device.measurement.get("timestamp")
-    if not timestamp:
+    if not (timestamp := device.measurement.get("timestamp")):
         return None
     return _parse_timestamp(device, "measurement timestamp", timestamp)
 
@@ -104,11 +103,9 @@ def _program_level(field: str) -> Callable[[VitesyDevice], str | None]:
     """Return a value function for a level in the active program's metadata."""
 
     def _value(device: VitesyDevice) -> str | None:
-        program = device.programs.get(device.program_id)
-        if program is None:
+        if (program := device.programs.get(device.program_id)) is None:
             return None
-        level = program.get("metadata", {}).get(field)
-        if level is None:
+        if (level := program.get("metadata", {}).get(field)) is None:
             return None
         if (level := str(level).lower()) in PROGRAM_LEVELS:
             return level

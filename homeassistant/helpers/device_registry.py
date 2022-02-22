@@ -172,8 +172,7 @@ class _DeviceInfoMapping:
         """Return the value of a set field."""
         # Also backs `.get()`, `dict()` and `**device_info` unpacking
         if key in self._field_set:
-            value = getattr(self, key)
-            if value is not Undefined:
+            if (value := getattr(self, key)) is not Undefined:
                 return value
         raise KeyError(key)
 
@@ -2617,12 +2616,10 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
 
         _validate_device_info(config_entry, device_info)
 
-        identifiers = device_info.identifiers
-        if identifiers is Undefined:
+        if (identifiers := device_info.identifiers) is Undefined:
             identifiers = set()
 
-        connections = device_info.connections
-        if connections is Undefined:
+        if (connections := device_info.connections) is Undefined:
             connections = set()
         else:
             connections = _normalize_connections(connections)
@@ -2983,8 +2980,7 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
                 "a child device must have at least one identifier",
             )
 
-        parent = self._device_data.get(parent_device_id)
-        if parent is None:
+        if (parent := self._device_data.get(parent_device_id)) is None:
             if parent_device_id in self._child_device_data:
                 raise DeviceInfoError(
                     domain,

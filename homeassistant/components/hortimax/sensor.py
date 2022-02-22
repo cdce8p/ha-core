@@ -171,8 +171,7 @@ def _describe(readout: Readout) -> SensorEntityDescription:
     if not raw_unit or raw_unit in DIMENSIONLESS_UNITS:
         return SensorEntityDescription(key=key, suggested_display_precision=0)
 
-    unit = UNIT_MAP.get(raw_unit)
-    if unit is None:
+    if (unit := UNIT_MAP.get(raw_unit)) is None:
         # Truthful, but rules out a device class and any basis for a precision.
         return SensorEntityDescription(
             key=key,
@@ -182,8 +181,7 @@ def _describe(readout: Readout) -> SensorEntityDescription:
 
     description = UNIT_DESCRIPTIONS[unit]
     identifier = readout.identifier.lower()
-    device_class = description.device_class
-    if device_class is None:
+    if (device_class := description.device_class) is None:
         if unit == "%" and "relativehumidity" in identifier:
             device_class = SensorDeviceClass.HUMIDITY
         elif unit == UnitOfRatio.PARTS_PER_MILLION and (

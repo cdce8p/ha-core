@@ -57,8 +57,7 @@ type OpenDisplayConfigEntry = ConfigEntry[OpenDisplayRuntimeData]
 
 def _get_encryption_key(entry: OpenDisplayConfigEntry) -> bytes | None:
     """Return the encryption key bytes from entry data, or None."""
-    raw = entry.data.get(CONF_ENCRYPTION_KEY)
-    if raw is None:
+    if (raw := entry.data.get(CONF_ENCRYPTION_KEY)) is None:
         return None
     if len(raw) != 32:
         raise ConfigEntryAuthFailed(

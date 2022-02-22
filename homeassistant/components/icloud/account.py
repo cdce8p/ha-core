@@ -399,8 +399,7 @@ class IcloudAccount:
         )
 
         self._family_members_fullname = {}
-        members_info = user_info.get("membersInfo")
-        if members_info is not None:
+        if (members_info := user_info.get("membersInfo")) is not None:
             for prs_id, member in members_info.items():
                 self._family_members_fullname[prs_id] = (
                     f"{member['firstName']} {member['lastName']}"
@@ -1141,16 +1140,14 @@ class IcloudDevice:
         """Return whether Apple flagged the reported location fix as old."""
         # The flag describes the payload Apple just sent, which can differ from
         # the fix this integration stores.
-        location = self._status[DEVICE_LOCATION]
-        if location is None:
+        if (location := self._status[DEVICE_LOCATION]) is None:
             return False
         return bool(location.get(DEVICE_LOCATION_IS_OLD, False))
 
     @property
     def location_is_inaccurate(self) -> bool:
         """Return whether Apple flagged the reported location fix as inaccurate."""
-        location = self._status[DEVICE_LOCATION]
-        if location is None:
+        if (location := self._status[DEVICE_LOCATION]) is None:
             return False
         return bool(location.get(DEVICE_LOCATION_IS_INACCURATE, False))
 
