@@ -181,8 +181,7 @@ class NeoPoolTime(NeoPoolEntity, TimeEntity):
 
     def _decode_raw(self) -> dt_time | None:
         """Decode the coordinator-data seconds into HH:MM:SS."""
-        seconds = self.coordinator.data.get(self._key)
-        if seconds is None:
+        if (seconds := self.coordinator.data.get(self._key)) is None:
             return None
         try:
             seconds = int(seconds) % 86400

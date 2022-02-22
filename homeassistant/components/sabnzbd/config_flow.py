@@ -59,8 +59,7 @@ class SABnzbdConfigFlow(ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input is not None:
-            sab_api = await get_client(self.hass, user_input)
-            if not sab_api:
+            if not await get_client(self.hass, user_input):
                 errors["base"] = "cannot_connect"
             else:
                 self._async_abort_entries_match(

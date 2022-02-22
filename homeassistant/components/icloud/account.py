@@ -389,8 +389,7 @@ class IcloudAccount:
         )
 
         self._family_members_fullname = {}
-        members_info = user_info.get("membersInfo")
-        if members_info is not None:
+        if (members_info := user_info.get("membersInfo")) is not None:
             for prs_id, member in members_info.items():
                 self._family_members_fullname[prs_id] = (
                     f"{member['firstName']} {member['lastName']}"

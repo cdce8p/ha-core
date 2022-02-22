@@ -598,8 +598,7 @@ def _async_get_full_entity_name(
             ):
                 floor_name = floor.name
 
-        entity_name = name
-        if entity_name is None:
+        if (entity_name := name) is None:
             if original_name_unprefixed is UNDEFINED:
                 original_name_unprefixed = (
                     _async_strip_prefix_from_entity_name(original_name, raw_device_name)
@@ -697,8 +696,7 @@ def async_get_entity_aliases(
 
     The returned list preserves the order set by the user.
     """
-    entry_aliases = entry.aliases
-    if not entry_aliases:
+    if not (entry_aliases := entry.aliases):
         if allow_empty:
             return []
         entry_aliases = [COMPUTED_NAME]
@@ -1519,8 +1517,7 @@ class EntityRegistry(BaseRegistry):
         Entity ID conflicts are checked against registered and currently
         existing entities, as well as provided `reserved_entity_ids`.
         """
-        parts = self.settings.entity_id_parts
-        if parts is None:
+        if (parts := self.settings.entity_id_parts) is None:
             parts = (
                 EntityNamePart.AREA,
                 EntityNamePart.PARENT_DEVICE,

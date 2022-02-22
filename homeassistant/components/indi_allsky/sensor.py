@@ -423,8 +423,7 @@ class IndiAllSkyDynamicHardwareSensor(IndiAllSkyEntity, SensorEntity):
         if not self.coordinator.data.sensor:
             return None
 
-        item = self._get_sensor_item()
-        if item is not None:
+        if (item := self._get_sensor_item()) is not None:
             if isinstance(item, dict):
                 val = item.get("value")
             else:

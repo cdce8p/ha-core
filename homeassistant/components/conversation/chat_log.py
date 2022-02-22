@@ -43,8 +43,7 @@ def async_subscribe_chat_logs(
     callback_func: Callable[[str, ChatLogEventType, dict[str, Any]], None],
 ) -> Callable[[], None]:
     """Subscribe to all chat logs."""
-    subscriptions = hass.data.get(DATA_SUBSCRIPTIONS)
-    if subscriptions is None:
+    if (subscriptions := hass.data.get(DATA_SUBSCRIPTIONS)) is None:
         subscriptions = []
         hass.data[DATA_SUBSCRIPTIONS] = subscriptions
 
@@ -86,8 +85,7 @@ def _async_check_owner(
     """
     if user_input is None:
         return
-    owners = hass.data.get(DATA_CHAT_LOG_OWNERS)
-    if owners is None:
+    if (owners := hass.data.get(DATA_CHAT_LOG_OWNERS)) is None:
         owners = {}
         hass.data[DATA_CHAT_LOG_OWNERS] = owners
     conversation_id = session.conversation_id
@@ -132,8 +130,7 @@ def async_get_chat_log(
         yield chat_log
         return
 
-    all_chat_logs = hass.data.get(DATA_CHAT_LOGS)
-    if all_chat_logs is None:
+    if (all_chat_logs := hass.data.get(DATA_CHAT_LOGS)) is None:
         all_chat_logs = {}
         hass.data[DATA_CHAT_LOGS] = all_chat_logs
 

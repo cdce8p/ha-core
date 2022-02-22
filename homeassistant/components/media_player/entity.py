@@ -869,8 +869,7 @@ def _image_response_appears_complete(
     encoding = (response.headers.get(CONTENT_ENCODING) or "identity").strip().lower()
     if encoding != "identity":
         return True
-    content_length = response.headers.get(CONTENT_LENGTH)
-    if content_length is None:
+    if (content_length := response.headers.get(CONTENT_LENGTH)) is None:
         return True
     try:
         return len(body) >= int(content_length)

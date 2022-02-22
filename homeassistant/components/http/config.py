@@ -378,8 +378,7 @@ class HTTPConfigStore:
                 # Another coroutine may have loaded the config while we were waiting
                 # for the lock; check again to avoid unnecessary disk I/O.
                 return  # type: ignore[unreachable]
-            raw = await self._store.async_load()
-            if raw is not None:
+            if (raw := await self._store.async_load()) is not None:
                 # Stored configs do not pass the schema; restore the enum member.
                 for config in (raw[KEY_STABLE], raw[KEY_PENDING]):
                     if config is not None:

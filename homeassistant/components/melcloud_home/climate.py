@@ -236,8 +236,7 @@ class ATAClimateEntity(MelCloudHomeATAUnitEntity, ClimateEntity):
     @override
     def min_temp(self) -> float:
         """Return the minimum temperature based on the current HVAC mode."""
-        capabilities = self.unit.capabilities
-        if capabilities is not None:
+        if (capabilities := self.unit.capabilities) is not None:
             hvac_mode = self.hvac_mode
             if hvac_mode in (HVACMode.COOL, HVACMode.DRY):
                 if capabilities.min_temp_cool is not None:
@@ -254,8 +253,7 @@ class ATAClimateEntity(MelCloudHomeATAUnitEntity, ClimateEntity):
     @override
     def max_temp(self) -> float:
         """Return the maximum temperature based on the current HVAC mode."""
-        capabilities = self.unit.capabilities
-        if capabilities is not None:
+        if (capabilities := self.unit.capabilities) is not None:
             hvac_mode = self.hvac_mode
             if hvac_mode in (HVACMode.COOL, HVACMode.DRY):
                 if capabilities.max_temp_cool is not None:
@@ -442,8 +440,7 @@ class ATWZoneClimateEntity(MelCloudHomeATWZoneEntity, ClimateEntity):
     @override
     def min_temp(self) -> float:
         """Return the minimum zone temperature."""
-        capabilities = self.unit.capabilities
-        if capabilities is not None:
+        if (capabilities := self.unit.capabilities) is not None:
             value = (
                 capabilities.min_set_temperature_zone1
                 if self.zone_number == 1
@@ -457,8 +454,7 @@ class ATWZoneClimateEntity(MelCloudHomeATWZoneEntity, ClimateEntity):
     @override
     def max_temp(self) -> float:
         """Return the maximum zone temperature."""
-        capabilities = self.unit.capabilities
-        if capabilities is not None:
+        if (capabilities := self.unit.capabilities) is not None:
             value = (
                 capabilities.max_set_temperature_zone1
                 if self.zone_number == 1
@@ -507,8 +503,7 @@ class ATWZoneClimateEntity(MelCloudHomeATWZoneEntity, ClimateEntity):
                 self.coordinator.client.control_atw_unit(self._unit_id, power=False),
             )
         else:
-            zone_mode = self._zone_mode
-            if zone_mode is None:
+            if (zone_mode := self._zone_mode) is None:
                 zone_mode = HVAC_MODE_TO_ATW_ZONE_MODE[hvac_mode]
             elif ATW_ZONE_MODE_TO_HVAC_MODE[zone_mode] != hvac_mode:
                 zone_mode = ATW_ZONE_MODE_COUNTERPART.get(

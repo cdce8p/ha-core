@@ -270,8 +270,7 @@ async def make_new_device_data(
     }
 
     for platform in default_config.entity_config:
-        target_list = _platform_list_map.get(platform)
-        if target_list is None:
+        if (target_list := _platform_list_map.get(platform)) is None:
             continue
         existing_ids = {item[0].device_id for item in target_list}
         if device.device_id not in existing_ids:

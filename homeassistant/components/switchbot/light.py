@@ -67,8 +67,7 @@ class SwitchbotAirPurifierLightEntity(SwitchbotEntity, LightEntity, RestoreEntit
     async def async_added_to_hass(self) -> None:
         """Call when entity is added to hass."""
         await super().async_added_to_hass()
-        last_state = await self.async_get_last_state()
-        if last_state:
+        if last_state := await self.async_get_last_state():
             self._attr_is_on = last_state.state == STATE_ON
 
     @property
@@ -262,8 +261,7 @@ class SwitchbotCirculatorFanProLightEntity(SwitchbotEntity, LightEntity):
         The device reports level 1 (high) or level 2 (low); these map to HA
         brightness 255 and 128 respectively. Returns None when unavailable.
         """
-        level = self._device.get_night_light_level()
-        if not level:
+        if not (level := self._device.get_night_light_level()):
             return None
         return 128 if level == 2 else 255
 

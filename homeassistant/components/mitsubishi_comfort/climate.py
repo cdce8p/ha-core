@@ -251,8 +251,7 @@ class MitsubishiComfortClimate(MitsubishiComfortEntity, ClimateEntity):
     @override
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the HVAC mode."""
-        lib_mode = _HVAC_TO_MODE.get(hvac_mode)
-        if lib_mode is None:
+        if (lib_mode := _HVAC_TO_MODE.get(hvac_mode)) is None:
             _LOGGER.debug("Ignoring unsupported HVAC mode %s", hvac_mode)
             return
         result = await self._device.set_mode(lib_mode)
@@ -284,8 +283,7 @@ class MitsubishiComfortClimate(MitsubishiComfortEntity, ClimateEntity):
             else:
                 failed = True
 
-        temp = kwargs.get(ATTR_TEMPERATURE)
-        if temp is not None:
+        if (temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             if mode in ("cool", "autoCool"):
                 result = await self._device.set_cool_setpoint(temp)
                 if result.success:
@@ -316,8 +314,7 @@ class MitsubishiComfortClimate(MitsubishiComfortEntity, ClimateEntity):
     @override
     async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Set the fan mode."""
-        speed = _FAN_SPEED_MAP.get(fan_mode)
-        if speed is None:
+        if (speed := _FAN_SPEED_MAP.get(fan_mode)) is None:
             _LOGGER.debug("Ignoring unsupported fan mode %s", fan_mode)
             return
         result = await self._device.set_fan_speed(speed)
@@ -329,8 +326,7 @@ class MitsubishiComfortClimate(MitsubishiComfortEntity, ClimateEntity):
     @override
     async def async_set_swing_mode(self, swing_mode: str) -> None:
         """Set the swing mode."""
-        direction = _VANE_DIR_MAP.get(swing_mode)
-        if direction is None:
+        if (direction := _VANE_DIR_MAP.get(swing_mode)) is None:
             _LOGGER.debug("Ignoring unsupported swing mode %s", swing_mode)
             return
         result = await self._device.set_vane_direction(direction)

@@ -206,8 +206,7 @@ class FibaroController:
 
     def get_room_name(self, room_id: int) -> str | None:
         """Get the room name by room id or "Unknown" if room does not exist."""
-        room_name = self._room_map.get(room_id)
-        if not room_name:
+        if not (room_name := self._room_map.get(room_id)):
             room_name = "Unknown"
         return room_name
 

@@ -108,7 +108,6 @@ class BluettiModbusFlowHandler(ConfigFlow, domain=DOMAIN):
 
         if device.values.get("d_inverter_type") != MODEL_ID:
             return {"base": "unsupported_device"}, None
-        serial = device.values.get("d_serial")
-        if not serial:
+        if not (serial := device.values.get("d_serial")):
             return {"base": "invalid_serial"}, None
         return {}, str(serial)

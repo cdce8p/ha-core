@@ -79,8 +79,7 @@ def save_dynalite_config(
 ) -> None:
     """Retrieve the Dynalite config for the frontend."""
     entry_id = msg["entry_id"]
-    entry = hass.config_entries.async_get_entry(entry_id)
-    if not entry:
+    if not (entry := hass.config_entries.async_get_entry(entry_id)):
         LOGGER.error(
             "Dynalite - received updated config for invalid entry - %s", entry_id
         )

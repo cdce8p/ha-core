@@ -92,8 +92,7 @@ async def async_setup_entry(
 
     coordinators: list[FressnapfTrackerDataUpdateCoordinator] = []
     for device in devices:
-        tracker = await _get_valid_tracker(hass, entry, device)
-        if tracker is None:
+        if (tracker := await _get_valid_tracker(hass, entry, device)) is None:
             continue
         coordinator = FressnapfTrackerDataUpdateCoordinator(
             hass,

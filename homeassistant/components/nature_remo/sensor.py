@@ -199,7 +199,6 @@ class NatureRemoSmartMeterSensor(NatureRemoApplianceEntity, SensorEntity):
     @override
     def native_value(self) -> StateType:
         """Return the current value."""
-        meter = self.appliance.smart_meter
-        if meter is None:
+        if (meter := self.appliance.smart_meter) is None:
             return None
         return self.entity_description.value_fn(meter)

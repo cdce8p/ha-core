@@ -53,8 +53,7 @@ class RainforestRavenConfigFlow(ConfigFlow, domain=DOMAIN):
             RAVEnSerialDevice(dev_path) as raven_device,
         ):
             await raven_device.synchronize()
-            meters = await raven_device.get_meter_list()
-            if meters:
+            if meters := await raven_device.get_meter_list():
                 for meter in meters.meter_mac_ids or ():
                     meter_info = await raven_device.get_meter_info(meter=meter)
                     if meter_info and (

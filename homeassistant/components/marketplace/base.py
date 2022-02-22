@@ -237,9 +237,7 @@ class Repositories:
 
     def register(self, repository: Repository, default: bool = False) -> None:
         """Register a repository."""
-        repo_id = repository.data.id
-
-        if repo_id == "0":
+        if (repo_id := repository.data.id) == "0":
             return
 
         if registered_repo := self._repositories_by_id.get(repo_id):
@@ -276,9 +274,7 @@ class Repositories:
 
     def unregister(self, repository: Repository) -> None:
         """Unregister a repository."""
-        repo_id = repository.data.id
-
-        if repo_id == "0":
+        if (repo_id := repository.data.id) == "0":
             return
 
         if not self.is_registered(repository_id=repo_id):
@@ -300,9 +296,7 @@ class Repositories:
 
     def mark_default(self, repository: Repository) -> None:
         """Mark a repository as default."""
-        repo_id = repository.data.id
-
-        if repo_id == "0":
+        if (repo_id := repository.data.id) == "0":
             return
 
         if not self.is_registered(repository_id=repo_id):

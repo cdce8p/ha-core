@@ -104,8 +104,7 @@ class GrandstreamConfigFlow(ConfigFlow, domain=DOMAIN):
         )
 
         # Device name from service name
-        name = discovery_info.name
-        if name:
+        if name := discovery_info.name:
             self._name = str(name).split(".", maxsplit=1)[0].upper()
             self.context["title_placeholders"] = {"name": self._name}
         else:
@@ -121,8 +120,7 @@ class GrandstreamConfigFlow(ConfigFlow, domain=DOMAIN):
 
         # Extract firmware version and product model from discovery properties
         if txt_properties:
-            version = txt_properties.get("version")
-            if version:
+            if version := txt_properties.get("version"):
                 self._firmware_version = str(version)
             self._product_model = txt_properties.get("product")
 

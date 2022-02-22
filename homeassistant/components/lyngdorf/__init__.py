@@ -107,8 +107,7 @@ async def async_setup_entry(
     @callback
     def _log_availability_change() -> None:
         nonlocal last_connected
-        connected = receiver.connected
-        if connected == last_connected:
+        if (connected := receiver.connected) == last_connected:
             return
         last_connected = connected
         if connected:

@@ -304,12 +304,10 @@ def _without_annotations(function: types.FunctionType) -> types.FunctionType:
     defaults are copied too: code can set subclasses of tuple and dict, with
     methods of their own. The copies read the storage underneath.
     """
-    defaults = function.__defaults__
-    if defaults is not None:
+    if (defaults := function.__defaults__) is not None:
         defaults = tuple.__getitem__(defaults, slice(None))
 
-    keyword_defaults = function.__kwdefaults__
-    if keyword_defaults is not None:
+    if (keyword_defaults := function.__kwdefaults__) is not None:
         keyword_defaults = with_string_names(dict.items(keyword_defaults))
 
     copy = types.FunctionType(
