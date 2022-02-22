@@ -74,8 +74,7 @@ class JvcProjectorDataUpdateCoordinator(DataUpdateCoordinator[dict[str, str]]):
     @property
     def software_version(self) -> str | None:
         """Return the formatted software version, if it has been cached."""
-        value = self.state.get(cmd.Version)
-        if not value:
+        if not (value := self.state.get(cmd.Version)):
             return None
 
         try:

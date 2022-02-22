@@ -52,9 +52,7 @@ class VolvoSensorDescription(VolvoEntityDescription, SensorEntityDescription):
 
 
 def _availability_status(field: VolvoCarsApiBaseModel) -> str:
-    reason = field.get("unavailable_reason")
-
-    if reason:
+    if reason := field.get("unavailable_reason"):
         return str(reason)
 
     if isinstance(field, VolvoCarsValue):

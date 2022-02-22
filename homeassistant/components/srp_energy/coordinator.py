@@ -61,8 +61,7 @@ class Usage:
         """Initialize Usage from a raw API tuple, or None if unparsable."""
         if not usage or len(usage) != 5:
             return None
-        parsed = dt_util.parse_datetime(usage[2])
-        if parsed is None:
+        if (parsed := dt_util.parse_datetime(usage[2])) is None:
             return None
         try:
             kwh = float(usage[3])

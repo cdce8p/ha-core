@@ -32,8 +32,7 @@ def _rate(current_profit: CurrentProfit, currency: str | None) -> float | None:
     """Return the BTC->currency exchange rate, or None if unavailable."""
     if currency is None or current_profit.Rates is None:
         return None
-    rate = current_profit.Rates.get(currency)
-    if rate is None:
+    if (rate := current_profit.Rates.get(currency)) is None:
         return None
     return float(rate)
 
@@ -71,8 +70,7 @@ def _sum_btc(balances: list[Balance], field: str) -> float | None:
     total = 0.0
     found = False
     for balance in balances:
-        value = getattr(balance, field, None)
-        if value is None:
+        if (value := getattr(balance, field, None)) is None:
             continue
         total += float(value)
         found = True

@@ -185,8 +185,7 @@ def mock_abrp_client(
     display_responses: dict[str, VehicleModelDisplay | BaseException] = {}
 
     async def _display(self: Any, typecode: str) -> VehicleModelDisplay:
-        outcome = display_responses.get(typecode)
-        if outcome is None:
+        if (outcome := display_responses.get(typecode)) is None:
             raise AbrpApiError(f"HTTP 404 (no display fixture for {typecode})")
         if isinstance(outcome, BaseException):
             raise outcome

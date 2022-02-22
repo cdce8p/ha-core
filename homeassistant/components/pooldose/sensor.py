@@ -235,8 +235,7 @@ class PooldoseSensor(PooldoseEntity, SensorEntity):
     @override
     def native_value(self) -> float | int | str | None:
         """Return the current value of the sensor."""
-        data = self.get_data()
-        if data is not None:
+        if (data := self.get_data()) is not None:
             return data["value"]
         return None
 

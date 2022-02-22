@@ -9,7 +9,6 @@ RE_REPOSITORY = re.compile(
 
 def extract_repository_from_url(url: str) -> str | None:
     """Extract the owner/repo part form a URL."""
-    match = re.match(RE_REPOSITORY, url)
-    if not match:
+    if not (match := re.match(RE_REPOSITORY, url)):
         return None
     return match.group(1).lower()

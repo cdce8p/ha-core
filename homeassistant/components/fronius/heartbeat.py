@@ -114,8 +114,7 @@ class LimitHeartbeat:
         a fresh read, so a limit released on the device since the last poll
         is not taken back here.
         """
-        controls = self._modbus_inverter.controls
-        if controls is None:
+        if (controls := self._modbus_inverter.controls) is None:
             return
         try:
             async with self._device_lock:
@@ -142,8 +141,7 @@ class LimitHeartbeat:
         Like the power limit, decided on a fresh read and only while a limit
         is in force.
         """
-        storage = self._modbus_inverter.storage
-        if storage is None:
+        if (storage := self._modbus_inverter.storage) is None:
             return
         try:
             async with self._device_lock:

@@ -152,14 +152,12 @@ class VoIPDevices:
         if call_info.caller_endpoint is None:
             raise RuntimeError("Could not identify VOIP caller")
         voip_id = call_info.caller_endpoint.uri
-        voip_device = self.devices.get(voip_id)
 
-        if voip_device is None:
+        if (voip_device := self.devices.get(voip_id)) is None:
             # If we couldn't find the device based on SIP URI, see if we can
             # find an old device based on just the host/IP and migrate it
             old_id = call_info.caller_endpoint.host
-            voip_device = self.devices.get(old_id)
-            if voip_device is not None:
+            if (voip_device := self.devices.get(old_id)) is not None:
                 voip_device.voip_id = voip_id
                 self.devices[voip_id] = voip_device
                 dev_reg.async_update_device(

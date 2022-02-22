@@ -199,8 +199,7 @@ def _get_gateway(service: ServiceCall) -> Gateway:
 
 def _get_zigbee_device(zha_gateway: Gateway, ieee: EUI64) -> ZigbeeDevice:
     """Return the Zigbee device, raising if it is missing or not a Zigbee device."""
-    zha_device = zha_gateway.get_device(ieee)
-    if zha_device is None:
+    if (zha_device := zha_gateway.get_device(ieee)) is None:
         raise ValueError(f"Device with IEEE {ieee!s} not found")
 
     if not isinstance(zha_device, ZigbeeDevice):

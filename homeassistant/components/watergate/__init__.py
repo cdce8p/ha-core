@@ -114,9 +114,7 @@ def get_webhook_handler(
 
         data = WebhookEvent.parse_webhook_event(body)
 
-        body_type = body.get("type")
-
-        if body_type == WEBHOOK_ONLINE_TYPE:
+        if (body_type := body.get("type")) == WEBHOOK_ONLINE_TYPE:
             # The event carries no state, and it may have changed while the
             # device was away, so fetch it instead of guessing.
             await coordinator.async_request_refresh()

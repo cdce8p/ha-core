@@ -30,8 +30,7 @@ async def async_setup_entry(
 
     def add_player(player_id: str) -> None:
         """Handle add player."""
-        player = mass.players.get(player_id)
-        if player is None:
+        if (player := mass.players.get(player_id)) is None:
             return
         entities: list[MusicAssistantPlayerConfigText] = []
         for player_option in player.options:

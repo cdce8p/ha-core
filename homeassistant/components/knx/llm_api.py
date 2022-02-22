@@ -222,8 +222,7 @@ class KNXTool(llm.Tool):
 
 def _require_store(knx: KNXModule) -> TelegramStore:
     """The telegram store, or raise if it is not configured/available."""
-    store = knx.telegrams.store
-    if store is None:
+    if (store := knx.telegrams.store) is None:
         raise HomeAssistantError(
             translation_domain=DOMAIN,
             translation_key="llm_telegram_store_unavailable",
@@ -233,8 +232,7 @@ def _require_store(knx: KNXModule) -> TelegramStore:
 
 async def _require_project(knx: KNXModule) -> KNXProjectModel:
     """The full parsed ETS project, or raise if none is loaded."""
-    project = await knx.project.get_knxproject()
-    if project is None:
+    if (project := await knx.project.get_knxproject()) is None:
         raise HomeAssistantError(
             translation_domain=DOMAIN,
             translation_key="llm_no_project_loaded",

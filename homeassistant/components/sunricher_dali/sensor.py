@@ -90,9 +90,8 @@ class SunricherDaliIlluminanceSensor(DaliDeviceEntity, SensorEntity):
     def _handle_illuminance_status(self, status: IlluminanceStatus) -> None:
         """Handle illuminance status updates."""
         illuminance_value = status["illuminance_value"]
-        is_valid = status["is_valid"]
 
-        if not is_valid:
+        if not status["is_valid"]:
             _LOGGER.debug(
                 "Illuminance value is not valid for device %s: %s lux",
                 self._device.dev_id,

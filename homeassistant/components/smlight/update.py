@@ -30,10 +30,8 @@ PARALLEL_UPDATES = 1
 def zigbee_latest_version(data: SmFwData, idx: int) -> Firmware | None:
     """Get the latest Zigbee firmware version."""
 
-    if idx < len(data.zb_firmware):
-        firmware_list = data.zb_firmware[idx]
-        if firmware_list:
-            return firmware_list[0]
+    if idx < len(data.zb_firmware) and (firmware_list := data.zb_firmware[idx]):
+        return firmware_list[0]
     return None
 
 

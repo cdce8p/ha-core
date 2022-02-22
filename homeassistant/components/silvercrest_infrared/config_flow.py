@@ -36,13 +36,11 @@ class SilverCrestIfConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Handle the initial step."""
         errors: dict[str, str] = {}
-        emitter_entity_ids = async_get_emitters(self.hass)
-        if not emitter_entity_ids:
+        if not (emitter_entity_ids := async_get_emitters(self.hass)):
             return self.async_abort(reason="no_infrared_entities")
 
         if user_input is not None:
-            emitter_id = user_input.get(CONF_INFRARED_ENTITY_ID)
-            if emitter_id:
+            if emitter_id := user_input.get(CONF_INFRARED_ENTITY_ID):
                 self._async_abort_entries_match({CONF_INFRARED_ENTITY_ID: emitter_id})
                 title_entity_id = emitter_id
                 if TYPE_CHECKING:
@@ -99,13 +97,11 @@ class SilverCrestIfConfigFlow(ConfigFlow, domain=DOMAIN):
 
         entry = self._get_reconfigure_entry()
 
-        emitter_entity_ids = async_get_emitters(self.hass)
-        if not emitter_entity_ids:
+        if not (emitter_entity_ids := async_get_emitters(self.hass)):
             return self.async_abort(reason="no_infrared_entities")
 
         if user_input is not None:
-            emitter_id = user_input.get(CONF_INFRARED_ENTITY_ID)
-            if emitter_id:
+            if emitter_id := user_input.get(CONF_INFRARED_ENTITY_ID):
                 self._async_abort_entries_match({CONF_INFRARED_ENTITY_ID: emitter_id})
                 return self.async_update_reload_and_abort(
                     entry,

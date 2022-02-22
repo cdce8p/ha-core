@@ -54,8 +54,7 @@ def get_vad_sensitivity(
     if sensitivity_entity_id is None:
         return VadSensitivity.DEFAULT
 
-    state = hass.states.get(sensitivity_entity_id)
-    if state is None:
+    if (state := hass.states.get(sensitivity_entity_id)) is None:
         return VadSensitivity.DEFAULT
 
     return VadSensitivity(state.state)

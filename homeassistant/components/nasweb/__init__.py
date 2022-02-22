@@ -56,8 +56,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: NASwebConfigEntry) -> No
                 translation_key="config_entry_error_internal_error",
                 translation_placeholders={"support_email": SUPPORT_EMAIL},
             )
-        webio_serial = webio_api.get_serial_number()
-        if webio_serial is None:
+        if (webio_serial := webio_api.get_serial_number()) is None:
             # pylint: disable-next=home-assistant-log-and-raise
             _LOGGER.error("[%s] Serial number not available", entry.data[CONF_HOST])
             raise ConfigEntryError(
@@ -123,8 +122,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: NASwebConfigEntry) -> N
     await hass.config_entries.async_unload_platforms_or_raise(entry, PLATFORMS)
     nasweb_data = hass.data[DATA_NASWEB]
     coordinator = entry.runtime_data
-    serial = entry.unique_id
-    if serial is not None:
+    if (serial := entry.unique_id) is not None:
         nasweb_data.notify_coordinator.remove_coordinator(serial)
     if nasweb_data.can_be_deinitialized():
         nasweb_data.deinitialize(hass)

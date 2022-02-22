@@ -332,8 +332,7 @@ class GardenaBluetoothRemainSensor(GardenaBluetoothEntity, SensorEntity):
 
     @override
     def _handle_coordinator_update(self) -> None:
-        value = self.coordinator.get_cached(self._char)
-        if not value:
+        if not (value := self.coordinator.get_cached(self._char)):
             self._attr_native_value = None
             super()._handle_coordinator_update()
             return

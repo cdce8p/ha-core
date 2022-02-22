@@ -67,8 +67,7 @@ def convert_time(time_str: str) -> dt.datetime:
 
     If the time is in the past, it will be shifted to the next day.
     """
-    parsed_time = dt_util.parse_time(time_str)
-    if parsed_time is None:
+    if (parsed_time := dt_util.parse_time(time_str)) is None:
         raise ValueError(f"Invalid time format: {time_str}")
     start_of_day = dt_util.start_of_local_day()
     combined = dt.datetime.combine(
