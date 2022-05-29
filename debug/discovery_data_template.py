@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .multilevel_sensor_fix import (
+from .multilevel_sensor import (
     UNIT_AMPERE as SENSOR_UNIT_AMPERE,
     UNIT_BTU_H,
     UNIT_CELSIUS,
