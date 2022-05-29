@@ -29,13 +29,14 @@ env:
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   changes:
     name: Determine what has changed
+    if: false
     outputs:
       # In case of issues with the partial run, use the following line instead:
       # test_full_suite: 'true'
@@ -145,6 +146,7 @@ jobs:
   # This prevent upcoming jobs to do the same individually
   prepare-base:
     name: Prepare base dependencies
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -549,6 +551,7 @@ jobs:
   prepare-tests:
     name: Prepare tests for Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+    if: false
     timeout-minutes: 60
     strategy:
       matrix:
@@ -697,6 +700,42 @@ jobs:
           . venv/bin/activate
           python --version
           mypy homeassistant/components/${{ needs.changes.outputs.integrations_glob }}
+
+  mypy-clean:
+    name: Check mypy in clean env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v3.0.2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3.1.2
+        with:
+          python-version: "3.10"
+      - name: Cache venv
+        id: cache-venv
+        uses: actions/cache@v3.0.2
+        with:
+          path: venv
+          key: mypy-venv-1
+      - name: Create full Python venv
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install -U "pip>=21.0,<22.2" setuptools wheel
+          pip install mypy==0.960
+      - name: Install mypy dev
+        run: |
+          . venv/bin/activate
+          pip uninstall -y mypy
+          pip install -U git+https://github.com/cdce8p/mypy.git@dev
+      - name: Run mypy
+        timeout-minutes: 1
+        run: |
+          . venv/bin/activate
+          mypy debug
+      # - name: Fail
+      #   run: exit 1
 
   pip-check:
     runs-on: ubuntu-latest
