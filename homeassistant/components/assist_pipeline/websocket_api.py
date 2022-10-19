@@ -2,7 +2,7 @@
 import asyncio
 
 # Suppressing disable=deprecated-module is needed for Python 3.11
-import audioop  # pylint: disable=deprecated-module
+import audioop  # pylint: disable=deprecated-module,useless-suppression
 from collections.abc import AsyncGenerator, Callable
 import logging
 from typing import Any
