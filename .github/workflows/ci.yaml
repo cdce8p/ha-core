@@ -565,12 +565,12 @@ jobs:
           page=1
           per_page=100
           del_count=0
-          keep_index=0
+          index=0
 
           all_versions=($(echo $ALL_PYTHON_VERSIONS | tr -d \',[]))
 
-          if [[ "${{ github.ref }}" != "refs/heads/dev" ]]; then keep_index=1; fi
-          echo $keep_index
+          if [[ "${{ github.ref }}" != "refs/heads/dev" ]]; then index=1; fi
+          echo $index
 
           while true; do
             res=$(curl -fsS \
@@ -589,8 +589,8 @@ jobs:
               # Select all cache keys which match the ref and key regex
               # Keep the first entry for 'ref/heads/dev'
               targets=$(echo $res | jq \
-                --arg ref "${{ github.ref }}" --arg key "$key" \
-                '[.actions_caches[] | select(.ref == $ref) | select(.key | test($key))][1:][] | del(.created_at, .size_in_bytes, .version)')
+                --arg ref "${{ github.ref }}" --arg key "$key" --arg index $index \
+                '[.actions_caches[] | select(.ref == $ref) | select(.key | test($key))][$index | fromjson:][] | del(.created_at, .size_in_bytes, .version)')
 
               if [ $(echo $targets | jq -s 'length') -eq 0 ]; then continue; fi
               echo "$targets"
