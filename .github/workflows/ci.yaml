@@ -569,8 +569,12 @@ jobs:
 
           all_versions=($(echo $ALL_PYTHON_VERSIONS | tr -d \',[]))
 
-          if [[ "${{ github.ref }}" != "refs/heads/dev" ]]; then index=1; fi
-          echo $index
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]] \
+            || [[ "${{ contains(github.event.pull_request.labels.*.name, 'ci-keep-cache') }}" == "true" ]]
+          then
+            index=1
+            echo "Keep one entry per Python version"
+          fi
 
           while true; do
             res=$(curl -fsS \
