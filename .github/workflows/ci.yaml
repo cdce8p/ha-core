@@ -554,8 +554,8 @@ jobs:
   cleanup-cache:
     name: Cleanup old pip caches
     runs-on: ubuntu-20.04
-    needs:
-      - base
+    # needs:
+    #   - base
     permissions:
       actions: write
     steps:
@@ -565,8 +565,12 @@ jobs:
           page=1
           per_page=100
           del_count=0
+          keep_index=0
 
           all_versions=($(echo $ALL_PYTHON_VERSIONS | tr -d \',[]))
+
+          if [[ "${{ github.ref }}" != "refs/heads/dev" ]]; then keep_index=1; fi
+          echo $keep_index
 
           while true; do
             res=$(curl -fsS \
@@ -583,7 +587,7 @@ jobs:
               echo "Check key regex: $key"
 
               # Select all cache keys which match the ref and key regex
-              # except the first one
+              # Keep the first entry for 'ref/heads/dev'
               targets=$(echo $res | jq \
                 --arg ref "${{ github.ref }}" --arg key "$key" \
                 '[.actions_caches[] | select(.ref == $ref) | select(.key | test($key))][1:][] | del(.created_at, .size_in_bytes, .version)')
