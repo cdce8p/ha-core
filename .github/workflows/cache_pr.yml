@@ -33,13 +33,14 @@ jobs:
           res_count=$(echo "$res" | jq '.actions_caches | length')
           if [[ "$res_count" -eq 0 ]]; then break; fi
 
+          echo "Found $res_count caches"
           targets=$(echo "$res" | jq \
             --arg ref "$ref" \
             '.actions_caches[] | select(.ref == $ref) | del(.created_at, .size_in_bytes, .version)')
           echo "$targets"
 
           for id in $(echo "$targets" | jq '.id'); do
-            echo "Delete cache with id: $id"
+            echo "Delete cache with id: $id ..."
             gh api \
               --method DELETE \
               -H "Accept: application/vnd.github+json" \
