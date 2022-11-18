@@ -1,0 +1,62 @@
+name: Delete Caches (after CI)
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
+
+jobs:
+  delete:
+    name: Delete caches
+    runs-on: ubuntu-22.04
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Download workflow artifact
+        id: download-artifact
+        run: |
+          all_artifacts=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts)
+
+          ids=$(echo "$all_artifacts" | jq \
+            --arg key "cache_ids" \
+            '.artifacts[] | select(.name == $key) | [.id]')
+
+          count=$(echo "$ids" | jq 'length')
+          if [[ "$count" -eq 0 ]]; then
+            echo "result=skip" >> $GITHUB_OUTPUT
+            exit
+          fi
+
+          id=$(echo "$ids" | jq '.[0]')
+          echo "Download artifact with id: $id ..."
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/artifacts/$id/zip >> cache_ids.zip
+
+          unzip cache_ids.zip
+      - name: Delete caches
+        if: steps.download-artifact.outputs.result != 'skip'
+        run: |
+          del_count=0
+
+          num_ids=$(cat cache_ids | jq -s 'length')
+          echo "Found $num_ids caches to delete"
+          if [[ "$num_ids" -eq 0 ]]; then exit; fi
+
+          for id in $(cat cache_ids); do
+            echo "Delete cache with id: $id ..."
+            gh api \
+              --method DELETE \
+              -H "Accept: application/vnd.github+json" \
+              /repos/${{ github.repository }}/actions/caches/$id
+            (( del_count +=  1 ))
+          done
+
+          echo "Deleted $del_count caches"

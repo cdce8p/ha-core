@@ -53,7 +53,7 @@ jobs:
       test_groups: ${{ steps.info.outputs.test_groups }}
       tests_glob: ${{ steps.info.outputs.tests_glob }}
       tests: ${{ steps.info.outputs.tests }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v3.1.0
@@ -550,6 +550,68 @@ jobs:
           pip install --cache-dir=$PIP_CACHE -r requirements_all.txt --use-deprecated=legacy-resolver
           pip install --cache-dir=$PIP_CACHE -r requirements_test.txt --use-deprecated=legacy-resolver
           pip install -e .
+
+  cleanup-cache:
+    name: Cleanup old pip caches
+    runs-on: ubuntu-22.04
+    needs:
+      - base
+    steps:
+      - name: Identify caches to delete
+        id: identify-caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sort="last_accessed_at"
+          cache_count=0
+          index=0
+
+          all_versions=($(echo $ALL_PYTHON_VERSIONS | tr -d \',[]))
+
+          mkdir ./pr
+          touch ./pr/cache_ids
+
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]] \
+            || [[ "${{ contains(github.event.pull_request.labels.*.name, 'ci-keep-cache') }}" == "true" ]]
+          then
+            index=1
+            echo "Keep one entry per Python version"
+          fi
+
+          res=$(gh api --paginate \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/actions/caches?sort=$sort)
+
+          res_count=$(echo "$res" | jq '.actions_caches | length')
+          if [[ "$res_count" -eq 0 ]]; then break; fi
+
+          echo "Check ref: ${{ github.ref }}"
+          for version in ${all_versions[@]}; do
+            key="${{ runner.os }}-$version.+-pip"
+            echo "Check key regex: $key"
+
+            # Select all cache keys which match the ref and key regex
+            # Keep the first entry for 'ref/heads/dev'
+            targets=$(echo "$res" | jq \
+              --arg ref "${{ github.ref }}" --arg key "$key" --arg index $index \
+              '[.actions_caches[] | select(.ref == $ref) | select(.key | test($key))][$index | fromjson:][] | del(.created_at, .size_in_bytes, .version)')
+
+            num_ids=$(echo "$targets" | jq -s 'length')
+            if [[ "$num_ids" -eq 0 ]]; then continue; fi
+            echo "$targets"
+
+            echo "$targets" | jq '.id' >> ./pr/cache_ids
+            cache_count=$(( cache_count + num_ids ))
+          done
+
+          echo "Found $cache_count caches to delete"
+          echo "cache_count=$cache_count" >> $GITHUB_OUTPUT
+      - name: Upload artifact
+        if: steps.identify-caches.outputs.cache_count != '0'
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: cache_ids
+          path: pr/
 
   hassfest:
     name: Check hassfest
