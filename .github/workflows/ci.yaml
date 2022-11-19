@@ -24,16 +24,16 @@ env:
   PIP_CACHE_VERSION: 3
   HA_SHORT_VERSION: 2022.12
   DEFAULT_PYTHON: 3.9
-  ALL_PYTHON_VERSIONS: "['3.9', '3.10']"
+  ALL_PYTHON_VERSIONS: "['3.9']"
   PRE_COMMIT_CACHE: ~/.cache/pre-commit
   PIP_CACHE: /tmp/pip-cache
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -163,6 +163,7 @@ jobs:
   pre-commit:
     name: Prepare pre-commit base
     runs-on: ubuntu-20.04
+    if: false
     needs:
       - info
     steps:
@@ -526,7 +527,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-pip-${{ env.PIP_CACHE_VERSION }}-${{ env.HA_SHORT_VERSION }}-
       - name: Install additional OS dependencies
-        if: steps.cache-venv.outputs.cache-hit != 'true'
+        if: false && steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update
           sudo apt-get -y install \
@@ -547,6 +548,8 @@ jobs:
           . venv/bin/activate
           python --version
           pip install --cache-dir=$PIP_CACHE -U "pip>=21.0,<22.4" setuptools wheel
+          pip install attrs==22.1.0
+          exit 0
           pip install --cache-dir=$PIP_CACHE -r requirements_all.txt --use-deprecated=legacy-resolver
           pip install --cache-dir=$PIP_CACHE -r requirements_test.txt --use-deprecated=legacy-resolver
           pip install -e .
@@ -554,6 +557,7 @@ jobs:
   hassfest:
     name: Check hassfest
     runs-on: ubuntu-20.04
+    if: false
     needs:
       - info
       - base
@@ -587,6 +591,7 @@ jobs:
   gen-requirements-all:
     name: Check all requirements
     runs-on: ubuntu-20.04
+    if: false
     needs:
       - info
       - base
@@ -621,6 +626,7 @@ jobs:
     name: Check pylint
     runs-on: ubuntu-20.04
     timeout-minutes: 20
+    if: false
     needs:
       - info
       - base
@@ -705,7 +711,7 @@ jobs:
         run: |
           . venv/bin/activate
           python --version
-          mypy homeassistant pylint
+          mypy homeassistant/components/zha
       - name: Run mypy (partially)
         if: needs.info.outputs.test_full_suite == 'false'
         shell: bash
@@ -716,6 +722,7 @@ jobs:
 
   pip-check:
     runs-on: ubuntu-20.04
+    if: false
     needs:
       - info
       - base
