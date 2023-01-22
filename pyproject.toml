@@ -411,9 +411,6 @@ runtime-typing = false
 [tool.pylint.CODE_STYLE]
 max-line-length-suggestions = 72
 
-[tool.pylint.HASS_ENFORCE_TYPE_HINTS]
-ignore-missing-annotations = true
-
 [tool.pylint-per-file-ignores]
 # hass-component-root-import: Tests test non-public APIs
 # protected-access: Tests do often test internals a lot
