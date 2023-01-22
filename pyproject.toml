@@ -437,9 +437,6 @@ runtime-typing = false
 [tool.pylint.CODE_STYLE]
 max-line-length-suggestions = 72
 
-[tool.pylint.HASS_ENFORCE_TYPE_HINTS]
-ignore-missing-annotations = true
-
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
