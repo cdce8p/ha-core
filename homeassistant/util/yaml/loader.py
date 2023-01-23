@@ -32,7 +32,7 @@ from .objects import Input, NodeDictClass, NodeListClass, NodeStrClass
 
 # mypy: allow-untyped-calls, no-warn-return-any
 
-JSON_TYPE = list | dict | str
+JSON_TYPE = list | dict | str  # -> Why not pylint invalid-name?
 
 _LOGGER = logging.getLogger(__name__)
 
