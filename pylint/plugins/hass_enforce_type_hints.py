@@ -47,7 +47,7 @@ class TypeHintMatch:
     """arg_types is for positional arguments"""
     named_arg_types: dict[str, str] | None = None
     """named_arg_types is for named or keyword arguments"""
-    kwargs_type: str | None = None
+    kwargs_type: list[str] | str | None = None
     """kwargs_type is for the special case `**kwargs`"""
     has_async_counterpart: bool = False
 
@@ -1695,7 +1695,13 @@ _INHERITANCE_MATCH: dict[str, list[ClassTypeHintMatch]] = {
                         "xy_color": "tuple[float, float] | None",
                         "white": "int | None",
                     },
-                    kwargs_type="Any",
+                    kwargs_type=["Unpack[LightTurnOnTD]", "Any"],
+                    return_type=None,
+                    has_async_counterpart=True,
+                ),
+                TypeHintMatch(
+                    function_name="turn_off",
+                    kwargs_type=["Unpack[LightTurnOffTD]", "Any"],
                     return_type=None,
                     has_async_counterpart=True,
                 ),
