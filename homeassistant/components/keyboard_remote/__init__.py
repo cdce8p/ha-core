@@ -331,7 +331,6 @@ class KeyboardRemote:
                 _LOGGER.debug("Start device monitoring")
                 await self.hass.async_add_executor_job(self.dev.grab)
                 async for event in self.dev.async_read_loop():
-                    # pylint: disable=no-member
                     if event.type is ecodes.EV_KEY:
                         if event.value in self.key_values:
                             _LOGGER.debug(

@@ -454,9 +454,9 @@ class XiaomiPhilipsBulb(XiaomiPhilipsGenericLight):
                     "%s %s%%, %s mireds, %s%% cct"
                 ),
                 brightness,
-                percent_brightness,  # pylint: disable=used-before-assignment
+                percent_brightness,
                 color_temp,
-                percent_color_temp,  # pylint: disable=used-before-assignment
+                percent_color_temp,
             )
 
             result = await self._try_command(
@@ -832,8 +832,8 @@ class XiaomiPhilipsMoonlightLamp(XiaomiPhilipsBulb):
             _LOGGER.debug(
                 "Setting brightness and color: %s %s%%, %s",
                 brightness,
-                percent_brightness,  # pylint: disable=used-before-assignment
-                rgb,  # pylint: disable=used-before-assignment
+                percent_brightness,
+                rgb,
             )
 
             result = await self._try_command(
@@ -856,7 +856,7 @@ class XiaomiPhilipsMoonlightLamp(XiaomiPhilipsBulb):
                 brightness,
                 percent_brightness,
                 color_temp,
-                percent_color_temp,  # pylint: disable=used-before-assignment
+                percent_color_temp,
             )
 
             result = await self._try_command(
