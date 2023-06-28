@@ -188,7 +188,6 @@ class Filters:
             return or_(
                 i_entities,
                 # https://github.com/sqlalchemy/sqlalchemy/issues/9190
-                # pylint: disable-next=invalid-unary-operand-type
                 (~e_entities & (i_entity_globs | (~e_entity_globs & i_domains))),
             ).self_group()
 
