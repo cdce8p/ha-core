@@ -110,7 +110,7 @@ class SIAHub:
             self.sia_client.accounts = self.sia_accounts
             return
         # the new client class method creates a subclass based on protocol, hence the type ignore
-        self.sia_client = SIAClient(  # type: ignore
+        self.sia_client = SIAClient(
             host="",
             port=self._port,
             accounts=self.sia_accounts,
