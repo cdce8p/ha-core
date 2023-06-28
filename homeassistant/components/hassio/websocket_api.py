@@ -40,7 +40,6 @@ SCHEMA_WEBSOCKET_EVENT = vol.Schema(
 )
 
 # Endpoints needed for ingress can't require admin because addons can set `panel_admin: false`
-# pylint: disable=implicit-str-concat
 # fmt: off
 WS_NO_ADMIN_ENDPOINTS = re.compile(
     r"^(?:"
