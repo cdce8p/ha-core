@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import io
 
-import face_recognition  # pylint: disable=import-error
+import face_recognition
 
 from homeassistant.components.image_processing import ImageProcessingFaceEntity
 from homeassistant.const import ATTR_LOCATION, CONF_ENTITY_ID, CONF_NAME, CONF_SOURCE

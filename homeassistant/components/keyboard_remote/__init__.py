@@ -1,5 +1,4 @@
 """Receive signals from a keyboard and use it as a remote control."""
-# pylint: disable=import-error
 from __future__ import annotations
 
 import asyncio
