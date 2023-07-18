@@ -435,7 +435,7 @@ jobs:
     name: Prepare dependencies
     runs-on: ubuntu-22.04
     needs: info
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
@@ -461,7 +461,7 @@ jobs:
           path: venv
           lookup-only: true
           key: >-
-            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-no-binary-${{
             needs.info.outputs.python_cache_key }}
       - name: Restore pip wheel cache
         if: steps.cache-venv.outputs.cache-hit != 'true'
@@ -469,10 +469,10 @@ jobs:
         with:
           path: ${{ env.PIP_CACHE }}
           key: >-
-            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-no-binary-${{
             steps.generate-pip-key.outputs.key }}
           restore-keys: |
-            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-pip-${{ env.PIP_CACHE_VERSION }}-${{ env.HA_SHORT_VERSION }}-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-no-binary-pip-${{ env.PIP_CACHE_VERSION }}-${{ env.HA_SHORT_VERSION }}-
       - name: Install additional OS dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
@@ -489,14 +489,13 @@ jobs:
             libswscale-dev \
             libudev-dev
       - name: Create Python virtual environment
-        if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           python -m venv venv
           . venv/bin/activate
           python --version
-          pip install --cache-dir=$PIP_CACHE -U "pip>=21.3.1" setuptools wheel
-          pip install --cache-dir=$PIP_CACHE -r requirements_all.txt
-          pip install --cache-dir=$PIP_CACHE -r requirements_test.txt
+          PIP_CACHE_DIR=$PIP_CACHE pip install -U "pip>=21.3.1" setuptools wheel
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: -r requirements_all.txt
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: -r requirements_test.txt
           pip install -e . --config-settings editable_mode=compat
       - name: Save pip wheel cache
         if: |
@@ -506,7 +505,7 @@ jobs:
         with:
           path: ${{ env.PIP_CACHE }}
           key: >-
-            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-no-binary-${{
             steps.generate-pip-key.outputs.key }}
 
   hassfest:
