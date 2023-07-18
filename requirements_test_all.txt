@@ -40,9 +40,6 @@ HATasmota==0.6.5
 # homeassistant.components.tensorflow
 Pillow==10.0.0
 
-# homeassistant.components.plex
-PlexAPI==4.13.2
-
 # homeassistant.components.progettihwsw
 ProgettiHWSW==0.1.1
 
@@ -1067,12 +1064,6 @@ phone-modem==0.1.1
 
 # homeassistant.components.pilight
 pilight==0.1.1
-
-# homeassistant.components.plex
-plexauth==0.0.6
-
-# homeassistant.components.plex
-plexwebsocket==0.0.13
 
 # homeassistant.components.plugwise
 plugwise==0.31.1

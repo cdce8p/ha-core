@@ -4,6 +4,7 @@
   "codeowners": ["@jjlawren"],
   "config_flow": true,
   "dependencies": ["http"],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/plex",
   "iot_class": "local_push",
   "loggers": ["plexapi", "plexwebsocket"],
