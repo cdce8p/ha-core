@@ -107,9 +107,6 @@ RachioPy==1.0.3
 # homeassistant.components.python_script
 RestrictedPython==6.1
 
-# homeassistant.components.remember_the_milk
-RtmAPI==0.7.2
-
 # homeassistant.components.recorder
 # homeassistant.components.sql
 SQLAlchemy==2.0.15
@@ -776,9 +773,6 @@ homematicip==1.0.14
 
 # homeassistant.components.home_plus_control
 homepluscontrol==0.0.5
-
-# homeassistant.components.remember_the_milk
-httplib2==0.20.4
 
 # homeassistant.components.huawei_lte
 huawei-lte-api==1.6.11

@@ -3,6 +3,7 @@
   "name": "Remember The Milk",
   "codeowners": [],
   "dependencies": ["configurator"],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/remember_the_milk",
   "iot_class": "cloud_push",
   "loggers": ["rtmapi"],
