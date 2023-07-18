@@ -500,7 +500,23 @@ jobs:
           . venv/bin/activate
           python --version
           PIP_CACHE_DIR=$PIP_CACHE pip install -U "pip>=21.3.1" setuptools wheel
-          pip install "cython<3.0"
+          PIP_CACHE_DIR=$PIP_CACHE pip install "cython<3.0"
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: astral==2.2
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: home-assistant-bluetooth==1.10.0
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: orjson==3.9.2
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: PyYAML==6.0.1
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: ulid-transform==0.7.2
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: PyRMVtransport==0.3.3
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: aioambient==2023.04.0
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: SQLAlchemy==2.0.15
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: aioeafm==0.1.2
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: aioflo==2021.11.0
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: aionotion==2023.05.5
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: bluetooth-data-tools==1.6.0
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: aiopurpleair==2022.12.1
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: dbus-fast==1.86.0
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: aioridwell==2023.07.0
+          PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: fnv-hash-fast==0.3.1
           PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: -r requirements_all.txt
           PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: -r requirements_test.txt
           pip install -e . --config-settings editable_mode=compat
