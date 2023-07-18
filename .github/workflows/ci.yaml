@@ -488,12 +488,19 @@ jobs:
             libswresample-dev \
             libswscale-dev \
             libudev-dev
+
+          # Install dependencies for lxml
+          # https://lxml.de/installation.html#requirements
+          sudo apt-get -y install \
+            libxml2-dev \
+            libxslt-dev
       - name: Create Python virtual environment
         run: |
           python -m venv venv
           . venv/bin/activate
           python --version
           PIP_CACHE_DIR=$PIP_CACHE pip install -U "pip>=21.3.1" setuptools wheel
+          pip install "cython<3.0"
           PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: -r requirements_all.txt
           PIP_CACHE_DIR=$PIP_CACHE pip install --no-binary :all: -r requirements_test.txt
           pip install -e . --config-settings editable_mode=compat
