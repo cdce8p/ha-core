@@ -4,6 +4,7 @@
   "codeowners": ["@jbouwh"],
   "config_flow": true,
   "dependencies": ["repairs"],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/imap",
   "iot_class": "cloud_push",
   "loggers": ["aioimaplib"],
