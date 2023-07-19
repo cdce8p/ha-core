@@ -768,9 +768,6 @@ freesms==0.2.0
 # homeassistant.components.fritzbox_callmonitor
 fritzconnection[qr]==1.12.2
 
-# homeassistant.components.google_translate
-gTTS==2.2.4
-
 # homeassistant.components.gardena_bluetooth
 gardena_bluetooth==1.0.2
 
