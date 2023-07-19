@@ -4,6 +4,7 @@
   "after_dependencies": ["usb"],
   "codeowners": ["@Crownstone", "@RicArch97"],
   "config_flow": true,
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/crownstone",
   "iot_class": "cloud_push",
   "loggers": [
