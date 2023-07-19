@@ -4,6 +4,7 @@
   "codeowners": ["@tronikos"],
   "config_flow": true,
   "dependencies": ["conversation"],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/google_generative_ai_conversation",
   "integration_type": "service",
   "iot_class": "cloud_polling",
