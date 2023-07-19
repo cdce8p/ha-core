@@ -843,9 +843,6 @@ gpiozero==1.6.2
 # homeassistant.components.gree
 greeclimate==1.4.1
 
-# homeassistant.components.greeneye_monitor
-greeneye-monitor==3.0.3
-
 # homeassistant.components.greenwave
 greenwavereality==0.5.1
 
