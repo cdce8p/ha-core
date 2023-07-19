@@ -12,6 +12,7 @@
       "macaddress": "002674*"
     }
   ],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/hunterdouglas_powerview",
   "homekit": {
     "models": ["PowerView"]
