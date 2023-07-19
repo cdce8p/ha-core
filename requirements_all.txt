@@ -922,9 +922,6 @@ homematicip==1.0.14
 # homeassistant.components.home_plus_control
 homepluscontrol==0.0.5
 
-# homeassistant.components.horizon
-horimote==0.4.1
-
 # homeassistant.components.huawei_lte
 huawei-lte-api==1.6.11
 
