@@ -840,9 +840,6 @@ govee-ble==0.23.0
 # homeassistant.components.remote_rpi_gpio
 gpiozero==1.6.2
 
-# homeassistant.components.gpsd
-gps3==0.33.3
-
 # homeassistant.components.gree
 greeclimate==1.4.1
 
