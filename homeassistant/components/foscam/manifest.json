@@ -3,6 +3,7 @@
   "name": "Foscam",
   "codeowners": ["@skgsergio"],
   "config_flow": true,
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/foscam",
   "iot_class": "local_polling",
   "loggers": ["libpyfoscam"],
