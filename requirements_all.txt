@@ -777,9 +777,6 @@ gassist-text==0.0.10
 # homeassistant.components.google
 gcal-sync==4.1.4
 
-# homeassistant.components.geniushub
-geniushub-client==0.7.0
-
 # homeassistant.components.geocaching
 geocachingapi==0.2.1
 
