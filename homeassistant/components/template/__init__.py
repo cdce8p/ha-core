@@ -118,10 +118,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def _process_config(hass: HomeAssistant, hass_config: ConfigType) -> None:
     """Process config."""
-    coordinators = hass.data.pop(DATA_COORDINATORS, None)
-
     # Remove old ones
-    if coordinators:
+    if coordinators := hass.data.pop(DATA_COORDINATORS, None):
         for coordinator in coordinators:
             coordinator.async_remove()
 

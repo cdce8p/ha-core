@@ -275,8 +275,7 @@ async def async_setup_platform(
         entity_ids = await async_extract_entity_ids(hass, call)
 
         for entity_id in entity_ids:
-            scene = platform.entities.get(entity_id)
-            if scene is None:
+            if (scene := platform.entities.get(entity_id)) is None:
                 raise ServiceValidationError(
                     translation_domain=SCENE_DOMAIN,
                     translation_key="entity_not_scene",

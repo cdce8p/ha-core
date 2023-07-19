@@ -42,8 +42,7 @@ class FakeDiscovery:
         updated_infos = []
 
         for info in mock_infos.values():
-            uuid = info.uuid
-            if uuid not in last_mock_infos:
+            if (uuid := info.uuid) not in last_mock_infos:
                 new_infos.append(info)
             else:
                 last_info = self.last_mock_infos[uuid]

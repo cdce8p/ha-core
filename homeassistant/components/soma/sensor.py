@@ -44,8 +44,7 @@ class SomaSensor(SomaEntity, SensorEntity):
     async def async_update(self) -> None:
         """Update the sensor with the latest data."""
         response = await self.get_battery_level_from_api()
-        _battery = response.get("battery_percentage")
-        if _battery is None:
+        if (_battery := response.get("battery_percentage")) is None:
             # https://support.somasmarthome.com/hc/en-us/articles/360026064234-HTTP-API
             # battery_level response is expected to be min = 360, max 410 for
             # 0-100% levels above 410 are consider 100% and below 360, 0% as the

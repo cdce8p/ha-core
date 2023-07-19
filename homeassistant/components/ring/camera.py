@@ -76,8 +76,7 @@ class RingCam(RingEntity[RingDoorBell], Camera):
         self._device = self._get_coordinator_data().get_video_device(
             self._device.device_api_id
         )
-        history_data = self._device.last_history
-        if history_data:
+        if history_data := self._device.last_history:
             self._last_event = history_data[0]
             # will call async_update to update the attributes and get the
             # video url from the api

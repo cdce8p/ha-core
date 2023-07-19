@@ -1106,8 +1106,7 @@ class DynamicServiceIntentHandler(IntentHandler):
 
         if self.optional_slots:
             for key in self.optional_slots:
-                value = intent_obj.slots.get(key[0])
-                if value:
+                if value := intent_obj.slots.get(key[0]):
                     service_data[key[1]] = value["value"]
 
         await self._run_then_background(

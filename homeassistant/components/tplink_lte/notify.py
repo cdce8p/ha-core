@@ -41,7 +41,7 @@ class TplinkNotifyService(BaseNotificationService):
 
         lte_data: LTEData = self.hass.data[DATA_KEY]
         modem_data = lte_data.get_modem_data(self.config)
-        if not modem_data:
+        if not (modem_data := lte_data.get_modem_data(self.config)):
             _LOGGER.error("No modem available")
             return
 

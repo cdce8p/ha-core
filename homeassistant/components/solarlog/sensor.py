@@ -278,9 +278,7 @@ async def async_setup_entry(
         for sensor in SOLARLOG_SENSOR_TYPES
     ]
 
-    device_data = coordinator.data.inverter_data
-
-    if device_data:
+    if device_data := coordinator.data.inverter_data:
         entities.extend(
             SolarLogInverterSensor(coordinator, sensor, device_id)
             for device_id in device_data

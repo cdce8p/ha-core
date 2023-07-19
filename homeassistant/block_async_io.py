@@ -232,8 +232,7 @@ _BLOCKED_CALLS = BlockedCalls(set())
 
 def enable() -> None:
     """Enable the detection of blocking calls in the event loop."""
-    calls = _BLOCKED_CALLS.calls
-    if calls:
+    if calls := _BLOCKED_CALLS.calls:
         raise RuntimeError("Blocking call detection is already enabled")
 
     loop_thread_id = threading.get_ident()

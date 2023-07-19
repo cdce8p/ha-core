@@ -74,8 +74,7 @@ class InsteonFlowHandler(ConfigFlow, domain=DOMAIN):
                 return self.async_create_entry(title="", data=user_input)
             errors["base"] = "cannot_connect"
         schema_defaults = user_input if user_input is not None else {}
-        ports = await async_get_usb_ports(self.hass)
-        if not ports:
+        if not (ports := await async_get_usb_ports(self.hass)):
             return await self.async_step_plm_manually()
         ports[PLM_MANUAL] = "Enter manually"
         data_schema = build_plm_schema(ports, **schema_defaults)

@@ -81,16 +81,14 @@ class CambridgeAudioDevice(CambridgeAudioEntity, MediaPlayerEntity):
         if TransportControl.PLAY_PAUSE in controls:
             features |= MediaPlayerEntityFeature.PLAY | MediaPlayerEntityFeature.PAUSE
         for control in controls:
-            feature = TRANSPORT_FEATURES.get(control)
-            if feature:
+            if feature := TRANSPORT_FEATURES.get(control):
                 features |= feature
         return features
 
     @property
     def state(self) -> MediaPlayerState:
         """Return the state of the device."""
-        media_state = self.client.play_state.state
-        if media_state == "NETWORK":
+        if (media_state := self.client.play_state.state) == "NETWORK":
             return MediaPlayerState.STANDBY
         if self.client.state.power:
             if media_state == "play":
@@ -170,8 +168,7 @@ class CambridgeAudioDevice(CambridgeAudioEntity, MediaPlayerEntity):
     @property
     def shuffle(self) -> bool | None:
         """Current shuffle configuration."""
-        mode_shuffle = self.client.play_state.mode_shuffle
-        if not mode_shuffle:
+        if not (mode_shuffle := self.client.play_state.mode_shuffle):
             return False
         return mode_shuffle != ShuffleMode.OFF
 

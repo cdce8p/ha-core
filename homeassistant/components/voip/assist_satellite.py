@@ -178,8 +178,7 @@ class VoipAssistSatellite(VoIPEntity, AssistSatelliteEntity, RtpDatagramProtocol
         async def stt_stream():
             while True:
                 async with asyncio.timeout(self._audio_chunk_timeout):
-                    chunk = await self._audio_queue.get()
-                    if not chunk:
+                    if not (chunk := await self._audio_queue.get()):
                         break
 
                     yield chunk

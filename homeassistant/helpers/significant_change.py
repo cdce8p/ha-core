@@ -223,9 +223,7 @@ class SignificantlyChangedChecker:
             self.last_approved_entities[new_state.entity_id] = (new_state, extra_arg)
             return True
 
-        functions = self.hass.data.get(DATA_FUNCTIONS)
-
-        if functions is None:
+        if (functions := self.hass.data.get(DATA_FUNCTIONS)) is None:
             raise RuntimeError("Significant Change not initialized")
 
         check_significantly_changed = functions.get(new_state.domain)

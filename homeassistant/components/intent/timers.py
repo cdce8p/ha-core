@@ -324,8 +324,7 @@ class TimerManager:
 
     def cancel_timer(self, timer_id: str) -> None:
         """Cancel a timer."""
-        timer = self.timers.pop(timer_id, None)
-        if timer is None:
+        if (timer := self.timers.pop(timer_id, None)) is None:
             raise TimerNotFoundError
 
         if timer.is_active:
@@ -346,8 +345,7 @@ class TimerManager:
 
     def add_time(self, timer_id: str, seconds: int) -> None:
         """Add time to a timer."""
-        timer = self.timers.get(timer_id)
-        if timer is None:
+        if (timer := self.timers.get(timer_id)) is None:
             raise TimerNotFoundError
 
         if seconds == 0:
@@ -389,8 +387,7 @@ class TimerManager:
 
     def pause_timer(self, timer_id: str) -> None:
         """Pauses a timer."""
-        timer = self.timers.get(timer_id)
-        if timer is None:
+        if (timer := self.timers.get(timer_id)) is None:
             raise TimerNotFoundError
 
         if not timer.is_active:
@@ -413,8 +410,7 @@ class TimerManager:
 
     def unpause_timer(self, timer_id: str) -> None:
         """Unpause a timer."""
-        timer = self.timers.get(timer_id)
-        if timer is None:
+        if (timer := self.timers.get(timer_id)) is None:
             raise TimerNotFoundError
 
         if timer.is_active:
@@ -717,8 +713,7 @@ def _find_timers(
         return matching_timers
 
     area_registry = ar.async_get(hass)
-    area = area_registry.async_get_area(device.area_id)
-    if area is None:
+    if (area := area_registry.async_get_area(device.area_id)) is None:
         return matching_timers
 
     def area_floor_sort(timer: TimerInfo) -> int:

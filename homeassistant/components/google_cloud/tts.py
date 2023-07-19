@@ -178,8 +178,7 @@ class BaseGoogleCloudProvider:
         gender: texttospeech.SsmlVoiceGender | None = texttospeech.SsmlVoiceGender[
             options[CONF_GENDER]
         ]  # type: ignore[misc]
-        voice = options[CONF_VOICE]
-        if voice:
+        if voice := options[CONF_VOICE]:
             gender = None
             if not voice.startswith(language):
                 language = voice[:5]

@@ -62,8 +62,7 @@ class SpotifyCoordinator(DataUpdateCoordinator[SpotifyCoordinatorData]):
             raise UpdateFailed("Error communicating with Spotify API") from err
 
     async def _async_update_data(self) -> SpotifyCoordinatorData:
-        current = await self.client.get_playback()
-        if not current:
+        if not (current := await self.client.get_playback()):
             return SpotifyCoordinatorData(
                 current_playback=None, position_updated_at=None, playlist=None
             )

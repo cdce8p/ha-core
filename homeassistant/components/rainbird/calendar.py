@@ -70,8 +70,7 @@ class RainBirdCalendarEntity(
     @property
     def event(self) -> CalendarEvent | None:
         """Return the next upcoming event."""
-        schedule = self.coordinator.data
-        if not schedule:
+        if not (schedule := self.coordinator.data):
             return None
         cursor = schedule.timeline_tz(dt_util.get_default_time_zone()).active_after(
             dt_util.now()
@@ -90,8 +89,7 @@ class RainBirdCalendarEntity(
         self, hass: HomeAssistant, start_date: datetime, end_date: datetime
     ) -> list[CalendarEvent]:
         """Get all events in a specific time frame."""
-        schedule = self.coordinator.data
-        if not schedule:
+        if not (schedule := self.coordinator.data):
             raise HomeAssistantError(
                 "Unable to get events: No data from controller yet"
             )

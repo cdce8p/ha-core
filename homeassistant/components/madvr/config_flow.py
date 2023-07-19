@@ -122,8 +122,7 @@ async def test_connection(hass: HomeAssistant, host: str, port: int) -> str:
         await asyncio.sleep(RETRY_INTERVAL)
         retry_time -= 1
 
-    mac_address = madvr_client.mac_address
-    if mac_address:
+    if mac_address := madvr_client.mac_address:
         _LOGGER.debug("Connected to madVR with MAC: %s", mac_address)
     # close this connection because this client object will not be reused
     await close_test_connection(madvr_client)

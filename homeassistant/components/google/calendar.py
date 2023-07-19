@@ -123,8 +123,7 @@ def _get_entity_descriptions(
             key = ""
         else:
             key = calendar_id
-        entity_enabled = data.get(CONF_TRACK, True)
-        if not entity_enabled:
+        if not (entity_enabled := data.get(CONF_TRACK, True)):
             _LOGGER.warning(
                 "The 'track' option in google_calendars.yaml has been deprecated."
                 " The setting has been imported to the UI, and should now be"

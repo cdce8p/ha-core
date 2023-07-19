@@ -51,9 +51,7 @@ def manager_fixture():
 
         async def async_create_flow(self, handler_key, *, context, data):
             """Test create flow."""
-            handler = handlers.get(handler_key)
-
-            if handler is None:
+            if (handler := handlers.get(handler_key)) is None:
                 raise data_entry_flow.UnknownHandler
 
             flow = handler()

@@ -284,10 +284,8 @@ class MockBridge:
         :param domain: one of 'light', 'switch', 'cover', 'fan' or 'sensor'
         :returns list of zero or more of the devices
         """
-        types = _LEAP_DEVICE_TYPES.get(domain)
-
         # return immediately if not a supported domain
-        if types is None:
+        if (types := _LEAP_DEVICE_TYPES.get(domain)) is None:
             return []
 
         return self.get_devices_by_types(types)

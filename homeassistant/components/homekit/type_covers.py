@@ -433,8 +433,7 @@ class WindowCoveringBasic(OpeningDeviceBase, HomeAccessory):
         """Update cover position after state changed."""
         position_mapping = {CoverState.OPEN: 100, CoverState.CLOSED: 0}
         _state: CoverState = new_state.state  # type: ignore[assignment]
-        hk_position = position_mapping.get(_state)
-        if hk_position is not None:
+        if (hk_position := position_mapping.get(_state)) is not None:
             is_moving = _state in MOVING_STATES
 
             if self.char_current_position.value != hk_position:
