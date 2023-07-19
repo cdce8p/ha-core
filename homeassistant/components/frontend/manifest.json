@@ -17,6 +17,7 @@
     "system_log",
     "websocket_api"
   ],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/frontend",
   "integration_type": "system",
   "quality_scale": "internal",
