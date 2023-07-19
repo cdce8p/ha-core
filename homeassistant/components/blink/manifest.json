@@ -17,6 +17,7 @@
       "macaddress": "20A171*"
     }
   ],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/blink",
   "iot_class": "cloud_polling",
   "loggers": ["blinkpy"],

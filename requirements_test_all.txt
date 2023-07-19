@@ -414,9 +414,6 @@ bleak==0.20.2
 # homeassistant.components.blebox
 blebox-uniapi==2.1.4
 
-# homeassistant.components.blink
-blinkpy==0.21.0
-
 # homeassistant.components.bluemaestro
 bluemaestro-ble==0.2.3
 
