@@ -2,6 +2,7 @@
   "domain": "osramlightify",
   "name": "Osramlightify",
   "codeowners": [],
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/osramlightify",
   "iot_class": "local_polling",
   "loggers": ["lightify"],
