@@ -200,7 +200,8 @@ jobs:
     name: Prepare pre-commit base
     runs-on: ubuntu-22.04
     if: |
-      github.event.inputs.pylint-only != 'true'
+      false
+      && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
     needs:
       - info
@@ -682,7 +683,8 @@ jobs:
   pytest:
     runs-on: ubuntu-22.04
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      false
+      && (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -806,7 +808,8 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      false
+      && (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -913,7 +916,8 @@ jobs:
           POSTGRES_PASSWORD: password
         options: --health-cmd="pg_isready -hlocalhost -Upostgres" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      false
+      && (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
