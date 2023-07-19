@@ -304,8 +304,7 @@ async def setup_test_component(
 
     domain = None
     for service in accessory.services:
-        service_name = service.type
-        if service_name in HOMEKIT_ACCESSORY_DISPATCH:
+        if (service_name := service.type) in HOMEKIT_ACCESSORY_DISPATCH:
             domain = HOMEKIT_ACCESSORY_DISPATCH[service_name]
             break
 

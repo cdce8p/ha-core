@@ -1272,8 +1272,7 @@ def _pipeline_debug_recording_thread_proc(
         run_recording_dir.mkdir(parents=True, exist_ok=True)
 
         while True:
-            message = queue.get(timeout=message_timeout)
-            if message is None:
+            if (message := queue.get(timeout=message_timeout)) is None:
                 # Stop signal
                 break
 
@@ -1646,8 +1645,7 @@ class PipelineStorageCollectionWebsocket(
         self, hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
     ) -> None:
         """Get an item."""
-        item_id = msg.get(self.item_id_key)
-        if item_id is None:
+        if (item_id := msg.get(self.item_id_key)) is None:
             item_id = self.storage_collection.async_get_preferred_item()
 
         if item_id.startswith("conversation.") and hass.states.get(item_id):

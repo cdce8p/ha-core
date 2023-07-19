@@ -466,8 +466,7 @@ class ClimateEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     @property
     def state(self) -> str | None:
         """Return the current state."""
-        hvac_mode = self.hvac_mode
-        if hvac_mode is None:
+        if (hvac_mode := self.hvac_mode) is None:
             return None
         # Support hvac_mode as string for custom integration backwards compatibility
         if not isinstance(hvac_mode, HVACMode):

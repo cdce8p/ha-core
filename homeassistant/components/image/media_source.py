@@ -35,9 +35,7 @@ class ImageMediaSource(MediaSource):
 
     async def async_resolve_media(self, item: MediaSourceItem) -> PlayMedia:
         """Resolve media to a url."""
-        image = self.hass.data[DATA_COMPONENT].get_entity(item.identifier)
-
-        if not image:
+        if not (image := self.hass.data[DATA_COMPONENT].get_entity(item.identifier)):
             raise Unresolvable(f"Could not resolve media item: {item.identifier}")
 
         return PlayMedia(

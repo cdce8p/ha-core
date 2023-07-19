@@ -809,9 +809,7 @@ class PrometheusMetrics:
         metric.labels(**self._labels(state)).set(value)
 
     def _handle_alarm_control_panel(self, state: State) -> None:
-        current_state = state.state
-
-        if current_state:
+        if current_state := state.state:
             metric = self._metric(
                 "alarm_control_panel_state",
                 prometheus_client.Gauge,

@@ -138,8 +138,7 @@ class AOSmithWaterHeaterEntity(AOSmithStatusEntity, WaterHeaterEntity):
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set new target temperature."""
-        temperature = kwargs.get("temperature")
-        if temperature is not None:
+        if (temperature := kwargs.get("temperature")) is not None:
             await self.client.update_setpoint(self.junction_id, temperature)
 
             await self.coordinator.async_request_refresh()

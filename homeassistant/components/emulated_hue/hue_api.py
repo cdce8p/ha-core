@@ -848,8 +848,7 @@ def state_supports_hue_brightness(
     state: State, color_modes: Iterable[ColorMode]
 ) -> bool:
     """Return True if the state supports brightness."""
-    domain = state.domain
-    if domain == light.DOMAIN:
+    if (domain := state.domain) == light.DOMAIN:
         return light.brightness_supported(color_modes)
     if not (required_feature := DIMMABLE_SUPPORTED_FEATURES_BY_DOMAIN.get(domain)):
         return False

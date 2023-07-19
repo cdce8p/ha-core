@@ -113,8 +113,7 @@ class ElmaxCover(ElmaxEntity, CoverEntity):
         motion_status = self.coordinator.get_cover_state(
             self._device.endpoint_id
         ).status
-        command = _COMMAND_BY_MOTION_STATUS[motion_status]
-        if command:
+        if command := _COMMAND_BY_MOTION_STATUS[motion_status]:
             await self.coordinator.http_client.execute_command(
                 endpoint_id=self._device.endpoint_id, command=command
             )

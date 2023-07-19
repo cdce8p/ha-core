@@ -125,8 +125,7 @@ class MastodonNotificationService(BaseNotificationService):
         content_warning = None
 
         if data:
-            media = data.get(ATTR_MEDIA)
-            if media:
+            if media := data.get(ATTR_MEDIA):
                 if not self.hass.config.is_allowed_path(media):
                     LOGGER.warning("'%s' is not a whitelisted directory", media)
                     return

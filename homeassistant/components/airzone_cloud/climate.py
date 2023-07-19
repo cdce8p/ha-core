@@ -272,8 +272,7 @@ class AirzoneDeviceClimate(AirzoneClimate):
 
         self._speeds = {}
         for key, value in fan_speeds.items():
-            _key = azd_speeds.get(key)
-            if _key is not None:
+            if (_key := azd_speeds.get(key)) is not None:
                 self._speeds[_key] = value
 
         self._speeds_reverse = {v: k for k, v in self._speeds.items()}

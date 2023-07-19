@@ -361,8 +361,7 @@ class BluesoundPlayer(MediaPlayerEntity):
             self._last_status_update = dt_util.utcnow()
             self._status = status
 
-            group_name = status.group_name
-            if group_name != self._group_name:
+            if (group_name := status.group_name) != self._group_name:
                 _LOGGER.debug("Group name change detected on device: %s", self.id)
                 self._group_name = group_name
 
@@ -473,8 +472,7 @@ class BluesoundPlayer(MediaPlayerEntity):
         if self._status is None or (self.is_grouped and not self.is_master):
             return None
 
-        url = self._status.image
-        if url is None:
+        if (url := self._status.image) is None:
             return None
 
         if url[0] == "/":
@@ -492,8 +490,7 @@ class BluesoundPlayer(MediaPlayerEntity):
         if self._last_status_update is None or mediastate == MediaPlayerState.IDLE:
             return None
 
-        position = self._status.seconds
-        if position is None:
+        if (position := self._status.seconds) is None:
             return None
 
         if mediastate == MediaPlayerState.PLAYING:
@@ -507,8 +504,7 @@ class BluesoundPlayer(MediaPlayerEntity):
         if self._status is None or (self.is_grouped and not self.is_master):
             return None
 
-        duration = self._status.total_seconds
-        if duration is None:
+        if (duration := self._status.total_seconds) is None:
             return None
 
         return int(duration)

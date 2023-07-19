@@ -505,8 +505,7 @@ class BayesianBinarySensor(BinarySensorEntity):
         if TYPE_CHECKING:
             assert entity_id is not None
 
-        entity = self.hass.states.get(entity_id)
-        if entity is None:
+        if (entity := self.hass.states.get(entity_id)) is None:
             return None
 
         try:

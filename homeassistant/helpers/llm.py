@@ -337,9 +337,7 @@ class AssistAPI(API):
         floor: fr.FloorEntry | None = None
         if llm_context.device_id:
             device_reg = dr.async_get(self.hass)
-            device = device_reg.async_get(llm_context.device_id)
-
-            if device:
+            if device := device_reg.async_get(llm_context.device_id):
                 area_reg = ar.async_get(self.hass)
                 if device.area_id and (area := area_reg.async_get_area(device.area_id)):
                     floor_reg = fr.async_get(self.hass)
@@ -666,8 +664,7 @@ def _get_cached_script_parameters(
             fields = service_desc.get("fields", {})
 
             for field, config in fields.items():
-                field_description = config.get("description")
-                if not field_description:
+                if not (field_description := config.get("description")):
                     field_description = config.get("name")
                 key: vol.Marker
                 if config.get("required"):

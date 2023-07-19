@@ -400,8 +400,7 @@ class GenericHygrostat(HumidifierEntity, RestoreEntity):
         self, event: Event[EventStateChangedData] | Event[EventStateReportedData]
     ) -> None:
         """Handle ambient humidity changes."""
-        new_state = event.data["new_state"]
-        if new_state is None:
+        if (new_state := event.data["new_state"]) is None:
             return
 
         await self._async_sensor_update(new_state)

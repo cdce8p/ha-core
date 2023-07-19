@@ -885,8 +885,7 @@ class SonosSpeaker:
             sonos_group_entities = []
 
             for uid in group:
-                speaker = self.data.discovered.get(uid)
-                if speaker:
+                if speaker := self.data.discovered.get(uid):
                     self._group_members_missing.discard(uid)
                     sonos_group.append(speaker)
                     entity_id = cast(

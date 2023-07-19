@@ -59,8 +59,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: FGLairConfigEntry) -> 
     if entry.version == 1:
         new_data = {**entry.data}
         if entry.minor_version < 2:
-            is_europe = new_data.get(CONF_EUROPE, False)
-            if is_europe:
+            if new_data.get(CONF_EUROPE, False):
                 new_data[CONF_REGION] = REGION_EU
             else:
                 new_data[CONF_REGION] = REGION_DEFAULT

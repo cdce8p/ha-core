@@ -2616,13 +2616,11 @@ async def test_stt_cooldown_same_id(
     # Get response events
     error_data: dict[str, Any] | None = None
     msg = await client_1.receive_json()
-    event_type_1 = msg["event"]["type"]
-    if event_type_1 == "error":
+    if (event_type_1 := msg["event"]["type"]) == "error":
         error_data = msg["event"]["data"]
 
     msg = await client_2.receive_json()
-    event_type_2 = msg["event"]["type"]
-    if event_type_2 == "error":
+    if (event_type_2 := msg["event"]["type"]) == "error":
         error_data = msg["event"]["data"]
 
     # One should be a stt start, one should be an error

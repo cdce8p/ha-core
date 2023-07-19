@@ -334,9 +334,8 @@ class HassioDataUpdateCoordinator(DataUpdateCoordinator):
         addons_info = get_addons_info(self.hass) or {}
         addons_stats = get_addons_stats(self.hass)
         addons_changelogs = get_addons_changelogs(self.hass)
-        store_data = get_store(self.hass)
 
-        if store_data:
+        if store_data := get_store(self.hass):
             repositories = {
                 repo.slug: repo.name
                 for repo in StoreInfo.from_dict(store_data).repositories

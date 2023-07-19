@@ -92,8 +92,7 @@ def _body_value_fn(result: dict[str, Any]) -> int | str:
 
 
 def _clock_format_12h(result: dict[str, Any]) -> str:
-    raw_state = result["value"]
-    if raw_state == "":
+    if (raw_state := result["value"]) == "":
         return "-"
     hours_str, minutes_str = raw_state.split(":")
     hours, minutes = int(hours_str), int(minutes_str)

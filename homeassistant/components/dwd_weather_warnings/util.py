@@ -14,23 +14,19 @@ def get_position_data(
 ) -> tuple[float, float] | None:
     """Extract longitude and latitude from a device tracker."""
     registry = er.async_get(hass)
-    registry_entry = registry.async_get(registry_id)
-    if registry_entry is None:
+    if (registry_entry := registry.async_get(registry_id)) is None:
         raise EntityNotFoundError(f"Failed to find registry entry {registry_id}")
 
-    entity = hass.states.get(registry_entry.entity_id)
-    if entity is None:
+    if (entity := hass.states.get(registry_entry.entity_id)) is None:
         raise EntityNotFoundError(f"Failed to find entity {registry_entry.entity_id}")
 
-    latitude = entity.attributes.get(ATTR_LATITUDE)
-    if not latitude:
+    if not (latitude := entity.attributes.get(ATTR_LATITUDE)):
         raise AttributeError(
             f"Failed to find attribute '{ATTR_LATITUDE}' in {registry_entry.entity_id}",
             ATTR_LATITUDE,
         )
 
-    longitude = entity.attributes.get(ATTR_LONGITUDE)
-    if not longitude:
+    if not (longitude := entity.attributes.get(ATTR_LONGITUDE)):
         raise AttributeError(
             f"Failed to find attribute '{ATTR_LONGITUDE}' in {registry_entry.entity_id}",
             ATTR_LONGITUDE,

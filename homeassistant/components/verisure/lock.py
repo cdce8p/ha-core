@@ -128,14 +128,12 @@ class VerisureDoorlock(CoordinatorEntity[VerisureDataUpdateCoordinator], LockEnt
 
     async def async_unlock(self, **kwargs: Any) -> None:
         """Send unlock command."""
-        code = kwargs.get(ATTR_CODE)
-        if code:
+        if code := kwargs.get(ATTR_CODE):
             await self.async_set_lock_state(code, LockState.UNLOCKED)
 
     async def async_lock(self, **kwargs: Any) -> None:
         """Send lock command."""
-        code = kwargs.get(ATTR_CODE)
-        if code:
+        if code := kwargs.get(ATTR_CODE):
             await self.async_set_lock_state(code, LockState.LOCKED)
 
     async def async_set_lock_state(self, code: str, state: LockState) -> None:

@@ -229,9 +229,7 @@ def check_real[**_P, _R](func: Callable[_P, Coroutine[Any, Any, _R]]):
 
     @functools.wraps(func)
     async def guard_func(*args: _P.args, **kwargs: _P.kwargs) -> _R:
-        real = kwargs.pop("_test_real", None)
-
-        if not real:
+        if not kwargs.pop("_test_real", None):
             raise RuntimeError(
                 f'Forgot to mock or pass "_test_real=True" to {func.__name__}'
             )

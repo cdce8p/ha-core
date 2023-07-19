@@ -469,7 +469,7 @@ class UtilityMeterSensor(RestoreSensor):
 
         old_state = event.data["old_state"]
         new_state = event.data["new_state"]
-        if new_state is None:
+        if new_state is None:  # pylint: disable=consider-using-assignment-expr
             return
         new_state_attributes: Mapping[str, Any] = new_state.attributes or {}
 

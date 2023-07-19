@@ -69,8 +69,7 @@ async def async_setup_entry(
             if desc.exists_func(switch, port)
         )
 
-    gateway_coordinator = controller.gateway_coordinator
-    if gateway_coordinator:
+    if gateway_coordinator := controller.gateway_coordinator:
         for gateway in gateway_coordinator.data.values():
             entities.extend(
                 OmadaDevicePortSwitchEntity[

@@ -69,9 +69,7 @@ class SwissPublicTransportDataUpdateCoordinator(
 
     def remaining_time(self, departure) -> timedelta | None:
         """Calculate the remaining time for the departure."""
-        departure_datetime = dt_util.parse_datetime(departure)
-
-        if departure_datetime:
+        if departure_datetime := dt_util.parse_datetime(departure):
             return departure_datetime - dt_util.as_local(dt_util.utcnow())
         return None
 

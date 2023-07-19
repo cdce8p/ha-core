@@ -58,8 +58,7 @@ class UnifiDeviceScanner(DeviceScanner):
 
     def get_device_name(self, device: str) -> str | None:
         """Return the name of the given device or None if we don't know."""
-        client_info = self.clients.get(device)
-        if client_info:
+        if client_info := self.clients.get(device):
             return client_info.get("hostname")
         return None
 

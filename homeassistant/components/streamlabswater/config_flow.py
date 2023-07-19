@@ -19,9 +19,8 @@ async def validate_input(hass: HomeAssistant, api_key: str) -> None:
     """Validate the user input allows us to connect."""
     client = StreamlabsClient(api_key)
     response = await hass.async_add_executor_job(client.get_locations)
-    locations = response.get("locations")
 
-    if locations is None:
+    if response.get("locations") is None:
         raise CannotConnect
 
 

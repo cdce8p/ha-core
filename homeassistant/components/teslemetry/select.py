@@ -136,8 +136,7 @@ class TeslemetrySeatHeaterSelectEntity(TeslemetryVehicleEntity, SelectEntity):
     def _async_update_attrs(self) -> None:
         """Handle updated data from the coordinator."""
         self._attr_available = self.entity_description.available_fn(self)
-        value = self._value
-        if value is None:
+        if (value := self._value) is None:
             self._attr_current_option = None
         else:
             self._attr_current_option = self._attr_options[value]
@@ -181,8 +180,7 @@ class TeslemetryWheelHeaterSelectEntity(TeslemetryVehicleEntity, SelectEntity):
     def _async_update_attrs(self) -> None:
         """Handle updated data from the coordinator."""
 
-        value = self._value
-        if value is None:
+        if (value := self._value) is None:
             self._attr_current_option = None
         else:
             self._attr_current_option = self._attr_options[value]

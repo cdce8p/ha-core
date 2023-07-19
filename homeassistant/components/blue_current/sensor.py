@@ -301,9 +301,7 @@ class GridSensor(BlueCurrentEntity, SensorEntity):
     def update_from_latest_data(self) -> None:
         """Update the grid sensor from the latest data."""
 
-        new_value = self.connector.grid.get(self.key)
-
-        if new_value is not None:
+        if (new_value := self.connector.grid.get(self.key)) is not None:
             self.has_value = True
             self._attr_native_value = new_value
 

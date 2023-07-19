@@ -183,8 +183,7 @@ class OSOEnergyWaterHeater(
     @property
     def current_operation(self) -> str:
         """Return current operation."""
-        status = self.entity_data.current_operation
-        if status == "off":
+        if self.entity_data.current_operation == "off":
             return STATE_OFF
 
         optimization_mode = self.entity_data.optimization_mode.lower()

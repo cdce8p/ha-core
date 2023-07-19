@@ -121,11 +121,8 @@ class NextBusDepartureSensor(
             }
         )
 
-        # Chain all predictions together
-        predictions = results["values"]
-
         # Short circuit if we don't have any actual bus predictions
-        if not predictions:
+        if not (predictions := results["values"]):
             self._log_debug("No upcoming predictions available")
             self._attr_native_value = None
             self._attr_extra_state_attributes["upcoming"] = "No upcoming predictions"

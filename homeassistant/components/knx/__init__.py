@@ -159,8 +159,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Load a config entry."""
     # `_KNX_YAML_CONFIG` is only set in async_setup.
     # It's None when reloading the integration or no `knx` key in configuration.yaml
-    config = hass.data.pop(_KNX_YAML_CONFIG, None)
-    if config is None:
+    if (config := hass.data.pop(_KNX_YAML_CONFIG, None)) is None:
         _conf = await async_integration_yaml_config(hass, DOMAIN)
         if not _conf or DOMAIN not in _conf:
             # generate defaults
@@ -199,8 +198,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unloading the KNX platforms."""
-    knx_module = hass.data.get(KNX_MODULE_KEY)
-    if not knx_module:
+    if not (knx_module := hass.data.get(KNX_MODULE_KEY)):
         #  if not loaded directly return
         return True
 

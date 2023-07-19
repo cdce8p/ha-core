@@ -527,9 +527,7 @@ def is_rpc_thermostat_mode(ident: int, status: dict[str, Any]) -> bool:
 
 def get_virtual_component_ids(config: dict[str, Any], platform: str) -> list[str]:
     """Return a list of virtual component IDs for a platform."""
-    component = VIRTUAL_COMPONENTS_MAP.get(platform)
-
-    if not component:
+    if not (component := VIRTUAL_COMPONENTS_MAP.get(platform)):
         return []
 
     ids: list[str] = []

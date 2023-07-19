@@ -425,9 +425,8 @@ class AppleTVConfigFlow(ConfigFlow, domain=DOMAIN):
 
         self.protocol = self.protocols_to_pair.popleft()
         assert self.atv
-        service = self.atv.get_service(self.protocol)
 
-        if service is None:
+        if (service := self.atv.get_service(self.protocol)) is None:
             _LOGGER.debug(
                 "%s does not support pairing (cannot find a corresponding service)",
                 self.protocol,

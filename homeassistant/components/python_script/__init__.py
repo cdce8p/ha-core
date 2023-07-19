@@ -174,8 +174,7 @@ def guarded_inplacevar(op: str, target: Any, operand: Any) -> Any:
     """
     if not isinstance(target, (list, Number, str)):
         raise ScriptError(f"The {op!r} operation is not allowed on a {type(target)}")
-    op_fun = IOPERATOR_TO_OPERATOR.get(op)
-    if not op_fun:
+    if not (op_fun := IOPERATOR_TO_OPERATOR.get(op)):
         raise ScriptError(f"The {op!r} operation is not allowed")
     return op_fun(target, operand)
 

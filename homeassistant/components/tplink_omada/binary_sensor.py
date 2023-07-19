@@ -33,8 +33,7 @@ async def async_setup_entry(
     """Set up binary sensors."""
     controller = config_entry.runtime_data
 
-    gateway_coordinator = controller.gateway_coordinator
-    if not gateway_coordinator:
+    if not (gateway_coordinator := controller.gateway_coordinator):
         return
 
     entities: list[OmadaDeviceEntity] = []

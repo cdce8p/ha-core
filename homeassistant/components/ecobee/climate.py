@@ -802,8 +802,7 @@ class Thermostat(ClimateEntity):
 
     def set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set HVAC mode (auto, auxHeatOnly, cool, heat, off)."""
-        ecobee_value = HASS_TO_ECOBEE_HVAC.get(hvac_mode)
-        if ecobee_value is None:
+        if (ecobee_value := HASS_TO_ECOBEE_HVAC.get(hvac_mode)) is None:
             _LOGGER.error("Invalid mode for set_hvac_mode: %s", hvac_mode)
             return
         self.data.ecobee.set_hvac_mode(self.thermostat_index, ecobee_value)

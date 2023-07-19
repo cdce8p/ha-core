@@ -145,8 +145,7 @@ def trace_stack_push[_T](
 
 def trace_stack_pop(trace_stack_var: ContextVar[list[Any] | None]) -> None:
     """Remove the top element from a trace stack."""
-    trace_stack = trace_stack_var.get()
-    if trace_stack is not None:
+    if (trace_stack := trace_stack_var.get()) is not None:
         trace_stack.pop()
 
 

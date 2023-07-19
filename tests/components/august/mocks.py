@@ -352,13 +352,11 @@ async def _mock_activities_from_fixture(
     hass: HomeAssistant, path: str
 ) -> list[Activity]:
     json_dict = await _load_json_fixture(hass, path)
-    activities = []
-    for activity_json in json_dict:
-        activity = _activity_from_dict(activity_json)
-        if activity:
-            activities.append(activity)
-
-    return activities
+    return [
+        activity
+        for activity_json in json_dict
+        if (activity := _activity_from_dict(activity_json))
+    ]
 
 
 async def _mock_lock_from_fixture(hass: HomeAssistant, path: str) -> LockDetail:

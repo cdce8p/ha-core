@@ -219,8 +219,7 @@ def _get_request_host() -> str | None:
         raise NoURLAvailableError
     # partition the host to remove the port
     # because the raw host header can contain the port
-    host = request.headers.get(hdrs.HOST)
-    if host is None:
+    if (host := request.headers.get(hdrs.HOST)) is None:
         return None
     # IPv6 addresses are enclosed in brackets
     # use same logic as yarl and urllib to extract the host

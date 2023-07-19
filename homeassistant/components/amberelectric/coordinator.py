@@ -111,8 +111,7 @@ class AmberUpdateCoordinator(DataUpdateCoordinator):
         ]
         result["grid"]["renewables"] = round(general[0].renewables)
         result["grid"]["price_spike"] = general[0].spike_status.value
-        tariff_information = general[0].tariff_information
-        if tariff_information:
+        if tariff_information := general[0].tariff_information:
             result["grid"]["demand_window"] = tariff_information.demand_window
 
         controlled_load = [

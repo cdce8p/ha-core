@@ -727,8 +727,7 @@ def _async_register_service(
 def _setup_services(
     hass: HomeAssistant, entry_data: RuntimeEntryData, services: list[UserService]
 ) -> None:
-    device_info = entry_data.device_info
-    if device_info is None:
+    if (device_info := entry_data.device_info) is None:
         # Can happen if device has never connected or .storage cleared
         return
     old_services = entry_data.services.copy()

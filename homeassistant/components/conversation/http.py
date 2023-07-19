@@ -88,9 +88,7 @@ async def websocket_prepare(
     msg: dict[str, Any],
 ) -> None:
     """Reload intents."""
-    agent = async_get_agent(hass, msg.get("agent_id"))
-
-    if agent is None:
+    if (agent := async_get_agent(hass, msg.get("agent_id"))) is None:
         connection.send_error(msg["id"], websocket_api.ERR_NOT_FOUND, "Agent not found")
         return
 

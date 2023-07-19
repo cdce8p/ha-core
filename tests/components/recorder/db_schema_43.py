@@ -394,8 +394,7 @@ class EventData(Base):
 
     def to_native(self) -> dict[str, Any]:
         """Convert to an event data dictionary."""
-        shared_data = self.shared_data
-        if shared_data is None:
+        if (shared_data := self.shared_data) is None:
             return {}
         try:
             return cast(dict[str, Any], json_loads(shared_data))
@@ -498,9 +497,8 @@ class States(Base):
     @staticmethod
     def from_event(event: Event[EventStateChangedData]) -> States:
         """Create object from a state_changed event."""
-        state = event.data["new_state"]
         # None state means the state was removed from the state machine
-        if state is None:
+        if (state := event.data["new_state"]) is None:
             state_value = ""
             last_updated_ts = event.time_fired_timestamp
             last_changed_ts = None
@@ -637,8 +635,7 @@ class StateAttributes(Base):
 
     def to_native(self) -> dict[str, Any]:
         """Convert to a state attributes dictionary."""
-        shared_attrs = self.shared_attrs
-        if shared_attrs is None:
+        if (shared_attrs := self.shared_attrs) is None:
             return {}
         try:
             return cast(dict[str, Any], json_loads(shared_attrs))

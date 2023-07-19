@@ -42,7 +42,14 @@ from homeassistant.const import (
     MAX_LENGTH_STATE_ENTITY_ID,
     MAX_LENGTH_STATE_STATE,
 )
-from homeassistant.core import Context, Event, EventOrigin, State, split_entity_id
+from homeassistant.core import (
+    Context,
+    Event,
+    EventOrigin,
+    EventStateChangedData,
+    State,
+    split_entity_id,
+)
 import homeassistant.util.dt as dt_util
 
 # SQLAlchemy Schema
@@ -403,12 +410,12 @@ class StateAttributes(Base):  # type: ignore[misc,valid-type]
 
     @staticmethod
     def shared_attrs_from_event(
-        event: Event, exclude_attrs_by_domain: dict[str, set[str]]
+        event: Event[EventStateChangedData],
+        exclude_attrs_by_domain: dict[str, set[str]],
     ) -> str:
         """Create shared_attrs from a state_changed event."""
-        state: State | None = event.data.get("new_state")
         # None state means the state was removed from the state machine
-        if state is None:
+        if (state := event.data.get("new_state")) is None:
             return "{}"
         domain = split_entity_id(state.entity_id)[0]
         exclude_attrs = (

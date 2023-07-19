@@ -206,8 +206,7 @@ async def async_setup_platform(
             )
 
             zone, _, value = message
-            entity = entities.get(zone)
-            if entity is not None:
+            if (entity := entities.get(zone)) is not None:
                 if entity.enabled:
                     entity.process_update(message)
             elif zone in ZONES and value != "N/A":

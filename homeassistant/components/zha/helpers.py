@@ -1053,8 +1053,7 @@ def get_config_entry(hass: HomeAssistant) -> ConfigEntry:
 def async_get_zha_device_proxy(hass: HomeAssistant, device_id: str) -> ZHADeviceProxy:
     """Get a ZHA device for the given device registry id."""
     device_registry = dr.async_get(hass)
-    registry_device = device_registry.async_get(device_id)
-    if not registry_device:
+    if not (registry_device := device_registry.async_get(device_id)):
         _LOGGER.error("Device id `%s` not found in registry", device_id)
         raise KeyError(f"Device id `{device_id}` not found in registry.")
     zha_gateway_proxy = get_zha_gateway_proxy(hass)

@@ -64,7 +64,7 @@ from homeassistant.const import (
     MAX_LENGTH_STATE_ENTITY_ID,
     MAX_LENGTH_STATE_STATE,
 )
-from homeassistant.core import Context, Event, EventOrigin, State
+from homeassistant.core import Context, Event, EventOrigin, EventStateChangedData, State
 from homeassistant.helpers.json import JSON_DUMP, json_bytes, json_bytes_strip_null
 import homeassistant.util.dt as dt_util
 from homeassistant.util.json import (
@@ -385,8 +385,7 @@ class EventData(Base):
 
     def to_native(self) -> dict[str, Any]:
         """Convert to an event data dictionary."""
-        shared_data = self.shared_data
-        if shared_data is None:
+        if (shared_data := self.shared_data) is None:
             return {}
         try:
             return cast(dict[str, Any], json_loads(shared_data))
@@ -573,13 +572,12 @@ class StateAttributes(Base):
 
     @staticmethod
     def shared_attrs_bytes_from_event(
-        event: Event,
+        event: Event[EventStateChangedData],
         dialect: SupportedDialect | None,
     ) -> bytes:
         """Create shared_attrs from a state_changed event."""
-        state: State | None = event.data.get("new_state")
         # None state means the state was removed from the state machine
-        if state is None:
+        if (state := event.data.get("new_state")) is None:
             return b"{}"
         if state_info := state.state_info:
             unrecorded_attributes = state_info["unrecorded_attributes"]
@@ -627,8 +625,7 @@ class StateAttributes(Base):
 
     def to_native(self) -> dict[str, Any]:
         """Convert to a state attributes dictionary."""
-        shared_attrs = self.shared_attrs
-        if shared_attrs is None:
+        if (shared_attrs := self.shared_attrs) is None:
             return {}
         try:
             return cast(dict[str, Any], json_loads(shared_attrs))

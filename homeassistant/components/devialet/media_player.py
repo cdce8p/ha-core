@@ -99,9 +99,7 @@ class DevialetMediaPlayerEntity(
     @property
     def state(self) -> MediaPlayerState | None:
         """Return the state of the device."""
-        playing_state = self.coordinator.client.playing_state
-
-        if not playing_state:
+        if not (playing_state := self.coordinator.client.playing_state):
             return MediaPlayerState.IDLE
         if playing_state == "playing":
             return MediaPlayerState.PLAYING

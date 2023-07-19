@@ -580,9 +580,7 @@ async def _stream_next_event(stream):
             data += dat
             last_new_line = dat == b"\n"
 
-        conv = data.decode("utf-8").strip()[6:]
-
-        if conv != "ping":
+        if (conv := data.decode("utf-8").strip()[6:]) != "ping":
             break
     return json.loads(conv)
 

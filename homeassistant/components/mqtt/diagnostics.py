@@ -96,8 +96,7 @@ def _async_device_as_dict(hass: HomeAssistant, device: DeviceEntry) -> dict[str,
     )
 
     def _state_dict(entity_entry: er.RegistryEntry) -> dict[str, Any] | None:
-        state = hass.states.get(entity_entry.entity_id)
-        if not state:
+        if not (state := hass.states.get(entity_entry.entity_id)):
             return None
 
         state_dict = dict(state.as_dict())
