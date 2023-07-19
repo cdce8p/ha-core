@@ -3,6 +3,7 @@
   "name": "Dremel 3D Printer",
   "codeowners": ["@tkdrob"],
   "config_flow": true,
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/dremel_3d_printer",
   "integration_type": "device",
   "iot_class": "local_polling",
