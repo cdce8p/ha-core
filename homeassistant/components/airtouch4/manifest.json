@@ -3,6 +3,7 @@
   "name": "AirTouch 4",
   "codeowners": ["@LonePurpleWolf"],
   "config_flow": true,
+  "disabled": "Can't build wheel from source",
   "documentation": "https://www.home-assistant.io/integrations/airtouch4",
   "iot_class": "local_polling",
   "loggers": ["airtouch4pyapi"],
