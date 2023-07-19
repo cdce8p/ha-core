@@ -574,8 +574,7 @@ class EsphomeAssistSatellite(
     async def _wrap_audio_stream(self) -> AsyncIterable[bytes]:
         """Yield audio chunks from the queue until None."""
         while True:
-            chunk = await self._audio_queue.get()
-            if not chunk:
+            if not (chunk := await self._audio_queue.get()):
                 break
 
             yield chunk

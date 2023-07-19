@@ -256,8 +256,7 @@ class ProtectData:
                 self._async_remove_device(message.old_obj)
             return
 
-        model_type = new_obj.model
-        if model_type is ModelType.EVENT:
+        if (model_type := new_obj.model) is ModelType.EVENT:
             if TYPE_CHECKING:
                 assert isinstance(new_obj, Event)
             if _LOGGER.isEnabledFor(logging.DEBUG):

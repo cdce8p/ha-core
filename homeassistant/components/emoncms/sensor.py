@@ -147,8 +147,7 @@ async def async_setup_entry(
         return
 
     coordinator = entry.runtime_data
-    elems = coordinator.data
-    if not elems:
+    if not (elems := coordinator.data):
         return
 
     sensors: list[EmonCmsSensor] = []
@@ -237,7 +236,6 @@ class EmonCmsSensor(CoordinatorEntity[EmoncmsCoordinator], SensorEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        data = self.coordinator.data
-        if data:
+        if data := self.coordinator.data:
             self._update_attributes(data[self.idx])
         super()._handle_coordinator_update()

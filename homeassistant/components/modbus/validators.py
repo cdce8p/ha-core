@@ -135,7 +135,7 @@ def struct_validator(config: dict[str, Any]) -> dict[str, Any]:
 
     name = config[CONF_NAME]
     data_type = config[CONF_DATA_TYPE]
-    if data_type == "int":
+    if data_type == "int":  # pylint: disable=consider-using-assignment-expr
         data_type = config[CONF_DATA_TYPE] = DataType.INT16
     count = config.get(CONF_COUNT)
     structure = config.get(CONF_STRUCTURE)

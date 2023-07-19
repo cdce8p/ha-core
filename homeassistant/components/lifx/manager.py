@@ -409,8 +409,7 @@ class LIFXManager:
             await self.effects_conductor.start(effect, bulbs)
 
         elif service == SERVICE_EFFECT_SKY:
-            palette = kwargs.get(ATTR_PALETTE)
-            if palette is not None:
+            if (palette := kwargs.get(ATTR_PALETTE)) is not None:
                 theme = Theme()
                 for hsbk in palette:
                     theme.add_hsbk(hsbk[0], hsbk[1], hsbk[2], hsbk[3])

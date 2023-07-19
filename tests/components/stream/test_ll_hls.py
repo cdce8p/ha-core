@@ -174,8 +174,7 @@ async def test_ll_hls_stream(
     playlist = await playlist_response.text()
     segment_re = re.compile(r"^(?P<segment_url>./segment/\d+\.m4s)")
     for line in playlist.splitlines():
-        match = segment_re.match(line)
-        if match:
+        if match := segment_re.match(line):
             segment_url = "/" + match.group("segment_url")
             segment_response = await hls_client.get(segment_url)
             assert segment_response.status == HTTPStatus.OK
@@ -209,8 +208,7 @@ async def test_ll_hls_stream(
     segment_duration = 0
     datetimes = deque()
     for line in playlist.splitlines():
-        match = part_re.match(line)
-        if match:
+        if match := part_re.match(line):
             # Fetch all completed part segments
             part_durations.append(float(match.group("part_duration")))
             part_segment_url = "/" + match.group("part_url")
@@ -221,8 +219,7 @@ async def test_ll_hls_stream(
             assert check_part_is_moof_mdat(await part_segment_response.read())
             tested[part_re] = True
             continue
-        match = datetime_re.match(line)
-        if match:
+        if match := datetime_re.match(line):
             datetimes.append(parser.parse(match.group("datetime")))
             # Check that segment durations are consistent with PROGRAM-DATE-TIME
             if len(datetimes) > 1:
@@ -235,8 +232,7 @@ async def test_ll_hls_stream(
                     )
                     tested[datetime_re] = True
             continue
-        match = inf_re.match(line)
-        if match:
+        if match := inf_re.match(line):
             segment_duration = float(match.group("segment_duration"))
             # Check that segment durations are consistent with part durations
             if len(part_durations) > 1:

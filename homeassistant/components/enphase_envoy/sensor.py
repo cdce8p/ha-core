@@ -1096,8 +1096,7 @@ class EnvoyInverterEntity(EnvoySensorBaseEntity):
         """Initialize Envoy inverter entity."""
         super().__init__(coordinator, description)
         self._serial_number = serial_number
-        key = description.key
-        if key == INVERTERS_KEY:
+        if (key := description.key) == INVERTERS_KEY:
             # Originally there was only one inverter sensor, so we don't want to
             # break existing installations by changing the unique_id.
             self._attr_unique_id = serial_number

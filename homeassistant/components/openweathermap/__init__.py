@@ -46,9 +46,8 @@ async def async_setup_entry(
     latitude = entry.data.get(CONF_LATITUDE, hass.config.latitude)
     longitude = entry.data.get(CONF_LONGITUDE, hass.config.longitude)
     language = entry.options[CONF_LANGUAGE]
-    mode = entry.options[CONF_MODE]
 
-    if mode == OWM_MODE_V25:
+    if (mode := entry.options[CONF_MODE]) == OWM_MODE_V25:
         async_create_issue(hass, entry.entry_id)
     else:
         async_delete_issue(hass, entry.entry_id)

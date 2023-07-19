@@ -46,8 +46,7 @@ async def async_setup_entry(
 
 def _cc_and_label(value: Value) -> str:
     """Return a string with the command class and label."""
-    label = value.metadata.label
-    if label:
+    if label := value.metadata.label:
         label = label.lower()
     return f"{value.command_class_name.capitalize()} {label}".strip()
 

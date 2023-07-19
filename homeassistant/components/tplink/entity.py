@@ -261,10 +261,9 @@ class CoordinatedTPLinkFeatureEntity(CoordinatedTPLinkEntity, ABC):
         device: Device, entity_description: TPLinkFeatureEntityDescription
     ) -> str:
         """Return unique ID for the entity."""
-        key = entity_description.key
         # The unique id for the state feature in the switch platform is the
         # device_id
-        if key == PRIMARY_STATE_ID:
+        if (key := entity_description.key) == PRIMARY_STATE_ID:
             return legacy_device_id(device)
 
         # Historically the legacy device emeter attributes which are now

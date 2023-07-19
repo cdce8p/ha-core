@@ -257,8 +257,7 @@ async def async_setup_entry(
     else:
         max_sub_interval = None
 
-    round_digits = config_entry.options.get(CONF_ROUND_DIGITS)
-    if round_digits:
+    if round_digits := config_entry.options.get(CONF_ROUND_DIGITS):
         round_digits = int(round_digits)
 
     integral = IntegrationSensor(

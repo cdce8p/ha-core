@@ -172,8 +172,7 @@ async def setup_device_v1(
         RoborockMqttClientV1, user_data, DeviceData(device, product_info.model)
     )
     try:
-        networking = await mqtt_client.get_networking()
-        if networking is None:
+        if (networking := await mqtt_client.get_networking()) is None:
             # If the api does not return an error but does return None for
             # get_networking - then we need to go through cache checking.
             raise RoborockException("Networking request returned None.")  # noqa: TRY301

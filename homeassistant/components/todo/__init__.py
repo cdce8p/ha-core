@@ -247,8 +247,7 @@ class TodoListEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     @property
     def state(self) -> int | None:
         """Return the entity state as the count of incomplete items."""
-        items = self.todo_items
-        if items is None:
+        if (items := self.todo_items) is None:
             return None
         return sum([item.status == TodoItemStatus.NEEDS_ACTION for item in items])
 

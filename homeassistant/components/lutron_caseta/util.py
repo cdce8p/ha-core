@@ -22,8 +22,7 @@ def _construct_area_name_from_id(
 ) -> str:
     """Recursively construct the full area name including parent(s)."""
     area = areas[area_id]
-    parent_area_id = area["parent_id"]
-    if parent_area_id is None:
+    if (parent_area_id := area["parent_id"]) is None:
         # This is the root area, return last area
         return " ".join(labels)
 

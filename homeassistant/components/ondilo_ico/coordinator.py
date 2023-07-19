@@ -54,8 +54,7 @@ class OndiloIcoCoordinator(DataUpdateCoordinator[dict[str, OndiloIcoData]]):
         for pool in pools:
             pool_id = pool["id"]
             try:
-                ico = self.api.get_ICO_details(pool_id)
-                if not ico:
+                if not (ico := self.api.get_ICO_details(pool_id)):
                     _LOGGER.debug(
                         "The pool id %s does not have any ICO attached", pool_id
                     )

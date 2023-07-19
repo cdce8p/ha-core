@@ -157,9 +157,8 @@ async def async_attach_trigger(
         """Listen for state changes and calls action."""
         entity_id = event.data["entity_id"]
         from_s = event.data["old_state"]
-        to_s = event.data["new_state"]
 
-        if to_s is None:
+        if (to_s := event.data["new_state"]) is None:
             return
 
         @callback

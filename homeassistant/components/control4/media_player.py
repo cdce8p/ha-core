@@ -82,15 +82,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up Control4 rooms from a config entry."""
     entry_data = hass.data[DOMAIN][entry.entry_id]
-    ui_config = entry_data[CONF_UI_CONFIGURATION]
 
     # OS 2 will not have a ui_configuration
-    if not ui_config:
+    if not (ui_config := entry_data[CONF_UI_CONFIGURATION]):
         _LOGGER.debug("No UI Configuration found for Control4")
         return
 
-    all_rooms = await get_rooms(hass, entry)
-    if not all_rooms:
+    if not (all_rooms := await get_rooms(hass, entry)):
         return
 
     scan_interval = entry_data[CONF_SCAN_INTERVAL]
@@ -233,8 +231,7 @@ class Control4Room(Control4Entity, MediaPlayerEntity):
         return self._get_device_from_variable(CONTROL4_CURRENT_VIDEO_DEVICE)
 
     def _get_current_playing_device_id(self) -> int | None:
-        media_info = self._get_media_info()
-        if media_info:
+        if media_info := self._get_media_info():
             if "medSrcDev" in media_info:
                 return media_info["medSrcDev"]
             if "deviceid" in media_info:
@@ -293,8 +290,7 @@ class Control4Room(Control4Entity, MediaPlayerEntity):
     @property
     def media_title(self) -> str | None:
         """Get the Media Title."""
-        media_info = self._get_media_info()
-        if not media_info:
+        if not (media_info := self._get_media_info()):
             return None
         if "title" in media_info:
             return media_info["title"]

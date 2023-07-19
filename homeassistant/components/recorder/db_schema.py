@@ -498,9 +498,8 @@ class States(Base):
     @staticmethod
     def from_event(event: Event[EventStateChangedData]) -> States:
         """Create object from a state_changed event."""
-        state = event.data["new_state"]
         # None state means the state was removed from the state machine
-        if state is None:
+        if (state := event.data["new_state"]) is None:
             state_value = ""
             last_updated_ts = event.time_fired_timestamp
             last_changed_ts = None

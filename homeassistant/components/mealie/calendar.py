@@ -57,8 +57,7 @@ class MealieMealplanCalendarEntity(MealieEntity, CalendarEntity):
     @property
     def event(self) -> CalendarEvent | None:
         """Return the next upcoming event."""
-        mealplans = self.coordinator.data[self._entry_type]
-        if not mealplans:
+        if not (mealplans := self.coordinator.data[self._entry_type]):
             return None
         sorted_mealplans = sorted(mealplans, key=lambda x: x.mealplan_date)
         return _get_event_from_mealplan(sorted_mealplans[0])

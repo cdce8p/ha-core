@@ -273,8 +273,7 @@ class DefaultAgent(ConversationEntity):
             response_text: str | None = None
             response_set_by_trigger = False
             for trigger_future in asyncio.as_completed(trigger_callbacks):
-                trigger_response = await trigger_future
-                if trigger_response is None:
+                if (trigger_response := await trigger_future) is None:
                     continue
 
                 response_text = trigger_response
@@ -348,8 +347,7 @@ class DefaultAgent(ConversationEntity):
             }
             for entity in result.entities_list
         }
-        device_area = self._get_device_area(user_input.device_id)
-        if device_area:
+        if device_area := self._get_device_area(user_input.device_id):
             slots["preferred_area_id"] = {"value": device_area.id}
         async_conversation_trace_append(
             ConversationTraceEventType.TOOL_CALL,

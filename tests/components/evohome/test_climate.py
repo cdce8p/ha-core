@@ -30,8 +30,7 @@ def get_zone_entity(hass: HomeAssistant) -> EvoZone:
 
     broker: EvoBroker = hass.data[DOMAIN]["broker"]
 
-    unique_id = broker.tcs._zones[0]._id
-    if unique_id == broker.tcs._id:
+    if (unique_id := broker.tcs._zones[0]._id) == broker.tcs._id:
         unique_id += "z"  # special case of merged controller/zone
 
     entity_registry = er.async_get(hass)

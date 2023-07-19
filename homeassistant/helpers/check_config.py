@@ -180,8 +180,7 @@ async def async_check_ha_config_file(  # noqa: C901
 
     frontend_dependencies: set[str] = set()
     if "frontend" in components or "default_config" in components:
-        frontend = await _get_integration(hass, "frontend")
-        if frontend:
+        if frontend := await _get_integration(hass, "frontend"):
             await frontend.resolve_dependencies()
             frontend_dependencies = frontend.all_dependencies | {"frontend"}
 

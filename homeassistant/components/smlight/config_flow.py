@@ -92,9 +92,8 @@ class SmlightConfigFlow(ConfigFlow, domain=DOMAIN):
         self.context["title_placeholders"] = {CONF_NAME: node_name}
         self.client = Api2(self.host, session=async_get_clientsession(self.hass))
 
-        mac = discovery_info.properties.get("mac")
         # fallback for legacy firmware
-        if mac is None:
+        if (mac := discovery_info.properties.get("mac")) is None:
             try:
                 info = await self.client.get_info()
             except SmlightConnectionError:

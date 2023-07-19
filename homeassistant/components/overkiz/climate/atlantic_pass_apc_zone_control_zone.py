@@ -369,9 +369,8 @@ class AtlanticPassAPCZoneControlZone(AtlanticPassAPCHeatingZone):
         target_temperature = kwargs.get(ATTR_TEMPERATURE)
         target_temp_low = kwargs.get(ATTR_TARGET_TEMP_LOW)
         target_temp_high = kwargs.get(ATTR_TARGET_TEMP_HIGH)
-        hvac_mode = self.hvac_mode
 
-        if hvac_mode == HVACMode.HEAT_COOL:
+        if (hvac_mode := self.hvac_mode) == HVACMode.HEAT_COOL:
             if target_temp_low is not None:
                 await self.executor.async_execute_command(
                     OverkizCommand.SET_HEATING_TARGET_TEMPERATURE,
