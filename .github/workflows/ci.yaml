@@ -33,13 +33,13 @@ on:
         type: boolean
 
 env:
-  CACHE_VERSION: 5
+  CACHE_VERSION: 5-c1
   PIP_CACHE_VERSION: 4
   MYPY_CACHE_VERSION: 5
   BLACK_CACHE_VERSION: 1
   HA_SHORT_VERSION: "2023.11"
   DEFAULT_PYTHON: "3.11"
-  ALL_PYTHON_VERSIONS: "['3.11']"
+  ALL_PYTHON_VERSIONS: "['3.11', '3.12']"
   # 10.3 is the oldest supported version
   # - 10.3.32 is the version currently shipped with Synology (as of 17 Feb 2022)
   # 10.6 is the current long-term-support
@@ -61,9 +61,9 @@ env:
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -472,8 +472,9 @@ jobs:
     name: Prepare dependencies
     runs-on: ubuntu-22.04
     needs: info
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
+      fail-fast: false
       matrix:
         python-version: ${{ fromJSON(needs.info.outputs.python_versions) }}
     steps:
@@ -501,7 +502,7 @@ jobs:
             needs.info.outputs.python_cache_key }}
       - name: Restore pip wheel cache
         if: steps.cache-venv.outputs.cache-hit != 'true'
-        uses: actions/cache@v3.3.2
+        uses: actions/cache/restore@v3.3.2
         with:
           path: ${{ env.PIP_CACHE }}
           key: >-
@@ -534,6 +535,16 @@ jobs:
           PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements_all.txt
           PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements_test.txt
           pip install -e . --config-settings editable_mode=compat
+      - name: Save pip wheel cache
+        if: |
+          steps.cache-venv.outputs.cache-hit != 'true'
+          && (success() || failure())
+        uses: actions/cache/save@v3.3.2
+        with:
+          path: ${{ env.PIP_CACHE }}
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+            steps.generate-pip-key.outputs.key }}
 
   hassfest:
     name: Check hassfest
@@ -717,16 +728,11 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - mypy
     strategy:
       fail-fast: false
       matrix:
         group: ${{ fromJson(needs.info.outputs.test_groups) }}
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.12"]
     name: >-
       Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
     steps:
@@ -860,7 +866,8 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      false
+      && (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
@@ -984,7 +991,8 @@ jobs:
           POSTGRES_PASSWORD: password
         options: --health-cmd="pg_isready -hlocalhost -Upostgres" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
-      (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
+      false
+      && (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'

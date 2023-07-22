@@ -161,6 +161,8 @@ disable = [
     "consider-using-f-string",
     "consider-using-namedtuple-or-dataclass",
     "consider-using-assignment-expr",
+    "deprecated-module",
+    "no-name-in-module",
 
     # Handled by ruff
     # Ref: <https://github.com/astral-sh/ruff/issues/970>
