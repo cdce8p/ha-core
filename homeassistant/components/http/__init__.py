@@ -307,6 +307,11 @@ class HomeAssistantRequest(web.Request):
         return json_loads(await self.read())
 
 
+# Overwrite __init_subclass__ to allow subclassing.
+# Aiohttp main will emit a TypeError.
+web.Application.__init_subclass__ = lambda **kwargs: None  # type: ignore[method-assign]
+
+
 class HomeAssistantApplication(web.Application):
     """Home Assistant application."""
 
