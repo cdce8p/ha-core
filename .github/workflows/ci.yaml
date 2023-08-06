@@ -536,6 +536,7 @@ jobs:
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
+          uv pip install --force-reinstall --no-deps beautifulsoup4@git+https://github.com/cdce8p/beautifulsoup@master
           uv pip install -e . --config-settings editable_mode=compat
 
   hassfest:
