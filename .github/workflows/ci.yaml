@@ -570,7 +570,8 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python ${{ matrix.python-version }} and restore venv
+      - &setup-python-matrix-restore-venv
+        name: Set up Python ${{ matrix.python-version }} and restore venv
         id: python
         uses: ./.github/actions/restore-or-build-venv
         with:
@@ -754,6 +755,50 @@ jobs:
           . venv/bin/activate
           python --version
           mypy --num-workers=4 $(printf "homeassistant/components/%s " ${INTEGRATIONS_GLOB})
+
+  installed-packages:
+    name: List installed packages
+    runs-on: *runs-on-ubuntu
+    permissions:
+      contents: read
+    needs: *needs-base
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+    steps:
+      - *checkout
+      - *setup-python-matrix-restore-venv
+      - name: Install pip
+        run: |
+          . venv/bin/activate
+          uv pip install pip
+      - name: Installed packages
+        run: |
+          . venv/bin/activate
+          pip list 2>&1 | tee packages-${{ matrix.python-version }}.txt
+      - name: Reverse pipdeptree
+        run: |
+          . venv/bin/activate
+          pipdeptree -r 2>&1 | tee dependency_tree-${{ matrix.python-version }}.txt
+      - name: Pip inspect
+        run: |
+          . venv/bin/activate
+          pip inspect 2>&1 | tee pip_inspect-${{ matrix.python-version }}.json
+      - name: List typed packages
+        run: |
+          . venv/bin/activate
+          python script/typed_pkg.py | tee typed_pkgs-${{ matrix.python-version }}.txt
+      - name: Upload output
+        if: success() || failure()
+        uses: *actions-upload-artifact
+        with:
+          name: pytest-${{ github.run_number }}-${{ matrix.python-version }}-installed-pkgs
+          path: |
+            packages-*.txt
+            dependency_tree-*.txt
+            pip_inspect-*.json
+            typed_pkgs-*.txt
 
   prepare-pytest-full:
     name: Split tests for full run
@@ -1580,6 +1625,7 @@ jobs:
     needs:
       - info
       - audit-licenses
+      - installed-packages
       - pytest-full
     timeout-minutes: 5
     if: ${{ !cancelled() }}
