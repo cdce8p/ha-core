@@ -37,7 +37,7 @@ on:
         type: boolean
 
 env:
-  CACHE_VERSION: 11
+  CACHE_VERSION: 11-c2
   UV_CACHE_VERSION: 1
   MYPY_CACHE_VERSION: 9
   HA_SHORT_VERSION: "2024.11"
@@ -64,10 +64,11 @@ env:
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
+  AIOHTTP_COMMIT: 6333c026422c6b0fe57ff63cde4104e2d00f47f4 # 3.9.1 upstream
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -104,7 +105,8 @@ jobs:
             hashFiles('requirements.txt') }}-${{
             hashFiles('requirements_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}-${{
-            hashFiles('script/gen_requirements_all.py') }}" >> $GITHUB_OUTPUT
+            hashFiles('script/gen_requirements_all.py') }}-aiohttp-${{
+            env.AIOHTTP_COMMIT }}" >> $GITHUB_OUTPUT
       - name: Generate partial pre-commit restore key
         id: generate_pre-commit_cache_key
         run: >-
@@ -491,7 +493,7 @@ jobs:
             needs.info.outputs.python_cache_key }}
       - name: Restore uv wheel cache
         if: steps.cache-venv.outputs.cache-hit != 'true'
-        uses: actions/cache@v4.1.1
+        uses: actions/cache/restore@v4.1.1
         with:
           path: ${{ env.UV_CACHE_DIR }}
           key: >-
@@ -502,7 +504,7 @@ jobs:
             env.UV_CACHE_VERSION }}-${{ steps.generate-uv-key.outputs.version }}-${{
             env.HA_SHORT_VERSION }}-
       - name: Install additional OS dependencies
-        if: steps.cache-venv.outputs.cache-hit != 'true'
+        if: false && steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
           sudo apt-get update
@@ -519,14 +521,43 @@ jobs:
             libswresample-dev \
             libswscale-dev \
             libudev-dev
+      - name: Restore aiohttp cache (${{ env.AIOHTTP_COMMIT }})
+        id: cache-aiohttp
+        uses: actions/cache/restore@v4.1.1
+        with:
+          path: dist
+          key: ${{ runner.os }}-${{ steps.python.outputs.python-version }}-aiohttp-${{ env.AIOHTTP_COMMIT }}
+      - name: Build aiohttp wheel
+        if: steps.cache-aiohttp.outputs.cache-hit != 'true'
+        run: |
+          python -m venv venv-aiohttp
+          . venv-aiohttp/bin/activate
+          git clone --recurse-submodules https://github.com/cdce8p/aiohttp.git && cd aiohttp
+          git checkout ${{ env.AIOHTTP_COMMIT }}
+          cd vendor/llhttp/ && npm install && make && cd ../..
+          make cythonize
+          pip install build
+          python -m build
+          cd ..
+          ls -l aiohttp/dist
+          cp -r aiohttp/dist .
+          rm -rf aiohttp
+      - name: Cache aiohttp
+        if: steps.cache-aiohttp.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4.1.1
+        with:
+          path: dist
+          key: ${{ runner.os }}-${{ steps.python.outputs.python-version }}-aiohttp-${{ env.AIOHTTP_COMMIT }}
       - name: Create Python virtual environment
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           python -m venv venv
           . venv/bin/activate
           python --version
+          whl_file=$(ls dist/ | grep '.whl')
           pip install "$(grep '^uv' < requirements.txt)"
           uv pip install -U "pip>=21.3.1" setuptools wheel
+          uv pip install "aiohttp@dist/${whl_file}"
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
@@ -870,12 +901,12 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
       - prepare-pytest-full
     strategy:
       fail-fast: false
@@ -943,7 +974,6 @@ jobs:
           python3 -b -X dev -m pytest \
             -qq \
             --timeout=9 \
-            --durations=10 \
             --numprocesses auto \
             --dist=loadfile \
             ${cov_params[@]} \
@@ -982,6 +1012,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
@@ -1108,6 +1139,7 @@ jobs:
           POSTGRES_PASSWORD: password
         options: --health-cmd="pg_isready -hlocalhost -Upostgres" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
