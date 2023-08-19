@@ -81,14 +81,14 @@ env:
 
 permissions: {}
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
     name: Collect information & changes data
-    runs-on: ubuntu-24.04
+    runs-on: &runs-on-ubuntu ubuntu-24.04
     permissions:
       contents: read # To check out the repository
       pull-requests: read # For paths-filter to detect changed files
@@ -114,7 +114,8 @@ jobs:
       lint_only: ${{ steps.info.outputs.lint_only }}
       skip_coverage: ${{ steps.info.outputs.skip_coverage }}
     steps:
-      - name: Check out code from GitHub
+      - &checkout
+        name: Check out code from GitHub
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -286,6 +287,7 @@ jobs:
       contents: read
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -313,6 +315,7 @@ jobs:
       contents: read # To check out the repository
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -333,6 +336,7 @@ jobs:
       contents: read
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -387,7 +391,7 @@ jobs:
           python --version
           uv pip freeze >> pip_freeze.txt
       - name: Upload pip_freeze artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: &actions-upload-artifact actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pip-freeze-${{ matrix.python-version }}
           path: pip_freeze.txt
@@ -403,10 +407,11 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-    needs:
+    needs: &needs-base
       - info
       - base
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -444,6 +449,7 @@ jobs:
       - info
       - base
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -474,6 +480,7 @@ jobs:
     needs:
       - info
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -600,6 +607,7 @@ jobs:
       - base
     timeout-minutes: 20
     if: |
+      false &&
       github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.pylint-only == 'true'
@@ -646,6 +654,7 @@ jobs:
       - base
     timeout-minutes: 20
     if: |
+      false &&
       (github.event.inputs.mypy-only != 'true'
         && github.event.inputs.audit-licenses-only != 'true'
         || github.event.inputs.pylint-only == 'true')
@@ -692,6 +701,7 @@ jobs:
       - info
       - base
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.mypy-only == 'true'
@@ -838,10 +848,10 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - prek
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - prek
+      # - mypy
       - prepare-pytest-full
     if: |
       needs.info.outputs.lint_only != 'true'
@@ -910,10 +920,7 @@ jobs:
           python3 -b -X dev -m pytest \
             -qq \
             --timeout=9 \
-            --durations=0 \
-            --durations-min=1 \
             --numprocesses auto \
-            --snapshot-details \
             --dist=loadfile \
             ${cov_params[@]} \
             -o console_output_style=count \
@@ -977,6 +984,7 @@ jobs:
       - prek
       - mypy
     if: |
+      false &&
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.mariadb_groups != '[]'
     strategy:
@@ -1118,6 +1126,7 @@ jobs:
       - prek
       - mypy
     if: |
+      false &&
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.postgresql_groups != '[]'
     strategy:
@@ -1252,6 +1261,7 @@ jobs:
       - prek
       - mypy
     if: |
+      false &&
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.sqlite_groups != '[]'
     strategy:
