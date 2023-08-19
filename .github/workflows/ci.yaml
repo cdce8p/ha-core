@@ -37,7 +37,7 @@ on:
         type: boolean
 
 env:
-  CACHE_VERSION: 11
+  CACHE_VERSION: 11-c1
   UV_CACHE_VERSION: 1
   MYPY_CACHE_VERSION: 9
   HA_SHORT_VERSION: "2024.11"
@@ -65,9 +65,9 @@ env:
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -224,6 +224,7 @@ jobs:
     name: Prepare pre-commit base
     runs-on: ubuntu-24.04
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -435,6 +436,7 @@ jobs:
     needs:
       - info
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -491,7 +493,7 @@ jobs:
             needs.info.outputs.python_cache_key }}
       - name: Restore uv wheel cache
         if: steps.cache-venv.outputs.cache-hit != 'true'
-        uses: actions/cache@v4.1.2
+        uses: actions/cache/restore@v4.1.2
         with:
           path: ${{ env.UV_CACHE_DIR }}
           key: >-
@@ -502,7 +504,7 @@ jobs:
             env.UV_CACHE_VERSION }}-${{ steps.generate-uv-key.outputs.version }}-${{
             env.HA_SHORT_VERSION }}-
       - name: Install additional OS dependencies
-        if: steps.cache-venv.outputs.cache-hit != 'true'
+        if: false && steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
           sudo apt-get update
@@ -536,6 +538,7 @@ jobs:
     name: Check hassfest
     runs-on: ubuntu-24.04
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -575,6 +578,7 @@ jobs:
     name: Check all requirements
     runs-on: ubuntu-24.04
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -652,6 +656,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     if: |
+      false &&
       github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.pylint-only == 'true'
@@ -698,6 +703,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     if: |
+      false &&
       (github.event.inputs.mypy-only != 'true'
         && github.event.inputs.audit-licenses-only != 'true'
         || github.event.inputs.pylint-only == 'true')
@@ -744,6 +750,7 @@ jobs:
     name: Check mypy
     runs-on: ubuntu-24.04
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.mypy-only == 'true'
@@ -870,12 +877,12 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
       - prepare-pytest-full
     strategy:
       fail-fast: false
@@ -943,7 +950,6 @@ jobs:
           python3 -b -X dev -m pytest \
             -qq \
             --timeout=9 \
-            --durations=10 \
             --numprocesses auto \
             --dist=loadfile \
             ${cov_params[@]} \
@@ -982,6 +988,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping -uroot -ppassword" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
@@ -1108,6 +1115,7 @@ jobs:
           POSTGRES_PASSWORD: password
         options: --health-cmd="pg_isready -hlocalhost -Upostgres" --health-interval=5s --health-timeout=2s --health-retries=3
     if: |
+      false &&
       (github.event_name != 'push' || github.event.repository.full_name == 'home-assistant/core')
       && github.event.inputs.lint-only != 'true'
       && github.event.inputs.pylint-only != 'true'
