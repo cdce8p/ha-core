@@ -551,7 +551,7 @@ filterwarnings = [
     # https://bugs.launchpad.net/beautifulsoup/+bug/2034451
     "ignore:It looks like you're parsing an XML document using an HTML parser:UserWarning:html.parser",
     # New in aiohttp - v3.9.0
-    "ignore:It is recommended to use web.AppKey instances for keys:UserWarning:(homeassistant|tests|aiohttp_cors)",
+    # "ignore:It is recommended to use web.AppKey instances for keys:UserWarning:(homeassistant|tests|aiohttp_cors)",
     # - SyntaxWarnings
     # https://pypi.org/project/aprslib/ - v0.7.2 - 2022-07-10
     "ignore:invalid escape sequence:SyntaxWarning:.*aprslib.parsing.common",
@@ -668,6 +668,12 @@ filterwarnings = [
     "ignore:datetime.*utcfromtimestamp\\(\\) is deprecated and scheduled for removal:DeprecationWarning:rx.internal.constants",
     # https://pypi.org/project/rxv/ - v0.7.0 - 2021-10-10
     "ignore:defusedxml.cElementTree is deprecated, import from defusedxml.ElementTree instead:DeprecationWarning:rxv.ssdp",
+
+    # -- existing issues
+    "ignore:This method will be removed future version, pass the callback to the BleakClient constructor instead:FutureWarning:habluetooth.wrappers",
+
+    # -- Ignore
+    "ignore:It is recommended to use web.AppKey instances for keys:UserWarning:aiohttp_cors",
 ]
 
 [tool.coverage.run]
