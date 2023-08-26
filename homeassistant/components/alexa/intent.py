@@ -67,7 +67,7 @@ class AlexaIntentsView(http.HomeAssistantView):
 
     async def post(self, request: http.HomeAssistantRequest) -> Response | bytes:
         """Handle Alexa."""
-        hass = request.app[http.KEY_HASS]
+        hass: HomeAssistant = request.app["hass"]
         message: dict[str, Any] = await request.json()
 
         _LOGGER.debug("Received Alexa request: %s", message)

@@ -13,7 +13,8 @@ import os
 import socket
 import ssl
 from tempfile import NamedTemporaryFile
-from typing import Any, Final, TypedDict, cast
+from typing import Any, Final, TypedDict, cast, overload
+import warnings
 
 from aiohttp import web
 from aiohttp.abc import AbstractStreamWriter
@@ -315,6 +316,30 @@ web.Application.__init_subclass__ = lambda **kwargs: None  # type: ignore[method
 class HomeAssistantApplication(web.Application):
     """Home Assistant application."""
 
+    @overload  # type: ignore[override]
+    def __getitem__[_T](self, key: web.AppKey[_T]) -> _T: ...
+
+    @overload
+    def __getitem__(self, key: str) -> Any: ...
+
+    def __getitem__(self, key: str | web.AppKey[Any]) -> Any:
+        """Overwrite base method to emit custom DeprecationWarnings."""
+        if isinstance(key, str):
+            if key == "hass":
+                warnings.warn(
+                    'Support for app["hass"] is deprecated in favor '
+                    "of app[KEY_HASS] and will be removed in 2024.01",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+            else:
+                warnings.warn(
+                    "Support for str keys is deprecated, use web.AppKey instead",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+        return super().__getitem__(key)
+
     def _make_request(
         self,
         message: RawRequestMessage,
@@ -392,7 +417,11 @@ class HomeAssistantHTTP:
     ) -> None:
         """Initialize the server."""
         self.app[KEY_HASS] = self.hass
-        self.app["hass"] = self.hass  # For backwards compatibility
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore", "It is recommended to use web.AppKey", UserWarning
+            )
+            self.app["hass"] = self.hass  # For backwards compatibility
 
         # Order matters, security filters middleware needs to go first,
         # forwarded middleware needs to go second.
