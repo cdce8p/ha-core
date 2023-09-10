@@ -534,6 +534,7 @@ jobs:
           PIP_CACHE_DIR=$PIP_CACHE pip install -U "pip>=21.3.1" setuptools wheel
           PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements_all.txt
           PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements_test.txt
+          pip install --no-deps --force-reinstall git+https://github.com/pytest-dev/pytest.git@b73b4c464c6fa54f55a1c6ed8eaceb5529a161bb
           pip install -e . --config-settings editable_mode=compat
       - name: Save pip wheel cache
         if: |
