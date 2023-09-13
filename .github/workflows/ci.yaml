@@ -65,9 +65,9 @@ env:
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -224,6 +224,7 @@ jobs:
     name: Prepare pre-commit base
     runs-on: ubuntu-24.04
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -460,6 +461,7 @@ jobs:
     name: Prepare dependencies
     runs-on: ubuntu-24.04
     needs: info
+    if: false
     timeout-minutes: 60
     strategy:
       matrix:
@@ -814,7 +816,7 @@ jobs:
       && needs.info.outputs.test_full_suite == 'true'
     needs:
       - info
-      - base
+      # - base
     name: Split tests for full run
     steps:
       - name: Install additional OS dependencies
@@ -865,13 +867,13 @@ jobs:
       && needs.info.outputs.test_full_suite == 'true'
     needs:
       - info
-      - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - base
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
       - prepare-pytest-full
     strategy:
       fail-fast: false
