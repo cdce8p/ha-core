@@ -442,6 +442,8 @@ testpaths = [
 ]
 norecursedirs = [
     ".git",
+    "fixtures",
+    "snapshots",
     "testing_config",
 ]
 log_format = "%(asctime)s.%(msecs)03d %(levelname)-8s %(threadName)s %(name)s:%(filename)s:%(lineno)s %(message)s"
