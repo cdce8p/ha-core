@@ -134,33 +134,33 @@ async def test_feed_identical_timestamps(
     assert events[0].data.id == "GUID 1"
     assert events[1].data.id == "GUID 2"
     assert (
-        events[0].data.updated_parsed.tm_year
-        == events[1].data.updated_parsed.tm_year
+        events[0].data.published_parsed.tm_year
+        == events[1].data.published_parsed.tm_year
         == 2018
     )
     assert (
-        events[0].data.updated_parsed.tm_mon
-        == events[1].data.updated_parsed.tm_mon
+        events[0].data.published_parsed.tm_mon
+        == events[1].data.published_parsed.tm_mon
         == 4
     )
     assert (
-        events[0].data.updated_parsed.tm_mday
-        == events[1].data.updated_parsed.tm_mday
+        events[0].data.published_parsed.tm_mday
+        == events[1].data.published_parsed.tm_mday
         == 30
     )
     assert (
-        events[0].data.updated_parsed.tm_hour
-        == events[1].data.updated_parsed.tm_hour
+        events[0].data.published_parsed.tm_hour
+        == events[1].data.published_parsed.tm_hour
         == 15
     )
     assert (
-        events[0].data.updated_parsed.tm_min
-        == events[1].data.updated_parsed.tm_min
+        events[0].data.published_parsed.tm_min
+        == events[1].data.published_parsed.tm_min
         == 10
     )
     assert (
-        events[0].data.updated_parsed.tm_sec
-        == events[1].data.updated_parsed.tm_sec
+        events[0].data.published_parsed.tm_sec
+        == events[1].data.published_parsed.tm_sec
         == 0
     )
 
