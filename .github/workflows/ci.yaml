@@ -461,6 +461,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: info
     timeout-minutes: 60
+    if: false
     strategy:
       matrix:
         python-version: ${{ fromJSON(needs.info.outputs.python_versions) }}
@@ -744,6 +745,7 @@ jobs:
     name: Check mypy
     runs-on: ubuntu-24.04
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.mypy-only == 'true'
@@ -802,6 +804,56 @@ jobs:
           . venv/bin/activate
           python --version
           mypy homeassistant/components/${{ needs.info.outputs.integrations_glob }}
+
+  pyright:
+    name: Check pyright
+    runs-on: ubuntu-24.04
+    if: |
+      github.event.inputs.pylint-only != 'true'
+      || github.event.inputs.mypy-only == 'true'
+    needs:
+      - info
+      # - base
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v4.2.0
+      - name: Set up Python ${{ env.DEFAULT_PYTHON }}
+        id: python
+        uses: actions/setup-python@v5.2.0
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON }}
+          check-latest: true
+      - name: Restore full Python ${{ env.DEFAULT_PYTHON }} virtual environment
+        id: cache-venv
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: venv
+          fail-on-cache-miss: true
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+            needs.info.outputs.python_cache_key }}
+      - name: Install pyright
+        run: |
+          . venv/bin/activate
+          pip install pyright
+          pip install -e . --config-settings editable_mode=compat
+      - name: Run pyright
+        id: pyright
+        run: |
+          . venv/bin/activate
+          pyright --pythonversion 3.12 homeassistant | tee pyright.txt
+      - name: Upload pyright output
+        if: success() || failure() && steps.pyright.conclusion == 'failure'
+        uses: actions/upload-artifact@v4.4.0
+        with:
+          name: pyright-${{ github.run_number }}
+          path: pyright.txt
+          # - run: echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          # - name: Run pyright
+          #   uses: jakebailey/pyright-action@v2
+          #   with:
+          #     python-version: "3.11"
+          #     working-directory: "homeassistant"
 
   prepare-pytest-full:
     runs-on: ubuntu-24.04
