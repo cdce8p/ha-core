@@ -5,7 +5,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 import asyncio
 from dataclasses import dataclass
-from functools import cached_property
 import logging
 from typing import TYPE_CHECKING, Any, cast
 
@@ -60,7 +59,7 @@ from homeassistant.helpers.script import (
 )
 from homeassistant.helpers.service import async_set_service_schema
 from homeassistant.helpers.trace import trace_get, trace_path
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.loader import bind_hass
 from homeassistant.util.async_ import create_eager_task
 from homeassistant.util.dt import parse_datetime
@@ -79,6 +78,12 @@ from .const import (
 )
 from .helpers import async_get_blueprints
 from .trace import trace_script
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
+
 
 SCRIPT_SERVICE_SCHEMA = vol.Schema(dict)
 SCRIPT_TURN_ONOFF_SCHEMA = make_entity_service_schema(

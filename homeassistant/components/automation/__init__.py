@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 import asyncio
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from functools import cached_property, partial
+from functools import partial
 import logging
 from typing import Any, Protocol, cast
 
@@ -91,7 +91,7 @@ from homeassistant.helpers.trigger import (
     TriggerInfo,
     async_initialize_triggers,
 )
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.loader import bind_hass
 from homeassistant.util.dt import parse_datetime
 from homeassistant.util.hass_dict import HassKey
@@ -109,6 +109,11 @@ from .const import (
 )
 from .helpers import async_get_blueprints
 from .trace import trace_automation
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 DATA_COMPONENT: HassKey[EntityComponent[BaseAutomationEntity]] = HassKey(DOMAIN)
 ENTITY_ID_FORMAT = DOMAIN + ".{}"

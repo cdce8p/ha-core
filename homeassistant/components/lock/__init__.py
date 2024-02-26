@@ -5,7 +5,6 @@ from __future__ import annotations
 from datetime import timedelta
 from enum import IntFlag
 import functools as ft
-from functools import cached_property
 import logging
 import re
 from typing import TYPE_CHECKING, Any, final
@@ -38,10 +37,15 @@ from homeassistant.helpers.deprecation import (
 )
 from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import ConfigType, StateType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType, StateType
 from homeassistant.util.hass_dict import HassKey
 
 from .const import DOMAIN, LockState
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 

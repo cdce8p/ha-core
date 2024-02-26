@@ -9,7 +9,7 @@ from contextlib import suppress
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from enum import IntFlag
-from functools import cached_property, partial
+from functools import partial
 import logging
 import os
 from random import SystemRandom
@@ -60,7 +60,7 @@ from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.network import get_url
 from homeassistant.helpers.template import Template
-from homeassistant.helpers.typing import ConfigType, VolDictType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType, VolDictType
 from homeassistant.loader import bind_hass
 
 from .const import (  # noqa: F401
@@ -82,6 +82,11 @@ from .const import (  # noqa: F401
 )
 from .img_util import scale_jpeg_camera_image
 from .prefs import CameraPreferences, DynamicStreamSettings  # noqa: F401
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 

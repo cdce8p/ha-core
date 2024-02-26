@@ -5,7 +5,6 @@ from __future__ import annotations
 import asyncio
 from datetime import timedelta
 import functools as ft
-from functools import cached_property
 import logging
 from typing import Any, Literal, final
 
@@ -35,7 +34,7 @@ from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.entity_platform import EntityPlatform
 from homeassistant.helpers.temperature import display_temp as show_temp
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.loader import async_get_issue_tracker, async_suggest_report_issue
 from homeassistant.util.hass_dict import HassKey
 from homeassistant.util.unit_conversion import TemperatureConverter
@@ -112,6 +111,11 @@ from .const import (  # noqa: F401
     HVACAction,
     HVACMode,
 )
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 

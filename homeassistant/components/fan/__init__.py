@@ -6,7 +6,6 @@ import asyncio
 from datetime import timedelta
 from enum import IntFlag
 import functools as ft
-from functools import cached_property
 import logging
 import math
 from typing import Any, final
@@ -32,13 +31,19 @@ from homeassistant.helpers.deprecation import (
 from homeassistant.helpers.entity import ToggleEntity, ToggleEntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.entity_platform import EntityPlatform
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.loader import bind_hass
 from homeassistant.util.hass_dict import HassKey
 from homeassistant.util.percentage import (
     percentage_to_ranged_value,
     ranged_value_to_percentage,
 )
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
+
 
 _LOGGER = logging.getLogger(__name__)
 

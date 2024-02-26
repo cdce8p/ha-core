@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from functools import cached_property, partial
+from functools import partial
 import logging
 from typing import Any, Final, final
 
@@ -32,7 +32,7 @@ from homeassistant.helpers.deprecation import (
 )
 from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.util.hass_dict import HassKey
 
 from .const import (  # noqa: F401
@@ -50,6 +50,11 @@ from .const import (  # noqa: F401
     AlarmControlPanelEntityFeature,
     CodeFormat,
 )
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER: Final = logging.getLogger(__name__)
 

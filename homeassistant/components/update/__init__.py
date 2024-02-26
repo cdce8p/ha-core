@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 from enum import StrEnum
-from functools import cached_property, lru_cache
+from functools import lru_cache
 import logging
 from typing import Any, Final, final
 
@@ -20,7 +20,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import ABCCachedProperties, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.restore_state import RestoreEntity
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.util.hass_dict import HassKey
 
 from .const import (
@@ -39,6 +39,11 @@ from .const import (
     SERVICE_SKIP,
     UpdateEntityFeature,
 )
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 

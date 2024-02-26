@@ -7,7 +7,6 @@ import collections
 from contextlib import suppress
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from functools import cached_property
 import logging
 from random import SystemRandom
 from typing import Final, final
@@ -28,9 +27,15 @@ from homeassistant.helpers.event import (
     async_track_time_interval,
 )
 from homeassistant.helpers.httpx_client import get_async_client
-from homeassistant.helpers.typing import UNDEFINED, ConfigType, UndefinedType
+from homeassistant.helpers.typing import PYRIGHT, UNDEFINED, ConfigType, UndefinedType
 
 from .const import DATA_COMPONENT, DOMAIN, IMAGE_TIMEOUT
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
+
 
 _LOGGER = logging.getLogger(__name__)
 

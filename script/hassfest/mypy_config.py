@@ -36,6 +36,7 @@ GENERAL_SETTINGS: Final[dict[str, str]] = {
     "plugins": "pydantic.mypy",
     "show_error_codes": "true",
     "follow_imports": "normal",
+    "always_false": "PYRIGHT",
     "enable_incomplete_feature": ", ".join(  # noqa: FLY002
         [
             "NewGenericSyntax",

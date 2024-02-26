@@ -1,4 +1,7 @@
 {
   "useLibraryCodeForTypes": false,
-  "pythonVersion": "3.12"
+  "pythonVersion": "3.12",
+  "defineConstant": {
+    "PYRIGHT": true
+  }
 }

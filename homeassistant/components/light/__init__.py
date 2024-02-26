@@ -7,7 +7,6 @@ import csv
 import dataclasses
 from datetime import timedelta
 from enum import IntFlag, StrEnum
-from functools import cached_property
 import logging
 import os
 from typing import Any, Self, cast, final
@@ -26,10 +25,15 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv, entity_registry as er
 from homeassistant.helpers.entity import ToggleEntity, ToggleEntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import ConfigType, VolDictType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType, VolDictType
 from homeassistant.loader import bind_hass
 import homeassistant.util.color as color_util
 from homeassistant.util.hass_dict import HassKey
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 DOMAIN = "light"
 DATA_COMPONENT: HassKey[EntityComponent[LightEntity]] = HassKey(DOMAIN)

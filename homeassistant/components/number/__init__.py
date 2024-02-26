@@ -6,7 +6,6 @@ from collections.abc import Callable
 from contextlib import suppress
 import dataclasses
 from datetime import timedelta
-from functools import cached_property
 import logging
 from math import ceil, floor
 from typing import TYPE_CHECKING, Any, Self, final
@@ -26,7 +25,7 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.restore_state import ExtraStoredData, RestoreEntity
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.loader import async_suggest_report_issue
 from homeassistant.util.hass_dict import HassKey
 
@@ -47,6 +46,11 @@ from .const import (  # noqa: F401
     NumberMode,
 )
 from .websocket_api import async_setup as async_setup_ws_api
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 

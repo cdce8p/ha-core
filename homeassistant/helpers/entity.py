@@ -9,7 +9,6 @@ from collections.abc import Callable, Coroutine, Iterable, Mapping
 import dataclasses
 from enum import Enum, IntFlag, auto
 import functools as ft
-from functools import cached_property
 import logging
 import math
 from operator import attrgetter
@@ -65,12 +64,17 @@ from .event import (
     async_track_entity_registry_updated_event,
 )
 from .frame import report_non_thread_safe_operation
-from .typing import UNDEFINED, StateType, UndefinedType
+from .typing import PYRIGHT, UNDEFINED, StateType, UndefinedType
 
 timer = time.time
 
 if TYPE_CHECKING:
     from .entity_platform import EntityPlatform
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 SLOW_UPDATE_WARNING = 10

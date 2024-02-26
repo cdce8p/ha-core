@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from functools import cached_property
 import logging
 from typing import Any, final
 
@@ -13,8 +12,14 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.util.hass_dict import HassKey
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
+
 
 _LOGGER = logging.getLogger(__name__)
 

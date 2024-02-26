@@ -9,7 +9,7 @@ from contextlib import suppress
 import datetime as dt
 from enum import StrEnum
 import functools as ft
-from functools import cached_property, lru_cache
+from functools import lru_cache
 import hashlib
 from http import HTTPStatus
 import logging
@@ -63,7 +63,7 @@ from homeassistant.helpers.deprecation import (
 from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.network import get_url
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.loader import bind_hass
 from homeassistant.util.hass_dict import HassKey
 
@@ -136,6 +136,11 @@ from .const import (  # noqa: F401
     RepeatMode,
 )
 from .errors import BrowseError
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER = logging.getLogger(__name__)
 

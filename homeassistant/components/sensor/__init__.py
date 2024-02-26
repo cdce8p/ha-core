@@ -8,7 +8,7 @@ from contextlib import suppress
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal, InvalidOperation as DecimalInvalidOperation
-from functools import cached_property, partial
+from functools import partial
 import logging
 from math import ceil, floor, isfinite, log10
 from typing import Any, Final, Self, cast, final, override
@@ -60,7 +60,13 @@ from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.entity_platform import EntityPlatform
 from homeassistant.helpers.restore_state import ExtraStoredData, RestoreEntity
-from homeassistant.helpers.typing import UNDEFINED, ConfigType, StateType, UndefinedType
+from homeassistant.helpers.typing import (
+    PYRIGHT,
+    UNDEFINED,
+    ConfigType,
+    StateType,
+    UndefinedType,
+)
 from homeassistant.util import dt as dt_util
 from homeassistant.util.enum import try_parse_enum
 from homeassistant.util.hass_dict import HassKey
@@ -86,6 +92,11 @@ from .const import (  # noqa: F401
     SensorStateClass,
 )
 from .websocket_api import async_setup as async_setup_ws_api
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 _LOGGER: Final = logging.getLogger(__name__)
 

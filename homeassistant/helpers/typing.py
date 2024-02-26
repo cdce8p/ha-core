@@ -27,6 +27,8 @@ type VolDictType = dict[str | vol.Marker, Any]
 # Custom type for recorder Queries
 type QueryType = Any
 
+PYRIGHT = False
+
 
 class UndefinedType(Enum):
     """Singleton type for use with not set sentinel values."""

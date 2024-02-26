@@ -6,7 +6,7 @@ import abc
 from collections.abc import Callable, Iterable
 from contextlib import suppress
 from datetime import timedelta
-from functools import cached_property, partial
+from functools import partial
 import logging
 from typing import Any, Final, Generic, Literal, Required, TypedDict, cast, final
 
@@ -34,7 +34,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import ABCCachedProperties, Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
@@ -70,6 +70,12 @@ from .const import (  # noqa: F401
     WeatherEntityFeature,
 )
 from .websocket_api import async_setup as async_setup_ws_api
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
+
 
 _LOGGER = logging.getLogger(__name__)
 

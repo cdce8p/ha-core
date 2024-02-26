@@ -5,7 +5,6 @@ from __future__ import annotations
 from datetime import timedelta
 from enum import IntFlag
 import functools as ft
-from functools import cached_property
 import logging
 from typing import Any, final
 
@@ -34,11 +33,16 @@ from homeassistant.helpers.deprecation import (
 from homeassistant.helpers.entity import Entity, EntityDescription
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.temperature import display_temp as show_temp
-from homeassistant.helpers.typing import ConfigType, VolDictType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType, VolDictType
 from homeassistant.util.hass_dict import HassKey
 from homeassistant.util.unit_conversion import TemperatureConverter
 
 from .const import DOMAIN
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
 
 DATA_COMPONENT: HassKey[EntityComponent[WaterHeaterEntity]] = HassKey(DOMAIN)
 ENTITY_ID_FORMAT = DOMAIN + ".{}"

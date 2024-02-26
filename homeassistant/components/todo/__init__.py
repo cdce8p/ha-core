@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 import dataclasses
 import datetime
-from functools import cached_property
 import logging
 from typing import Any, final
 
@@ -26,7 +25,7 @@ from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers.typing import PYRIGHT, ConfigType
 from homeassistant.util import dt as dt_util
 from homeassistant.util.json import JsonValueType
 
@@ -44,6 +43,12 @@ from .const import (
     TodoListEntityFeature,
     TodoServices,
 )
+
+if PYRIGHT:
+    cached_property = property
+else:
+    from functools import cached_property
+
 
 _LOGGER = logging.getLogger(__name__)
 
