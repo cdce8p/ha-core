@@ -1394,3 +1394,19 @@ jobs:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
           version: v0.6.0
+
+  debug-combine-pytest-output:
+    name: "Debug: Combine pytest output"
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    needs:
+      - info
+      - pytest-full
+    timeout-minutes: 5
+    steps:
+      - name: Merge all pytest coverage artifacts
+        uses: actions/upload-artifact/merge@v4.4.2
+        with:
+          name: pytest-${{ github.run_number }}
+          pattern: pytest-${{ github.run_number }}*
+          delete-merged: true
