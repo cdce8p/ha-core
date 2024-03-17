@@ -47,6 +47,7 @@ workflows:
         - 'dorny/paths-filter@v4.0.3'
         - 'hadolint/hadolint-action@v3.5.0'
         - 'j178/prek-action@v3.1.1'
+        - 'actions/upload-artifact@v7.0.0'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@v7.0.1'
         - 'github/codeql-action@v4.39.4'
@@ -361,3 +362,8 @@ dependencies:
         commit: 'sha1-756fe2d284c7292c4e9b62c8a28f1e5629c59532'
         owner_id: 71096353
         repo_id: 351211695
+    'actions/upload-artifact@v7.0.0':
+        ref: 'v7.0.0'
+        commit: 'sha1-bbbca2ddaa5d8feaa63e36b76fdaad77386f024f'
+        owner_id: 44036562
+        repo_id: 192625955
