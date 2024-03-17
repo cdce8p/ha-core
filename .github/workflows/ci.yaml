@@ -588,7 +588,7 @@ jobs:
       - name: Upload licenses
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: licenses-${{ github.run_number }}-${{ matrix.python-version }}
+          name: pytest-${{ github.run_number }}-${{ matrix.python-version }}-licenses
           path: licenses-${{ matrix.python-version }}.json
       - name: Check licenses
         env:
@@ -927,7 +927,8 @@ jobs:
             -p no:sugar \
             --exclude-warning-annotations \
             $(sed -n "${TEST_GROUP},1p" pytest_buckets.txt) \
-              2>&1 | tee pytest-${PYTHON_VERSION}-${TEST_GROUP}.txt
+              2>&1 | tee pytest-${PYTHON_VERSION}-${TEST_GROUP}${{
+                        github.run_attempt != '1' && format('_{0}', github.run_attempt) || '' }}.txt
       - name: Upload pytest output
         if: success() || failure() && steps.pytest-full.conclusion == 'failure'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -1572,3 +1573,20 @@ jobs:
           fail_ci_if_error: true
           verbose: true
           use_oidc: true
+
+  debug-combine-pytest-output:
+    name: "Debug: Combine pytest output"
+    runs-on: *runs-on-ubuntu
+    needs:
+      - info
+      - audit-licenses
+      - pytest-full
+    timeout-minutes: 5
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Merge all pytest coverage artifacts
+        uses: actions/upload-artifact/merge@v7
+        with:
+          name: pytest-${{ github.run_number }}
+          pattern: pytest-${{ github.run_number }}*
+          delete-merged: true
