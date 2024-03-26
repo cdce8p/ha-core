@@ -13,7 +13,7 @@ if TYPE_CHECKING:
         """Stub for lru_cache."""
 
 else:
-    from functools import lru_cache
+    from functools import lru_cache  # TODO  # pylint: disable=fixme
 
 _EnumT = TypeVar("_EnumT", bound=Enum)
 
