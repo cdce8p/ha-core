@@ -453,6 +453,8 @@ filterwarnings = [
   "ignore:Inheritance class HomeAssistantApplication from web.Application is discouraged:DeprecationWarning",
   # Hass wraps `ClientSession.close` to emit a warning if the session is closed accidentally
   "ignore:Setting custom ClientSession.close attribute is discouraged:DeprecationWarning:homeassistant.helpers.aiohttp_client",
+  # app["hass"] is set for backwards compatibility
+  "ignore:It is recommended to use web.AppKey instances for keys:UserWarning:homeassistant.components.http",
   # Modify app state for testing
   "ignore:Changing state of started or joined application is deprecated:DeprecationWarning:tests.components.http.test_ban",
 
@@ -483,6 +485,10 @@ filterwarnings = [
   "ignore:ssl.PROTOCOL_TLS is deprecated:DeprecationWarning:httplib2",
   # https://github.com/httplib2/httplib2/pull/253 - >=0.31.1
   "ignore:'(addParseAction|delimitedList|leaveWhitespace|setName|setParseAction)' deprecated:DeprecationWarning:httplib2.auth",
+# https://github.com/nextcord/nextcord/pull/1268 - >=3.2.0
+  "ignore:'return' in a 'finally' block:SyntaxWarning:.*nextcord.(gateway|player)",
+  # https://github.com/nextcord/nextcord/pull/1269 - >=3.2.0
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:nextcord.member",
   # https://github.com/lawtancool/pyControl4/pull/47 - >=1.6.0
   "ignore:with timeout\\(\\) is deprecated, use async with timeout\\(\\) instead:DeprecationWarning:pyControl4.account",
   # https://pypi.org/project/pyqwikswitch/ - >=1.0
@@ -496,7 +502,7 @@ filterwarnings = [
   # https://github.com/pyusb/pyusb/pull/545 - >1.3.1
   "ignore:Due to '_pack_', the '.*' Structure will use memory layout compatible with MSVC:DeprecationWarning:usb.backend.libusb0",
   # https://github.com/xchwarze/samsung-tv-ws-api/pull/151 - >=3.0.0 - 2024-12-06  # wrong stacklevel in aiohttp
-  "ignore:verify_ssl is deprecated, use ssl=False instead:DeprecationWarning:aiohttp.client",
+  # "ignore:verify_ssl is deprecated, use ssl=False instead:DeprecationWarning:aiohttp.client",
 
   # -- other
   # Locale changes might take some time to resolve upstream
@@ -559,8 +565,6 @@ filterwarnings = [
   # https://pypi.org/project/pyiss/ - v1.0.1 - 2016-12-19
   "ignore:\"is.*\" with '.*' literal:SyntaxWarning:.*pyiss",
   # - SyntaxWarning - return in finally
-  # https://github.com/nextcord/nextcord/pull/1268 - >3.1.1 - 2025-08-16
-  "ignore:'return' in a 'finally' block:SyntaxWarning:.*nextcord.(gateway|player)",
   # https://pypi.org/project/sleekxmppfs/ - v1.4.1 - 2022-08-18
   "ignore:'return' in a 'finally' block:SyntaxWarning:.*sleekxmppfs.(roster.single|xmlstream.xmlstream)",
 
@@ -576,8 +580,7 @@ filterwarnings = [
   "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:(backoff._decorator|backoff._async)",
   # https://github.com/albertogeniola/elmax-api - v0.0.6.3 - 2024-11-30
   "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:elmax_api.http",
-  # https://github.com/nextcord/nextcord/pull/1269 - >3.1.1 - 2025-08-16
-  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:nextcord.member",
+
   # https://github.com/svinota/pyroute2
   "ignore:Due to '_pack_', the '.*' Structure will use memory layout compatible with MSVC:DeprecationWarning:pyroute2.ethtool.ioctl",
   # https://github.com/googleapis/python-genai
@@ -608,8 +611,6 @@ filterwarnings = [
   "ignore:ssl.PROTOCOL_TLS is deprecated:DeprecationWarning:lomond.session",
   # https://pypi.org/project/oauth2client/ - v4.1.3 - 2018-09-07 (archived)
   "ignore:datetime.*utcnow\\(\\) is deprecated and scheduled for removal:DeprecationWarning:oauth2client.client",
-  # https://pypi.org/project/pilight/ - v0.1.1 - 2016-10-19
-  "ignore:pkg_resources is deprecated as an API:UserWarning:pilight",
   # https://pypi.org/project/pure-python-adb/ - v0.3.0.dev0 - 2020-08-05
   "ignore:.*invalid escape sequence:SyntaxWarning:.*ppadb",
   # https://pypi.org/project/pydub/ - v0.25.1 - 2021-03-10
@@ -618,6 +619,18 @@ filterwarnings = [
   "ignore:.*invalid escape sequence:SyntaxWarning:.*pypasser.utils",
   # https://pypi.org/project/rxv/ - v0.7.0 - 2021-10-10
   "ignore:defusedxml.cElementTree is deprecated, import from defusedxml.ElementTree instead:DeprecationWarning:rxv.ssdp",
+
+  # -- custom --
+  # https://github.com/python-caldav/caldav/commit/766d8e0a531df2673b057338f8e63fa5fa145206
+  "ignore:use event.vobject_instance or event.icalendar_instance:DeprecationWarning:homeassistant.components.caldav.*",
+  # https://github.com/jpadilla/pyjwt/commit/96ae3563b9db8f5e18621c4d612f622cf476c92b
+  "ignore:The HMAC key is .*long, which is below the minimum recommended length of 32 bytes for SHA256:UserWarning:(jwt|tests)",
+  "ignore:The RSA key is .* long, which is below the minimum recommended size of 2048 bits:UserWarning:jwt",
+  # https://jose.authlib.org/en/migrations/authlib/
+  # https://github.com/authlib/authlib/issues/766
+  # https://github.com/authlib/authlib/pull/852
+  # TODO warning is emitted on first import -> filter doesn't really work for these cases
+  "ignore:authlib.jose module is deprecated, please use joserfc instead:DeprecationWarning",
 ]
 
 [tool.coverage.run]
