@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 import asyncio
 from dataclasses import dataclass
 import logging
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, TypedDict, Unpack, cast
 
 from propcache import cached_property
 import voluptuous as vol
@@ -85,6 +85,14 @@ SCRIPT_TURN_ONOFF_SCHEMA = make_entity_service_schema(
     {vol.Optional(ATTR_VARIABLES): {str: cv.match_all}}
 )
 RELOAD_SERVICE_SCHEMA = vol.Schema({})
+
+
+class ScriptTurnOnTD(TypedDict, total=False):
+    """Script turn on data."""
+
+    variables: dict | None
+    context: Context
+    wait: bool
 
 
 @bind_hass
@@ -457,6 +465,10 @@ class BaseScriptEntity(ToggleEntity, ABC):
     def referenced_entities(self) -> set[str]:
         """Return a set of referenced entities."""
 
+    @abstractmethod
+    async def async_turn_on(self, **kwargs: Unpack[ScriptTurnOnTD]) -> None:
+        """Run the script."""
+
 
 class UnavailableScriptEntity(BaseScriptEntity):
     """A non-functional script entity with its state set to unavailable.
@@ -535,6 +547,9 @@ class UnavailableScriptEntity(BaseScriptEntity):
         async_delete_issue(
             self.hass, DOMAIN, f"{self.entity_id}_validation_{self._validation_status}"
         )
+
+    async def async_turn_on(self, **kwargs: Unpack[ScriptTurnOnTD]) -> None:
+        """Run the script."""
 
 
 class ScriptEntity(BaseScriptEntity, RestoreEntity):
@@ -639,7 +654,7 @@ class ScriptEntity(BaseScriptEntity, RestoreEntity):
         self.async_write_ha_state()
         self._changed.set()
 
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: Unpack[ScriptTurnOnTD]) -> None:
         """Run the script.
 
         Depending on the script's run mode, this may do nothing, restart the script or

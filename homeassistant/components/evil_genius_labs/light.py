@@ -3,10 +3,15 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, cast
+from typing import Any, Unpack, cast
 
 from homeassistant.components import light
-from homeassistant.components.light import ColorMode, LightEntity, LightEntityFeature
+from homeassistant.components.light import (
+    ColorMode,
+    LightEntity,
+    LightEntityFeature,
+    LightTurnOnTD,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -86,7 +91,7 @@ class EvilGeniusLight(EvilGeniusEntity, LightEntity):
     @update_when_done
     async def async_turn_on(
         self,
-        **kwargs: Any,
+        **kwargs: Unpack[LightTurnOnTD],
     ) -> None:
         """Turn light on."""
         if (brightness := kwargs.get(light.ATTR_BRIGHTNESS)) is not None:
