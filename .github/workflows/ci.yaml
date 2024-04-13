@@ -64,7 +64,7 @@ env:
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
-  AIOHTTP_COMMIT: 6333c026422c6b0fe57ff63cde4104e2d00f47f4 # 3.9.1 upstream
+  AIOHTTP_COMMIT: 3ea557ab73934c238a699796955b648fcca2b6a7 # 3.10.9+ upstream
 
 # concurrency:
 #   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
