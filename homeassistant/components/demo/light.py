@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import random
-from typing import Any
+from typing import Unpack
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
@@ -16,6 +16,8 @@ from homeassistant.components.light import (
     ColorMode,
     LightEntity,
     LightEntityFeature,
+    LightTurnOffTD,
+    LightTurnOnTD,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -110,7 +112,7 @@ class DemoLight(LightEntity):
         ct: int | None = None,
         effect_list: list[str] | None = None,
         effect: str | None = None,
-        hs_color: tuple[int, int] | None = None,
+        hs_color: tuple[float, float] | None = None,
         rgbw_color: tuple[int, int, int, int] | None = None,
         rgbww_color: tuple[int, int, int, int, int] | None = None,
         supported_color_modes: set[ColorMode] | None = None,
@@ -170,7 +172,7 @@ class DemoLight(LightEntity):
         return self._color_mode
 
     @property
-    def hs_color(self) -> tuple[int, int] | None:
+    def hs_color(self) -> tuple[float, float] | None:
         """Return the hs color value."""
         return self._hs_color
 
@@ -209,7 +211,7 @@ class DemoLight(LightEntity):
         """Flag supported color modes."""
         return self._color_modes
 
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: Unpack[LightTurnOnTD]) -> None:
         """Turn the light on."""
         self._state = True
 
@@ -243,7 +245,7 @@ class DemoLight(LightEntity):
         # Home Assistant about updates in our state ourselves.
         self.async_write_ha_state()
 
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: Unpack[LightTurnOffTD]) -> None:
         """Turn the light off."""
         self._state = False
 

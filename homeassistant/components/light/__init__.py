@@ -7,9 +7,10 @@ import csv
 import dataclasses
 from datetime import timedelta
 from enum import IntFlag, StrEnum
+from functools import partial
 import logging
 import os
-from typing import Any, Self, cast, final
+from typing import Any, Final, Literal, Self, TypedDict, Unpack, cast, final
 
 from propcache import cached_property
 import voluptuous as vol
@@ -192,35 +193,35 @@ def get_supported_color_modes(hass: HomeAssistant, entity_id: str) -> set[str] |
 
 
 # Float that represents transition time in seconds to make change.
-ATTR_TRANSITION = "transition"
+ATTR_TRANSITION: Final = "transition"
 
 # Lists holding color values
-ATTR_RGB_COLOR = "rgb_color"
-ATTR_RGBW_COLOR = "rgbw_color"
-ATTR_RGBWW_COLOR = "rgbww_color"
-ATTR_XY_COLOR = "xy_color"
-ATTR_HS_COLOR = "hs_color"
-ATTR_COLOR_TEMP = "color_temp"  # Deprecated in HA Core 2022.11
-ATTR_KELVIN = "kelvin"  # Deprecated in HA Core 2022.11
-ATTR_MIN_MIREDS = "min_mireds"  # Deprecated in HA Core 2022.11
-ATTR_MAX_MIREDS = "max_mireds"  # Deprecated in HA Core 2022.11
-ATTR_COLOR_TEMP_KELVIN = "color_temp_kelvin"
-ATTR_MIN_COLOR_TEMP_KELVIN = "min_color_temp_kelvin"
-ATTR_MAX_COLOR_TEMP_KELVIN = "max_color_temp_kelvin"
-ATTR_COLOR_NAME = "color_name"
-ATTR_WHITE = "white"
+ATTR_RGB_COLOR: Final = "rgb_color"
+ATTR_RGBW_COLOR: Final = "rgbw_color"
+ATTR_RGBWW_COLOR: Final = "rgbww_color"
+ATTR_XY_COLOR: Final = "xy_color"
+ATTR_HS_COLOR: Final = "hs_color"
+ATTR_COLOR_TEMP: Final = "color_temp"  # Deprecated in HA Core 2022.11
+ATTR_KELVIN: Final = "kelvin"  # Deprecated in HA Core 2022.11
+ATTR_MIN_MIREDS: Final = "min_mireds"  # Deprecated in HA Core 2022.11
+ATTR_MAX_MIREDS: Final = "max_mireds"  # Deprecated in HA Core 2022.11
+ATTR_COLOR_TEMP_KELVIN: Final = "color_temp_kelvin"
+ATTR_MIN_COLOR_TEMP_KELVIN: Final = "min_color_temp_kelvin"
+ATTR_MAX_COLOR_TEMP_KELVIN: Final = "max_color_temp_kelvin"
+ATTR_COLOR_NAME: Final = "color_name"
+ATTR_WHITE: Final = "white"
 
 # Brightness of the light, 0..255 or percentage
-ATTR_BRIGHTNESS = "brightness"
-ATTR_BRIGHTNESS_PCT = "brightness_pct"
-ATTR_BRIGHTNESS_STEP = "brightness_step"
-ATTR_BRIGHTNESS_STEP_PCT = "brightness_step_pct"
+ATTR_BRIGHTNESS: Final = "brightness"
+ATTR_BRIGHTNESS_PCT: Final = "brightness_pct"
+ATTR_BRIGHTNESS_STEP: Final = "brightness_step"
+ATTR_BRIGHTNESS_STEP_PCT: Final = "brightness_step_pct"
 
 # String representing a profile (built-in ones or external defined).
-ATTR_PROFILE = "profile"
+ATTR_PROFILE: Final = "profile"
 
 # If the light should flash, can be FLASH_SHORT or FLASH_LONG.
-ATTR_FLASH = "flash"
+ATTR_FLASH: Final = "flash"
 FLASH_SHORT = "short"
 FLASH_LONG = "long"
 
@@ -228,7 +229,7 @@ FLASH_LONG = "long"
 ATTR_EFFECT_LIST = "effect_list"
 
 # Apply an effect to the light, can be EFFECT_COLORLOOP.
-ATTR_EFFECT = "effect"
+ATTR_EFFECT: Final = "effect"
 EFFECT_COLORLOOP = "colorloop"
 EFFECT_OFF = "off"
 EFFECT_RANDOM = "random"
@@ -291,6 +292,36 @@ LIGHT_TURN_OFF_SCHEMA: VolDictType = {
 }
 
 
+class LightTurnOnTD(TypedDict, total=False):
+    """Light turn on data."""
+
+    profile: str
+    transition: float
+    brightness: int
+    brightness_pct: float
+    brightness_step: int
+    brightness_step_pct: float
+    color_name: str
+    color_temp: int
+    color_temp_kelvin: int
+    kelvin: int
+    hs_color: tuple[float, float]
+    rgb_color: tuple[int, int, int]
+    rgbw_color: tuple[int, int, int, int]
+    rgbww_color: tuple[int, int, int, int, int]
+    xy_color: tuple[float, float]
+    white: int
+    flash: Literal["short", "long"]
+    effect: str
+
+
+class LightTurnOffTD(TypedDict, total=False):
+    """Light turn off data."""
+
+    transition: float
+    flash: Literal["short", "long"]
+
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -301,7 +332,7 @@ def is_on(hass: HomeAssistant, entity_id: str) -> bool:
 
 
 def preprocess_turn_on_alternatives(
-    hass: HomeAssistant, params: dict[str, Any]
+    hass: HomeAssistant, params: LightTurnOnTD | dict[str, Any]
 ) -> None:
     """Process extra data for turn light on request.
 
@@ -321,6 +352,7 @@ def preprocess_turn_on_alternatives(
             _LOGGER.warning("Got unknown color %s, falling back to white", color_name)
             params[ATTR_RGB_COLOR] = (255, 255, 255)
 
+    kelvin: int | None
     if (mired := params.pop(ATTR_COLOR_TEMP, None)) is not None:
         kelvin = color_util.color_temperature_mired_to_kelvin(mired)
         params[ATTR_COLOR_TEMP] = int(mired)
@@ -341,9 +373,7 @@ def preprocess_turn_on_alternatives(
         params[ATTR_BRIGHTNESS] = round(255 * brightness_pct / 100)
 
 
-def filter_turn_off_params(
-    light: LightEntity, params: dict[str, Any]
-) -> dict[str, Any]:
+def filter_turn_off_params(light: LightEntity, params: LightTurnOnTD) -> LightTurnOffTD:
     """Filter out params not used in turn off or not supported by the light."""
     if not params:
         return params
@@ -355,10 +385,13 @@ def filter_turn_off_params(
     if LightEntityFeature.TRANSITION not in supported_features:
         params.pop(ATTR_TRANSITION, None)
 
-    return {k: v for k, v in params.items() if k in (ATTR_TRANSITION, ATTR_FLASH)}
+    return cast(
+        LightTurnOffTD,
+        {k: v for k, v in params.items() if k in (ATTR_TRANSITION, ATTR_FLASH)},
+    )
 
 
-def filter_turn_on_params(light: LightEntity, params: dict[str, Any]) -> dict[str, Any]:
+def filter_turn_on_params(light: LightEntity, params: LightTurnOnTD) -> LightTurnOnTD:
     """Filter out params not supported by the light."""
     supported_features = light.supported_features_compat
 
@@ -424,7 +457,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # noqa:
 
         If brightness is set to 0, this service will turn the light off.
         """
-        params: dict[str, Any] = dict(call.data["params"])
+        params: LightTurnOnTD = cast(LightTurnOnTD, call.data["params"])
 
         # Only process params once we processed brightness step
         if params and (
@@ -459,7 +492,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # noqa:
             ):
                 params.pop(ATTR_COLOR_TEMP)
                 color_temp = params.pop(ATTR_COLOR_TEMP_KELVIN)
-                brightness = params.get(ATTR_BRIGHTNESS, light.brightness)
+                brightness = params.get(ATTR_BRIGHTNESS, light.brightness)  # type: ignore[assignment]
                 params[ATTR_RGBWW_COLOR] = color_util.color_temperature_to_rgbww(
                     color_temp,
                     brightness,
@@ -488,8 +521,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # noqa:
                 rgb_color = color_util.color_rgbw_to_rgb(*rgbw_color)
                 params[ATTR_HS_COLOR] = color_util.color_RGB_to_hs(*rgb_color)
             elif (rgbww_color := params.pop(ATTR_RGBWW_COLOR, None)) is not None:
-                # https://github.com/python/mypy/issues/13673
-                rgb_color = color_util.color_rgbww_to_rgb(  # type: ignore[call-arg]
+                rgb_color = color_util.color_rgbww_to_rgb(
                     *rgbww_color,
                     light.min_color_temp_kelvin,
                     light.max_color_temp_kelvin,
@@ -611,7 +643,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # noqa:
         # Add a warning in Home Assistant Core 2024.3 if the brightness is set to an
         # integer.
         if params.get(ATTR_WHITE) is True:
-            params[ATTR_WHITE] = light.brightness
+            params[ATTR_WHITE] = cast(int, light.brightness)
 
         # If both white and brightness are specified, override white
         if (
@@ -631,7 +663,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # noqa:
         light: LightEntity, call: ServiceCall
     ) -> None:
         """Handle turning off a light."""
-        params = dict(call.data["params"])
+        params: LightTurnOnTD = cast(LightTurnOnTD, call.data["params"])
 
         if ATTR_TRANSITION not in params:
             profiles.apply_default(light.entity_id, True, params)
@@ -793,7 +825,7 @@ class Profiles:
 
     @callback
     def apply_default(
-        self, entity_id: str, state_on: bool | None, params: dict[str, Any]
+        self, entity_id: str, state_on: bool | None, params: LightTurnOnTD
     ) -> None:
         """Return the default profile for the given light."""
         for _entity_id in (entity_id, "group.all_lights"):
@@ -801,11 +833,11 @@ class Profiles:
             if name in self.data:
                 if not state_on or not params:
                     self.apply_profile(name, params)
-                elif self.data[name].transition is not None:
-                    params.setdefault(ATTR_TRANSITION, self.data[name].transition)
+                elif (transition := self.data[name].transition) is not None:
+                    params.setdefault(ATTR_TRANSITION, transition)
 
     @callback
-    def apply_profile(self, name: str, params: dict[str, Any]) -> None:
+    def apply_profile(self, name: str, params: LightTurnOnTD) -> None:
         """Apply a profile."""
         if (profile := self.data.get(name)) is None:
             return
@@ -1345,3 +1377,19 @@ class LightEntity(ToggleEntity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
             return True
         # philips_js has known issues, we don't need users to open issues
         return self.platform.platform_name not in {"philips_js"}
+
+    def turn_on(self, **kwargs: Unpack[LightTurnOnTD]) -> None:
+        """Turn the entity on."""
+        raise NotImplementedError
+
+    async def async_turn_on(self, **kwargs: Unpack[LightTurnOnTD]) -> None:
+        """Turn the entity on."""
+        await self.hass.async_add_executor_job(partial(self.turn_on, **kwargs))
+
+    def turn_off(self, **kwargs: Unpack[LightTurnOffTD]) -> None:
+        """Turn the entity off."""
+        raise NotImplementedError
+
+    async def async_turn_off(self, **kwargs: Unpack[LightTurnOffTD]) -> None:
+        """Turn the entity off."""
+        await self.hass.async_add_executor_job(partial(self.turn_off, **kwargs))

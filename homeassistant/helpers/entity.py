@@ -16,7 +16,16 @@ import sys
 import threading
 import time
 from types import FunctionType
-from typing import TYPE_CHECKING, Any, Final, Literal, NotRequired, TypedDict, final
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Final,
+    Literal,
+    NotRequired,
+    TypedDict,
+    Unpack,
+    final,
+)
 
 from propcache import cached_property
 import voluptuous as vol
@@ -1649,6 +1658,14 @@ class Entity(
         )
 
 
+class TurnOnTD(TypedDict, total=False):
+    """Turn on data."""
+
+
+class TurnOffTD(TypedDict, total=False):
+    """Turn off data."""
+
+
 class ToggleEntityDescription(EntityDescription, frozen_or_thawed=True):
     """A class that describes toggle entities."""
 
@@ -1678,19 +1695,19 @@ class ToggleEntity(
         """Return True if entity is on."""
         return self._attr_is_on
 
-    def turn_on(self, **kwargs: Any) -> None:
+    def turn_on(self, **kwargs: Unpack[TurnOnTD]) -> None:
         """Turn the entity on."""
         raise NotImplementedError
 
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: Unpack[TurnOnTD]) -> None:
         """Turn the entity on."""
         await self.hass.async_add_executor_job(ft.partial(self.turn_on, **kwargs))
 
-    def turn_off(self, **kwargs: Any) -> None:
+    def turn_off(self, **kwargs: Unpack[TurnOffTD]) -> None:
         """Turn the entity off."""
         raise NotImplementedError
 
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: Unpack[TurnOffTD]) -> None:
         """Turn the entity off."""
         await self.hass.async_add_executor_job(ft.partial(self.turn_off, **kwargs))
 

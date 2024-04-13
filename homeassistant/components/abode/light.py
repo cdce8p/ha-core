@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from math import ceil
-from typing import Any
+from typing import Any, Unpack
 
 from jaraco.abode.devices.light import Light
 
@@ -13,6 +13,7 @@ from homeassistant.components.light import (
     ATTR_HS_COLOR,
     ColorMode,
     LightEntity,
+    LightTurnOnTD,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -45,7 +46,7 @@ class AbodeLight(AbodeDevice, LightEntity):
     _device: Light
     _attr_name = None
 
-    def turn_on(self, **kwargs: Any) -> None:
+    def turn_on(self, **kwargs: Unpack[LightTurnOnTD]) -> None:
         """Turn on the light."""
         if ATTR_COLOR_TEMP in kwargs and self._device.is_color_capable:
             self._device.set_color_temp(
