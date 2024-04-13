@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import timedelta
 from functools import partial
 import logging
-from typing import Any, TypedDict, cast, final
+from typing import Any, TypedDict, Unpack, cast, final
 
 from propcache import cached_property
 import voluptuous as vol
@@ -208,6 +208,16 @@ class SirenEntity(ToggleEntity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
             self._report_deprecated_supported_features_values(new_features)
             return new_features
         return features
+
+    def turn_on(self, **kwargs: Unpack[SirenTurnOnServiceParameters]) -> None:
+        """Turn the entity on."""
+        raise NotImplementedError
+
+    async def async_turn_on(
+        self, **kwargs: Unpack[SirenTurnOnServiceParameters]
+    ) -> None:
+        """Turn the entity on."""
+        await self.hass.async_add_executor_job(partial(self.turn_on, **kwargs))
 
 
 # As we import deprecated constants from the const module, we need to add these two functions

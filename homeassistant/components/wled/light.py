@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import Any, cast
+from typing import Any, Unpack, cast
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
@@ -15,6 +15,8 @@ from homeassistant.components.light import (
     ColorMode,
     LightEntity,
     LightEntityFeature,
+    LightTurnOffTD,
+    LightTurnOnTD,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -86,7 +88,7 @@ class WLEDMainLight(WLEDEntity, LightEntity):
         return self.coordinator.has_main_light and super().available
 
     @wled_exception_handler
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: Unpack[LightTurnOffTD]) -> None:
         """Turn off the light."""
         transition = None
         if ATTR_TRANSITION in kwargs:
@@ -96,12 +98,12 @@ class WLEDMainLight(WLEDEntity, LightEntity):
         await self.coordinator.wled.master(on=False, transition=transition)
 
     @wled_exception_handler
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: Unpack[LightTurnOnTD]) -> None:
         """Turn on the light."""
         transition = None
         if ATTR_TRANSITION in kwargs:
             # WLED uses 100ms per unit, so 10 = 1 second.
-            transition = round(kwargs[ATTR_TRANSITION] * 10)
+            transition = round(kwargs[ATTR_TRANSITION] * 10)  # Never called?
 
         await self.coordinator.wled.master(
             on=True, brightness=kwargs.get(ATTR_BRIGHTNESS), transition=transition
@@ -217,7 +219,7 @@ class WLEDSegmentLight(WLEDEntity, LightEntity):
         return bool(state.segments[self._segment].on)
 
     @wled_exception_handler
-    async def async_turn_off(self, **kwargs: Any) -> None:
+    async def async_turn_off(self, **kwargs: Unpack[LightTurnOffTD]) -> None:
         """Turn off the light."""
         transition = None
         if ATTR_TRANSITION in kwargs:
@@ -234,7 +236,7 @@ class WLEDSegmentLight(WLEDEntity, LightEntity):
         )
 
     @wled_exception_handler
-    async def async_turn_on(self, **kwargs: Any) -> None:
+    async def async_turn_on(self, **kwargs: Unpack[LightTurnOnTD]) -> None:
         """Turn on the light."""
         data: dict[str, Any] = {
             ATTR_ON: True,
