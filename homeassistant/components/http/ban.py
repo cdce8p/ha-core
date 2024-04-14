@@ -117,6 +117,7 @@ async def process_wrong_login(request: Request) -> None:
     remote_addr = ip_address(request.remote)
     remote_host = request.remote
     with suppress(herror):
+        assert request.remote
         remote_host, _, _ = await hass.async_add_executor_job(
             gethostbyaddr, request.remote
         )

@@ -520,7 +520,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:  # noqa:
             hass, hw_integration, context={"source": SOURCE_SYSTEM}, data={}
         )
 
-    async_setup_hardware_integration_job = HassJob(
+    async_setup_hardware_integration_job = HassJob[datetime, None](
         _async_setup_hardware_integration, cancel_on_shutdown=True
     )
 

@@ -327,7 +327,7 @@ class HassJobType(enum.Enum):
     Executor = 3
 
 
-class HassJob[**_P, _R_co]:
+class HassJob[*_Ts, _R_co]:
     """Represent a job to be run later.
 
     We check the callable type in advance
@@ -339,7 +339,7 @@ class HassJob[**_P, _R_co]:
 
     def __init__(
         self,
-        target: Callable[_P, _R_co],
+        target: Callable[[*_Ts], _R_co],
         name: str | None = None,
         *,
         cancel_on_shutdown: bool | None = None,
@@ -374,7 +374,7 @@ class HassJob[**_P, _R_co]:
 class HassJobWithArgs:
     """Container for a HassJob and arguments."""
 
-    job: HassJob[..., Coroutine[Any, Any, Any] | Any]
+    job: HassJob[*tuple[Any, ...], Coroutine[Any, Any, Any] | Any]
     args: Iterable[Any]
 
 
@@ -665,29 +665,29 @@ class HomeAssistant:
 
     @overload
     @callback
-    def async_add_hass_job[_R](
+    def async_add_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R]],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R]],
+        *args: *_Ts,
         eager_start: bool = False,
         background: bool = False,
     ) -> asyncio.Future[_R] | None: ...
 
     @overload
     @callback
-    def async_add_hass_job[_R](
+    def async_add_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R] | _R],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R] | _R],
+        *args: *_Ts,
         eager_start: bool = False,
         background: bool = False,
     ) -> asyncio.Future[_R] | None: ...
 
     @callback
-    def async_add_hass_job[_R](
+    def async_add_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R] | _R],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R] | _R],
+        *args: *_Ts,
         eager_start: bool = False,
         background: bool = False,
     ) -> asyncio.Future[_R] | None:
@@ -715,27 +715,27 @@ class HomeAssistant:
 
     @overload
     @callback
-    def _async_add_hass_job[_R](
+    def _async_add_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R]],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R]],
+        *args: *_Ts,
         background: bool = False,
     ) -> asyncio.Future[_R] | None: ...
 
     @overload
     @callback
-    def _async_add_hass_job[_R](
+    def _async_add_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R] | _R],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R] | _R],
+        *args: *_Ts,
         background: bool = False,
     ) -> asyncio.Future[_R] | None: ...
 
     @callback
-    def _async_add_hass_job[_R](
+    def _async_add_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R] | _R],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R] | _R],
+        *args: *_Ts,
         background: bool = False,
     ) -> asyncio.Future[_R] | None:
         """Add a HassJob from within the event loop.
@@ -754,7 +754,7 @@ class HomeAssistant:
         # https://github.com/home-assistant/core/pull/71960
         if hassjob.job_type is HassJobType.Coroutinefunction:
             if TYPE_CHECKING:
-                hassjob = cast(HassJob[..., Coroutine[Any, Any, _R]], hassjob)
+                hassjob = cast(HassJob[*_Ts, Coroutine[Any, Any, _R]], hassjob)
             task = create_eager_task(
                 hassjob.target(*args), name=hassjob.name, loop=self.loop
             )
@@ -762,12 +762,12 @@ class HomeAssistant:
                 return task
         elif hassjob.job_type is HassJobType.Callback:
             if TYPE_CHECKING:
-                hassjob = cast(HassJob[..., _R], hassjob)
+                hassjob = cast(HassJob[*_Ts, _R], hassjob)
             self.loop.call_soon(hassjob.target, *args)
             return None
         else:
             if TYPE_CHECKING:
-                hassjob = cast(HassJob[..., _R], hassjob)
+                hassjob = cast(HassJob[*_Ts, _R], hassjob)
             task = self.loop.run_in_executor(None, hassjob.target, *args)
 
         task_bucket = self._background_tasks if background else self._tasks
@@ -898,27 +898,27 @@ class HomeAssistant:
 
     @overload
     @callback
-    def async_run_hass_job[_R](
+    def async_run_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R]],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R]],
+        *args: *_Ts,
         background: bool = False,
     ) -> asyncio.Future[_R] | None: ...
 
     @overload
     @callback
-    def async_run_hass_job[_R](
+    def async_run_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R] | _R],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R] | _R],
+        *args: *_Ts,
         background: bool = False,
     ) -> asyncio.Future[_R] | None: ...
 
     @callback
-    def async_run_hass_job[_R](
+    def async_run_hass_job[*_Ts, _R](
         self,
-        hassjob: HassJob[..., Coroutine[Any, Any, _R] | _R],
-        *args: Any,
+        hassjob: HassJob[*_Ts, Coroutine[Any, Any, _R] | _R],
+        *args: *_Ts,
         background: bool = False,
     ) -> asyncio.Future[_R] | None:
         """Run a HassJob from within the event loop.
@@ -936,7 +936,7 @@ class HomeAssistant:
         # https://github.com/home-assistant/core/pull/71960
         if hassjob.job_type is HassJobType.Callback:
             if TYPE_CHECKING:
-                hassjob = cast(HassJob[..., _R], hassjob)
+                hassjob = cast(HassJob[*_Ts, _R], hassjob)
             hassjob.target(*args)
             return None
 
@@ -1044,19 +1044,19 @@ class HomeAssistant:
 
     @overload
     @callback
-    def async_add_shutdown_job(
-        self, hassjob: HassJob[..., Coroutine[Any, Any, Any]], *args: Any
+    def async_add_shutdown_job[*_Ts](
+        self, hassjob: HassJob[*_Ts, Coroutine[Any, Any, Any]], *args: *_Ts
     ) -> CALLBACK_TYPE: ...
 
     @overload
     @callback
-    def async_add_shutdown_job(
-        self, hassjob: HassJob[..., Coroutine[Any, Any, Any] | Any], *args: Any
+    def async_add_shutdown_job[*_Ts](
+        self, hassjob: HassJob[*_Ts, Coroutine[Any, Any, Any] | Any], *args: *_Ts
     ) -> CALLBACK_TYPE: ...
 
     @callback
-    def async_add_shutdown_job(
-        self, hassjob: HassJob[..., Coroutine[Any, Any, Any] | Any], *args: Any
+    def async_add_shutdown_job[*_Ts](
+        self, hassjob: HassJob[*_Ts, Coroutine[Any, Any, Any] | Any], *args: *_Ts
     ) -> CALLBACK_TYPE:
         """Add a HassJob which will be executed on shutdown.
 
@@ -1417,7 +1417,7 @@ def _event_repr(
 
 
 _FilterableJobType = tuple[
-    HassJob[[Event[_DataT]], Coroutine[Any, Any, None] | None],  # job
+    HassJob[Event[_DataT], Coroutine[Any, Any, None] | None],  # job
     Callable[[_DataT], bool] | None,  # event_filter
 ]
 
@@ -1425,7 +1425,7 @@ _FilterableJobType = tuple[
 @dataclass(slots=True)
 class _OneTimeListener(Generic[_DataT]):
     hass: HomeAssistant
-    listener_job: HassJob[[Event[_DataT]], Coroutine[Any, Any, None] | None]
+    listener_job: HassJob[Event[_DataT], Coroutine[Any, Any, None] | None]
     remove: CALLBACK_TYPE | None = None
 
     @callback
@@ -2831,15 +2831,16 @@ class ServiceRegistry:
         if job.job_type is HassJobType.Coroutinefunction:
             if TYPE_CHECKING:
                 target = cast(
-                    Callable[..., Coroutine[Any, Any, ServiceResponse]], target
+                    Callable[[ServiceCall], Coroutine[Any, Any, ServiceResponse]],
+                    target,
                 )
             return await target(service_call)
         if job.job_type is HassJobType.Callback:
             if TYPE_CHECKING:
-                target = cast(Callable[..., ServiceResponse], target)
+                target = cast(Callable[[ServiceCall], ServiceResponse], target)
             return target(service_call)
         if TYPE_CHECKING:
-            target = cast(Callable[..., ServiceResponse], target)
+            target = cast(Callable[[ServiceCall], ServiceResponse], target)
         return await self._hass.async_add_executor_job(target, service_call)
 
 

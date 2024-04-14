@@ -690,7 +690,7 @@ class _ScriptRun:
 
         @callback
         def async_script_wait(
-            entity_id: str, from_s: State | None, to_s: State | None
+            entity_id: str | None, from_s: State | None, to_s: State | None
         ) -> None:
             """Handle script after template condition is true."""
             self._async_set_remaining_time_var(timeout_handle)

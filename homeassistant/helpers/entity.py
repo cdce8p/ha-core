@@ -1368,7 +1368,7 @@ class Entity(
         self.async_write_ha_state()
 
     @final
-    async def async_remove(self, *, force_remove: bool = False) -> None:
+    async def async_remove(self, force_remove: bool = False) -> None:
         """Remove entity from Home Assistant.
 
         If the entity has a non disabled entry in the entity registry,

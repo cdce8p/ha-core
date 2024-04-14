@@ -11,7 +11,7 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant.const import CONF_ENTITY_ID, CONF_EVENT, CONF_OFFSET, CONF_PLATFORM
-from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant, callback
+from homeassistant.core import CALLBACK_TYPE, Context, HassJob, HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity_component import EntityComponent
@@ -169,7 +169,7 @@ class CalendarEventListener:
     def __init__(
         self,
         hass: HomeAssistant,
-        job: HassJob[..., Coroutine[Any, Any, None]],
+        job: HassJob[*tuple[dict[str, Any], Context | None], Coroutine[Any, Any, None]],
         trigger_data: dict[str, Any],
         fetcher: QueuedEventFetcher,
     ) -> None:
