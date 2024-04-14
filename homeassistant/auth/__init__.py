@@ -543,7 +543,7 @@ class AuthManager:
         self._store.async_set_expiry(refresh_token, enable_expiry=enable_expiry)
 
     @callback
-    def _async_remove_expired_refresh_tokens(self, _: datetime | None = None) -> None:
+    def _async_remove_expired_refresh_tokens(self, _: datetime) -> None:
         """Remove expired refresh tokens."""
         now = time.time()
         for token in self._store.async_get_refresh_tokens():

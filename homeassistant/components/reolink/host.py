@@ -2,7 +2,7 @@
 
 import asyncio
 from collections import defaultdict
-from collections.abc import Mapping
+from collections.abc import Coroutine, Mapping
 import logging
 from time import time as time_now
 from typing import Any, Literal
@@ -135,7 +135,9 @@ class ReolinkHost:
         self._cancel_tcp_push_check: CALLBACK_TYPE | None = None
         self._cancel_onvif_check: CALLBACK_TYPE | None = None
         self._cancel_long_poll_check: CALLBACK_TYPE | None = None
-        self._poll_job = HassJob(self._async_poll_all_motion, cancel_on_shutdown=True)
+        self._poll_job = HassJob[Any, Coroutine[Any, Any, None]](
+            self._async_poll_all_motion, cancel_on_shutdown=True
+        )
         self._fast_poll_error: bool = False
         self._long_poll_task: asyncio.Task | None = None
         self._lost_subscription_start: bool = False

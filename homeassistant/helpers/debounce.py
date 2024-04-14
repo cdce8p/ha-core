@@ -38,7 +38,7 @@ class Debouncer[_R_co]:
         self._execute_lock = asyncio.Lock()
         self._execute_lock_owner: asyncio.Task[Any] | None = None
         self._background = background
-        self._job: HassJob[[], _R_co] | None = (
+        self._job: HassJob[*tuple[()], _R_co] | None = (
             None
             if function is None
             else HassJob(
