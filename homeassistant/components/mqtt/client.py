@@ -268,7 +268,7 @@ class Subscription:
     topic: str
     is_simple_match: bool
     complex_matcher: Callable[[str], bool] | None
-    job: HassJob[[ReceiveMessage], Coroutine[Any, Any, None] | None]
+    job: HassJob[ReceiveMessage, Coroutine[Any, Any, None] | None]
     qos: int = 0
     encoding: str | None = "utf-8"
 

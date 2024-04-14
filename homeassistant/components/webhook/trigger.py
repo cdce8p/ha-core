@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Coroutine
 from dataclasses import dataclass
 import logging
 from typing import Any
@@ -10,7 +11,7 @@ from aiohttp import hdrs, web
 import voluptuous as vol
 
 from homeassistant.const import CONF_PLATFORM, CONF_WEBHOOK_ID
-from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant, callback
+from homeassistant.core import CALLBACK_TYPE, Context, HassJob, HomeAssistant, callback
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.trigger import TriggerActionType, TriggerInfo
 from homeassistant.helpers.typing import ConfigType
@@ -51,7 +52,7 @@ class TriggerInstance:
     """Attached trigger settings."""
 
     trigger_info: TriggerInfo
-    job: HassJob
+    job: HassJob[*tuple[dict[str, Any], Context | None], Coroutine[Any, Any, None]]
 
 
 async def _handle_webhook(

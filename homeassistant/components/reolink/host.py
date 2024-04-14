@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from collections import defaultdict
-from collections.abc import Mapping
+from collections.abc import Coroutine, Mapping
 import logging
 from time import time
 from typing import Any, Literal
@@ -107,7 +107,9 @@ class ReolinkHost:
         self._cancel_poll: CALLBACK_TYPE | None = None
         self._cancel_onvif_check: CALLBACK_TYPE | None = None
         self._cancel_long_poll_check: CALLBACK_TYPE | None = None
-        self._poll_job = HassJob(self._async_poll_all_motion, cancel_on_shutdown=True)
+        self._poll_job = HassJob[Any, Coroutine[Any, Any, None]](
+            self._async_poll_all_motion, cancel_on_shutdown=True
+        )
         self._long_poll_task: asyncio.Task | None = None
         self._lost_subscription: bool = False
 
@@ -640,7 +642,7 @@ class ReolinkHost:
             # Cooldown to prevent CPU over usage on camera freezes
             await asyncio.sleep(LONG_POLL_COOLDOWN)
 
-    async def _async_poll_all_motion(self, *_) -> None:
+    async def _async_poll_all_motion(self, *_: Any) -> None:
         """Poll motion and AI states until the first ONVIF push is received."""
         if self._webhook_reachable or self._long_poll_received:
             # ONVIF push or long polling is working, stop fast polling

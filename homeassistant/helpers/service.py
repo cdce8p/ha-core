@@ -1044,7 +1044,8 @@ async def entity_service_call(
 async def _handle_entity_call(
     hass: HomeAssistant,
     entity: Entity,
-    func: str | HassJob,
+    func: str
+    | HassJob[*tuple[Entity, ServiceCall], Coroutine[Any, Any, ServiceResponse]],
     data: dict | ServiceCall,
     context: Context,
 ) -> ServiceResponse:
@@ -1059,6 +1060,7 @@ async def _handle_entity_call(
         )
         task = hass.async_run_hass_job(job)
     else:
+        assert isinstance(data, ServiceCall)
         task = hass.async_run_hass_job(func, entity, data)
 
     # Guard because callback functions do not return a task when passed to
@@ -1083,7 +1085,7 @@ async def _handle_entity_call(
 
 async def _async_admin_handler(
     hass: HomeAssistant,
-    service_job: HassJob[[ServiceCall], Awaitable[None] | None],
+    service_job: HassJob[ServiceCall, Awaitable[None] | None],
     call: ServiceCall,
 ) -> None:
     """Run an admin service."""
@@ -1109,14 +1111,11 @@ def async_register_admin_service(
     schema: VolSchemaType = vol.Schema({}, extra=vol.PREVENT_EXTRA),
 ) -> None:
     """Register a service that requires admin access."""
+    job = HassJob(service_func, f"admin service {domain}.{service}")
     hass.services.async_register(
         domain,
         service,
-        partial(
-            _async_admin_handler,
-            hass,
-            HassJob(service_func, f"admin service {domain}.{service}"),
-        ),
+        partial(_async_admin_handler, hass, job),
         schema,
     )
 
@@ -1276,7 +1275,7 @@ def async_register_entity_service(
             error_if_core=False,
         )
 
-    service_func: str | HassJob[..., Any]
+    service_func: str | HassJob[*tuple[Any, ...], Any]
     service_func = func if isinstance(func, str) else HassJob(func)
 
     hass.services.async_register(

@@ -244,7 +244,7 @@ class PullPointManager:
         self._pullpoint_manager: ONVIFPullPointManager | None = None
 
         self._cancel_pull_messages: CALLBACK_TYPE | None = None
-        self._pull_messages_job = HassJob(
+        self._pull_messages_job = HassJob[dt.datetime, None](
             self._async_background_pull_messages_or_reschedule,
             f"{self._name}: pull messages",
         )
