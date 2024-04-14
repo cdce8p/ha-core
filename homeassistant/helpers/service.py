@@ -875,7 +875,8 @@ async def async_handle_entity_calls(
 async def _handle_single_entity_call(
     hass: HomeAssistant,
     entity: Entity,
-    func: str | HassJob,
+    func: str
+    | HassJob[*tuple[Entity, ServiceCall], Coroutine[Any, Any, ServiceResponse]],
     data: dict | ServiceCall,
 ) -> ServiceResponse:
     """Handle calling service method."""
@@ -887,6 +888,7 @@ async def _handle_single_entity_call(
         )
         task = hass.async_run_hass_job(job)
     else:
+        assert isinstance(data, ServiceCall)
         task = hass.async_run_hass_job(func, entity, data)
 
     # Guard because callback functions do not return a task when passed to
@@ -992,7 +994,7 @@ async def batched_entity_service_call(
 async def _async_admin_handler(
     hass: HomeAssistant,
     service_job: HassJob[
-        [ServiceCall],
+        ServiceCall,
         Coroutine[Any, Any, ServiceResponse | EntityServiceResponse]
         | ServiceResponse
         | EntityServiceResponse
@@ -1032,14 +1034,11 @@ def async_register_admin_service(
     description_placeholders: Mapping[str, str] | None = None,
 ) -> None:
     """Register a service that requires admin access."""
+    job = HassJob(service_func, f"admin service {domain}.{service}")
     hass.services.async_register(
         domain,
         service,
-        partial(
-            _async_admin_handler,
-            hass,
-            HassJob(service_func, f"admin service {domain}.{service}"),
-        ),
+        partial(_async_admin_handler, hass, job),
         schema,
         supports_response,
         description_placeholders=description_placeholders,
@@ -1208,7 +1207,7 @@ def async_register_entity_service(
     """
     schema = _validate_entity_service_schema(schema, f"{domain}.{name}")
 
-    service_func: str | HassJob[..., Any]
+    service_func: str | HassJob[*tuple[Any, ...], Any]
     service_func = func if isinstance(func, str) else HassJob(func)
 
     hass.services.async_register(
@@ -1307,7 +1306,7 @@ def async_register_platform_entity_service(
     """Help registering a platform entity service."""
     schema = _validate_entity_service_schema(schema, f"{service_domain}.{service_name}")
 
-    service_func: str | HassJob[..., Any]
+    service_func: str | HassJob[*tuple[Any, ...], Any]
     service_func = func if isinstance(func, str) else HassJob(func)
 
     hass.services.async_register(
