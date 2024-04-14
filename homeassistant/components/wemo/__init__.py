@@ -260,7 +260,7 @@ class WemoDiscovery:
         self._stop: CALLBACK_TYPE | None = None
         self._scan_delay = 0
         self._static_config = static_config
-        self._discover_job: HassJob[[datetime], None] | None = None
+        self._discover_job: HassJob[datetime, None] | None = None
         self._entry = entry
 
     async def async_discover_and_schedule(

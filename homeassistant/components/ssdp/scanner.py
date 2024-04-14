@@ -59,7 +59,7 @@ _LOGGER = logging.getLogger(__name__)
 
 SsdpChange = Enum("SsdpChange", "ALIVE BYEBYE UPDATE")
 type SsdpHassJobCallback = HassJob[
-    [_SsdpServiceInfo, SsdpChange], Coroutine[Any, Any, None] | None
+    _SsdpServiceInfo, SsdpChange, Coroutine[Any, Any, None] | None
 ]
 
 SSDP_SOURCE_SSDP_CHANGE_MAPPING: Mapping[SsdpSource, SsdpChange] = {

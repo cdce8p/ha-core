@@ -1514,7 +1514,9 @@ class PluggableActionsEntry:
     actions: dict[
         object,
         tuple[
-            HassJob[[dict[str, Any], Context | None], Coroutine[Any, Any, None] | Any],
+            HassJob[
+                *tuple[dict[str, Any], Context | None], Coroutine[Any, Any, None] | Any
+            ],
             dict[str, Any],
         ],
     ] = field(default_factory=dict)
