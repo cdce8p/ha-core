@@ -154,7 +154,16 @@ class TestFolder:
 def collect_tests(path: Path) -> TestFolder:
     """Collect all tests."""
     result = subprocess.run(
-        ["pytest", "--collect-only", "-qq", "-p", "no:warnings", path],
+        [
+            "pytest",
+            "--invalidation-mode",
+            "checked-hash",
+            "--collect-only",
+            "-qq",
+            "-p",
+            "no:warnings",
+            path,
+        ],
         check=False,
         capture_output=True,
         text=True,

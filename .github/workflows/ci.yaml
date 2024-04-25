@@ -40,6 +40,7 @@ env:
   CACHE_VERSION: 10
   UV_CACHE_VERSION: 1
   MYPY_CACHE_VERSION: 9
+  PYTEST_PYC_CACHE_VERSION: 1
   HA_SHORT_VERSION: "2024.11"
   DEFAULT_PYTHON: "3.12"
   ALL_PYTHON_VERSIONS: "['3.12']"
@@ -61,9 +62,12 @@ env:
   POSTGRESQL_VERSIONS: "['postgres:12.14','postgres:15.2']"
   PRE_COMMIT_CACHE: ~/.cache/pre-commit
   UV_CACHE_DIR: /tmp/uv-cache
+  PYTEST_PYC_CACHE: /tmp/pytest-pyc-cache
+  PYCACHE_PREFIX: /tmp/__pycache__
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
+  PYTEST_SHA: 2f12594279b1e33e6855ee9863d77312fbe76bd4
 
 # concurrency:
 #   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -79,6 +83,7 @@ jobs:
       integrations_glob: ${{ steps.info.outputs.integrations_glob }}
       integrations: ${{ steps.integrations.outputs.changes }}
       pre-commit_cache_key: ${{ steps.generate_pre-commit_cache_key.outputs.key }}
+      pytest_pyc_cache_key: ${{ steps.generate_pytest_pyc_cache_key.outputs.key }}
       python_cache_key: ${{ steps.generate_python_cache_key.outputs.key }}
       requirements: ${{ steps.core.outputs.requirements }}
       mariadb_groups: ${{ steps.info.outputs.mariadb_groups }}
@@ -105,6 +110,11 @@ jobs:
             hashFiles('requirements_all.txt') }}-${{
             hashFiles('homeassistant/package_constraints.txt') }}-${{
             hashFiles('script/gen_requirements_all.py') }}" >> $GITHUB_OUTPUT
+      - name: Generate partial pytest pyc restore key
+        id: generate_pytest_pyc_cache_key
+        run: >-
+          echo "key=pytest-pyc-${{ env.PYTEST_PYC_CACHE_VERSION }}-${{
+            env.HA_SHORT_VERSION }}-$(date -u '+%Y-%m-%dT%H:%M:%s')" >> $GITHUB_OUTPUT
       - name: Generate partial pre-commit restore key
         id: generate_pre-commit_cache_key
         run: >-
@@ -845,7 +855,79 @@ jobs:
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
             needs.info.outputs.python_cache_key }}
+
+      - name: Remove old pytest version
+        run: |
+          . venv/bin/activate
+          pip uninstall -y pytest
+      - name: Restore custom pytest version in venv ${{ env.PYTEST_SHA }}
+        id: cache-venv-pytest
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: |
+            venv/lib/python*/site-packages/py.py
+            venv/lib/python*/site-packages/_pytest*
+            venv/lib/python*/site-packages/pytest*
+            venv/bin/py.test
+            venv/bin/pytest
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_pytest-${{
+              env.CACHE_VERSION }}-${{ env.PYTEST_SHA }}
+      - name: Install custom pytest version
+        if: steps.cache-venv-pytest.outputs.cache-hit != 'true'
+        run: |
+          . venv/bin/activate
+          pip install --disable-pip-version-check --no-deps git+https://github.com/cdce8p/pytest.git@${{ env.PYTEST_SHA }}
+      - name: Save pytest version in venv
+        if: steps.cache-venv-pytest.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4.0.2
+        with:
+          path: |
+            venv/lib/python*/site-packages/py.py
+            venv/lib/python*/site-packages/_pytest*
+            venv/lib/python*/site-packages/pytest*
+            venv/bin/py.test
+            venv/bin/pytest
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_pytest-${{
+              env.CACHE_VERSION }}-${{ env.PYTEST_SHA }}
+
+      - name: Restore pytest pyc cache
+        id: cache-pytest-pyc
+        uses: actions/cache@v4.0.2
+        with:
+          path: ${{ env.PYTEST_PYC_CACHE }}
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ needs.info.outputs.pytest_pyc_cache_key }}
+          restore-keys: |
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-pytest-pyc-${{
+              env.PYTEST_PYC_CACHE_VERSION }}-${{ env.HA_SHORT_VERSION }}
+      - name: Copy cache files to correct location
+        id: copy
+        run: |
+          cd /tmp
+          mkdir -p ${{ env.PYTEST_PYC_CACHE }}/${{ env.PYCACHE_PREFIX }}
+          cp -R ${{ env.PYTEST_PYC_CACHE }}/${{ env.PYCACHE_PREFIX }} ${{ env.PYCACHE_PREFIX }}
+          find ${{ env.PYTEST_PYC_CACHE }} -maxdepth 1 -type d -exec ls -l "{}" \;
+          find __pycache__ -maxdepth 1 -type d -exec ls -l "{}" \;
+          echo "-----"
+          find ${{ env.PYCACHE_PREFIX }} -type f | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f
+          sleep 2
+          time=$(date -u '+%Y-%m-%d %H:%M:%S')
+          echo "time=${time}" >> $GITHUB_OUTPUT
+          echo "-----"
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${time}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${time}"
+          echo "-----"
+          echo "${time}"
+          if [[ -d "/tmp/__pycache__/home/runner/work/ha-core/ha-core/tests/" ]]; then
+            ls -la /tmp/__pycache__/home/runner/work/ha-core/ha-core/tests/
+          fi
+
       - name: Run split_tests.py
+        env:
+          PYTHONPYCACHEPREFIX: ${{ env.PYCACHE_PREFIX }}
         run: |
           . venv/bin/activate
           python -m script.split_tests ${{ needs.info.outputs.test_group_count }} tests
@@ -855,6 +937,26 @@ jobs:
           name: pytest_buckets
           path: pytest_buckets.txt
           overwrite: true
+
+      - name: Find pytest pyc files
+        run: |
+          cd /tmp
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}" | tee files.txt
+          echo "-----"
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}"
+      - name: Copy pytest pyc files to cache dir
+        run: |
+          cd /tmp
+          rsync --files-from=files.txt / ${{ env.PYTEST_PYC_CACHE }}
+          find ${{ env.PYTEST_PYC_CACHE }} -maxdepth 1 -type d -exec ls -l "{}" \;
+          find __pycache__ -maxdepth 1 -type d -exec ls -l "{}" \;
+          echo "-----"
+          find ${{ env.PYTEST_PYC_CACHE }} -type f | wc
+          find ${{ env.PYTEST_PYC_CACHE }} -type f
+          echo "-----"
+          echo "Time: ${{ steps.copy.outputs.time }}"
+          find ${{ env.PYTEST_PYC_CACHE }} -type f -newermt "${{ steps.copy.outputs.time }}"
 
   pytest-full:
     runs-on: ubuntu-24.04
@@ -884,6 +986,7 @@ jobs:
       Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
     steps:
       - name: Install additional OS dependencies
+        # if: false
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
           sudo apt-get update
@@ -922,11 +1025,66 @@ jobs:
         run: |
           . venv/bin/activate
           python3 -m script.translations develop --all
+
+      - name: Remove old pytest version
+        run: |
+          . venv/bin/activate
+          pip uninstall -y pytest
+      - name: Restore custom pytest version in venv ${{ env.PYTEST_SHA }}
+        id: cache-venv-pytest
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: |
+            venv/lib/python*/site-packages/py.py
+            venv/lib/python*/site-packages/_pytest*
+            venv/lib/python*/site-packages/pytest*
+            venv/bin/py.test
+            venv/bin/pytest
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_pytest-${{
+              env.CACHE_VERSION }}-${{ env.PYTEST_SHA }}
+      - name: Install custom pytest version
+        if: steps.cache-venv-pytest.outputs.cache-hit != 'true'
+        run: |
+          . venv/bin/activate
+          pip install --disable-pip-version-check --no-deps git+https://github.com/cdce8p/pytest.git@${{ env.PYTEST_SHA }}
+      - name: Save pytest version in venv
+        if: steps.cache-venv-pytest.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4.0.2
+        with:
+          path: |
+            venv/lib/python*/site-packages/py.py
+            venv/lib/python*/site-packages/_pytest*
+            venv/lib/python*/site-packages/pytest*
+            venv/bin/py.test
+            venv/bin/pytest
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-venv_pytest-${{
+              env.CACHE_VERSION }}-${{ env.PYTEST_SHA }}
+
+      - name: Restore pytest pyc cache
+        id: cache-pytest-pyc
+        uses: actions/cache@v4.0.2
+        with:
+          path: ${{ env.PYTEST_PYC_CACHE }}
+          fail-on-cache-miss: true
+          key: >-
+            ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ needs.info.outputs.pytest_pyc_cache_key }}
+      - name: Copy cache files to correct location
+        id: copy
+        run: |
+          cd /tmp
+          mkdir -p ${{ env.PYTEST_PYC_CACHE }}/${{ env.PYCACHE_PREFIX }}
+          cp -R ${{ env.PYTEST_PYC_CACHE }}/${{ env.PYCACHE_PREFIX }} ${{ env.PYCACHE_PREFIX }}
+          sleep 2
+          time=$(date -u '+%Y-%m-%d %H:%M:%S')
+          echo "time=${time}" >> $GITHUB_OUTPUT
+
       - name: Run pytest
         timeout-minutes: 60
         id: pytest-full
         env:
-          PYTHONDONTWRITEBYTECODE: 1
+          PYTHONPYCACHEPREFIX: ${{ env.PYCACHE_PREFIX }}
         run: |
           . venv/bin/activate
           python --version
@@ -968,6 +1126,11 @@ jobs:
       - name: Check dirty
         run: |
           ./script/check_dirty
+      - name: Check no new pytest pyc files
+        run: |
+          echo "${{ steps.copy.outputs.time }}"
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}"
 
   pytest-mariadb:
     runs-on: ubuntu-24.04
