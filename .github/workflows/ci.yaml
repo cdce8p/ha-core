@@ -896,13 +896,14 @@ jobs:
         id: cache-pytest-pyc
         uses: actions/cache@v4.0.2
         with:
-          path: ${{ env.PYTEST_PYC_CACHE }}
+          path: ${{ env.PYCACHE_PREFIX }}
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ needs.info.outputs.pytest_pyc_cache_key }}
           restore-keys: |
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-pytest-pyc-${{
               env.PYTEST_PYC_CACHE_VERSION }}-${{ env.HA_SHORT_VERSION }}
       - name: Copy cache files to correct location
+        if: false
         id: copy
         run: |
           cd /tmp
@@ -925,6 +926,53 @@ jobs:
             ls -la /tmp/__pycache__/home/runner/work/ha-core/ha-core/tests/
           fi
 
+      - name: Compile python files to bytecode
+        id: compile-bytecode
+        env:
+          PYTHONPYCACHEPREFIX: ${{ env.PYCACHE_PREFIX }}
+          SOURCE_DATE_EPOCH: 1
+        run: |
+          timestart=$(date -u '+%Y-%m-%d %H:%M:%S')
+          find $(dirname ${{ steps.python.outputs.python-path }})/../lib/python* \
+            -type f \
+            -name '*.py' \
+            ! -path '*/data/*' \
+            ! -name 'bad*.py' \
+            | xargs python -m py_compile
+          find \
+            homeassistant pylint script tests \
+            -type f \
+            -name '*.py' \
+            ! -name 'test_*.py' \
+            ! -path 'script/scaffold/templates/*' \
+            | xargs python -m py_compile
+          find venv/lib/python*/site-packages \
+            -type f \
+            -name '*.py' \
+            ! -path '*/oauth_hook/hook.py' \
+            ! -path '*/test/mock_modbus_server.py' \
+            ! -path '*/site-packages/asyncio/*.py' \
+            ! -path '*/debugpy/_vendored/pydevd/tests_python/resources/_pydev_coverage_syntax_error.py' \
+            ! -path '*/debugpy/_vendored/pydevd/tests_python/resources/_debugger_case_scoped_stepping_target_async.py' \
+            ! -path '*/gcloud/datastore/_generated/datastore_grpc_pb2.py' \
+            ! -path '*/sleekxmppfs/plugins/xep_0009/remote.py' \
+            ! -path '*/tests/tests.py' \
+            ! -path '*/pydanfossair/socket.py' \
+            ! -path '*/plugin_test.py' \
+            ! -path '*/vol/main.py' \
+            ! -path '*/aenum/_py2.py' \
+            | xargs python -m py_compile
+          sleep 2
+          time=$(date -u '+%Y-%m-%d %H:%M:%S')
+          echo "${time}"
+          echo "time=${time}" >> $GITHUB_OUTPUT
+
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${time}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${time}"
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${timestart}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${timestart}"
+
       - name: Run split_tests.py
         env:
           PYTHONPYCACHEPREFIX: ${{ env.PYCACHE_PREFIX }}
@@ -945,7 +993,13 @@ jobs:
           echo "-----"
           find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}" | wc
           find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}"
+      - name: Find changed bytecode files
+        run: |
+          cd /tmp
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${{ steps.compile-bytecode.outputs.time }}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${{ steps.compile-bytecode.outputs.time }}"
       - name: Copy pytest pyc files to cache dir
+        if: false
         run: |
           cd /tmp
           rsync --files-from=files.txt / ${{ env.PYTEST_PYC_CACHE }}
@@ -1066,11 +1120,13 @@ jobs:
         id: cache-pytest-pyc
         uses: actions/cache@v4.0.2
         with:
-          path: ${{ env.PYTEST_PYC_CACHE }}
+          # path: ${{ env.PYTEST_PYC_CACHE }}
+          path: ${{ env.PYCACHE_PREFIX }}
           fail-on-cache-miss: true
           key: >-
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ needs.info.outputs.pytest_pyc_cache_key }}
       - name: Copy cache files to correct location
+        if: false
         id: copy
         run: |
           cd /tmp
@@ -1086,6 +1142,10 @@ jobs:
         env:
           PYTHONPYCACHEPREFIX: ${{ env.PYCACHE_PREFIX }}
         run: |
+          sleep 2
+          time=$(date -u '+%Y-%m-%d %H:%M:%S')
+          echo "time=${time}" >> $GITHUB_OUTPUT
+
           . venv/bin/activate
           python --version
           set -o pipefail
@@ -1126,11 +1186,11 @@ jobs:
       - name: Check dirty
         run: |
           ./script/check_dirty
-      - name: Check no new pytest pyc files
+      - name: Check no new pyc files
         run: |
-          echo "${{ steps.copy.outputs.time }}"
-          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}" | wc
-          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.*-pytest-*.pyc' -newermt "${{ steps.copy.outputs.time }}"
+          echo "${{ steps.pytest-full.outputs.time }}"
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${{ steps.pytest-full.outputs.time }}" | wc
+          find ${{ env.PYCACHE_PREFIX }} -type f -name '*.pyc' -newermt "${{ steps.pytest-full.outputs.time }}"
 
   pytest-mariadb:
     runs-on: ubuntu-24.04
