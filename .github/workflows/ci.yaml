@@ -40,6 +40,7 @@ env:
   CACHE_VERSION: 10
   UV_CACHE_VERSION: 1
   MYPY_CACHE_VERSION: 9
+  APT_CACHE_VERSION: 1
   HA_SHORT_VERSION: "2024.11"
   DEFAULT_PYTHON: "3.12"
   ALL_PYTHON_VERSIONS: "['3.12']"
@@ -61,6 +62,7 @@ env:
   POSTGRESQL_VERSIONS: "['postgres:12.14','postgres:15.2']"
   PRE_COMMIT_CACHE: ~/.cache/pre-commit
   UV_CACHE_DIR: /tmp/uv-cache
+  APT_CACHE_DIR: /tmp/apt_cache
   SQLALCHEMY_WARN_20: 1
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
@@ -80,6 +82,7 @@ jobs:
       integrations: ${{ steps.integrations.outputs.changes }}
       pre-commit_cache_key: ${{ steps.generate_pre-commit_cache_key.outputs.key }}
       python_cache_key: ${{ steps.generate_python_cache_key.outputs.key }}
+      apt_cache_key: ${{ steps.generate_apt_cache_key.outputs.key }}
       requirements: ${{ steps.core.outputs.requirements }}
       mariadb_groups: ${{ steps.info.outputs.mariadb_groups }}
       postgresql_groups: ${{ steps.info.outputs.postgresql_groups }}
@@ -110,6 +113,11 @@ jobs:
         run: >-
           echo "key=pre-commit-${{ env.CACHE_VERSION }}-${{
             hashFiles('.pre-commit-config.yaml') }}"  >> $GITHUB_OUTPUT
+      - name: Generate apt restore key
+        id: generate_apt_cache_key
+        run: >-
+          echo "key=${{ runner.os }}-apt_cache-${{ env.APT_CACHE_VERSION
+          }}-${{ env.HA_SHORT_VERSION }}" >> $GITHUB_OUTPUT
       - name: Filter for core changes
         uses: dorny/paths-filter@v3.0.2
         id: core
@@ -501,12 +509,22 @@ jobs:
             ${{ runner.os }}-${{ steps.python.outputs.python-version }}-uv-${{
             env.UV_CACHE_VERSION }}-${{ steps.generate-uv-key.outputs.version }}-${{
             env.HA_SHORT_VERSION }}-
+      - name: Restore apt cache
+        if: steps.cache-venv.outputs.cache-hit != 'true'
+        id: cache-apt
+        uses: actions/cache@v4.0.2
+        with:
+          path: ${{ env.APT_CACHE_DIR }}
+          key: ${{ needs.info.outputs.apt_cache_key }}
       - name: Install additional OS dependencies
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+          mkdir -p ${{ env.APT_CACHE_DIR }}/partial
           sudo apt-get update
-          sudo apt-get -y install \
+
+          # Increment APT_CACHE_VERSION if packages change!
+          sudo apt-get -o Dir::Cache::Archives=${{ env.APT_CACHE_DIR }} -y install \
             bluez \
             ffmpeg \
             libturbojpeg \
@@ -519,6 +537,7 @@ jobs:
             libswresample-dev \
             libswscale-dev \
             libudev-dev
+          sudo rm -r ${{ env.APT_CACHE_DIR }}/lock ${{ env.APT_CACHE_DIR }}/partial
       - name: Create Python virtual environment
         if: steps.cache-venv.outputs.cache-hit != 'true'
         run: |
@@ -817,6 +836,13 @@ jobs:
       - base
     name: Split tests for full run
     steps:
+      - name: Restore apt cache
+        id: cache-apt
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: ${{ env.APT_CACHE_DIR }}
+          fail-on-cache-miss: true
+          key: ${{ needs.info.outputs.apt_cache_key }}
       - name: Install additional OS dependencies
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
@@ -881,11 +907,19 @@ jobs:
     name: >-
       Run tests Python ${{ matrix.python-version }} (${{ matrix.group }})
     steps:
+      - name: Restore apt cache
+        id: cache-apt
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: ${{ env.APT_CACHE_DIR }}
+          fail-on-cache-miss: true
+          key: ${{ needs.info.outputs.apt_cache_key }}
       - name: Install additional OS dependencies
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+          mkdir -p ${{ env.APT_CACHE_DIR }}/partial
           sudo apt-get update
-          sudo apt-get -y install \
+          sudo apt-get -o Dir::Cache::Archives=${{ env.APT_CACHE_DIR }} -y install \
             bluez \
             ffmpeg \
             libturbojpeg \
@@ -1001,11 +1035,19 @@ jobs:
     name: >-
       Run ${{ matrix.mariadb-group }} tests Python ${{ matrix.python-version }}
     steps:
+      - name: Restore apt cache
+        id: cache-apt
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: ${{ env.APT_CACHE_DIR }}
+          fail-on-cache-miss: true
+          key: ${{ needs.info.outputs.apt_cache_key }}
       - name: Install additional OS dependencies
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+          mkdir -p ${{ env.APT_CACHE_DIR }}/partial
           sudo apt-get update
-          sudo apt-get -y install \
+          sudo apt-get -o Dir::Cache::Archives=${{ env.APT_CACHE_DIR }} -y install \
             bluez \
             ffmpeg \
             libturbojpeg \
@@ -1127,11 +1169,19 @@ jobs:
     name: >-
       Run ${{ matrix.postgresql-group }} tests Python ${{ matrix.python-version }}
     steps:
+      - name: Restore apt cache
+        id: cache-apt
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: ${{ env.APT_CACHE_DIR }}
+          fail-on-cache-miss: true
+          key: ${{ needs.info.outputs.apt_cache_key }}
       - name: Install additional OS dependencies
         run: |
           sudo rm /etc/apt/sources.list.d/microsoft-prod.list
+          mkdir -p ${{ env.APT_CACHE_DIR }}/partial
           sudo apt-get update
-          sudo apt-get -y install \
+          sudo apt-get -o Dir::Cache::Archives=${{ env.APT_CACHE_DIR }} -y install \
             bluez \
             ffmpeg \
             libturbojpeg \
