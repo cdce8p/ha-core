@@ -364,6 +364,7 @@ class HassLoginFlow(LoginFlow[HassAuthProvider]):
 
         if user_input is not None:
             try:
+                reveal_type(self._auth_provider)  # TODO should be HassAuthProvider
                 await self._auth_provider.async_validate_login(
                     user_input["username"], user_input["password"]
                 )
