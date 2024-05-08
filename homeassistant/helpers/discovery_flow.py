@@ -59,7 +59,7 @@ def async_create_flow(
         context = context | {"discovery_key": discovery_key}
 
     if not dispatcher or dispatcher.started:
-        if init_coro := _async_init_flow(hass, domain, context, data):
+        if init_coro := _async_init_flow(hass, domain, context, data):  # TODO pyright
             hass.async_create_background_task(
                 init_coro, f"discovery flow {domain} {context}", eager_start=True
             )
