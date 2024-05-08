@@ -108,7 +108,7 @@ class RefreshToken:
     access_token_expiration: timedelta = attr.ib()
     client_name: str | None = attr.ib(default=None)
     client_icon: str | None = attr.ib(default=None)
-    token_type: str = attr.ib(
+    token_type: str = attr.ib(  # https://github.com/microsoft/pyright/issues/6207
         default=TOKEN_TYPE_NORMAL,
         validator=attr.validators.in_(
             (TOKEN_TYPE_NORMAL, TOKEN_TYPE_SYSTEM, TOKEN_TYPE_LONG_LIVED_ACCESS_TOKEN)
