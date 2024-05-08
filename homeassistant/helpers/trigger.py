@@ -1674,7 +1674,7 @@ async def async_validate_trigger_config(
     return config
 
 
-def _trigger_action_wrapper(
+def _trigger_action_wrapper(  # TODO
     hass: HomeAssistant, action: Callable, conf: ConfigType
 ) -> Callable:
     """Wrap trigger action with extra vars if configured.
