@@ -111,6 +111,8 @@ from .trace import (
 from .trigger import async_initialize_triggers, async_validate_trigger_config
 from .typing import UNDEFINED, ConfigType, TemplateVarsType, UndefinedType
 
+# TODO
+
 SCRIPT_MODE_PARALLEL = "parallel"
 SCRIPT_MODE_QUEUED = "queued"
 SCRIPT_MODE_RESTART = "restart"
