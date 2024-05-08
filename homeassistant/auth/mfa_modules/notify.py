@@ -283,6 +283,7 @@ class NotifySetupFlow(SetupFlow[NotifyAuthModule]):
     ) -> None:
         """Initialize the setup flow."""
         super().__init__(auth_module, setup_schema, user_id)
+        reveal_type(self._auth_module)  # TODO  should be NotifyAuthModule
         self._available_notify_services = available_notify_services
         self._secret: str | None = None
         self._count: int | None = None
@@ -345,7 +346,7 @@ class NotifySetupFlow(SetupFlow[NotifyAuthModule]):
 
         assert self._notify_service
         try:
-            await self._auth_module.async_notify(
+            await self._auth_module.async_notify(  # TODO
                 code, self._notify_service, self._target
             )
         except ServiceNotFound:
