@@ -89,6 +89,7 @@ from .translation import async_translate_state
 from .typing import TemplateVarsType
 
 # mypy: allow-untyped-defs, no-check-untyped-defs
+# TODO
 
 _LOGGER = logging.getLogger(__name__)
 _SENTINEL = object()
