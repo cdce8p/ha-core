@@ -39,6 +39,8 @@ CHANGE_REMOVED = "removed"
 
 _EntityT = TypeVar("_EntityT", bound=Entity, default=Entity)
 
+# TODO
+
 
 @dataclass(slots=True)
 class CollectionChange:
