@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 # https://github.com/python/mypy/issues/5107
 if TYPE_CHECKING:
 
-    def lru_cache[_T: Callable[..., Any]](func: _T) -> _T:
+    def lru_cache[_T: Callable[..., Any]](func: _T) -> _T:  # TODO
         """Stub for lru_cache."""
 
 else:
