@@ -69,6 +69,9 @@ from .typing import ConfigType, TemplateVarsType, VolDictType, VolSchemaType
 if TYPE_CHECKING:
     from .entity import Entity
 
+# TODO
+
+
 CONF_SERVICE_ENTITY_ID = "entity_id"
 
 _LOGGER = logging.getLogger(__name__)
