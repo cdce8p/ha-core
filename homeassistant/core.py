@@ -39,8 +39,10 @@ from typing import (
     NotRequired,
     Self,
     TypedDict,
+    TypeGuard,
     cast,
     overload,
+    reveal_type,
 )
 from urllib.parse import urlparse
 
@@ -364,6 +366,12 @@ class HassJob[**_P, _R_co]:
     def cancel_on_shutdown(self) -> bool | None:
         """Return if the job should be cancelled on shutdown."""
         return self._cancel_on_shutdown
+
+    @staticmethod
+    def is_coroutinefunc[**_Q, _Rx](
+        job: HassJob[_Q, Coroutine[Any, Any, _Rx] | _Rx],
+    ) -> TypeGuard[HassJob[_Q, Coroutine[Any, Any, _Rx]]]:
+        return job.job_type is HassJobType.Coroutinefunction
 
     def __repr__(self) -> str:
         """Return the job."""
@@ -752,9 +760,12 @@ class HomeAssistant:
         # if TYPE_CHECKING to avoid the overhead of constructing
         # the type used for the cast. For history see:
         # https://github.com/home-assistant/core/pull/71960
-        if hassjob.job_type is HassJobType.Coroutinefunction:
+        reveal_type(hassjob)
+        # if hassjob.job_type is HassJobType.Coroutinefunction:
+        if HassJob.is_coroutinefunc(hassjob):
             if TYPE_CHECKING:
                 hassjob = cast(HassJob[..., Coroutine[Any, Any, _R]], hassjob)
+            reveal_type(hassjob)
             task = create_eager_task(
                 hassjob.target(*args), name=hassjob.name, loop=self.loop
             )
