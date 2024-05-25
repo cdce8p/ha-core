@@ -359,8 +359,8 @@ class Recorder(threading.Thread):
             self.queue_task(COMMIT_TASK)
 
     @callback
-    def async_add_executor_job[_T](
-        self, target: Callable[..., _T], *args: Any
+    def async_add_executor_job[*_Ts, _T](
+        self, target: Callable[[*_Ts], _T], *args: Any
     ) -> asyncio.Future[_T]:
         """Add an executor job from within the event loop."""
         return self.hass.loop.run_in_executor(self._db_executor, target, *args)
