@@ -1,3 +1,4 @@
 {
-  "useLibraryCodeForTypes": false
+  "useLibraryCodeForTypes": false,
+  "pythonVersion": "3.12"
 }
