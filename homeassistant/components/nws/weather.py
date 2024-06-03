@@ -178,6 +178,7 @@ class NWSWeather(CoordinatorWeatherEntity[TimestampDataUpdateCoordinator[None]])
             if (coordinator := self.forecast_coordinators[forecast_type]) is None:
                 continue
             if TYPE_CHECKING:
+                # TODO Literal inference
                 forecast_type = cast(Literal["twice_daily", "hourly"], forecast_type)
             self.unsub_forecast[forecast_type] = coordinator.async_add_listener(
                 partial(self._handle_forecast_update, forecast_type)
