@@ -44,9 +44,11 @@ GENERAL_SETTINGS: Final[dict[str, str]] = {
     "follow_imports": "normal",
     "native_parser": "true",
     "num_workers": "2",  # Use a conservative value here
-    # "enable_incomplete_feature": ", ".join(
-    #     []
-    # ),
+    "enable_incomplete_feature": ", ".join(  # noqa: FLY002, RUF100
+        [
+            "InlineTypedDict",
+        ]
+    ),
     # Enable some checks globally.
     "local_partial_types": "true",
     "strict_equality": "true",
