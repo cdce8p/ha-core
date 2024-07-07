@@ -31,22 +31,21 @@ STORAGE_VERSION_MAJOR = 1
 STORAGE_VERSION_MINOR = 2
 
 
-class _FloorStoreData(TypedDict):
-    """Data type for individual floor. Used in FloorRegistryStoreData."""
-
-    aliases: list[str]
-    floor_id: str
-    icon: str | None
-    level: int | None
-    name: str
-    created_at: str
-    modified_at: str
-
-
+# ruff: noqa: F821,UP037
 class FloorRegistryStoreData(TypedDict):
     """Store data type for FloorRegistry."""
 
-    floors: list[_FloorStoreData]
+    floors: list[
+        {
+            "aliases": list[str],
+            "floor_id": str,
+            "icon": str | None,
+            "level": int | None,
+            "name": str,
+            "created_at": str,
+            "modified_at": str,
+        }
+    ]
 
 
 class EventFloorRegistryUpdatedData(TypedDict):
