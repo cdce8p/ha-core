@@ -41,26 +41,25 @@ STORAGE_VERSION_MAJOR = 1
 STORAGE_VERSION_MINOR = 9
 
 
-class _AreaStoreData(TypedDict):
-    """Data type for individual area. Used in AreasRegistryStoreData."""
-
-    aliases: list[str]
-    floor_id: str | None
-    humidity_entity_id: str | None
-    icon: str | None
-    id: str
-    labels: list[str]
-    name: str
-    picture: str | None
-    temperature_entity_id: str | None
-    created_at: str
-    modified_at: str
-
-
+# ruff: noqa: F821,UP037
 class AreasRegistryStoreData(TypedDict):
     """Store data type for AreaRegistry."""
 
-    areas: list[_AreaStoreData]
+    areas: list[
+        {
+            "aliases": list[str],
+            "floor_id": str | None,
+            "humidity_entity_id": str | None,
+            "icon": str | None,
+            "id": str,
+            "labels": list[str],
+            "name": str,
+            "picture": str | None,
+            "temperature_entity_id": str | None,
+            "created_at": str,
+            "modified_at": str,
+        }
+    ]
 
 
 class EventAreaRegistryUpdatedData(TypedDict):
