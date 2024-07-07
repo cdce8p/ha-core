@@ -31,22 +31,21 @@ STORAGE_VERSION_MAJOR = 1
 STORAGE_VERSION_MINOR = 2
 
 
-class _LabelStoreData(TypedDict):
-    """Data type for individual label. Used in LabelRegistryStoreData."""
-
-    color: str | None
-    description: str | None
-    icon: str | None
-    label_id: str
-    name: str
-    created_at: str
-    modified_at: str
-
-
+# ruff: noqa: F821,UP037
 class LabelRegistryStoreData(TypedDict):
     """Store data type for LabelRegistry."""
 
-    labels: list[_LabelStoreData]
+    labels: list[
+        {
+            "color": str | None,
+            "description": str | None,
+            "icon": str | None,
+            "label_id": str,
+            "name": str,
+            "created_at": str,
+            "modified_at": str,
+        }
+    ]
 
 
 class EventLabelRegistryUpdatedData(TypedDict):

@@ -28,20 +28,22 @@ STORAGE_VERSION_MAJOR = 1
 STORAGE_VERSION_MINOR = 2
 
 
-class _CategoryStoreData(TypedDict):
-    """Data type for individual category. Used in CategoryRegistryStoreData."""
-
-    category_id: str
-    created_at: str
-    icon: str | None
-    modified_at: str
-    name: str
-
-
+# ruff: noqa: F821,UP037
 class CategoryRegistryStoreData(TypedDict):
     """Store data type for CategoryRegistry."""
 
-    categories: dict[str, list[_CategoryStoreData]]
+    categories: dict[
+        str,
+        list[
+            {
+                "category_id": str,
+                "created_at": str,
+                "icon": str | None,
+                "modified_at": str,
+                "name": str,
+            }
+        ],
+    ]
 
 
 class EventCategoryRegistryUpdatedData(TypedDict):
