@@ -623,6 +623,10 @@ jobs:
         && github.event.inputs.mypy-only != 'true'
         || github.event.inputs.audit-licenses-only == 'true')
       && needs.info.outputs.requirements == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@v4.2.2
@@ -644,16 +648,19 @@ jobs:
       - name: Run pip-licenses
         run: |
           . venv/bin/activate
-          pip-licenses --format=json --output-file=licenses.json
+          pip-licenses --format=json --output-file=licenses-${{ matrix.python-version }}.json
+          pip-licenses --from=all --format=json --output-file=licenses_all-${{ matrix.python-version }}.json
       - name: Upload licenses
         uses: actions/upload-artifact@v4.4.3
         with:
-          name: licenses
-          path: licenses.json
+          name: pytest-${{ github.run_number }}-${{ matrix.python-version }}-licenses
+          path: |
+            licenses-${{ matrix.python-version }}.json
+            licenses_all-${{ matrix.python-version }}.json
       - name: Process licenses
         run: |
           . venv/bin/activate
-          python -m script.licenses licenses.json
+          python -m script.licenses licenses-${{ matrix.python-version }}.json
 
   pylint:
     name: Check pylint
@@ -1459,6 +1466,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - info
+      - audit-licenses
       - installed-packages
       - pytest-full
     timeout-minutes: 5
