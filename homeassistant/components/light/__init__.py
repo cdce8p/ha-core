@@ -837,7 +837,7 @@ class Profiles:
                     params.setdefault(ATTR_TRANSITION, transition)
 
     @callback
-    def apply_profile(self, name: str, params: LightTurnOnTD) -> None:
+    def apply_profile(self, name: str, params: LightTurnOnTD | dict[str, Any]) -> None:
         """Apply a profile."""
         if (profile := self.data.get(name)) is None:
             return
