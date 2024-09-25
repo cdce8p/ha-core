@@ -1202,7 +1202,7 @@ nexia==2.0.8
 nextcloudmonitor==1.5.1
 
 # homeassistant.components.discord
-nextcord==2.6.0
+nextcord==2.6.0;python_version<'3.13'
 
 # homeassistant.components.nextdns
 nextdns==3.3.0
