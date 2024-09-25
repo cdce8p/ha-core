@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import logging
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_SCAN_INTERVAL, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 
 from .const import (
@@ -30,6 +32,10 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up the component."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Keenetic Ndms2 is not supported on Python 3.13. Please use Python 3.12."
+        )
     hass.data.setdefault(DOMAIN, {})
     async_add_defaults(hass, entry)
 

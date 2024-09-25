@@ -1418,7 +1418,7 @@ myuplink==0.6.0
 nad-receiver==0.3.0
 
 # homeassistant.components.keenetic_ndms2
-ndms2-client==0.1.2
+ndms2-client==0.1.2;python_version<'3.13'
 
 # homeassistant.components.ness_alarm
 nessclient==1.1.2

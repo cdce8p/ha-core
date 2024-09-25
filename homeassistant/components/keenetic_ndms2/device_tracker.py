@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import logging
-
-from ndms2_client import Device
+import sys
 
 from homeassistant.components.device_tracker import (
     DOMAIN as DEVICE_TRACKER_DOMAIN,
@@ -19,6 +18,9 @@ import homeassistant.util.dt as dt_util
 
 from .const import DOMAIN, ROUTER
 from .router import KeeneticRouter
+
+if sys.version_info < (3, 13):
+    from ndms2_client import Device
 
 _LOGGER = logging.getLogger(__name__)
 
