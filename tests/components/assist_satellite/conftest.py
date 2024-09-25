@@ -1,6 +1,7 @@
 """Test helpers for Assist Satellite."""
 
 import pathlib
+import sys
 from unittest.mock import Mock
 
 import pytest
@@ -26,6 +27,10 @@ from tests.common import (
     mock_platform,
     setup_test_component_platform,
 )
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
+
 
 TEST_DOMAIN = "test"
 
