@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
-import telnetlib  # pylint: disable=deprecated-module
+import sys
 
 import voluptuous as vol
 
@@ -15,8 +15,12 @@ from homeassistant.components.device_tracker import (
 )
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.typing import ConfigType
+
+if sys.version_info < (3, 13):
+    import telnetlib  # pylint: disable=deprecated-module
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,6 +45,10 @@ PLATFORM_SCHEMA = DEVICE_TRACKER_PLATFORM_SCHEMA.extend(
 
 def get_scanner(hass: HomeAssistant, config: ConfigType) -> ThomsonDeviceScanner | None:
     """Validate the configuration and return a THOMSON scanner."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "THOMSON is not supported on Python 3.13. Please use Python 3.12."
+        )
     scanner = ThomsonDeviceScanner(config[DEVICE_TRACKER_DOMAIN])
 
     return scanner if scanner.success_init else None

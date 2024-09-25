@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-import telnetlib  # pylint: disable=deprecated-module
+import sys
 from typing import Final
 
 import voluptuous as vol
@@ -15,11 +15,15 @@ from homeassistant.components.device_tracker import (
 )
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 
 from .const import LEASES_REGEX
 from .model import Device
+
+if sys.version_info < (3, 13):
+    import telnetlib  # pylint: disable=deprecated-module
 
 _LOGGER: Final = logging.getLogger(__name__)
 
@@ -36,6 +40,10 @@ def get_scanner(
     hass: HomeAssistant, config: ConfigType
 ) -> ActiontecDeviceScanner | None:
     """Validate the configuration and return an Actiontec scanner."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Actiontec is not supported on Python 3.13. Please use Python 3.12."
+        )
     scanner = ActiontecDeviceScanner(config[DEVICE_TRACKER_DOMAIN])
     return scanner if scanner.success_init else None
 

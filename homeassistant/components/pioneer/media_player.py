@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-import telnetlib  # pylint: disable=deprecated-module
+import sys
 from typing import Final
 
 import voluptuous as vol
@@ -16,9 +16,13 @@ from homeassistant.components.media_player import (
 )
 from homeassistant.const import CONF_HOST, CONF_NAME, CONF_PORT, CONF_TIMEOUT
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+
+if sys.version_info < (3, 13):
+    import telnetlib  # pylint: disable=deprecated-module
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -51,6 +55,10 @@ def setup_platform(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the Pioneer platform."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Pioneer is not supported on Python 3.13. Please use Python 3.12."
+        )
     pioneer = PioneerDevice(
         config[CONF_NAME],
         config[CONF_HOST],

@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 import socket
-from telnetlib import Telnet  # pylint: disable=deprecated-module
+import sys
 from typing import Any
 
 import voluptuous as vol
@@ -23,9 +23,13 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+
+if sys.version_info < (3, 13):
+    from telnetlib import Telnet  # pylint: disable=deprecated-module
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -56,6 +60,10 @@ def setup_platform(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the HDDTemp sensor."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "HDDTemp is not supported on Python 3.13. Please use Python 3.12."
+        )
     name = config.get(CONF_NAME)
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
