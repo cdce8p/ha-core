@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 
 from haffmpeg.camera import CameraMjpeg
-from onvif.exceptions import ONVIFError
 import voluptuous as vol
 from yarl import URL
 
@@ -52,6 +52,9 @@ from .const import (
 from .device import ONVIFDevice
 from .entity import ONVIFBaseEntity
 from .models import Profile
+
+if sys.version_info < (3, 13):
+    from onvif.exceptions import ONVIFError
 
 
 async def async_setup_entry(
