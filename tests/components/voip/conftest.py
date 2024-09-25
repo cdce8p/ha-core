@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import sys
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
-from voip_utils import CallInfo
 
 from homeassistant.components.voip import DOMAIN
 from homeassistant.components.voip.devices import VoIPDevice, VoIPDevices
@@ -17,6 +17,12 @@ from tests.common import MockConfigEntry
 from tests.components.tts.conftest import (
     mock_tts_cache_dir_fixture_autouse,  # noqa: F401
 )
+
+if sys.version_info < (3, 13):
+    from voip_utils import CallInfo
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
 
 
 @pytest.fixture(autouse=True)

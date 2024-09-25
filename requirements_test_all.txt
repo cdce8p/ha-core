@@ -2330,7 +2330,7 @@ venstarcolortouch==0.19
 vilfo-api-client==0.5.0
 
 # homeassistant.components.voip
-voip-utils==0.1.0
+voip-utils==0.1.0;python_version<'3.13'
 
 # homeassistant.components.volvooncall
 volvooncall==0.10.3
