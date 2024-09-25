@@ -2,17 +2,23 @@
 
 from collections.abc import Generator
 from datetime import datetime
+import sys
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from Tami4EdgeAPI.device import Device
-from Tami4EdgeAPI.device_metadata import DeviceMetadata
-from Tami4EdgeAPI.water_quality import UV, Filter, WaterQuality
 
 from homeassistant.components.tami4.const import CONF_REFRESH_TOKEN, DOMAIN
 from homeassistant.core import HomeAssistant
 
 from tests.common import MockConfigEntry
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI.device import Device
+    from Tami4EdgeAPI.device_metadata import DeviceMetadata
+    from Tami4EdgeAPI.water_quality import UV, Filter, WaterQuality
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
 
 
 async def create_config_entry(hass: HomeAssistant) -> MockConfigEntry:
