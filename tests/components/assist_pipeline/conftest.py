@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterable, Generator
 from pathlib import Path
+import sys
 from typing import Any
 from unittest.mock import AsyncMock
 
@@ -38,6 +39,9 @@ from tests.common import (
 )
 from tests.components.stt.common import MockSTTProvider, MockSTTProviderEntity
 from tests.components.tts.common import MockTTSProvider
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
 
 _TRANSCRIPT = "test transcript"
 
