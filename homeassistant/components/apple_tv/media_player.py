@@ -4,28 +4,8 @@ from __future__ import annotations
 
 from datetime import datetime
 import logging
+import sys
 from typing import Any
-
-from pyatv import exceptions
-from pyatv.const import (
-    DeviceState,
-    FeatureName,
-    FeatureState,
-    MediaType as AppleMediaType,
-    PowerState,
-    RepeatState,
-    ShuffleState,
-)
-from pyatv.helpers import is_streamable
-from pyatv.interface import (
-    AppleTV,
-    AudioListener,
-    OutputDevice,
-    Playing,
-    PowerListener,
-    PushListener,
-    PushUpdater,
-)
 
 from homeassistant.components import media_source
 from homeassistant.components.media_player import (
@@ -45,6 +25,28 @@ import homeassistant.util.dt as dt_util
 from . import AppleTvConfigEntry, AppleTVManager
 from .browse_media import build_app_list
 from .entity import AppleTVEntity
+
+if sys.version_info < (3, 13):
+    from pyatv import exceptions
+    from pyatv.const import (
+        DeviceState,
+        FeatureName,
+        FeatureState,
+        MediaType as AppleMediaType,
+        PowerState,
+        RepeatState,
+        ShuffleState,
+    )
+    from pyatv.helpers import is_streamable
+    from pyatv.interface import (
+        AppleTV,
+        AudioListener,
+        OutputDevice,
+        Playing,
+        PowerListener,
+        PushListener,
+        PushUpdater,
+    )
 
 _LOGGER = logging.getLogger(__name__)
 

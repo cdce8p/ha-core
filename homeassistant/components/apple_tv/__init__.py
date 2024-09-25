@@ -5,13 +5,8 @@ from __future__ import annotations
 import asyncio
 import logging
 from random import randrange
+import sys
 from typing import Any, cast
-
-from pyatv import connect, exceptions, scan
-from pyatv.conf import AppleTV
-from pyatv.const import DeviceModel, Protocol
-from pyatv.convert import model_str
-from pyatv.interface import AppleTV as AppleTVInterface, DeviceListener
 
 from homeassistant.components import zeroconf
 from homeassistant.config_entries import ConfigEntry
@@ -29,7 +24,11 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import Event, HomeAssistant, callback
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.dispatcher import async_dispatcher_send
@@ -42,6 +41,13 @@ from .const import (
     SIGNAL_CONNECTED,
     SIGNAL_DISCONNECTED,
 )
+
+if sys.version_info < (3, 13):
+    from pyatv import connect, exceptions, scan
+    from pyatv.conf import AppleTV
+    from pyatv.const import DeviceModel, Protocol
+    from pyatv.convert import model_str
+    from pyatv.interface import AppleTV as AppleTVInterface, DeviceListener
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -78,6 +84,10 @@ type AppleTvConfigEntry = ConfigEntry[AppleTVManager]
 
 async def async_setup_entry(hass: HomeAssistant, entry: AppleTvConfigEntry) -> bool:
     """Set up a config entry for Apple TV."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Apple TV is not supported on Python 3.13. Please use Python 3.12."
+        )
     manager = AppleTVManager(hass, entry)
 
     if manager.is_on:

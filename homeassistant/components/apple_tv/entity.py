@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pyatv.interface import AppleTV as AppleTVInterface
+import sys
 
 from homeassistant.core import callback
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -11,6 +11,9 @@ from homeassistant.helpers.entity import Entity
 
 from . import AppleTVManager
 from .const import DOMAIN, SIGNAL_CONNECTED, SIGNAL_DISCONNECTED
+
+if sys.version_info < (3, 13):
+    from pyatv.interface import AppleTV as AppleTVInterface
 
 
 class AppleTVEntity(Entity):
