@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Any
 
-from zeep.exceptions import Fault
+if sys.version_info < (3, 13):
+    from zeep.exceptions import Fault
 
 
 def extract_subcodes_as_strings(subcodes: Any) -> list[str]:

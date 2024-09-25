@@ -5,18 +5,10 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Callable
 import datetime as dt
+import sys
 
 from aiohttp.web import Request
 from httpx import RemoteProtocolError, RequestError, TransportError
-from onvif import ONVIFCamera
-from onvif.client import (
-    NotificationManager,
-    PullPointManager as ONVIFPullPointManager,
-    retry_connection_error,
-)
-from onvif.exceptions import ONVIFError
-from onvif.util import stringify_onvif_error
-from zeep.exceptions import Fault, ValidationError, XMLParseError
 
 from homeassistant.components import webhook
 from homeassistant.config_entries import ConfigEntry
@@ -29,15 +21,48 @@ from .const import DOMAIN, LOGGER
 from .models import Event, PullPointManagerState, WebHookManagerState
 from .parsers import PARSERS
 
+if sys.version_info < (3, 13):
+    from onvif import ONVIFCamera
+    from onvif.client import (
+        NotificationManager,
+        PullPointManager as ONVIFPullPointManager,
+        retry_connection_error,
+    )
+    from onvif.exceptions import ONVIFError
+    from onvif.util import stringify_onvif_error
+    from zeep.exceptions import Fault, ValidationError, XMLParseError
+else:
+
+    def retry_connection_error(*args):
+        """Stub function to prevent import errors."""
+
+        def decorator(func):
+            """Stub decorator."""
+
+            async def wrapper(*args, **kwargs):
+                """Stub wrapper."""
+
+            return wrapper
+
+        return decorator
+
+
 # Topics in this list are ignored because we do not want to create
 # entities for them.
 UNHANDLED_TOPICS: set[str] = {"tns1:MediaControl/VideoEncoderConfiguration"}
 
-SUBSCRIPTION_ERRORS = (Fault, TimeoutError, TransportError)
-CREATE_ERRORS = (ONVIFError, Fault, RequestError, XMLParseError, ValidationError)
-SET_SYNCHRONIZATION_POINT_ERRORS = (*SUBSCRIPTION_ERRORS, TypeError)
-UNSUBSCRIBE_ERRORS = (XMLParseError, *SUBSCRIPTION_ERRORS)
-RENEW_ERRORS = (ONVIFError, RequestError, XMLParseError, *SUBSCRIPTION_ERRORS)
+if sys.version_info < (3, 13):
+    SUBSCRIPTION_ERRORS = (Fault, TimeoutError, TransportError)
+    CREATE_ERRORS = (ONVIFError, Fault, RequestError, XMLParseError, ValidationError)
+    SET_SYNCHRONIZATION_POINT_ERRORS = (*SUBSCRIPTION_ERRORS, TypeError)
+    UNSUBSCRIBE_ERRORS = (XMLParseError, *SUBSCRIPTION_ERRORS)
+    RENEW_ERRORS = (ONVIFError, RequestError, XMLParseError, *SUBSCRIPTION_ERRORS)
+else:
+    SUBSCRIPTION_ERRORS = ()
+    CREATE_ERRORS = ()
+    SET_SYNCHRONIZATION_POINT_ERRORS = ()
+    UNSUBSCRIBE_ERRORS = ()
+    RENEW_ERRORS = ()
 #
 # We only keep the subscription alive for 10 minutes, and will keep
 # renewing it every 8 minutes. This is to avoid the camera

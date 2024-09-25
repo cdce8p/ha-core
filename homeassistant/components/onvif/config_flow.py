@@ -5,15 +5,11 @@ from __future__ import annotations
 from collections.abc import Mapping
 import logging
 from pprint import pformat
+import sys
 from typing import Any
 from urllib.parse import urlparse
 
-from onvif.util import is_auth_error, stringify_onvif_error
 import voluptuous as vol
-from wsdiscovery.discovery import ThreadedWSDiscovery as WSDiscovery
-from wsdiscovery.scope import Scope
-from wsdiscovery.service import Service
-from zeep.exceptions import Fault
 
 from homeassistant.components import dhcp
 from homeassistant.components.ffmpeg import CONF_EXTRA_ARGUMENTS
@@ -52,6 +48,13 @@ from .const import (
     LOGGER,
 )
 from .device import get_device
+
+if sys.version_info < (3, 13):
+    from onvif.util import is_auth_error, stringify_onvif_error
+    from wsdiscovery.discovery import ThreadedWSDiscovery as WSDiscovery
+    from wsdiscovery.scope import Scope
+    from wsdiscovery.service import Service
+    from zeep.exceptions import Fault
 
 CONF_MANUAL_INPUT = "Manually configure ONVIF device"
 
