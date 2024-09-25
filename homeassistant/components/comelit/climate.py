@@ -3,10 +3,8 @@
 from __future__ import annotations
 
 from enum import StrEnum
+import sys
 from typing import Any
-
-from aiocomelit import ComelitSerialBridgeObject
-from aiocomelit.const import CLIMATE
 
 from homeassistant.components.climate import (
     ClimateEntity,
@@ -23,6 +21,10 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import ComelitSerialBridge
+
+if sys.version_info < (3, 13):
+    from aiocomelit import ComelitSerialBridgeObject
+    from aiocomelit.const import CLIMATE
 
 
 class ClimaComelitMode(StrEnum):
