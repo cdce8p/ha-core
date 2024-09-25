@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterable
+import sys
 from typing import Any
 
 import voluptuous as vol
 
 from homeassistant.components import stt
 from homeassistant.core import Context, HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.typing import ConfigType
 
 from .const import (
@@ -80,6 +82,10 @@ CONFIG_SCHEMA = vol.Schema(
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the Assist pipeline integration."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Assist pipeline is not supported on Python 3.13. Please use Python 3.12."
+        )
     hass.data[DATA_CONFIG] = config.get(DOMAIN, {})
 
     # wake_word_id -> timestamp of last detection (monotonic_ns)
