@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Any
 
-from voip_utils import SIP_PORT
 import voluptuous as vol
 
 from homeassistant.config_entries import (
@@ -17,6 +17,9 @@ from homeassistant.core import callback
 from homeassistant.helpers import config_validation as cv
 
 from .const import CONF_SIP_PORT, DOMAIN
+
+if sys.version_info < (3, 13):
+    from voip_utils import SIP_PORT
 
 
 class VoIPConfigFlow(ConfigFlow, domain=DOMAIN):
