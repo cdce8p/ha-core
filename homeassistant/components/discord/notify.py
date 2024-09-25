@@ -5,11 +5,10 @@ from __future__ import annotations
 from io import BytesIO
 import logging
 import os.path
+import sys
 from typing import Any, cast
 
 import aiohttp
-import nextcord
-from nextcord.abc import Messageable
 
 from homeassistant.components.notify import (
     ATTR_DATA,
@@ -20,6 +19,10 @@ from homeassistant.const import CONF_API_TOKEN
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+
+if sys.version_info < (3, 13):
+    import nextcord
+    from nextcord.abc import Messageable
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,16 +1,24 @@
 """The discord integration."""
 
+import sys
+
 from aiohttp.client_exceptions import ClientConnectorError
-import nextcord
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_TOKEN, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 from homeassistant.helpers import config_validation as cv, discovery
 from homeassistant.helpers.typing import ConfigType
 
 from .const import DATA_HASS_CONFIG, DOMAIN
+
+if sys.version_info < (3, 13):
+    import nextcord
 
 PLATFORMS = [Platform.NOTIFY]
 
@@ -26,6 +34,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Discord from a config entry."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Discord is not supported on Python 3.13. Please use Python 3.12."
+        )
     nextcord.VoiceClient.warn_nacl = False
     discord_bot = nextcord.Client()
     try:

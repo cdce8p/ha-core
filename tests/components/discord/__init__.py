@@ -1,14 +1,16 @@
 """Tests for the Discord integration."""
 
+import sys
 from unittest.mock import AsyncMock, Mock, patch
-
-import nextcord
 
 from homeassistant.components.discord.const import DOMAIN
 from homeassistant.const import CONF_API_TOKEN, CONF_NAME
 from homeassistant.core import HomeAssistant
 
 from tests.common import MockConfigEntry
+
+if sys.version_info < (3, 13):
+    import nextcord
 
 TOKEN = "abc123"
 NAME = "Discord Bot"
