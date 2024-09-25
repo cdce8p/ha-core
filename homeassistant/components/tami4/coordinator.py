@@ -1,14 +1,18 @@
 """Water quality coordinator for Tami4Edge."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import date, timedelta
 import logging
-
-from Tami4EdgeAPI import Tami4EdgeAPI, exceptions
-from Tami4EdgeAPI.water_quality import WaterQuality
+import sys
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI import Tami4EdgeAPI, exceptions
+    from Tami4EdgeAPI.water_quality import WaterQuality
 
 _LOGGER = logging.getLogger(__name__)
 

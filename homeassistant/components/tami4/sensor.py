@@ -1,8 +1,7 @@
 """Sensor entities for Tami4Edge."""
 
 import logging
-
-from Tami4EdgeAPI import Tami4EdgeAPI
+import sys
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -19,6 +18,9 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import API, COORDINATOR, DOMAIN
 from .coordinator import Tami4EdgeCoordinator
 from .entity import Tami4EdgeBaseEntity
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI import Tami4EdgeAPI
 
 _LOGGER = logging.getLogger(__name__)
 

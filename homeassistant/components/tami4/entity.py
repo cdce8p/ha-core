@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
-from Tami4EdgeAPI import Tami4EdgeAPI
+import sys
 
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import Entity, EntityDescription
 
 from .const import DOMAIN
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI import Tami4EdgeAPI
 
 
 class Tami4EdgeBaseEntity(Entity):

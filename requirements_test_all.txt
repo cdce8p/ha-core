@@ -113,7 +113,7 @@ RtmAPI==0.7.2
 SQLAlchemy==2.0.31
 
 # homeassistant.components.tami4
-Tami4EdgeAPI==3.0
+Tami4EdgeAPI==3.0;python_version<'3.13'
 
 # homeassistant.components.onvif
 WSDiscovery==2.0.0

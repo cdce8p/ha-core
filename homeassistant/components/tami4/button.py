@@ -3,9 +3,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-
-from Tami4EdgeAPI import Tami4EdgeAPI
-from Tami4EdgeAPI.drink import Drink
+import sys
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
@@ -15,6 +13,10 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import API, DOMAIN
 from .entity import Tami4EdgeBaseEntity
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI import Tami4EdgeAPI
+    from Tami4EdgeAPI.drink import Drink
 
 _LOGGER = logging.getLogger(__name__)
 
