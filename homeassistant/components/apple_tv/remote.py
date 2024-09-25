@@ -3,9 +3,8 @@
 import asyncio
 from collections.abc import Iterable
 import logging
+import sys
 from typing import Any
-
-from pyatv.const import InputAction
 
 from homeassistant.components.remote import (
     ATTR_DELAY_SECS,
@@ -21,6 +20,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AppleTvConfigEntry
 from .entity import AppleTVEntity
+
+if sys.version_info < (3, 13):
+    from pyatv.const import InputAction
 
 _LOGGER = logging.getLogger(__name__)
 
