@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import logging
+import sys
 from types import MappingProxyType
 from typing import Any
 
-import anthropic
 import voluptuous as vol
 
 from homeassistant.config_entries import (
@@ -38,6 +38,9 @@ from .const import (
     RECOMMENDED_MAX_TOKENS,
     RECOMMENDED_TEMPERATURE,
 )
+
+if sys.version_info < (3, 13):
+    import anthropic
 
 _LOGGER = logging.getLogger(__name__)
 

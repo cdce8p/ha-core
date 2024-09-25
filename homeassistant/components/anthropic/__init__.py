@@ -2,15 +2,19 @@
 
 from __future__ import annotations
 
-import anthropic
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_KEY, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryNotReady, HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 
 from .const import DOMAIN, LOGGER
+
+if sys.version_info < (3, 13):
+    import anthropic
+
 
 PLATFORMS = (Platform.CONVERSATION,)
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
@@ -20,6 +24,10 @@ type AnthropicConfigEntry = ConfigEntry[anthropic.AsyncClient]
 
 async def async_setup_entry(hass: HomeAssistant, entry: AnthropicConfigEntry) -> bool:
     """Set up Anthropic from a config entry."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Anthropic is not supported on Python 3.13. Please use Python 3.12."
+        )
     client = anthropic.AsyncAnthropic(api_key=entry.data[CONF_API_KEY])
     try:
         await client.messages.create(
