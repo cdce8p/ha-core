@@ -5,10 +5,8 @@ from __future__ import annotations
 import asyncio
 from asyncio import Future
 from asyncio.exceptions import CancelledError
+import sys
 from typing import Any
-
-from pyweatherflowudp.client import EVENT_DEVICE_DISCOVERED, WeatherFlowListener
-from pyweatherflowudp.errors import AddressInUseError, EndpointError, ListenerError
 
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.core import callback
@@ -19,6 +17,10 @@ from .const import (
     ERROR_MSG_CANNOT_CONNECT,
     ERROR_MSG_NO_DEVICE_FOUND,
 )
+
+if sys.version_info < (3, 13):
+    from pyweatherflowudp.client import EVENT_DEVICE_DISCOVERED, WeatherFlowListener
+    from pyweatherflowudp.errors import AddressInUseError, EndpointError, ListenerError
 
 
 async def _async_can_discover_devices() -> bool:

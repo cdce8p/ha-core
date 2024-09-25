@@ -2,15 +2,21 @@
 
 import asyncio
 from collections.abc import Generator
+import sys
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from pyweatherflowudp.client import EVENT_DEVICE_DISCOVERED
-from pyweatherflowudp.device import WeatherFlowDevice
 
 from homeassistant.components.weatherflow.const import DOMAIN
 
 from tests.common import MockConfigEntry, load_json_object_fixture
+
+if sys.version_info < (3, 13):
+    from pyweatherflowudp.client import EVENT_DEVICE_DISCOVERED
+    from pyweatherflowudp.device import WeatherFlowDevice
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
 
 
 @pytest.fixture
