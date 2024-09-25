@@ -2,21 +2,33 @@
 
 from __future__ import annotations
 
-from Tami4EdgeAPI import Tami4EdgeAPI, exceptions
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryError, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryError,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 
 from .const import API, CONF_REFRESH_TOKEN, COORDINATOR, DOMAIN
 from .coordinator import Tami4EdgeCoordinator
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI import Tami4EdgeAPI, exceptions
+
 
 PLATFORMS: list[Platform] = [Platform.BUTTON, Platform.SENSOR]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up tami4 from a config entry."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Tami4Edge is not supported on Python 3.13. Please use Python 3.12."
+        )
     refresh_token = entry.data.get(CONF_REFRESH_TOKEN)
 
     try:

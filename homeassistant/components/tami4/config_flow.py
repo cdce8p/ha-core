@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import logging
 import re
+import sys
 from typing import Any
 
-from Tami4EdgeAPI import Tami4EdgeAPI, exceptions
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
@@ -14,6 +14,9 @@ from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
 
 from .const import CONF_PHONE, CONF_REFRESH_TOKEN, DOMAIN
+
+if sys.version_info < (3, 13):
+    from Tami4EdgeAPI import Tami4EdgeAPI, exceptions
 
 _LOGGER = logging.getLogger(__name__)
 
