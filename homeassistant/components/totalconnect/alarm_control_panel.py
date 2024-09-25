@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from total_connect_client import ArmingHelper
-from total_connect_client.exceptions import BadResultCodeError, UsercodeInvalid
-from total_connect_client.location import TotalConnectLocation
+import sys
 
 from homeassistant.components.alarm_control_panel import (
     AlarmControlPanelEntity,
@@ -30,6 +28,11 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import CODE_REQUIRED, DOMAIN
 from .coordinator import TotalConnectDataUpdateCoordinator
 from .entity import TotalConnectLocationEntity
+
+if sys.version_info < (3, 13):
+    from total_connect_client import ArmingHelper
+    from total_connect_client.exceptions import BadResultCodeError, UsercodeInvalid
+    from total_connect_client.location import TotalConnectLocation
 
 SERVICE_ALARM_ARM_AWAY_INSTANT = "arm_away_instant"
 SERVICE_ALARM_ARM_HOME_INSTANT = "arm_home_instant"

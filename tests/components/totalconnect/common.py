@@ -1,9 +1,8 @@
 """Common methods used across tests for TotalConnect."""
 
+import sys
 from typing import Any
 from unittest.mock import patch
-
-from total_connect_client import ArmingState, ResultCode, ZoneStatus, ZoneType
 
 from homeassistant.components.totalconnect.const import (
     AUTO_BYPASS,
@@ -16,6 +15,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.setup import async_setup_component
 
 from tests.common import MockConfigEntry
+
+if sys.version_info < (3, 13):
+    from total_connect_client import ArmingState, ResultCode, ZoneStatus, ZoneType
 
 LOCATION_ID = 123456
 

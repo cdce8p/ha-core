@@ -2,13 +2,7 @@
 
 from datetime import timedelta
 import logging
-
-from total_connect_client.client import TotalConnectClient
-from total_connect_client.exceptions import (
-    AuthenticationError,
-    ServiceUnavailable,
-    TotalConnectError,
-)
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -16,6 +10,14 @@ from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
+
+if sys.version_info < (3, 13):
+    from total_connect_client.client import TotalConnectClient
+    from total_connect_client.exceptions import (
+        AuthenticationError,
+        ServiceUnavailable,
+        TotalConnectError,
+    )
 
 SCAN_INTERVAL = timedelta(seconds=30)
 _LOGGER = logging.getLogger(__name__)

@@ -1,21 +1,28 @@
 """The totalconnect component."""
 
-from total_connect_client.client import TotalConnectClient
-from total_connect_client.exceptions import AuthenticationError
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.exceptions import ConfigEntryAuthFailed, HomeAssistantError
 
 from .const import AUTO_BYPASS, CONF_USERCODES, DOMAIN
 from .coordinator import TotalConnectDataUpdateCoordinator
+
+if sys.version_info < (3, 13):
+    from total_connect_client.client import TotalConnectClient
+    from total_connect_client.exceptions import AuthenticationError
 
 PLATFORMS = [Platform.ALARM_CONTROL_PANEL, Platform.BINARY_SENSOR, Platform.BUTTON]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up upon config entry in user interface."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Totalconnect is not supported on Python 3.13. Please use Python 3.12."
+        )
     conf = entry.data
     username = conf[CONF_USERNAME]
     password = conf[CONF_PASSWORD]
