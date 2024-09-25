@@ -6,5 +6,5 @@
   "documentation": "https://www.home-assistant.io/integrations/plum_lightpad",
   "iot_class": "local_push",
   "loggers": ["plumlightpad"],
-  "requirements": ["plumlightpad==0.0.11"]
+  "requirements": ["plumlightpad==0.0.11;python_version<'3.13'"]
 }
