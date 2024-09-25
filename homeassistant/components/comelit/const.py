@@ -1,8 +1,10 @@
 """Comelit constants."""
 
 import logging
+import sys
 
-from aiocomelit.const import BRIDGE, VEDO
+if sys.version_info < (3, 13):
+    from aiocomelit.const import BRIDGE, VEDO
 
 _LOGGER = logging.getLogger(__package__)
 

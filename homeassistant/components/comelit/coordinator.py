@@ -2,18 +2,8 @@
 
 from abc import abstractmethod
 from datetime import timedelta
+import sys
 from typing import Any
-
-from aiocomelit import (
-    ComeliteSerialBridgeApi,
-    ComelitSerialBridgeObject,
-    ComelitVedoApi,
-    ComelitVedoAreaObject,
-    ComelitVedoZoneObject,
-    exceptions,
-)
-from aiocomelit.api import ComelitCommonApi
-from aiocomelit.const import BRIDGE, VEDO
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -22,6 +12,18 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import _LOGGER, DOMAIN
+
+if sys.version_info < (3, 13):
+    from aiocomelit import (
+        ComeliteSerialBridgeApi,
+        ComelitSerialBridgeObject,
+        ComelitVedoApi,
+        ComelitVedoAreaObject,
+        ComelitVedoZoneObject,
+        exceptions,
+    )
+    from aiocomelit.api import ComelitCommonApi
+    from aiocomelit.const import BRIDGE, VEDO
 
 
 class ComelitBaseCoordinator(DataUpdateCoordinator[dict[str, Any]]):

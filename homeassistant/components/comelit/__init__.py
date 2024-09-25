@@ -1,13 +1,17 @@
 """Comelit integration."""
 
-from aiocomelit.const import BRIDGE
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PIN, CONF_PORT, CONF_TYPE, Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 
 from .const import DEFAULT_PORT, DOMAIN
 from .coordinator import ComelitBaseCoordinator, ComelitSerialBridge, ComelitVedoSystem
+
+if sys.version_info < (3, 13):
+    from aiocomelit.const import BRIDGE
 
 BRIDGE_PLATFORMS = [
     Platform.CLIMATE,
@@ -26,6 +30,10 @@ VEDO_PLATFORMS = [
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Comelit platform."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Comelit is not supported on Python 3.13. Please use Python 3.12."
+        )
 
     coordinator: ComelitBaseCoordinator
     if entry.data.get(CONF_TYPE, BRIDGE) == BRIDGE:

@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import logging
-
-from aiocomelit.api import ComelitVedoAreaObject
-from aiocomelit.const import ALARM_AREAS, AlarmAreaState
+import sys
 
 from homeassistant.components.alarm_control_panel import (
     AlarmControlPanelEntity,
@@ -20,6 +18,10 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import ComelitVedoSystem
+
+if sys.version_info < (3, 13):
+    from aiocomelit.api import ComelitVedoAreaObject
+    from aiocomelit.const import ALARM_AREAS, AlarmAreaState
 
 _LOGGER = logging.getLogger(__name__)
 

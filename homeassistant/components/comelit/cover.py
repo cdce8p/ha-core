@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Any
-
-from aiocomelit import ComelitSerialBridgeObject
-from aiocomelit.const import COVER, STATE_COVER, STATE_OFF, STATE_ON
 
 from homeassistant.components.cover import CoverDeviceClass, CoverEntity, CoverState
 from homeassistant.config_entries import ConfigEntry
@@ -16,6 +14,10 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import ComelitSerialBridge
+
+if sys.version_info < (3, 13):
+    from aiocomelit import ComelitSerialBridgeObject
+    from aiocomelit.const import COVER, STATE_COVER, STATE_OFF, STATE_ON
 
 
 async def async_setup_entry(
