@@ -2,19 +2,22 @@
 
 from __future__ import annotations
 
-from pyweatherflowudp.client import EVENT_DEVICE_DISCOVERED, WeatherFlowListener
-from pyweatherflowudp.device import EVENT_LOAD_COMPLETE, WeatherFlowDevice
-from pyweatherflowudp.errors import ListenerError
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EVENT_HOMEASSISTANT_STOP, Platform
 from homeassistant.core import Event, HomeAssistant, callback
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryNotReady, HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.start import async_at_started
 
 from .const import DOMAIN, LOGGER, format_dispatch_call
+
+if sys.version_info < (3, 13):
+    from pyweatherflowudp.client import EVENT_DEVICE_DISCOVERED, WeatherFlowListener
+    from pyweatherflowudp.device import EVENT_LOAD_COMPLETE, WeatherFlowDevice
+    from pyweatherflowudp.errors import ListenerError
 
 PLATFORMS = [
     Platform.SENSOR,
@@ -23,6 +26,10 @@ PLATFORMS = [
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up WeatherFlow from a config entry."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Weatherflow is not supported on Python 3.13. Please use Python 3.12."
+        )
 
     client = WeatherFlowListener()
 
