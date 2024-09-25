@@ -5,9 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from datetime import timedelta
 import logging
-
-from ndms2_client import Client, ConnectionException, Device, TelnetConnection
-from ndms2_client.client import RouterInfo
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -32,6 +30,10 @@ from .const import (
     CONF_TRY_HOTSPOT,
     DOMAIN,
 )
+
+if sys.version_info < (3, 13):
+    from ndms2_client import Client, ConnectionException, Device, TelnetConnection
+    from ndms2_client.client import RouterInfo
 
 _LOGGER = logging.getLogger(__name__)
 
