@@ -8,10 +8,9 @@ from functools import partial
 import io
 import logging
 from pathlib import Path
+import sys
 from typing import TYPE_CHECKING, Any, Final
 import wave
-
-from voip_utils import RtpDatagramProtocol
 
 from homeassistant.components import tts
 from homeassistant.components.assist_pipeline import PipelineEvent, PipelineEventType
@@ -28,6 +27,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import CHANNELS, DOMAIN, RATE, RTP_AUDIO_SETTINGS, WIDTH
 from .devices import VoIPDevice
 from .entity import VoIPEntity
+
+if sys.version_info < (3, 13):
+    from voip_utils import RtpDatagramProtocol
 
 if TYPE_CHECKING:
     from . import DomainData

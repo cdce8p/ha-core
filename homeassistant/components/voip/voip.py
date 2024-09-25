@@ -6,16 +6,9 @@ import asyncio
 from functools import partial
 import logging
 from pathlib import Path
+import sys
 import time
 from typing import TYPE_CHECKING
-
-from voip_utils import (
-    CallInfo,
-    RtcpState,
-    RtpDatagramProtocol,
-    SdpInfo,
-    VoipDatagramProtocol,
-)
 
 from homeassistant.components.assist_pipeline import (
     Pipeline,
@@ -27,6 +20,23 @@ from homeassistant.const import __version__
 from homeassistant.core import HomeAssistant
 
 from .const import CHANNELS, DOMAIN, RATE, RTP_AUDIO_SETTINGS, WIDTH
+
+if sys.version_info < (3, 13):
+    from voip_utils import (
+        CallInfo,
+        RtcpState,
+        RtpDatagramProtocol,
+        SdpInfo,
+        VoipDatagramProtocol,
+    )
+else:
+
+    class VoipDatagramProtocol:
+        """Stub base class to prevent import errors."""
+
+    class RtpDatagramProtocol:
+        """Stub base class to prevent import errors."""
+
 
 if TYPE_CHECKING:
     from .devices import VoIPDevices
