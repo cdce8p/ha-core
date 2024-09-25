@@ -1,11 +1,13 @@
 """Base class for assist satellite entities."""
 
 import logging
+import sys
 
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.typing import ConfigType
@@ -44,6 +46,10 @@ PLATFORM_SCHEMA_BASE = cv.PLATFORM_SCHEMA_BASE
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Assist Satellite is not supported on Python 3.13. Please use Python 3.12."
+        )
     component = hass.data[DATA_COMPONENT] = EntityComponent[AssistSatelliteEntity](
         _LOGGER, DOMAIN, hass
     )
