@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Any, cast
 from urllib.parse import urlparse
 
-from ndms2_client import Client, ConnectionException, InterfaceInfo, TelnetConnection
 import voluptuous as vol
 
 from homeassistant.components import ssdp
@@ -40,6 +40,14 @@ from .const import (
     ROUTER,
 )
 from .router import KeeneticRouter
+
+if sys.version_info < (3, 13):
+    from ndms2_client import (
+        Client,
+        ConnectionException,
+        InterfaceInfo,
+        TelnetConnection,
+    )
 
 
 class KeeneticFlowHandler(ConfigFlow, domain=DOMAIN):
