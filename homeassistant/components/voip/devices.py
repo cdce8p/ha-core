@@ -4,14 +4,16 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
-
-from voip_utils import CallInfo, VoipDatagramProtocol
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 
 from .const import DOMAIN
+
+if sys.version_info < (3, 13):
+    from voip_utils import CallInfo, VoipDatagramProtocol
 
 
 @dataclass

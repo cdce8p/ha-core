@@ -6,18 +6,21 @@ import asyncio
 from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-
-from voip_utils import SIP_PORT
+import sys
 
 from homeassistant.auth.const import GROUP_ID_USER
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import device_registry as dr
 
 from .const import CONF_SIP_PORT, DOMAIN
 from .devices import VoIPDevices
 from .voip import HassVoipDatagramProtocol
+
+if sys.version_info < (3, 13):
+    from voip_utils import SIP_PORT
 
 PLATFORMS = (
     Platform.ASSIST_SATELLITE,
@@ -48,6 +51,10 @@ class DomainData:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up VoIP integration from a config entry."""
     # Make sure there is a valid user ID for VoIP in the config entry
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Voip is not supported on Python 3.13. Please use Python 3.12."
+        )
     if (
         "user" not in entry.data
         or (await hass.auth.async_get_user(entry.data["user"])) is None
