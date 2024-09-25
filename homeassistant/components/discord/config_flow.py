@@ -4,16 +4,19 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import logging
+import sys
 from typing import Any
 
 from aiohttp.client_exceptions import ClientConnectorError
-import nextcord
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_API_TOKEN, CONF_NAME
 
 from .const import DOMAIN, URL_PLACEHOLDER
+
+if sys.version_info < (3, 13):
+    import nextcord
 
 _LOGGER = logging.getLogger(__name__)
 

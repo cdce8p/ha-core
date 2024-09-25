@@ -1,6 +1,7 @@
 """Discord notification test helpers."""
 
 from http import HTTPStatus
+import sys
 
 import pytest
 
@@ -8,6 +9,9 @@ from homeassistant.components.discord.notify import DiscordNotificationService
 from homeassistant.core import HomeAssistant
 
 from tests.test_util.aiohttp import AiohttpClientMocker
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
 
 MESSAGE = "Testing Discord Messenger platform"
 CONTENT = b"TestContent"
