@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import logging
+import sys
 from typing import Any
 
-from pyws66i import WS66i, get_ws66i
 import voluptuous as vol
 
 from homeassistant.config_entries import (
@@ -29,6 +29,9 @@ from .const import (
     DOMAIN,
     INIT_OPTIONS_DEFAULT,
 )
+
+if sys.version_info < (3, 13):
+    from pyws66i import WS66i, get_ws66i
 
 _LOGGER = logging.getLogger(__name__)
 
