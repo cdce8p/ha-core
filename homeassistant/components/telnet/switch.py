@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 import logging
-import telnetlib  # pylint: disable=deprecated-module
+import sys
 from typing import Any
 
 import voluptuous as vol
@@ -30,6 +30,9 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.template import Template
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+
+if sys.version_info < (3, 13):
+    import telnetlib  # pylint: disable=deprecated-module
 
 _LOGGER = logging.getLogger(__name__)
 
