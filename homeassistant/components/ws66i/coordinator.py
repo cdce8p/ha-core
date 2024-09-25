@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import logging
-
-from pyws66i import WS66i, ZoneStatus
+import sys
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import POLL_INTERVAL
+
+if sys.version_info < (3, 13):
+    from pyws66i import WS66i, ZoneStatus
 
 _LOGGER = logging.getLogger(__name__)
 

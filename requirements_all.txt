@@ -2487,7 +2487,7 @@ pywizlight==0.5.14
 pywmspro==0.2.1
 
 # homeassistant.components.ws66i
-pyws66i==1.1
+pyws66i==1.1;python_version<'3.13'
 
 # homeassistant.components.xeoma
 pyxeoma==1.4.1
