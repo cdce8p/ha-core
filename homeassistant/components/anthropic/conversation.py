@@ -2,20 +2,9 @@
 
 from collections.abc import Callable
 import json
+import sys
 from typing import Any, Literal, cast
 
-import anthropic
-from anthropic._types import NOT_GIVEN
-from anthropic.types import (
-    Message,
-    MessageParam,
-    TextBlock,
-    TextBlockParam,
-    ToolParam,
-    ToolResultBlockParam,
-    ToolUseBlock,
-    ToolUseBlockParam,
-)
 import voluptuous as vol
 from voluptuous_openapi import convert
 
@@ -41,6 +30,20 @@ from .const import (
     RECOMMENDED_MAX_TOKENS,
     RECOMMENDED_TEMPERATURE,
 )
+
+if sys.version_info < (3, 13):
+    import anthropic
+    from anthropic._types import NOT_GIVEN
+    from anthropic.types import (
+        Message,
+        MessageParam,
+        TextBlock,
+        TextBlockParam,
+        ToolParam,
+        ToolResultBlockParam,
+        ToolUseBlock,
+        ToolUseBlockParam,
+    )
 
 # Max number of back and forth with the LLM to generate a response
 MAX_TOOL_ITERATIONS = 10
