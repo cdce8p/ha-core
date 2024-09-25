@@ -1,8 +1,7 @@
 """Tests for the TotalConnect init process."""
 
+import sys
 from unittest.mock import patch
-
-from total_connect_client.exceptions import AuthenticationError
 
 from homeassistant.components.totalconnect.const import DOMAIN
 from homeassistant.config_entries import ConfigEntryState
@@ -12,6 +11,9 @@ from homeassistant.setup import async_setup_component
 from .common import CONFIG_DATA
 
 from tests.common import MockConfigEntry
+
+if sys.version_info < (3, 13):
+    from total_connect_client.exceptions import AuthenticationError
 
 
 async def test_reauth_started(hass: HomeAssistant) -> None:

@@ -1,13 +1,16 @@
 """Base class for TotalConnect entities."""
 
-from total_connect_client.location import TotalConnectLocation
-from total_connect_client.zone import TotalConnectZone
+import sys
 
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import TotalConnectDataUpdateCoordinator
+
+if sys.version_info < (3, 13):
+    from total_connect_client.location import TotalConnectLocation
+    from total_connect_client.zone import TotalConnectZone
 
 
 class TotalConnectEntity(CoordinatorEntity[TotalConnectDataUpdateCoordinator]):
