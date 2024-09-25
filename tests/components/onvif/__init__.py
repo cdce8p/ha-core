@@ -1,9 +1,7 @@
 """Tests for the ONVIF integration."""
 
+import sys
 from unittest.mock import AsyncMock, MagicMock, patch
-
-from onvif.exceptions import ONVIFError
-from zeep.exceptions import Fault
 
 from homeassistant import config_entries
 from homeassistant.components.onvif import config_flow
@@ -21,6 +19,10 @@ from homeassistant.const import HTTP_DIGEST_AUTHENTICATION
 from homeassistant.core import HomeAssistant
 
 from tests.common import MockConfigEntry
+
+if sys.version_info < (3, 13):
+    from onvif.exceptions import ONVIFError
+    from zeep.exceptions import Fault
 
 URN = "urn:uuid:123456789"
 NAME = "TestCamera"

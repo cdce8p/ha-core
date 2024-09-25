@@ -6,14 +6,11 @@ import asyncio
 from contextlib import suppress
 import datetime as dt
 import os
+import sys
 import time
 from typing import Any
 
 from httpx import RequestError
-import onvif
-from onvif import ONVIFCamera
-from onvif.exceptions import ONVIFError
-from zeep.exceptions import Fault, TransportError, XMLParseError, XMLSyntaxError
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -43,6 +40,12 @@ from .const import (
 )
 from .event import EventManager
 from .models import PTZ, Capabilities, DeviceInfo, Profile, Resolution, Video
+
+if sys.version_info < (3, 13):
+    import onvif
+    from onvif import ONVIFCamera
+    from onvif.exceptions import ONVIFError
+    from zeep.exceptions import Fault, TransportError, XMLParseError, XMLSyntaxError
 
 
 class ONVIFDevice:

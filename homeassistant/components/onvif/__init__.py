@@ -4,11 +4,9 @@ import asyncio
 from contextlib import suppress
 from http import HTTPStatus
 import logging
+import sys
 
 from httpx import RequestError
-from onvif.exceptions import ONVIFError
-from onvif.util import is_auth_error, stringify_onvif_error
-from zeep.exceptions import Fault, TransportError
 
 from homeassistant.components.ffmpeg import CONF_EXTRA_ARGUMENTS
 from homeassistant.components.stream import CONF_RTSP_TRANSPORT, RTSP_TRANSPORTS
@@ -20,7 +18,11 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 
 from .const import (
     CONF_ENABLE_WEBHOOKS,
@@ -31,11 +33,20 @@ from .const import (
 )
 from .device import ONVIFDevice
 
+if sys.version_info < (3, 13):
+    from onvif.exceptions import ONVIFError
+    from onvif.util import is_auth_error, stringify_onvif_error
+    from zeep.exceptions import Fault, TransportError
+
 LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up ONVIF from a config entry."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "ONVIF is not supported on Python 3.13. Please use Python 3.12."
+        )
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
 
