@@ -1,6 +1,6 @@
 """Support for interfacing with WS66i 6 zone home audio controller."""
 
-from pyws66i import WS66i, ZoneStatus
+import sys
 
 from homeassistant.components.media_player import (
     MediaPlayerEntity,
@@ -16,6 +16,9 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN, MAX_VOL
 from .coordinator import Ws66iDataUpdateCoordinator
 from .models import Ws66iData
+
+if sys.version_info < (3, 13):
+    from pyws66i import WS66i, ZoneStatus
 
 PARALLEL_UPDATES = 1
 

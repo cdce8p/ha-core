@@ -3,17 +3,19 @@
 from __future__ import annotations
 
 import logging
-
-from pyws66i import WS66i, get_ws66i
+import sys
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_IP_ADDRESS, EVENT_HOMEASSISTANT_STOP, Platform
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryNotReady, HomeAssistantError
 
 from .const import CONF_SOURCES, DOMAIN
 from .coordinator import Ws66iDataUpdateCoordinator
 from .models import SourceRep, Ws66iData
+
+if sys.version_info < (3, 13):
+    from pyws66i import WS66i, get_ws66i
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -59,6 +61,10 @@ def _find_zones(hass: HomeAssistant, ws66i: WS66i) -> list[int]:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Soundavo WS66i 6-Zone Amplifier from a config entry."""
     # Get the source names from the options flow
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Soundavo WS66i is not supported on Python 3.13. Please use Python 3.12."
+        )
     options: dict[str, dict[str, str]]
     options = {CONF_SOURCES: entry.options[CONF_SOURCES]}
     # Get the WS66i object and open up a connection to it

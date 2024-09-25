@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-
-from pyws66i import WS66i
+import sys
 
 from .coordinator import Ws66iDataUpdateCoordinator
+
+if sys.version_info < (3, 13):
+    from pyws66i import WS66i
 
 
 @dataclass
