@@ -1,6 +1,7 @@
 """Tests helpers."""
 
 from collections.abc import AsyncGenerator
+import sys
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -11,6 +12,9 @@ from homeassistant.helpers import llm
 from homeassistant.setup import async_setup_component
 
 from tests.common import MockConfigEntry
+
+if sys.version_info >= (3, 13):
+    collect_ignore_glob = ["test_*.py"]
 
 
 @pytest.fixture
