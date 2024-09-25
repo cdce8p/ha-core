@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from aiocomelit import ComelitVedoZoneObject
-from aiocomelit.const import ALARM_ZONES
+import sys
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
@@ -16,6 +15,10 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import ComelitVedoSystem
+
+if sys.version_info < (3, 13):
+    from aiocomelit import ComelitVedoZoneObject
+    from aiocomelit.const import ALARM_ZONES
 
 
 async def async_setup_entry(
