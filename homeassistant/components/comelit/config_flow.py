@@ -3,15 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+import sys
 from typing import Any
 
-from aiocomelit import (
-    ComeliteSerialBridgeApi,
-    ComelitVedoApi,
-    exceptions as aiocomelit_exceptions,
-)
-from aiocomelit.api import ComelitCommonApi
-from aiocomelit.const import BRIDGE
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
@@ -21,6 +15,15 @@ from homeassistant.exceptions import HomeAssistantError
 import homeassistant.helpers.config_validation as cv
 
 from .const import _LOGGER, DEFAULT_PORT, DEVICE_TYPE_LIST, DOMAIN
+
+if sys.version_info < (3, 13):
+    from aiocomelit import (
+        ComeliteSerialBridgeApi,
+        ComelitVedoApi,
+        exceptions as aiocomelit_exceptions,
+    )
+    from aiocomelit.api import ComelitCommonApi
+    from aiocomelit.const import BRIDGE
 
 DEFAULT_HOST = "192.168.1.252"
 DEFAULT_PIN = 111111

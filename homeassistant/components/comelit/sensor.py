@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Final
-
-from aiocomelit import ComelitSerialBridgeObject, ComelitVedoZoneObject
-from aiocomelit.const import ALARM_ZONES, BRIDGE, OTHER, AlarmZoneState
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -21,6 +19,10 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import ComelitSerialBridge, ComelitVedoSystem
+
+if sys.version_info < (3, 13):
+    from aiocomelit import ComelitSerialBridgeObject, ComelitVedoZoneObject
+    from aiocomelit.const import ALARM_ZONES, BRIDGE, OTHER, AlarmZoneState
 
 SENSOR_BRIDGE_TYPES: Final = (
     SensorEntityDescription(
