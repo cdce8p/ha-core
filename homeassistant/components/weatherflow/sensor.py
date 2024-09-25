@@ -6,13 +6,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-
-from pyweatherflowudp.const import EVENT_RAPID_WIND
-from pyweatherflowudp.device import (
-    EVENT_OBSERVATION,
-    EVENT_STATUS_UPDATE,
-    WeatherFlowDevice,
-)
+import sys
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -45,6 +39,14 @@ from homeassistant.helpers.typing import StateType
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
 from .const import DOMAIN, LOGGER, format_dispatch_call
+
+if sys.version_info < (3, 13):
+    from pyweatherflowudp.const import EVENT_RAPID_WIND
+    from pyweatherflowudp.device import (
+        EVENT_OBSERVATION,
+        EVENT_STATUS_UPDATE,
+        WeatherFlowDevice,
+    )
 
 
 def precipitation_raw_conversion_fn(raw_data: Enum):
