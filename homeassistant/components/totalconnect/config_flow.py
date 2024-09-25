@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+import sys
 from typing import TYPE_CHECKING, Any
 
-from total_connect_client.client import TotalConnectClient
-from total_connect_client.exceptions import AuthenticationError
 import voluptuous as vol
 
 from homeassistant.config_entries import (
@@ -20,6 +19,10 @@ from homeassistant.core import callback
 from homeassistant.helpers.typing import VolDictType
 
 from .const import AUTO_BYPASS, CODE_REQUIRED, CONF_USERCODES, DOMAIN
+
+if sys.version_info < (3, 13):
+    from total_connect_client.client import TotalConnectClient
+    from total_connect_client.exceptions import AuthenticationError
 
 PASSWORD_DATA_SCHEMA = vol.Schema({vol.Required(CONF_PASSWORD): str})
 

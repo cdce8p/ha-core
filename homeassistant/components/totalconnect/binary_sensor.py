@@ -3,9 +3,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-
-from total_connect_client.location import TotalConnectLocation
-from total_connect_client.zone import TotalConnectZone
+import sys
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
@@ -20,6 +18,10 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .const import DOMAIN
 from .coordinator import TotalConnectDataUpdateCoordinator
 from .entity import TotalConnectLocationEntity, TotalConnectZoneEntity
+
+if sys.version_info < (3, 13):
+    from total_connect_client.location import TotalConnectLocation
+    from total_connect_client.zone import TotalConnectZone
 
 LOW_BATTERY = "low_battery"
 TAMPER = "tamper"
