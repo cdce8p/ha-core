@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
+import sys
 from typing import Any
-
-from plumlightpad import Plum
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
@@ -20,6 +19,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 import homeassistant.util.color as color_util
 
 from .const import DOMAIN
+
+if sys.version_info < (3, 13):
+    from plumlightpad import Plum
 
 
 async def async_setup_entry(

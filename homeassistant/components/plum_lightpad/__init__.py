@@ -1,6 +1,7 @@
 """Support for Plum Lightpad devices."""
 
 import logging
+import sys
 
 from aiohttp import ContentTypeError
 from requests.exceptions import ConnectTimeout, HTTPError
@@ -13,7 +14,7 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.exceptions import ConfigEntryNotReady, HomeAssistantError
 
 from .const import DOMAIN
 from .utils import load_plum
@@ -25,6 +26,10 @@ PLATFORMS = [Platform.LIGHT]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Plum Lightpad from a config entry."""
+    if sys.version_info >= (3, 13):
+        raise HomeAssistantError(
+            "Starlink is not supported on Python 3.13. Please use Python 3.12."
+        )
     _LOGGER.debug("Setting up config entry with ID = %s", entry.unique_id)
 
     username = entry.data[CONF_USERNAME]
