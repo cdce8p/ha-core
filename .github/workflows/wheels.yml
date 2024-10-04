@@ -19,11 +19,27 @@ on:
 env:
   DEFAULT_PYTHON: "3.12"
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name}}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref_name}}
+#   cancel-in-progress: true
 
 jobs:
+  grpc-wheels:
+    name: Build and test grpcio wheels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4.2.0
+      - name: Docker pull
+        id: pull
+        run: |
+          name="ghcr.io/home-assistant/wheels/amd64/musllinux_1_2/cp312:dev"
+          docker pull "$name"
+          echo "name=$name" >> $GITHUB_OUTPUT
+      - name: Docker run
+        run: |
+          docker run --rm --env-file env_file --entrypoint "./docker_script" -v "$PWD":/usr/src -w /usr/src ${{ steps.pull.outputs.name }}
+
   init:
     name: Initialize wheels builder
     if: github.repository_owner == 'home-assistant'

@@ -1,0 +1,15 @@
+#!/bin/sh
+echo "-- docker_script --";
+cat docker_script;
+echo "-- env_file --";
+cat env_file;
+echo "--- Install dependencies ---";
+apk add bluez-dev libffi-dev openssl-dev glib-dev eudev-dev libxml2-dev libxslt-dev libpng-dev libjpeg-turbo-dev tiff-dev cups-dev gmp-dev mpfr-dev mpc1-dev ffmpeg-dev gammu-dev yaml-dev openblas-dev fftw-dev lapack-dev gfortran blas-dev eigen-dev freetype-dev glew-dev harfbuzz-dev hdf5-dev libdc1394-dev libtbb-dev mesa-dev openexr-dev openjpeg-dev uchardet-dev nasm
+echo "--- ---";
+pip list;
+echo "--- ---";
+# time pip install --extra-index-url https://wheels.home-assistant.io/musllinux-index/ -v grpcio==1.62.3
+time pip install -v --no-binary grpcio grpcio==1.66.2
+echo "--- ---";
+python -c "import grpc"
+echo "-- Success --";
