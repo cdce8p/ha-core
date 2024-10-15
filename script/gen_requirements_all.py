@@ -202,6 +202,8 @@ tuf>=4.0.0
 
 # https://github.com/jd/tenacity/issues/471
 tenacity!=8.4.0
+
+proto-plus>=1.25.0rc0
 """
 
 GENERATED_MESSAGE = (
