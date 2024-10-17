@@ -41,7 +41,7 @@ on:
         type: boolean
 
 env:
-  CACHE_VERSION: 11-c1
+  CACHE_VERSION: 11-c2
   UV_CACHE_VERSION: 1
   MYPY_CACHE_VERSION: 9
   HA_SHORT_VERSION: "2024.11"
@@ -537,6 +537,7 @@ jobs:
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
           uv pip install --force-reinstall --no-deps beautifulsoup4@git+https://github.com/cdce8p/beautifulsoup@master
+          uv pip install --force-reinstall --no-deps ha-ffmpeg@git+https://github.com/cdce8p/ha-ffmpeg.git@close-tools
           uv pip install -e . --config-settings editable_mode=compat
 
   hassfest:
