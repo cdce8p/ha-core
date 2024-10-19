@@ -44,7 +44,7 @@ homeassistant.components.abode.*
 homeassistant.components.accuweather.*
 homeassistant.components.acer_projector.*
 homeassistant.components.acmeda.*
-homeassistant.components.actiontec.*
+# homeassistant.components.actiontec.*
 homeassistant.components.adax.*
 homeassistant.components.adguard.*
 homeassistant.components.aftership.*
@@ -82,7 +82,7 @@ homeassistant.components.anthemav.*
 homeassistant.components.apache_kafka.*
 homeassistant.components.apcupsd.*
 homeassistant.components.api.*
-homeassistant.components.apple_tv.*
+# homeassistant.components.apple_tv.*
 homeassistant.components.apprise.*
 homeassistant.components.aprs.*
 homeassistant.components.apsystems.*
@@ -95,7 +95,7 @@ homeassistant.components.aruba.*
 homeassistant.components.arwn.*
 homeassistant.components.aseko_pool_live.*
 homeassistant.components.assist_pipeline.*
-homeassistant.components.assist_satellite.*
+# homeassistant.components.assist_satellite.*
 homeassistant.components.asuswrt.*
 homeassistant.components.autarco.*
 homeassistant.components.auth.*
@@ -450,7 +450,7 @@ homeassistant.components.systemmonitor.*
 homeassistant.components.tag.*
 homeassistant.components.tailscale.*
 homeassistant.components.tailwind.*
-homeassistant.components.tami4.*
+# homeassistant.components.tami4.*
 homeassistant.components.tautulli.*
 homeassistant.components.tcp.*
 homeassistant.components.technove.*
