@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from typing_extensions import TypeVar
+
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.helpers.update_coordinator import (
     BaseCoordinatorEntity,
@@ -17,6 +19,12 @@ if TYPE_CHECKING:
     import logging
 
     from . import BluetoothChange, BluetoothScanningMode, BluetoothServiceInfoBleak
+
+_PassiveBluetoothDataUpdateCoordinatorT = TypeVar(
+    "_PassiveBluetoothDataUpdateCoordinatorT",
+    bound="PassiveBluetoothDataUpdateCoordinator",
+    default="PassiveBluetoothDataUpdateCoordinator",
+)
 
 
 class PassiveBluetoothDataUpdateCoordinator(
@@ -90,9 +98,7 @@ class PassiveBluetoothDataUpdateCoordinator(
         self.async_update_listeners()
 
 
-class PassiveBluetoothCoordinatorEntity[
-    _PassiveBluetoothDataUpdateCoordinatorT: PassiveBluetoothDataUpdateCoordinator = PassiveBluetoothDataUpdateCoordinator
-](  # pylint: disable=hass-enforce-class-module
+class PassiveBluetoothCoordinatorEntity(  # pylint: disable=hass-enforce-class-module
     BaseCoordinatorEntity[_PassiveBluetoothDataUpdateCoordinatorT]
 ):
     """A class for entities using DataUpdateCoordinator."""

@@ -8,9 +8,10 @@ from contextlib import suppress
 from datetime import timedelta
 from functools import partial
 import logging
-from typing import Any, Final, Literal, Required, TypedDict, cast, final
+from typing import Any, Final, Generic, Literal, Required, TypedDict, cast, final
 
 from propcache import cached_property
+from typing_extensions import TypeVar
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
@@ -122,6 +123,28 @@ ATTR_FORECAST_UV_INDEX: Final = "uv_index"
 ROUNDING_PRECISION = 2
 
 SERVICE_GET_FORECASTS: Final = "get_forecasts"
+
+_ObservationUpdateCoordinatorT = TypeVar(
+    "_ObservationUpdateCoordinatorT",
+    bound=DataUpdateCoordinator[Any],
+    default=DataUpdateCoordinator[dict[str, Any]],
+)
+
+_DailyForecastUpdateCoordinatorT = TypeVar(
+    "_DailyForecastUpdateCoordinatorT",
+    bound=TimestampDataUpdateCoordinator[Any],
+    default=TimestampDataUpdateCoordinator[None],
+)
+_HourlyForecastUpdateCoordinatorT = TypeVar(
+    "_HourlyForecastUpdateCoordinatorT",
+    bound=TimestampDataUpdateCoordinator[Any],
+    default=_DailyForecastUpdateCoordinatorT,
+)
+_TwiceDailyForecastUpdateCoordinatorT = TypeVar(
+    "_TwiceDailyForecastUpdateCoordinatorT",
+    bound=TimestampDataUpdateCoordinator[Any],
+    default=_DailyForecastUpdateCoordinatorT,
+)
 
 # mypy: disallow-any-generics
 
@@ -998,22 +1021,15 @@ async def async_get_forecasts_service(
     }
 
 
-class CoordinatorWeatherEntity[
-    _ObservationUpdateCoordinatorT: DataUpdateCoordinator[Any] = DataUpdateCoordinator[
-        dict[str, Any]
-    ],
-    _DailyForecastUpdateCoordinatorT: DataUpdateCoordinator[
-        Any
-    ] = TimestampDataUpdateCoordinator[None],
-    _HourlyForecastUpdateCoordinatorT: DataUpdateCoordinator[
-        Any
-    ] = _DailyForecastUpdateCoordinatorT,
-    _TwiceDailyForecastUpdateCoordinatorT: DataUpdateCoordinator[
-        Any
-    ] = _DailyForecastUpdateCoordinatorT,
-](
+class CoordinatorWeatherEntity(
     CoordinatorEntity[_ObservationUpdateCoordinatorT],
     WeatherEntity,
+    Generic[
+        _ObservationUpdateCoordinatorT,
+        _DailyForecastUpdateCoordinatorT,
+        _HourlyForecastUpdateCoordinatorT,
+        _TwiceDailyForecastUpdateCoordinatorT,
+    ],
 ):
     """A class for weather entities using DataUpdateCoordinators."""
 
@@ -1176,11 +1192,7 @@ class CoordinatorWeatherEntity[
         return await self._async_forecast("twice_daily")
 
 
-class SingleCoordinatorWeatherEntity[
-    _ObservationUpdateCoordinatorT: DataUpdateCoordinator[Any] = DataUpdateCoordinator[
-        dict[str, Any]
-    ]
-](
+class SingleCoordinatorWeatherEntity(
     CoordinatorWeatherEntity[
         _ObservationUpdateCoordinatorT, TimestampDataUpdateCoordinator[None]
     ],

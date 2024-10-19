@@ -11,8 +11,9 @@ from hashlib import md5
 from itertools import groupby
 import logging
 from operator import attrgetter
-from typing import Any, TypedDict
+from typing import Any, Generic, TypedDict
 
+from typing_extensions import TypeVar
 import voluptuous as vol
 from voluptuous.humanize import humanize_error
 
@@ -35,6 +36,8 @@ SAVE_DELAY = 10
 CHANGE_ADDED = "added"
 CHANGE_UPDATED = "updated"
 CHANGE_REMOVED = "removed"
+
+_EntityT = TypeVar("_EntityT", bound=Entity, default=Entity)
 
 
 @dataclass(slots=True)
@@ -445,7 +448,7 @@ _GROUP_BY_KEY = attrgetter("change_type")
 
 
 @dataclass(slots=True, frozen=True)
-class _CollectionLifeCycle[_EntityT: Entity = Entity]:
+class _CollectionLifeCycle(Generic[_EntityT]):
     """Life cycle for a collection of entities."""
 
     domain: str
@@ -520,7 +523,7 @@ class _CollectionLifeCycle[_EntityT: Entity = Entity]:
 
 
 @callback
-def sync_entity_lifecycle[_EntityT: Entity = Entity](
+def sync_entity_lifecycle(
     hass: HomeAssistant,
     domain: str,
     platform: str,

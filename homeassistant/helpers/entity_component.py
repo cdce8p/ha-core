@@ -7,7 +7,9 @@ from collections.abc import Callable, Iterable
 from datetime import timedelta
 import logging
 from types import ModuleType
-from typing import Any
+from typing import Any, Generic
+
+from typing_extensions import TypeVar
 
 from homeassistant import config as conf_util
 from homeassistant.config_entries import ConfigEntry
@@ -37,6 +39,8 @@ from .typing import ConfigType, DiscoveryInfoType, VolDictType, VolSchemaType
 DEFAULT_SCAN_INTERVAL = timedelta(seconds=15)
 DATA_INSTANCES = "entity_components"
 
+_EntityT = TypeVar("_EntityT", bound=entity.Entity, default=entity.Entity)
+
 
 @bind_hass
 async def async_update_entity(hass: HomeAssistant, entity_id: str) -> None:
@@ -60,7 +64,7 @@ async def async_update_entity(hass: HomeAssistant, entity_id: str) -> None:
     await entity_obj.async_update_ha_state(True)
 
 
-class EntityComponent[_EntityT: entity.Entity = entity.Entity]:
+class EntityComponent(Generic[_EntityT]):
     """The EntityComponent manages platforms that manage entities.
 
     An example of an entity component is 'light', which manages platforms such
