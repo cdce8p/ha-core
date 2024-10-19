@@ -2,17 +2,13 @@
 # ruff: noqa: PYI021  # Allow docstrings
 
 from collections.abc import Mapping
-from typing import Any, Generic
-
-from typing_extensions import TypeVar
+from typing import Any
 
 __all__ = [
     "EventType",
 ]
 
-_DataT = TypeVar("_DataT", bound=Mapping[str, Any], default=Mapping[str, Any])
-
-class EventType(Generic[_DataT]):
+class EventType[_DataT: Mapping[str, Any] = Mapping[str, Any]]:
     """Custom type for Event.event_type. At runtime delegated to str.
 
     For type checkers pretend to be its own separate class.
