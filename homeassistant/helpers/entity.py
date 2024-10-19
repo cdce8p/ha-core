@@ -16,9 +16,19 @@ import sys
 import threading
 import time
 from types import FunctionType
-from typing import TYPE_CHECKING, Any, Final, Literal, NotRequired, TypedDict, final
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Final,
+    Generic,
+    Literal,
+    NotRequired,
+    TypedDict,
+    final,
+)
 
 from propcache import cached_property
+from typing_extensions import TypeVar
 import voluptuous as vol
 
 from homeassistant.config import DATA_CUSTOMIZE
@@ -425,9 +435,15 @@ CACHED_PROPERTIES_WITH_ATTR_ = {
     "unit_of_measurement",
 }
 
+EntityDescriptionT = TypeVar(
+    "EntityDescriptionT", bound=EntityDescription, default=EntityDescription
+)
+
 
 class Entity(
-    metaclass=ABCCachedProperties, cached_properties=CACHED_PROPERTIES_WITH_ATTR_
+    Generic[EntityDescriptionT],
+    metaclass=ABCCachedProperties,
+    cached_properties=CACHED_PROPERTIES_WITH_ATTR_,
 ):
     """An abstract class for Home Assistant entities."""
 
@@ -447,7 +463,7 @@ class Entity(
     platform: EntityPlatform = None  # type: ignore[assignment]
 
     # Entity description instance for this Entity
-    entity_description: EntityDescription
+    entity_description: EntityDescriptionT
 
     # If we reported if this entity was slow
     _slow_reported = False

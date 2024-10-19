@@ -142,7 +142,9 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class ISYAuxControlNumberEntity(ISYAuxControlEntity, NumberEntity):
+class ISYAuxControlNumberEntity(
+    ISYAuxControlEntity[NumberEntityDescription], NumberEntity
+):
     """Representation of a ISY/IoX Aux Control Number entity."""
 
     _attr_mode = NumberMode.SLIDER

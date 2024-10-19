@@ -14,6 +14,7 @@ from math import ceil, floor, isfinite, log10
 from typing import Any, Final, Self, cast, final, override
 
 from propcache import cached_property
+from typing_extensions import TypeVar
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (  # noqa: F401
@@ -91,7 +92,7 @@ from .websocket_api import async_setup as async_setup_ws_api
 
 _LOGGER: Final = logging.getLogger(__name__)
 
-DATA_COMPONENT: HassKey[EntityComponent[SensorEntity]] = HassKey(DOMAIN)
+DATA_COMPONENT: HassKey[EntityComponent[SensorEntity[Any]]] = HassKey(DOMAIN)
 ENTITY_ID_FORMAT: Final = DOMAIN + ".{}"
 PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA
 PLATFORM_SCHEMA_BASE = cv.PLATFORM_SCHEMA_BASE
@@ -112,6 +113,7 @@ __all__ = [
     "SensorEntityDescription",
     "SensorExtraStoredData",
     "SensorStateClass",
+    "SensorEntityDescriptionT",
 ]
 
 # mypy: disallow-any-generics
@@ -119,7 +121,7 @@ __all__ = [
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Track states and offer events for sensors."""
-    component = hass.data[DATA_COMPONENT] = EntityComponent[SensorEntity](
+    component = hass.data[DATA_COMPONENT] = EntityComponent[SensorEntity[Any]](
         _LOGGER, DOMAIN, hass, SCAN_INTERVAL
     )
 
@@ -187,12 +189,20 @@ CACHED_PROPERTIES_WITH_ATTR_ = {
 TEMPERATURE_UNITS = {UnitOfTemperature.CELSIUS, UnitOfTemperature.FAHRENHEIT}
 
 
-class SensorEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
+SensorEntityDescriptionT = TypeVar(
+    "SensorEntityDescriptionT",
+    bound=SensorEntityDescription,
+    default=SensorEntityDescription,
+)
+
+
+class SensorEntity(
+    Entity[SensorEntityDescriptionT], cached_properties=CACHED_PROPERTIES_WITH_ATTR_
+):
     """Base class for sensor entities."""
 
     _entity_component_unrecorded_attributes = frozenset({ATTR_OPTIONS})
 
-    entity_description: SensorEntityDescription
     _attr_device_class: SensorDeviceClass | None
     _attr_last_reset: datetime | None
     _attr_native_unit_of_measurement: str | None

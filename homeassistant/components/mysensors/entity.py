@@ -20,7 +20,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.debounce import Debouncer
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity import Entity, EntityDescriptionT
 
 from .const import (
     CHILD_CALLBACK,
@@ -42,7 +42,7 @@ ATTR_HEARTBEAT = "heartbeat"
 MYSENSORS_PLATFORM_DEVICES = "mysensors_devices_{}"
 
 
-class MySensorNodeEntity(Entity):
+class MySensorNodeEntity(Entity[EntityDescriptionT]):
     """Representation of a MySensors device."""
 
     hass: HomeAssistant
@@ -146,7 +146,7 @@ def get_mysensors_devices(
     return devices
 
 
-class MySensorsChildEntity(MySensorNodeEntity):
+class MySensorsChildEntity(MySensorNodeEntity[EntityDescriptionT]):
     """Representation of a MySensors entity."""
 
     _attr_should_poll = False

@@ -25,6 +25,7 @@ from homeassistant.exceptions import (
     ConfigEntryError,
     ConfigEntryNotReady,
 )
+from homeassistant.helpers.entity import EntityDescriptionT
 from homeassistant.util.dt import utcnow
 
 from . import entity, event
@@ -529,9 +530,15 @@ class TimestampDataUpdateCoordinator(DataUpdateCoordinator[_DataT]):
             self.last_update_success_time = utcnow()
 
 
-class BaseCoordinatorEntity[
-    _BaseDataUpdateCoordinatorT: BaseDataUpdateCoordinatorProtocol
-](entity.Entity):
+_BaseDataUpdateCoordinatorT = TypeVar(
+    "_BaseDataUpdateCoordinatorT", bound=BaseDataUpdateCoordinatorProtocol
+)
+
+
+class BaseCoordinatorEntity(
+    entity.Entity[EntityDescriptionT],
+    Generic[_BaseDataUpdateCoordinatorT, EntityDescriptionT],
+):
     """Base class for all Coordinator entities."""
 
     def __init__(
@@ -568,7 +575,9 @@ class BaseCoordinatorEntity[
         """
 
 
-class CoordinatorEntity(BaseCoordinatorEntity[_DataUpdateCoordinatorT]):
+class CoordinatorEntity(
+    BaseCoordinatorEntity[_DataUpdateCoordinatorT, EntityDescriptionT]
+):
     """A class for entities using DataUpdateCoordinator."""
 
     def __init__(

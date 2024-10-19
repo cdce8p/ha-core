@@ -99,10 +99,11 @@ async def async_setup_entry(
     )
 
 
-class AsekoSensorEntity(AsekoEntity, SensorEntity):
+class AsekoSensorEntity(
+    AsekoEntity[AsekoSensorEntityDescription],
+    SensorEntity[AsekoSensorEntityDescription],
+):
     """Representation of an Aseko unit sensor entity."""
-
-    entity_description: AsekoSensorEntityDescription
 
     @property
     def native_value(self) -> StateType:

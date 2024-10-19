@@ -127,7 +127,7 @@ FLOW_CONTROLLER_SENSORS: tuple[HydrawiseSensorEntityDescription, ...] = (
     ),
 )
 
-FLOW_ZONE_SENSORS: tuple[SensorEntityDescription, ...] = (
+FLOW_ZONE_SENSORS: tuple[HydrawiseSensorEntityDescription, ...] = (
     HydrawiseSensorEntityDescription(
         key="daily_active_water_use",
         translation_key="daily_active_water_use",
@@ -201,10 +201,11 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class HydrawiseSensor(HydrawiseEntity, SensorEntity):
+class HydrawiseSensor(
+    HydrawiseEntity[HydrawiseSensorEntityDescription],
+    SensorEntity[HydrawiseSensorEntityDescription],
+):
     """A sensor implementation for Hydrawise device."""
-
-    entity_description: HydrawiseSensorEntityDescription
 
     @property
     def native_unit_of_measurement(self) -> str | None:

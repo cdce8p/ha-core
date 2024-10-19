@@ -11,6 +11,7 @@ from math import ceil, floor
 from typing import TYPE_CHECKING, Any, Self, final
 
 from propcache import cached_property
+from typing_extensions import TypeVar
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
@@ -50,7 +51,7 @@ from .websocket_api import async_setup as async_setup_ws_api
 
 _LOGGER = logging.getLogger(__name__)
 
-DATA_COMPONENT: HassKey[EntityComponent[NumberEntity]] = HassKey(DOMAIN)
+DATA_COMPONENT: HassKey[EntityComponent[NumberEntity[Any]]] = HassKey(DOMAIN)
 ENTITY_ID_FORMAT = DOMAIN + ".{}"
 PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA
 PLATFORM_SCHEMA_BASE = cv.PLATFORM_SCHEMA_BASE
@@ -76,6 +77,7 @@ __all__ = [
     "NumberExtraStoredData",
     "NumberMode",
     "RestoreNumber",
+    "NumberEntityDescriptionT",
 ]
 
 # mypy: disallow-any-generics
@@ -83,7 +85,7 @@ __all__ = [
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up Number entities."""
-    component = hass.data[DATA_COMPONENT] = EntityComponent[NumberEntity](
+    component = hass.data[DATA_COMPONENT] = EntityComponent[NumberEntity[Any]](
         _LOGGER, DOMAIN, hass, SCAN_INTERVAL
     )
     async_setup_ws_api(hass)
@@ -177,15 +179,22 @@ CACHED_PROPERTIES_WITH_ATTR_ = {
     "native_value",
 }
 
+NumberEntityDescriptionT = TypeVar(
+    "NumberEntityDescriptionT",
+    bound=NumberEntityDescription,
+    default=NumberEntityDescription,
+)
 
-class NumberEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
+
+class NumberEntity(
+    Entity[NumberEntityDescriptionT], cached_properties=CACHED_PROPERTIES_WITH_ATTR_
+):
     """Representation of a Number entity."""
 
     _entity_component_unrecorded_attributes = frozenset(
         {ATTR_MIN, ATTR_MAX, ATTR_STEP, ATTR_STEP_VALIDATION, ATTR_MODE}
     )
 
-    entity_description: NumberEntityDescription
     _attr_device_class: NumberDeviceClass | None
     _attr_max_value: None
     _attr_min_value: None

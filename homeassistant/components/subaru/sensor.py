@@ -181,7 +181,8 @@ def create_vehicle_sensors(
 
 
 class SubaruSensor(
-    CoordinatorEntity[DataUpdateCoordinator[dict[str, Any]]], SensorEntity
+    CoordinatorEntity[DataUpdateCoordinator[dict[str, Any]], SensorEntityDescription],
+    SensorEntity,
 ):
     """Class for Subaru sensors."""
 

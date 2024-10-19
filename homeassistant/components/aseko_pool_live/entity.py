@@ -3,14 +3,14 @@
 from aioaseko import Unit
 
 from homeassistant.helpers.device_registry import DeviceInfo
-from homeassistant.helpers.entity import EntityDescription
+from homeassistant.helpers.entity import EntityDescriptionT
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import AsekoDataUpdateCoordinator
 
 
-class AsekoEntity(CoordinatorEntity[AsekoDataUpdateCoordinator]):
+class AsekoEntity(CoordinatorEntity[AsekoDataUpdateCoordinator, EntityDescriptionT]):
     """Representation of an aseko entity."""
 
     _attr_has_entity_name = True
@@ -19,7 +19,7 @@ class AsekoEntity(CoordinatorEntity[AsekoDataUpdateCoordinator]):
         self,
         unit: Unit,
         coordinator: AsekoDataUpdateCoordinator,
-        description: EntityDescription,
+        description: EntityDescriptionT,
     ) -> None:
         """Initialize the aseko entity."""
         super().__init__(coordinator)

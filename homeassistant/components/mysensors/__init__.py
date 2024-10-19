@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 import logging
+from typing import Any
 
 from mysensors import BaseAsyncGateway
 
@@ -103,13 +104,13 @@ def setup_mysensors_platform(
     hass: HomeAssistant,
     domain: Platform,  # hass platform name
     discovery_info: DiscoveryInfo,
-    device_class: type[MySensorsChildEntity]
-    | Mapping[SensorType, type[MySensorsChildEntity]],
+    device_class: type[MySensorsChildEntity[Any]]
+    | Mapping[SensorType, type[MySensorsChildEntity[Any]]],
     device_args: (
         tuple | None
     ) = None,  # extra arguments that will be given to the entity constructor
     async_add_entities: Callable | None = None,
-) -> list[MySensorsChildEntity] | None:
+) -> list[MySensorsChildEntity[Any]] | None:
     """Set up a MySensors platform.
 
     Sets up a bunch of instances of a single platform that is supported by this

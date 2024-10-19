@@ -13,7 +13,9 @@ from .const import DOMAIN, MANUFACTURER
 from .coordinator import HydrawiseDataUpdateCoordinator
 
 
-class HydrawiseEntity(CoordinatorEntity[HydrawiseDataUpdateCoordinator]):
+class HydrawiseEntity[_EntityDescriptionT: EntityDescription](
+    CoordinatorEntity[HydrawiseDataUpdateCoordinator, _EntityDescriptionT]
+):
     """Entity class for Hydrawise devices."""
 
     _attr_attribution = "Data provided by hydrawise.com"
@@ -22,7 +24,7 @@ class HydrawiseEntity(CoordinatorEntity[HydrawiseDataUpdateCoordinator]):
     def __init__(
         self,
         coordinator: HydrawiseDataUpdateCoordinator,
-        description: EntityDescription,
+        description: _EntityDescriptionT,
         controller: Controller,
         *,
         zone_id: int | None = None,
@@ -30,7 +32,6 @@ class HydrawiseEntity(CoordinatorEntity[HydrawiseDataUpdateCoordinator]):
     ) -> None:
         """Initialize the Hydrawise entity."""
         super().__init__(coordinator=coordinator)
-        self.entity_description = description
         self.controller = controller
         self.zone_id = zone_id
         self.sensor_id = sensor_id

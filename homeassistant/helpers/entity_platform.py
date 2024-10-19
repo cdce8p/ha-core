@@ -75,7 +75,7 @@ class AddEntitiesCallback(Protocol):
     """Protocol type for EntityPlatform.add_entities callback."""
 
     def __call__(
-        self, new_entities: Iterable[Entity], update_before_add: bool = False
+        self, new_entities: Iterable[Entity[Any]], update_before_add: bool = False
     ) -> None:
         """Define add_entities type."""
 
@@ -615,7 +615,7 @@ class EntityPlatform:
             )
 
     async def async_add_entities(
-        self, new_entities: Iterable[Entity], update_before_add: bool = False
+        self, new_entities: Iterable[Entity[Any]], update_before_add: bool = False
     ) -> None:
         """Add entities for a single platform async.
 

@@ -25,7 +25,7 @@ from homeassistant.const import STATE_OFF, STATE_ON
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceInfo
-from homeassistant.helpers.entity import Entity, EntityDescription
+from homeassistant.helpers.entity import Entity, EntityDescriptionT
 
 from .const import DOMAIN
 
@@ -214,7 +214,7 @@ class ISYProgramEntity(ISYEntity):
         return attr
 
 
-class ISYAuxControlEntity(Entity):
+class ISYAuxControlEntity(Entity[EntityDescriptionT]):
     """Representation of a ISY/IoX Aux Control base entity."""
 
     _attr_should_poll = False
@@ -224,7 +224,7 @@ class ISYAuxControlEntity(Entity):
         node: Node,
         control: str,
         unique_id: str,
-        description: EntityDescription,
+        description: EntityDescriptionT,
         device_info: DeviceInfo | None,
     ) -> None:
         """Initialize the ISY Aux Control Number entity."""

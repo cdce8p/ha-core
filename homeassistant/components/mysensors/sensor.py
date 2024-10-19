@@ -278,7 +278,7 @@ class MyBatterySensor(MySensorNodeEntity, SensorEntity):
         self.async_write_ha_state()
 
 
-class MySensorsSensor(MySensorsChildEntity, SensorEntity):
+class MySensorsSensor(MySensorsChildEntity[SensorEntityDescription], SensorEntity):
     """Representation of a MySensors Sensor child node."""
 
     _attr_force_update = True
