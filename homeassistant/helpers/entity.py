@@ -242,7 +242,9 @@ class EntityPlatformState(Enum):
 _SENTINEL = object()
 
 
-class EntityDescription(metaclass=FrozenOrThawed, frozen_or_thawed=True):
+class EntityDescription[_UnitT: str | None = str | None](
+    metaclass=FrozenOrThawed, frozen_or_thawed=True
+):
     """A class that describes Home Assistant entities."""
 
     # This is the key identifier for this entity
@@ -258,7 +260,7 @@ class EntityDescription(metaclass=FrozenOrThawed, frozen_or_thawed=True):
     name: str | UndefinedType | None = UNDEFINED
     translation_key: str | None = None
     translation_placeholders: Mapping[str, str] | None = None
-    unit_of_measurement: str | None = None
+    unit_of_measurement: _UnitT = None  # type: ignore[assignment]
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
