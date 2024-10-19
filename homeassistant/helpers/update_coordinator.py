@@ -36,6 +36,11 @@ REQUEST_REFRESH_DEFAULT_COOLDOWN = 10
 REQUEST_REFRESH_DEFAULT_IMMEDIATE = True
 
 _DataT = TypeVar("_DataT", default=dict[str, Any])
+_DataUpdateCoordinatorT = TypeVar(
+    "_DataUpdateCoordinatorT",
+    bound="DataUpdateCoordinator[Any]",
+    default="DataUpdateCoordinator[dict[str, Any]]",
+)
 
 
 class UpdateFailed(Exception):
@@ -563,11 +568,7 @@ class BaseCoordinatorEntity[
         """
 
 
-class CoordinatorEntity[
-    _DataUpdateCoordinatorT: DataUpdateCoordinator[Any] = DataUpdateCoordinator[
-        dict[str, Any]
-    ]
-](BaseCoordinatorEntity[_DataUpdateCoordinatorT]):
+class CoordinatorEntity(BaseCoordinatorEntity[_DataUpdateCoordinatorT]):
     """A class for entities using DataUpdateCoordinator."""
 
     def __init__(
