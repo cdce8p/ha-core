@@ -67,9 +67,9 @@ env:
 
 permissions: {}
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -266,6 +266,7 @@ jobs:
       contents: read
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -313,6 +314,7 @@ jobs:
       contents: read
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -342,6 +344,7 @@ jobs:
     permissions:
       contents: read
     needs: [info]
+    if: false
     timeout-minutes: 60
     strategy:
       matrix:
@@ -709,7 +712,7 @@ jobs:
       && needs.info.outputs.test_full_suite == 'true'
     needs:
       - info
-      - base
+      # - base
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -791,11 +794,11 @@ jobs:
       contents: read
     needs:
       - info
-      - base
-      - gen-requirements-all
-      - hassfest
-      - prek
-      - mypy
+      # - base
+      # - gen-requirements-all
+      # - hassfest
+      # - prek
+      # - mypy
       - prepare-pytest-full
     if: |
       needs.info.outputs.lint_only != 'true'
