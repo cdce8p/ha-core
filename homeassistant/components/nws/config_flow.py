@@ -22,7 +22,8 @@ from .const import CONF_LOCATION_ENTITY, CONF_STATION, DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, str]:
+# ruff: noqa: F821,UP037
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> {"title": str}:
     """Validate the user input allows us to connect.
 
     Data has the keys from DATA_SCHEMA with values provided by the user.
