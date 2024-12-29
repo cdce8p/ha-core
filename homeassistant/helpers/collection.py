@@ -648,13 +648,21 @@ class StorageCollectionWebsocket[_StorageCollectionT: StorageCollection]:
 
     @callback
     def ws_list_item(
-        self, hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
+        self,
+        hass: HomeAssistant,
+        connection: websocket_api.ActiveConnection,
+        msg: dict,
+        /,
     ) -> None:
         """List items."""
         connection.send_result(msg["id"], self.storage_collection.async_items())
 
     async def ws_create_item(
-        self, hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
+        self,
+        hass: HomeAssistant,
+        connection: websocket_api.ActiveConnection,
+        msg: dict,
+        /,
     ) -> None:
         """Create an item."""
         try:
@@ -723,7 +731,11 @@ class StorageCollectionWebsocket[_StorageCollectionT: StorageCollection]:
         connection.send_message(websocket_api.event_message(msg["id"], json_msg))
 
     async def ws_update_item(
-        self, hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict
+        self,
+        hass: HomeAssistant,
+        connection: websocket_api.ActiveConnection,
+        msg: dict,
+        /,
     ) -> None:
         """Update an item."""
         data = dict(msg)
