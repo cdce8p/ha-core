@@ -13,6 +13,9 @@ type _FuncType[_T] = Callable[[HomeAssistant], _T]
 type _Coro[_T] = Coroutine[Any, Any, _T]
 
 
+# TODO Find an option to make it work without 'async_'
+
+
 @overload
 def singleton[_T](
     data_key: HassKey[_T], *, async_: Literal[True]
