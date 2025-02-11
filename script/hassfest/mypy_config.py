@@ -38,6 +38,7 @@ GENERAL_SETTINGS: Final[dict[str, str]] = {
         [
             "pydantic.mypy",
             "mypy_plugins/enum_identity_compare.py",
+            "mypy/plugins/deprecated_constant.py",
         ]
     ),
     "show_error_codes": "true",
