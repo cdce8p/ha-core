@@ -49,7 +49,7 @@ class AlertEntity(Entity):
         notifiers: list[str],
         can_ack: bool,
         title_template: Template | None,
-        data: dict[Any, Any],
+        data: dict[Any, Any] | None,
     ) -> None:
         """Initialize the alert."""
         self.hass = hass

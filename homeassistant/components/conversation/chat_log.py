@@ -438,7 +438,7 @@ class ChatLog:
         self,
         content: AssistantContent | ToolResultContent,
         /,
-        tool_call_tasks: dict[str, asyncio.Task] | None = None,
+        tool_call_tasks: dict[str, asyncio.Task[llm.ToolResult]] | None = None,
     ) -> AsyncGenerator[ToolResultContent]:
         """Add assistant content and execute tool calls.
 
