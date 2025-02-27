@@ -361,7 +361,7 @@ def convert_nested_attr(
     data = statistics
     for _key in key.split("."):
         if data is None:
-            return None  # type: ignore[unreachable]
+            return None
         data = getattr(data, _key)
     return data
 
