@@ -130,7 +130,7 @@ class HuaweiSensorEntityDescription(SensorEntityDescription):
     # restrict the type to str.
     name: str = ""
 
-    format_fn: Callable[[str], tuple[StateType, str | None]] = format_default
+    format_fn: Callable[[str | None], tuple[StateType, str | None]] = format_default
     icon_fn: Callable[[StateType], str] | None = None
     device_class_fn: Callable[[StateType], SensorDeviceClass | None] | None = None
     last_reset_item: str | None = None
@@ -269,7 +269,7 @@ SENSOR_META: dict[str, HuaweiSensorGroup] = {
                 key="mode",
                 translation_key="mode",
                 format_fn=lambda x: (
-                    {"0": "2G", "2": "3G", "7": "4G"}.get(x),
+                    {"0": "2G", "2": "3G", "7": "4G"}.get(x) if x is not None else None,
                     None,
                 ),
                 icon_fn=lambda x: {

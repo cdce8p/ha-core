@@ -52,7 +52,6 @@ class DemoBinarySensor(BinarySensorEntity):
     """representation of a Demo binary sensor."""
 
     _attr_has_entity_name = True
-    _attr_name = None
     _attr_should_poll = False
 
     def __init__(
