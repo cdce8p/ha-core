@@ -684,6 +684,7 @@ class DefaultAgent(ConversationEntity):
                 speech = await self._build_speech(
                     response_template, intent_response, speech_slots
                 )
+                assert speech is not None
                 intent_response.async_set_speech(speech)
 
         tool_result = llm.IntentResponseDict(intent_response)
@@ -1106,7 +1107,7 @@ class DefaultAgent(ConversationEntity):
         response_template: template.Template,
         intent_response: intent.IntentResponse,
         speech_slots: dict[str, Any],
-    ) -> str:
+    ) -> str | None:
         # Get first matched or unmatched state.
         # This is available in the response template as "state".
         state1: State | None = None

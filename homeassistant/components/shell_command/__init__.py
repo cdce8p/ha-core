@@ -81,6 +81,7 @@ def _make_handler(
         else:
             # Template used. Break into list and use create_subprocess_exec
             # (which uses shell=False) for security
+            assert isinstance(rendered_args, str)
             shlexed_cmd = [prog, *shlex.split(rendered_args)]
             create_process = asyncio.create_subprocess_exec(
                 *shlexed_cmd,
