@@ -3,7 +3,7 @@
 import asyncio
 from email.message import Message
 import logging
-from typing import Any
+from typing import cast
 
 from aioimaplib import IMAP4_SSL, AioImapException, Response
 import voluptuous as vol
@@ -247,12 +247,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
         @callback
         def get_message_part(message: Message, part_key: str) -> Message:
-            part: Message | Any = message
+            part = message
             for index in part_key.split(","):
                 sub_parts = part.get_payload()
                 try:
                     assert isinstance(sub_parts, list)
-                    part = sub_parts[int(index)]
+                    part = cast(Message, sub_parts[int(index)])
                 except (AssertionError, ValueError, IndexError) as exc:
                     raise ServiceValidationError(
                         translation_domain=DOMAIN,

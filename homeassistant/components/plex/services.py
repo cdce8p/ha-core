@@ -155,7 +155,7 @@ def process_plex_payload(
         playqueue = plex_server.create_station_playqueue(content)
         return PlexMediaSearchResult(playqueue)
 
-    if isinstance(content, int):
+    if isinstance(content, (int, str)):
         content = {"plex_key": content}
         content_type = DOMAIN
 
