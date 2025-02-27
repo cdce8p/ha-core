@@ -267,7 +267,7 @@ class AsusWrtLegacyBridge(AsusWrtBridge):
 
     async def _get_nvram_info(self, info_type: str) -> dict[str, Any]:
         """Get AsusWrt router info from nvram."""
-        info = {}
+        info: dict[str, Any] = {}
         try:
             info = await self._api.async_get_nvram(info_type)
         except OSError as exc:

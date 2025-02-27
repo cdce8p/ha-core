@@ -74,7 +74,7 @@ class LgWebOSMediaPlayerEntity(WebOsTvEntity, RestoreEntity, MediaPlayerEntity):
 
         # Assume that the TV is not paused
         self._paused = False
-        self._current_source = None
+        self._current_source: str | None = None
         self._source_list: dict = {}
 
         self._supported_features = MediaPlayerEntityFeature(0)
