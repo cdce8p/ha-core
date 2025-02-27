@@ -82,7 +82,7 @@ class FeedReaderEvent(CoordinatorEntity[FeedReaderCoordinator], EventEntity):
 
         if content := feed_data.get("content"):
             if isinstance(content, list) and isinstance(content[0], dict):
-                content = content[0].get("value")
+                content = content[0]["value"]
             content = html.unescape(content)
 
         self._trigger_event(

@@ -239,7 +239,7 @@ def item_payload(
         media_content_id = ""
 
     title = item["title"]
-    can_play = media_content_type in PLAYABLE_MEDIA_TYPES and media_content_id
+    can_play = media_content_type in PLAYABLE_MEDIA_TYPES and bool(media_content_id)
     can_expand = media_content_type in EXPANDABLE_MEDIA_TYPES
 
     return BrowseMedia(
