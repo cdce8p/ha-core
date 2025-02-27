@@ -936,6 +936,7 @@ class LIFXComponentLight[
                 return
             # Without a power change, a color set while off is kept for later
             power = self.is_on
+        assert isinstance(power, bool)
         await self._async_apply(kwargs, power=power)
 
     async def _async_forward_effect(self, effect: str) -> None:
