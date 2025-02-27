@@ -3013,9 +3013,7 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
                 )
             if (
                 add_config_subentry_id
-                # mypy says add_config_entry can be None. That's impossible, because we
-                # raise above if that happens
-                and add_config_subentry_id not in add_config_entry.subentries  # type: ignore[union-attr]
+                and add_config_subentry_id not in add_config_entry.subentries
             ):
                 raise HomeAssistantError(
                     f"Config entry {add_config_entry_id} has no"
