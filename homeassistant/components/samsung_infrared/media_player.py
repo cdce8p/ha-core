@@ -68,7 +68,6 @@ class SamsungIrTvMediaPlayer(
         | MediaPlayerEntityFeature.SELECT_SOURCE
     )
     _attr_source_list = list(SOURCE_MAP.keys())
-    _attr_source = None
     _attr_state = MediaPlayerState.ON
     _attr_translation_key = "samsung_ir_tv"
 

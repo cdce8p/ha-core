@@ -172,6 +172,7 @@ class Throttle:
 
             If we cannot acquire the lock, it is running so return None.
             """
+            host: Any
             if hasattr(method, "__self__"):
                 host = method.__self__
             elif is_func:
