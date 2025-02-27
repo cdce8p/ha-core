@@ -1,7 +1,7 @@
 """Connect to a MySensors gateway via pymysensors API."""
 # pylint: disable=home-assistant-use-runtime-data  # Uses legacy hass.data[DOMAIN] pattern
 
-from collections.abc import Callable, Mapping
+from collections.abc import Callable
 import logging
 
 from mysensors import BaseAsyncGateway
@@ -101,7 +101,7 @@ def setup_mysensors_platform(
     domain: Platform,  # hass platform name
     discovery_info: DiscoveryInfo,
     device_class: type[MySensorsChildEntity]
-    | Mapping[SensorType, type[MySensorsChildEntity]],
+    | dict[SensorType, type[MySensorsChildEntity]],
     device_args: (
         tuple | None
     ) = None,  # extra arguments that will be given to the entity constructor

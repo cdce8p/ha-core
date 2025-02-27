@@ -11,7 +11,7 @@ import math
 from operator import itemgetter
 import re
 from time import time as time_time
-from typing import TYPE_CHECKING, Any, Literal, Required, TypedDict, cast
+from typing import TYPE_CHECKING, Any, Literal, Required, TypedDict, cast, overload
 
 from sqlalchemy import (
     Label,
@@ -375,6 +375,26 @@ def get_display_unit(
         return statistic_unit
 
     return state_unit
+
+
+@overload
+def _get_statistic_to_display_unit_converter(
+    unit_class: str | None,
+    statistic_unit: str | None,
+    state_unit: str | None,
+    requested_units: dict[str, str] | None,
+    allow_none: Literal[True] = True,
+) -> Callable[[float | None], float | None] | None: ...
+
+
+@overload
+def _get_statistic_to_display_unit_converter(
+    unit_class: str | None,
+    statistic_unit: str | None,
+    state_unit: str | None,
+    requested_units: dict[str, str] | None,
+    allow_none: Literal[False],
+) -> Callable[[float], float] | None: ...
 
 
 def _get_statistic_to_display_unit_converter(

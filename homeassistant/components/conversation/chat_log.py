@@ -417,7 +417,7 @@ class ChatLog:
         self,
         content: AssistantContent | ToolResultContent,
         /,
-        tool_call_tasks: dict[str, asyncio.Task] | None = None,
+        tool_call_tasks: dict[str, asyncio.Task[JsonObjectType]] | None = None,
     ) -> AsyncGenerator[ToolResultContent]:
         """Add assistant content and execute tool calls.
 
@@ -457,6 +457,7 @@ class ChatLog:
                 "Tool call: %s(%s)", tool_input.tool_name, tool_input.tool_args
             )
 
+            tool_result: JsonObjectType
             try:
                 tool_result = await tool_call_tasks[tool_input.id]
             except (HomeAssistantError, vol.Invalid) as e:

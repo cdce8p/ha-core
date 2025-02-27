@@ -1,5 +1,6 @@
 """Utils for the Slack integration."""
 
+from collections.abc import Iterable
 import logging
 
 import aiofiles
@@ -11,7 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 
 async def upload_file_to_slack(
     client: AsyncWebClient,
-    channel_ids: list[str | None],
+    channel_ids: Iterable[str | None],
     file_content: bytes | str | None,
     filename: str,
     title: str | None,

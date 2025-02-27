@@ -20,7 +20,7 @@ async def async_setup_entry(
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up this platform for a specific ConfigEntry(==Gateway)."""
-    device_class_map: dict[SensorType, type[MySensorsSwitch]] = {
+    device_class_map: dict[SensorType, type[MySensorsChildEntity]] = {
         "S_DOOR": MySensorsSwitch,
         "S_MOTION": MySensorsSwitch,
         "S_SMOKE": MySensorsSwitch,
