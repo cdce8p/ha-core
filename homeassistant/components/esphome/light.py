@@ -209,7 +209,7 @@ class EsphomeLight(EsphomeEntity[LightInfo, LightState], LightEntity):
             try_keep_current_mode = False
 
         if (rgbw_ha := kwargs.get(ATTR_RGBW_COLOR)) is not None:
-            *rgb, w = tuple(x / 255 for x in rgbw_ha)  # type: ignore[assignment]
+            *rgb, w = tuple(x / 255 for x in rgbw_ha)
             color_bri = max(rgb)
             # normalize rgb
             data["rgb"] = tuple(x / (color_bri or 1) for x in rgb)
@@ -221,7 +221,7 @@ class EsphomeLight(EsphomeEntity[LightInfo, LightState], LightEntity):
             try_keep_current_mode = False
 
         if (rgbww_ha := kwargs.get(ATTR_RGBWW_COLOR)) is not None:
-            *rgb, cw, ww = tuple(x / 255 for x in rgbww_ha)  # type: ignore[assignment]
+            *rgb, cw, ww = tuple(x / 255 for x in rgbww_ha)
             color_bri = max(rgb)
             # normalize rgb
             data["rgb"] = tuple(x / (color_bri or 1) for x in rgb)
