@@ -170,7 +170,7 @@ class DatasetStoreStore(Store):
     ) -> dict[str, Any]:
         """Migrate to the new version."""
         if old_major_version == 1:
-            data = old_data
+            data: dict[str, Any] = old_data
             if old_minor_version < 2:
                 # Deduplicate datasets
                 datasets: dict[str, DatasetEntry] = {}

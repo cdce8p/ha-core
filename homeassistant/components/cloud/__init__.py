@@ -299,6 +299,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     log_handler = hass.data[DATA_CLOUD_LOG_HANDLER] = await _setup_log_handler(hass)
 
     # Process configs
+    kwargs: dict[str, Any]
     if DOMAIN in config:
         kwargs = dict(config[DOMAIN])
     else:
