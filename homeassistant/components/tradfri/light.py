@@ -239,6 +239,7 @@ class TradfriLight(TradfriBaseEntity, LightEntity):
             command += color_command
         else:
             command = color_command
+        assert command is not None
 
         if self._device_control.can_combine_commands:
             await self._api(command + temp_command)
