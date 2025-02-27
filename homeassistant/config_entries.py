@@ -982,10 +982,10 @@ class ConfigEntry[_DataT = Any]:
             with async_start_setup(
                 hass, integration=self.domain, group=self.entry_id, phase=setup_phase
             ):
-                result = await component.async_setup_entry(hass, self)  # type: ignore[func-returns-value,assignment]
+                result = await component.async_setup_entry(hass, self)  # type: ignore[func-returns-value]
 
             if not isinstance(result, bool):
-                logger.error(  # type: ignore[unreachable]
+                logger.error(
                     "%s.async_setup_entry did not return boolean", integration.domain
                 )
                 result = False

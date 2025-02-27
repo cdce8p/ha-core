@@ -279,7 +279,7 @@ class KnxExposeEntity:
                     err,
                 )
                 return None
-        return value  # type: ignore[no-any-return]
+        return value
 
     async def _async_entity_changed(self, event: Event[EventStateChangedData]) -> None:
         """Handle entity change."""
