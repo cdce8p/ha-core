@@ -88,6 +88,7 @@ class StoredState:
 
         if isinstance(last_seen, str):
             last_seen = dt_util.parse_datetime(last_seen)
+        assert isinstance(last_seen, datetime)
 
         return cls(
             cast(State, State.from_dict(json_dict["state"])), extra_data, last_seen

@@ -92,6 +92,7 @@ class UkraineAlarmConfigFlow(ConfigFlow, domain=DOMAIN):
             source = self.selected_region["regionChildIds"]
         else:
             source = self.states
+        assert source is not None
 
         if user_input is not None:
             # Only offer to browse subchildren if picked

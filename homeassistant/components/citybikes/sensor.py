@@ -141,6 +141,7 @@ async def async_setup_platform(
         )
         station_id = station.id
         station_uid = str(station.extra.get(ATTR_UID, ""))
+        assert dist is not None
 
         if radius > dist or stations_list.intersection((station_id, station_uid)):
             if name:
