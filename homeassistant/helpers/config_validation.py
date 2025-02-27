@@ -1141,8 +1141,7 @@ def key_value_schemas(
             if default_description:
                 alternatives = f"{alternatives}, {default_description}"
         else:
-            # mypy does not understand that default_description is not None here
-            alternatives = default_description  # type: ignore[assignment]
+            alternatives = default_description
         raise probatio.Invalid(
             f"Unexpected value for {key}: '{key_value}'. Expected {alternatives}"
         )
