@@ -391,4 +391,5 @@ class WyomingConversationEntity(
             speech = str(speech)
             speech = " ".join(speech.strip().split())
 
+        assert speech is not None
         return speech
