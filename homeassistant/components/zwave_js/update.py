@@ -26,7 +26,7 @@ from homeassistant.components.update import (
     UpdateEntityStateAttribute,
 )
 from homeassistant.const import EntityCategory
-from homeassistant.core import CoreState, HomeAssistant, callback
+from homeassistant.core import CoreState, HomeAssistant, State, callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
@@ -349,8 +349,8 @@ class ZWaveFirmwareUpdateEntity(ZWaveNodeBaseEntity, UpdateEntity):
         await super().async_added_to_hass()
 
         # Make sure these variables are set for the elif evaluation
-        state = None
-        latest_version = None
+        state: State | None = None
+        latest_version: str | None = None
 
         # If we have a complete previous state, use that to set the latest version
         if (
