@@ -346,6 +346,7 @@ class GoogleConfigStore:
     async def async_initialize(self) -> None:
         """Finish initializing the ConfigStore."""
         should_save_data = False
+        data: dict[str, Any] | None
         if (data := await self._store.async_load()) is None:
             # if the store is not found create an empty one
             # Note that the first request is always a cloud request,
@@ -357,6 +358,7 @@ class GoogleConfigStore:
             }
             should_save_data = True
 
+        assert data is not None
         for agent_user_id, agent_user_data in data[STORE_AGENT_USER_IDS].items():
             if STORE_GOOGLE_LOCAL_WEBHOOK_ID not in agent_user_data:
                 data[STORE_AGENT_USER_IDS][agent_user_id] = {

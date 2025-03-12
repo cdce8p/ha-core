@@ -47,7 +47,7 @@ class SimplePushNotificationService(BaseNotificationService):
         """Send a message to a Simplepush user."""
         title = kwargs.get(ATTR_TITLE, ATTR_TITLE_DEFAULT)
 
-        attachments = None
+        attachments: list | None = None
         # event can now be passed in the service data
         event = None
         if data := kwargs.get(ATTR_DATA):
