@@ -2,6 +2,7 @@
 
 from collections.abc import Mapping
 import logging
+from typing import cast
 
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
@@ -99,7 +100,7 @@ def setup_mysensors_platform(
             s_type = gateway.const.Presentation(child.type).name
             device_class_copy = device_class[s_type]
         else:
-            device_class_copy = device_class
+            device_class_copy = cast(type[MySensorsChildEntity], device_class)
 
         dev_ids.add(dev_id)
         new_devices.append(
