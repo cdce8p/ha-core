@@ -15,6 +15,7 @@ def decode_attributes_from_source(
     """Decode attributes from a row source."""
     if not source or source == EMPTY_JSON_OBJECT:
         return {}
+    attributes: dict[str, Any] | None
     if (attributes := attr_cache.get(source)) is not None:
         return attributes
     try:

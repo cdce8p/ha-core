@@ -1,7 +1,7 @@
 """Support for Lutron lights."""
 
 from collections.abc import Mapping
-from typing import Any, override
+from typing import Any, cast, override
 
 from pylutron import Lutron, LutronEntity, Output
 
@@ -92,7 +92,7 @@ class LutronLight(LutronDevice, LightEntity):
             else:
                 brightness = self._prev_brightness
             self._prev_brightness = brightness
-            args = {"new_level": to_lutron_level(brightness)}
+            args = {"new_level": to_lutron_level(cast(int, brightness))}
             if ATTR_TRANSITION in kwargs:
                 args["fade_time_seconds"] = kwargs[ATTR_TRANSITION]
             self._lutron_device.set_level(**args)

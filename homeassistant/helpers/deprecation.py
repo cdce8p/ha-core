@@ -177,11 +177,11 @@ def deprecated_hass_argument[**_P, _T](
                     log_when_no_integration_is_found=True,
                 )
                 if in_arg:
-                    args = args[1:]  # type: ignore[assignment]
+                    args = args[1:]
                 if in_kwarg:
                     kwargs.pop("hass")
 
-            return func(*args, **kwargs)
+            return func(args, **kwargs)  # type: ignore[arg-type]
 
         return _inner
 

@@ -445,6 +445,7 @@ def _async_track_event(
 
     hass_data = hass.data
     tracker_key = tracker.key
+    event_data: _KeyedEventData[_TypedDictT]
     if tracker_key in hass_data:
         event_data = hass_data[tracker_key]
         callbacks = event_data.callbacks
