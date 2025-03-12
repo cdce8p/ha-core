@@ -94,7 +94,10 @@ def deserialize_entity_description(
     """Deserialize an entity description."""
     result: dict[str, Any] = {}
     if hasattr(descriptions_class, "_dataclass"):
-        descriptions_class = descriptions_class._dataclass  # noqa: SLF001
+        descriptions_class = cast(
+            type[EntityDescription],
+            descriptions_class._dataclass,  # noqa: SLF001
+        )
     for field in cached_fields(descriptions_class):
         field_name = field.name
         # Only set fields that are in the data

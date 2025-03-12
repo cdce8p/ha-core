@@ -299,7 +299,7 @@ async def build_item_response(
     )  # async_browse_media will not call this function if search_type is None
     media_class = browse_data.content_type_media_class[search_type]
 
-    children = None
+    children: list[BrowseMedia] | None = None
 
     if search_id and search_id != search_type:
         browse_id = (browse_data.squeezebox_id_by_type[search_type], search_id)
