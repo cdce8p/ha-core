@@ -297,7 +297,7 @@ class OpenRouterEntity(Entity):
         if tools:
             extra_body["tools"] = tools
 
-        model_args = {
+        model_args: dict[str, Any] = {
             "model": model,
             "user": chat_log.conversation_id,
             "extra_headers": {
