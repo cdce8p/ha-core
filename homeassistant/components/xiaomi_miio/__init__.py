@@ -191,11 +191,12 @@ def get_platforms(config_entry):
     return []
 
 
+# TODO concept of tagged Any types
 def _async_update_data_default(hass, device):
     async def update():
         """Fetch data from the device using async_add_executor_job."""
 
-        async def _async_fetch_data():
+        async def _async_fetch_data() -> Any:
             """Fetch data from the device."""
             async with asyncio.timeout(POLLING_TIMEOUT_SEC):
                 state = await hass.async_add_executor_job(device.status)
@@ -319,7 +320,9 @@ async def async_create_miio_device_and_coordinator(
     name = entry.title
     migrate = False
     update_method = _async_update_data_default
-    coordinator_class: type[DataUpdateCoordinator[Any]] = DataUpdateCoordinator
+    coordinator_class: type[DataUpdateCoordinator[Any]] = (
+        DataUpdateCoordinator  # TODO pyright
+    )
 
     lazy_discover = LAZY_DISCOVER_FOR_MODEL.get(model, False)
 
@@ -402,7 +405,7 @@ async def async_create_miio_device_and_coordinator(
         _LOGGER,
         config_entry=entry,
         name=name,
-        update_method=update_method(hass, device),
+        update_method=update_method(hass, device),  # type: ignore[arg-type]
         # Polling interval. Will only be polled if there are subscribers.
         update_interval=UPDATE_INTERVAL,
     )
