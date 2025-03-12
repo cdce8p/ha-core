@@ -1576,7 +1576,7 @@ class EntityRegistry(BaseRegistry):
             disabled_by = RegistryEntryDisabler.INTEGRATION
 
         entry = RegistryEntry(
-            aliases=aliases,
+            aliases=aliases,  # type: ignore[arg-type]
             area_id=area_id,
             categories=categories,
             capabilities=none_if_undefined(capabilities),
