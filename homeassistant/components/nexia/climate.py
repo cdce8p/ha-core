@@ -376,14 +376,14 @@ class NexiaZone(NexiaThermostatZoneEntity, ClimateEntity):
         if (
             new_heat_temp
             and new_heat_temp != cur_heat_temp
-            and new_cool_temp - new_heat_temp < deadband
+            and new_cool_temp - new_heat_temp < deadband  # type: ignore[operator]
         ):
             new_cool_temp = new_heat_temp + deadband
 
         if (
             new_cool_temp
             and new_cool_temp != cur_cool_temp
-            and new_cool_temp - new_heat_temp < deadband
+            and new_cool_temp - new_heat_temp < deadband  # type: ignore[operator]
         ):
             new_heat_temp = new_cool_temp - deadband
 
