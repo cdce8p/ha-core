@@ -2592,7 +2592,7 @@ class Service:
         self.description_placeholders = description_placeholders
 
 
-class ServiceCall:
+class ServiceCall:  # TODO better type data
     """Representation of a call to a service."""
 
     __slots__ = ("context", "data", "domain", "hass", "return_response", "service")
