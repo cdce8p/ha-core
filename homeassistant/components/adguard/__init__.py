@@ -70,6 +70,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AdGuardConfigEntry) -> b
     _async_migrate_device_identifiers(hass, entry)
 
     session = async_get_clientsession(hass, entry.data[CONF_VERIFY_SSL])
+    reveal_type(entry)
     adguard = AdGuardHome(
         URL.build(
             scheme="https" if entry.data[CONF_SSL] else "http",
