@@ -4,7 +4,7 @@ from abc import abstractmethod
 import asyncio
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import override
+from typing import TypedDict, override
 
 from adguardhome import (
     AdGuardHome,
@@ -27,7 +27,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .const import DOMAIN, LOGGER
 
-type AdGuardConfigEntry = ConfigEntry[AdGuardData]
+type AdGuardConfigEntry = ConfigEntry[AdGuardData, AdGuardConfEntryData]
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -184,3 +184,14 @@ class AdGuardData:
     state: AdGuardHomeStateCoordinator
     statistics: AdGuardHomeStatisticsCoordinator
     update: AdGuardHomeUpdateCoordinator
+
+
+class AdGuardConfEntryData(TypedDict):
+    """Adguard ConfigEntry data type."""
+
+    host: str
+    password: str | None
+    port: int
+    ssl: bool
+    username: str | None
+    verify_ssl: bool
