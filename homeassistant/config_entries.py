@@ -4,10 +4,13 @@ import asyncio
 from collections import UserDict, defaultdict
 from collections.abc import (
     Callable,
+    Collection,
     Coroutine,
     Generator,
     Hashable,
+    ItemsView,
     Iterable,
+    KeysView,
     Mapping,
     ValuesView,
 )
@@ -21,7 +24,19 @@ from functools import cache
 import logging
 from random import randint
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, Self, TypedDict, cast, override
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Generic,
+    Protocol,
+    Self,
+    TypedDict,
+    TypeVar,
+    cast,
+    overload,
+    override,
+    reveal_type,
+)
 
 from async_interrupt import interrupt
 from propcache.api import cached_property
@@ -202,7 +217,7 @@ DISCOVERY_SOURCES = {
 
 EVENT_FLOW_DISCOVERED = "config_entry_discovered"
 
-SIGNAL_CONFIG_ENTRY_CHANGED = SignalType["ConfigEntryChange", "ConfigEntry"](
+SIGNAL_CONFIG_ENTRY_CHANGED = SignalType["ConfigEntryChange", "ConfigEntry[Any, Any]"](
     "config_entry_changed"
 )
 
@@ -389,15 +404,73 @@ class ConfigSubentry:
         }
 
 
-class ConfigEntry[_DataT = Any]:
+class ConfEntryDataType(Collection[str], Protocol):
+    """Protocol type for ConfigEntry data and options.
+
+    Support basic Mapping types and assignments with dict, TypedDict, MappingProxyType.
+    """
+
+    def __getitem__(self, key: str, /) -> Any: ...  # noqa: D105
+    @overload
+    def get(self, key: str, /) -> Any | None: ...
+    @overload
+    def get[_T](self, key: str, default: Any | _T, /) -> Any | _T: ...
+    def items(self) -> ItemsView[str, Any]: ...  # noqa: D102
+    def keys(self) -> KeysView[str]: ...  # noqa: D102
+    def values(self) -> ValuesView[Any]: ...  # noqa: D102
+    def __contains__(self, key: Any, /) -> bool: ...  # noqa: D105
+    def __eq__(self, other: Any, /) -> bool: ...  # noqa: D105
+    def copy(  # noqa: D102
+        self,
+    ) -> ConfEntryDataType: ...  # TODO ??  # pylint: disable=fixme
+    def __or__(self, value: dict[str, Any], /) -> dict[str, Any]: ...  # noqa: D105
+    def __ror__(self, value: dict[str, Any], /) -> dict[str, Any]: ...  # noqa: D105
+
+
+def _test_conf_entry_data_typing(data: ConfEntryDataType) -> None:
+    """Test ConfEntryDataType work as intended.
+
+    This is tested during the mypy run. Do not move it to 'tests'!
+    """
+
+    class _Data(TypedDict):
+        key: str
+
+    reveal_type(data)
+    data["key"] = 2  # type: ignore[index]
+    data["key"]
+    data.copy()
+    data.keys()
+    data.values()
+    data.items()
+    reveal_type(data | {"key": 1})
+
+    data = {"key": 1}
+    data = MappingProxyType({})
+    data = _Data(key="key")
+
+
+_DataT = TypeVar("_DataT", default=Any)
+_EntryDataT_co = TypeVar(
+    "_EntryDataT_co",
+    covariant=True,
+    bound=ConfEntryDataType,
+    default=ConfEntryDataType,
+)
+
+
+class ConfigEntry(Generic[_DataT, _EntryDataT_co]):
     """Hold a configuration entry."""
 
     entry_id: str
     domain: str
     title: str
-    data: MappingProxyType[str, Any]
+    data: _EntryDataT_co
+    # data: ConfEntryDataType
+    # data: MappingProxyType[str, Any]
     runtime_data: _DataT
-    options: MappingProxyType[str, Any]
+    options: ConfEntryDataType
+    # options: MappingProxyType[str, Any]
     subentries: MappingProxyType[str, ConfigSubentry]
     unique_id: str | None
     state: ConfigEntryState

@@ -1,6 +1,7 @@
 """Support for AdGuard Home."""
 
 from dataclasses import dataclass
+from typing import TypedDict, reveal_type
 
 from adguardhome import AdGuardHome, AdGuardHomeConnectionError
 import voluptuous as vol
@@ -46,7 +47,7 @@ SERVICE_REFRESH_SCHEMA = vol.Schema(
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 PLATFORMS = [Platform.SENSOR, Platform.SWITCH, Platform.UPDATE]
-type AdGuardConfigEntry = ConfigEntry[AdGuardData]
+type AdGuardConfigEntry = ConfigEntry[AdGuardData, AdGuardConfEntryData]
 
 
 @dataclass
@@ -55,6 +56,17 @@ class AdGuardData:
 
     client: AdGuardHome
     version: str
+
+
+class AdGuardConfEntryData(TypedDict):
+    """Adguard ConfigEntry data type."""
+
+    host: str
+    password: str | None
+    port: int
+    ssl: bool
+    username: str | None
+    verify_ssl: bool
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -123,6 +135,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: AdGuardConfigEntry) -> bool:
     """Set up AdGuard Home from a config entry."""
     session = async_get_clientsession(hass, entry.data[CONF_VERIFY_SSL])
+    reveal_type(entry)
     adguard = AdGuardHome(
         entry.data[CONF_HOST],
         port=entry.data[CONF_PORT],
