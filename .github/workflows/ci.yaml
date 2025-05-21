@@ -42,7 +42,7 @@ env:
   MYPY_CACHE_VERSION: 1
   HA_SHORT_VERSION: "2025.11"
   DEFAULT_PYTHON: "3.13"
-  ALL_PYTHON_VERSIONS: "['3.13']"
+  ALL_PYTHON_VERSIONS: "['3.13', '3.14-dev']"
   # 10.3 is the oldest supported version
   # - 10.3.32 is the version currently shipped with Synology (as of 17 Feb 2022)
   # 10.6 is the current long-term-support
@@ -68,9 +68,9 @@ env:
   PYTHONASYNCIODEBUG: 1
   HASS_CI: 1
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -427,6 +427,7 @@ jobs:
     needs: [info]
     timeout-minutes: 60
     strategy:
+      fail-fast: false
       matrix:
         python-version: ${{ fromJSON(needs.info.outputs.python_versions) }}
     steps:
@@ -455,10 +456,10 @@ jobs:
             needs.info.outputs.python_cache_key }}
       - name: Restore uv wheel cache
         if: steps.cache-venv.outputs.cache-hit != 'true'
-        uses: *actions-cache
+        uses: *actions-cache-restore
         with:
           path: ${{ env.UV_CACHE_DIR }}
-          key: >-
+          key: &key-uv-cache >-
             ${{ runner.os }}-${{ runner.arch }}-${{ steps.python.outputs.python-version }}-${{
             steps.generate-uv-key.outputs.key }}
           restore-keys: |
@@ -530,6 +531,12 @@ jobs:
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
           uv pip install -e . --config-settings editable_mode=compat
+      - name: Save uv wheel cache
+        if: ${{ !cancelled() && steps.cache-venv.outputs.cache-hit != 'true' }}
+        uses: *actions-cache-save
+        with:
+          path: ${{ env.UV_CACHE_DIR }}
+          key: *key-uv-cache
       - name: Dump pip freeze
         run: |
           python -m venv venv
@@ -774,8 +781,43 @@ jobs:
           python --version
           mypy homeassistant/components/${{ needs.info.outputs.integrations_glob }}
 
+  installed-packages:
+    name: List installed packages
+    runs-on: *runs-on-ubuntu
+    needs: *needs-base
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+    steps:
+      - *checkout
+      - *setup-python-matrix
+      - *cache-restore-python-matrix
+      - name: Installed packages
+        run: |
+          . venv/bin/activate
+          pip list 2>&1 | tee packages-${{ matrix.python-version }}.txt
+      - name: Reverse pipdeptree
+        run: |
+          . venv/bin/activate
+          pipdeptree -r 2>&1 | tee dependency_tree-${{ matrix.python-version }}.txt
+      - name: Pip inspect
+        run: |
+          . venv/bin/activate
+          pip inspect 2>&1 | tee pip_inspect-${{ matrix.python-version }}.json
+      - name: Upload output
+        if: success() || failure()
+        uses: *actions-upload-artifact
+        with:
+          name: pytest-${{ github.run_number }}-${{ matrix.python-version }}-installed-pkgs
+          path: |
+            packages-*.txt
+            dependency_tree-*.txt
+            pip_inspect-*.json
+            typed_pkgs-*.txt
+
   prepare-pytest-full:
-    name: Split tests for full run
+    name: Split tests for full run ${{ matrix.python-version }}
     runs-on: *runs-on-ubuntu
     if: |
       needs.info.outputs.lint_only != 'true'
@@ -783,12 +825,16 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.14-dev"]
     steps:
       - *cache-restore-apt
       - name: Install additional OS dependencies
@@ -806,8 +852,8 @@ jobs:
             libturbojpeg \
             libgammu-dev
       - *checkout
-      - *setup-python-default
-      - *cache-restore-python-default
+      - *setup-python-matrix
+      - *cache-restore-python-matrix
       - name: Run split_tests.py
         run: |
           . venv/bin/activate
@@ -815,7 +861,7 @@ jobs:
       - name: Upload pytest_buckets
         uses: *actions-upload-artifact
         with:
-          name: pytest_buckets
+          name: pytest_buckets-${{ matrix.python-version }}
           path: pytest_buckets.txt
           overwrite: true
 
@@ -825,12 +871,12 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
       - prepare-pytest-full
     if: |
       needs.info.outputs.lint_only != 'true'
@@ -838,7 +884,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.14-dev"]
         group: ${{ fromJson(needs.info.outputs.test_groups) }}
     steps:
       - *cache-restore-apt
@@ -871,7 +917,7 @@ jobs:
       - name: Download pytest_buckets
         uses: &actions-download-artifact actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
-          name: pytest_buckets
+          name: pytest_buckets-${{ matrix.python-version }}
       - &compile-english-translations
         name: Compile English translations
         run: |
@@ -906,7 +952,8 @@ jobs:
             -p no:sugar \
             --exclude-warning-annotations \
             $(sed -n "${{ matrix.group }},1p" pytest_buckets.txt) \
-              2>&1 | tee pytest-${{ matrix.python-version }}-${{ matrix.group }}.txt
+              2>&1 | tee pytest-${{ matrix.python-version }}-${{ matrix.group }}${{
+                        github.run_attempt != '1' && format('_{0}', github.run_attempt) || '' }}.txt
       - name: Upload pytest output
         if: success() || failure() && steps.pytest-full.conclusion == 'failure'
         uses: *actions-upload-artifact
@@ -952,19 +999,19 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
     if: |
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.mariadb_groups != '[]'
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.14-dev"]
         mariadb-group: ${{ fromJson(needs.info.outputs.mariadb_groups) }}
     steps:
       - *cache-restore-apt
@@ -1028,7 +1075,8 @@ jobs:
             tests/components/logbook \
             tests/components/recorder \
             tests/components/sensor \
-              2>&1 | tee pytest-${{ matrix.python-version }}-${mariadb}.txt
+              2>&1 | tee pytest-${{ matrix.python-version }}-${mariadb}${{
+                        github.run_attempt != '1' && format('_{0}', github.run_attempt) || '' }}.txt
       - name: Upload pytest output
         if: success() || failure() && steps.pytest-partial.conclusion == 'failure'
         uses: *actions-upload-artifact
@@ -1069,19 +1117,19 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - lint-other
-      - lint-ruff
-      - lint-ruff-format
-      - mypy
+      # - gen-requirements-all
+      # - hassfest
+      # - lint-other
+      # - lint-ruff
+      # - lint-ruff-format
+      # - mypy
     if: |
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.postgresql_groups != '[]'
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.14-dev"]
         postgresql-group: ${{ fromJson(needs.info.outputs.postgresql_groups) }}
     steps:
       - *cache-restore-apt
@@ -1148,7 +1196,8 @@ jobs:
             tests/components/logbook \
             tests/components/recorder \
             tests/components/sensor \
-              2>&1 | tee pytest-${{ matrix.python-version }}-${postgresql}.txt
+              2>&1 | tee pytest-${{ matrix.python-version }}-${postgresql}${{
+                        github.run_attempt != '1' && format('_{0}', github.run_attempt) || '' }}.txt
       - name: Upload pytest output
         if: success() || failure() && steps.pytest-partial.conclusion == 'failure'
         uses: *actions-upload-artifact
@@ -1350,3 +1399,22 @@ jobs:
           fail_ci_if_error: true
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  debug-combine-pytest-output:
+    name: "Debug: Combine pytest output"
+    runs-on: *runs-on-ubuntu
+    needs:
+      - info
+      - installed-packages
+      - pytest-full
+      - pytest-postgres
+      - pytest-mariadb
+    timeout-minutes: 5
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Merge all pytest coverage artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: pytest-${{ github.run_number }}
+          pattern: pytest-${{ github.run_number }}*
+          delete-merged: true
