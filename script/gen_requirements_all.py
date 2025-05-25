@@ -158,7 +158,7 @@ backoff>=2.0
 pydantic==2.11.7
 
 # Required for Python 3.12.4 compatibility (#119223).
-mashumaro>=3.13.1
+mashumaro>=3.16.0
 
 # Breaks asyncio
 # https://github.com/pubnub/python/issues/130

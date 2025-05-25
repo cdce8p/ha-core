@@ -542,6 +542,10 @@ jobs:
           python --version
           pip install "$(grep '^uv' < requirements.txt)"
           uv pip install -U "pip>=21.3.1" setuptools wheel
+
+          # https://github.com/cdce8p/mashumaro/tree/python-3.14  # 2025-07-19
+          uv pip install git+https://github.com/cdce8p/mashumaro@a86980dbbad9b93fc2ba16717fb2f04062afc809
+
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
