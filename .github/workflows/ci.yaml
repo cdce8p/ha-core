@@ -546,6 +546,9 @@ jobs:
           # https://github.com/cdce8p/mashumaro/tree/python-3.14  # 2025-07-19
           uv pip install git+https://github.com/cdce8p/mashumaro@a86980dbbad9b93fc2ba16717fb2f04062afc809
 
+          # https://github.com/pyca/pynacl/tree/main  # 2025-05-08
+          uv pip install git+https://github.com/pyca/pynacl@4cae5166b65f0cb877f6c95856044e952b5a0598
+
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
