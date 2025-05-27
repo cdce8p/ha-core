@@ -972,7 +972,8 @@ jobs:
             bluez \
             ffmpeg \
             libturbojpeg \
-            libgammu-dev
+            libgammu-dev \
+            libopenblas-dev nasm
       - name: Check out code from GitHub
         uses: actions/checkout@v4.2.2
       - name: Set up Python ${{ matrix.python-version }}
@@ -1033,7 +1034,8 @@ jobs:
             ffmpeg \
             libturbojpeg \
             libgammu-dev \
-            libxml2-utils
+            libxml2-utils \
+            libopenblas-dev nasm
       - name: Check out code from GitHub
         uses: actions/checkout@v4.2.2
       - name: Set up Python ${{ matrix.python-version }}
@@ -1167,7 +1169,8 @@ jobs:
             ffmpeg \
             libturbojpeg \
             libmariadb-dev-compat \
-            libxml2-utils
+            libxml2-utils \
+            libopenblas-dev nasm
       - name: Check out code from GitHub
         uses: actions/checkout@v4.2.2
       - name: Set up Python ${{ matrix.python-version }}
@@ -1307,7 +1310,8 @@ jobs:
             bluez \
             ffmpeg \
             libturbojpeg \
-            libxml2-utils
+            libxml2-utils \
+            libopenblas-dev nasm
           sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
           sudo apt-get -y install \
             postgresql-server-dev-14
