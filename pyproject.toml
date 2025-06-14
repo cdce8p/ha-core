@@ -574,6 +574,12 @@ filterwarnings = [
   # https://pypi.org/project/plumlightpad/ - v0.0.11 - 2018-10-16
   # https://pypi.org/project/pyiss/ - v1.0.1 - 2016-12-19
   "ignore:\"is.*\" with '.*' literal:SyntaxWarning:importlib._bootstrap",
+  # - SyntaxWarning - return in finally
+  # https://github.com/nextcord/nextcord/blob/v2.6.0/nextcord/gateway.py#L149
+  # https://github.com/nextcord/nextcord/blob/v2.6.0/nextcord/player.py#L554
+  # https://github.com/Python-roborock/python-roborock/blob/v2.19.0/roborock/version_1_apis/roborock_client_v1.py#L229
+  # https://pypi.org/project/sleekxmppfs/ - v1.4.1 - 2022-08-18
+  "ignore:'return' in a 'finally' block:SyntaxWarning:importlib._bootstrap",
 
   # -- New in Python 3.13
   # https://github.com/kurtmckee/feedparser/pull/389 - >6.0.11
@@ -585,6 +591,33 @@ filterwarnings = [
   "ignore:telnetlib was removed in Python 3.13.*'standard-telnetlib':DeprecationWarning:ndms2_client.connection",
   "ignore:telnetlib was removed in Python 3.13.*'standard-telnetlib':DeprecationWarning:plumlightpad.lightpad",
   "ignore:telnetlib was removed in Python 3.13.*'standard-telnetlib':DeprecationWarning:pyws66i",
+
+  # -- New in Python 3.14
+  # https://github.com/home-assistant-libs/aiohue/pull/505 - >4.7.4
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:aiohue.v2.controllers.events",
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:aiohue.v2.controllers.base",
+  # https://github.com/kumaraditya303/aioshutil - v1.5 - 2024-07-20
+  "ignore:'shutil.ExecError' is deprecated and slated for removal in Python 3.16:DeprecationWarning:aioshutil",
+  # https://github.com/litl/backoff/pull/220
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:(backoff._decorator|backoff._async)",
+  # https://github.com/albertogeniola/elmax-api
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:elmax_api.http",
+  # https://github.com/ikalchev/HAP-python/pull/486
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:pyhap.util",
+  # https://github.com/py-mine/mcstatus
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:mcstatus.utils",
+  # https://github.com/nextcord/nextcord
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:nextcord.member",
+  # https://github.com/andrewsayre/pyheos
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:pyheos.dispatch",
+  # https://github.com/SteveEasley/pykaleidescape - 2022.2.6 - 2022-03-07
+  "ignore:'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16:DeprecationWarning:kaleidescape.dispatcher",
+  # https://github.com/svinota/pyroute2
+  "ignore:Due to '_pack_', the '.*' Structure will use memory layout compatible with MSVC:DeprecationWarning:pyroute2.ethtool.ioctl",
+  # https://github.com/googleapis/python-genai
+  "ignore:'_UnionGenericAlias' is deprecated and slated for removal in Python 3.17:DeprecationWarning:google.genai.types",
+  # https://github.com/pyusb/pyusb
+  "ignore:Due to '_pack_', the '.*' Structure will use memory layout compatible with MSVC:DeprecationWarning:usb.backend.libusb0",
 
   # -- Websockets 14.1
   # https://websockets.readthedocs.io/en/stable/howto/upgrade.html
@@ -627,6 +660,9 @@ filterwarnings = [
   "ignore:with timeout\\(\\) is deprecated:DeprecationWarning:pyqwikswitch.async_",
   # https://pypi.org/project/rxv/ - v0.7.0 - 2021-10-10
   "ignore:defusedxml.cElementTree is deprecated, import from defusedxml.ElementTree instead:DeprecationWarning:rxv.ssdp",
+
+  # -- custom --
+  "ignore:This method will be removed future version, pass the callback to the BleakClient constructor instead:FutureWarning:habluetooth.wrappers",
 ]
 
 [tool.coverage.run]
