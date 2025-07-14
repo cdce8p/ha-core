@@ -552,6 +552,9 @@ jobs:
           # https://github.com/pydantic/pydantic/tree/main  # 2025-07-10
           uv pip install git+https://github.com/pydantic/pydantic@9452e13c571db7d31051768c3b4d47a6e2ceea7d
 
+          # https://github.com/cdce8p/pyatv/tree/python-314  # 2025-07-14
+          uv pip install git+https://github.com/cdce8p/pyatv@b0d1b26338c54a5981b82b39896850ae5feb236a
+
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
