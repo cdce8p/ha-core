@@ -555,6 +555,9 @@ jobs:
           # https://github.com/cdce8p/pyatv/tree/python-314  # 2025-07-14
           uv pip install git+https://github.com/cdce8p/pyatv@b0d1b26338c54a5981b82b39896850ae5feb236a
 
+          # https://github.com/cdce8p/yolink-api/tree/python-314  # 2025-07-14
+          uv pip install git+https://github.com/cdce8p/yolink-api@3a49ce42d40d62e9b33c050fbcbbfd85a5b6d79e
+
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
