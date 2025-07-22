@@ -558,6 +558,9 @@ jobs:
           # https://github.com/cdce8p/yolink-api/tree/python-314  # 2025-07-14
           uv pip install git+https://github.com/cdce8p/yolink-api@3a49ce42d40d62e9b33c050fbcbbfd85a5b6d79e
 
+          # https://github.com/cdce8p/ical/tree/pydantic-v2  # 2025-07-23
+          uv pip install git+https://github.com/cdce8p/ical@0caf173676a2785782dd2b542cca2a8debd482e0
+
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
