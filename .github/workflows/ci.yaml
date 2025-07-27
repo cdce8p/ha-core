@@ -531,6 +531,10 @@ jobs:
           # https://github.com/cdce8p/pyatv/tree/python-314  # 2025-07-28
           uv pip install git+https://github.com/cdce8p/pyatv@66da36148a53c09b3b08a51a3b565575bbcf419e
 
+          # https://codeberg.org/poezio/slixmpp
+          # https://github.com/cdce8p/slixmpp/tree/python-314  # 2025-07-27
+          uv pip install git+https://github.com/cdce8p/slixmpp@c951510e0dbc7af3ebe8e1629786fcf9e47b5256
+
           uv pip install -r requirements.txt
           python -m script.gen_requirements_all ci
           uv pip install -r requirements_all_pytest.txt -r requirements_test.txt
