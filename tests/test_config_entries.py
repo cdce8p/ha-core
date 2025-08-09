@@ -8254,7 +8254,7 @@ async def test_update_entry_and_reload(
     assert entry.options == expected_options
     assert entry.state is config_entries.ConfigEntryState.LOADED
     if raises:
-        assert isinstance(err, raises)
+        assert isinstance(err, raises)  # pylint: disable=used-before-assignment
     else:
         assert result["type"] is FlowResultType.ABORT
         assert result["reason"] == reason
@@ -8637,7 +8637,7 @@ async def test_update_subentry_and_abort(
     assert subentry.unique_id == expected_unique_id
     assert subentry.data == expected_data
     if raises:
-        assert isinstance(err, raises)
+        assert isinstance(err, raises)  # pylint: disable=used-before-assignment
     else:
         assert result["type"] is FlowResultType.ABORT
         assert result["reason"] == "reconfigure_successful"
