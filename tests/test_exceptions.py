@@ -73,6 +73,7 @@ def test_template_message(arg: str | Exception, expected: str) -> None:
         ((), {}, (), ""),
         (("bla",), {}, ("bla",), "bla"),
         ((None,), {}, (None,), "None"),
+        # pylint: disable=undefined-variable  # FALSE POSITIVE
         ((type_error_bla := TypeError("bla"),), {}, (type_error_bla,), "bla"),
         (
             (),

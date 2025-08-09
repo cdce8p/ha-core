@@ -40,6 +40,7 @@ def override_side_effect(mock: AsyncMock, effect):
         mock.side_effect = effect
         yield mock
     finally:
+        # pylint: disable-next=used-before-assignment
         mock.side_effect = default_side_effect
 
 
