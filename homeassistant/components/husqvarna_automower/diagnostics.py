@@ -45,4 +45,5 @@ async def async_get_device_diagnostics(
                 == device.serial_number
             ):
                 mower_id = identifier[1]
+    # pylint: disable-next=used-before-assignment
     return async_redact_data(coordinator.data[mower_id].to_dict(), TO_REDACT)

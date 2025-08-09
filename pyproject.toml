@@ -214,7 +214,7 @@ disable = [
   "too-many-star-expressions",          # F622
   "truncated-format-string",            # F501
   "undefined-all-variable",             # F822
-  "undefined-variable",                 # F821
+  # "undefined-variable",                 # F821
   "used-prior-global-declaration",      # PLE0118
   "yield-inside-async-function",        # PLE1700
   "yield-outside-function",             # F704
@@ -395,7 +395,7 @@ disable = [
   "unsupported-binary-operation",
   "unsupported-delete-operation",
   "unsupported-membership-test",
-  "used-before-assignment",
+  # "used-before-assignment",
   "using-final-decorator-in-unsupported-version",
   "wrong-exception-operation",
 ]

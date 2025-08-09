@@ -961,6 +961,7 @@ class ForkedDaapdMaster(MediaPlayerEntity):
             if media_content_type is not None:
                 return spotify_result
             if spotify_result.children:
+                # pylint: disable-next=undefined-variable
                 other_sources += spotify_result.children
 
         if media_content_id is None or media_content_type is None:

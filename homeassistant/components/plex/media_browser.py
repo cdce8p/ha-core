@@ -168,6 +168,7 @@ def browse_media(  # noqa: C901
         return media_info
 
     if media_content_type == "hub":
+        # pylint: disable-next=used-before-assignment
         if hub_location == "server":
             hub = next(
                 x
