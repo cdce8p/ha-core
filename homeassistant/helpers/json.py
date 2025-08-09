@@ -227,6 +227,7 @@ def prepare_save_json(
             json_data = _orjson_bytes_default_encoder(data)
     except TypeError as error:
         formatted_data = format_unserializable_data(
+            # pylint: disable-next=used-before-assignment
             find_paths_unserializable_data(data, dump=dump)
         )
         raise SerializationError(f"Bad data at {formatted_data}") from error
