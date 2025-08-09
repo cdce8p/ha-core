@@ -243,7 +243,7 @@ async def test_config_flow_errors(
                 hass, b2_fixture.key_id, b2_fixture.application_key
             )
 
-    assert result.get("type") is FlowResultType.FORM
+    assert result.get("type") is FlowResultType.FORM  # pylint: disable=used-before-assignment
     assert result.get("errors") == {expected_field: expected_error}
 
     if error_type == "restricted_bucket":
