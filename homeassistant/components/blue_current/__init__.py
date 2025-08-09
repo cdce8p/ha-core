@@ -187,6 +187,7 @@ class Connector:
                     delay = DELAY
 
                 self._on_disconnect()
+                # pylint: disable-next=used-before-assignment
                 await asyncio.sleep(delay)
         finally:
             await self._disconnect()
