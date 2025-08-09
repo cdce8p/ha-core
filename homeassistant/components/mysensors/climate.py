@@ -173,6 +173,7 @@ class MySensorsHVAC(MySensorsChildEntity, ClimateEntity):
                 # Set COOL Target temperature
                 value_type = set_req.V_HVAC_SETPOINT_COOL
             if heat is not None or cool is not None:
+                # pylint: disable-next=used-before-assignment
                 updates = [(value_type, temp)]
         elif all(val is not None for val in (low, high, heat, cool)):
             updates = [
