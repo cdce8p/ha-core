@@ -393,7 +393,8 @@ class NumberEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
         NumberEntity should read the number's native unit through this property instead
         of through native_unit_of_measurement.
         """
-        native_unit_of_measurement = self.native_unit_of_measurement
+        if (native_unit_of_measurement := self.native_unit_of_measurement) is None:
+            return None
         return AMBIGUOUS_UNITS.get(
             native_unit_of_measurement, native_unit_of_measurement
         )
