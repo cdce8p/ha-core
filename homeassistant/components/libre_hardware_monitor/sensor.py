@@ -153,8 +153,10 @@ class LibreHardwareMonitorSensor(
         """Convert a native value to the unit the state is converted to."""
         # Conductivity uses micro-sign U+00B5 spelling in its unit which cannot be converted
         # so we swap it with Greek mu U+03BC to get μS/cm as a valid unit
+        if (native_unit_of_measurement := self.native_unit_of_measurement) is None:
+            return native_value
         native_unit = AMBIGUOUS_UNITS.get(
-            self.native_unit_of_measurement, self.native_unit_of_measurement
+            native_unit_of_measurement, native_unit_of_measurement
         )
         unit = self.unit_of_measurement
         if (
