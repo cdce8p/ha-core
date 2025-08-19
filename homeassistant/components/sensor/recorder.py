@@ -73,7 +73,7 @@ DEFAULT_STATISTICS = {
     SensorStateClass.TOTAL_INCREASING: _StatisticsConfig({"sum"}),
 }
 
-EQUIVALENT_UNITS = {
+EQUIVALENT_UNITS: dict[str, str] = {
     "BTU/(h×ft²)": UnitOfIrradiance.BTUS_PER_HOUR_SQUARE_FOOT,
     "dBa": UnitOfSoundPressure.WEIGHTED_DECIBEL_A,
     "RPM": REVOLUTIONS_PER_MINUTE,
@@ -210,7 +210,7 @@ def _get_units(fstates: list[tuple[float, State]]) -> set[str | None]:
 
 
 def _equivalent_units(
-    units: set[str | None], all_equivalent_units: dict[str | None, str]
+    units: set[str | None], all_equivalent_units: dict[str, str]
 ) -> bool:
     """Return True if the units are equivalent."""
     if len(units) == 1:
@@ -279,8 +279,8 @@ def _get_unit_converter(
 
 
 def _collect_equivalent_units_for_entity(
-    custom_units_for_entity: dict[str | None, str] | None,
-) -> dict[str | None, str]:
+    custom_units_for_entity: dict[str, str] | None,
+) -> dict[str, str]:
     if not custom_units_for_entity:
         return EQUIVALENT_UNITS
     return EQUIVALENT_UNITS | custom_units_for_entity
@@ -291,7 +291,7 @@ def _normalize_states(
     old_metadatas: dict[str, tuple[int, StatisticMetaData]],
     fstates: list[tuple[float, State]],
     entity_id: str,
-    custom_units_for_entity: dict[str | None, str] | None,
+    custom_units_for_entity: dict[str, str] | None,
 ) -> tuple[str | None, str | None, list[tuple[float, State]]]:
     """Normalize units."""
     state_unit: str | None = None
@@ -531,7 +531,7 @@ def compile_statistics(  # noqa: C901
     session: Session,
     start: datetime.datetime,
     end: datetime.datetime,
-    custom_units_for_entities: dict[str, dict[str | None, str]],
+    custom_units_for_entities: dict[str, dict[str, str]],
 ) -> statistics.PlatformCompiledStatistics:
     """Compile statistics for all entities during start-end."""
     result: list[StatisticResult] = []
@@ -884,7 +884,7 @@ def _update_issues(
     report_issue: Callable[[str, str, dict[str, Any]], None],
     sensor_states: list[State],
     metadatas: dict[str, tuple[int, StatisticMetaData]],
-    custom_units_for_entities: dict[str, dict[str | None, str]],
+    custom_units_for_entities: dict[str, dict[str, str]],
 ) -> None:
     """Update repair issues."""
     for state in sensor_states:
@@ -970,7 +970,7 @@ def _update_issues(
 def update_statistics_issues(
     hass: HomeAssistant,
     session: Session,
-    custom_units_for_entities: dict[str, dict[str | None, str]],
+    custom_units_for_entities: dict[str, dict[str, str]],
 ) -> None:
     """Validate statistics."""
     instance = get_instance(hass)
@@ -1032,7 +1032,7 @@ def update_statistics_issues(
 
 def validate_statistics(
     hass: HomeAssistant,
-    custom_units_for_entities: dict[str, dict[str | None, str]],
+    custom_units_for_entities: dict[str, dict[str, str]],
 ) -> dict[str, list[statistics.ValidationIssue]]:
     """Validate statistics."""
     validation_result = defaultdict(list)

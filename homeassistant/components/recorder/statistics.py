@@ -696,9 +696,9 @@ _warn_custom_units_error: set[str] = set()
 
 def _get_custom_equivalent_units(
     hass: HomeAssistant,
-) -> dict[str, dict[str | None, str]]:
+) -> dict[str, dict[str, str]]:
     """Check whether any integration supplies custom equivalent units."""
-    custom_equivalent_units_per_entity: dict[str, dict[str | None, str]] = {}
+    custom_equivalent_units_per_entity: dict[str, dict[str, str]] = {}
     for domain, platform in hass.data[DATA_RECORDER].recorder_platforms.items():
         custom_equivalent_units = getattr(
             platform, INTEGRATION_PLATFORM_CUSTOM_EQUIVALENT_UNITS, None
