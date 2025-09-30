@@ -754,9 +754,8 @@ class EntityPlatform:
 
         :param config_subentry_id: subentry which the entities should be added to
         """
-        if config_subentry_id and (
-            not self.config_entry
-            or config_subentry_id not in self.config_entry.subentries
+        if config_subentry_id and not (
+            self.config_entry and config_subentry_id in self.config_entry.subentries
         ):
             raise HomeAssistantError(
                 f"Can't add entities to unknown subentry"
@@ -1406,9 +1405,9 @@ def async_get_platforms(
     hass: HomeAssistant, integration_name: str
 ) -> list[EntityPlatform]:
     """Find existing platforms."""
-    if (
-        DATA_ENTITY_PLATFORM not in hass.data
-        or integration_name not in hass.data[DATA_ENTITY_PLATFORM]
+    if not (
+        DATA_ENTITY_PLATFORM in hass.data
+        and integration_name in hass.data[DATA_ENTITY_PLATFORM]
     ):
         return []
 

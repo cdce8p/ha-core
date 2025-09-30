@@ -294,9 +294,9 @@ class AppleTVConfigFlow(ConfigFlow, domain=DOMAIN):
     @override
     def is_matching(self, other_flow: Self) -> bool:
         """Return True if other_flow is matching this flow."""
-        if (
-            other_flow.context.get("source") != SOURCE_ZEROCONF
-            or other_flow.host != self._host
+        if not (
+            other_flow.context.get("source") == SOURCE_ZEROCONF
+            and other_flow.host == self._host
         ):
             return False
         if self.unique_id is not None:
@@ -372,10 +372,9 @@ class AppleTVConfigFlow(ConfigFlow, domain=DOMAIN):
             if all_identifiers.isdisjoint(existing_identifiers):
                 continue
             combined_identifiers = existing_identifiers | all_identifiers
-            if entry.data.get(
-                CONF_ADDRESS
-            ) != discovered_ip_address or combined_identifiers != set(
-                entry.data.get(CONF_IDENTIFIERS, [])
+            if not (
+                entry.data.get(CONF_ADDRESS) == discovered_ip_address
+                and combined_identifiers == set(entry.data.get(CONF_IDENTIFIERS, []))
             ):
                 self.hass.config_entries.async_update_entry(
                     entry,

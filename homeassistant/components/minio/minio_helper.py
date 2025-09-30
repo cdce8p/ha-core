@@ -201,7 +201,7 @@ def iterate_objects(event):
             record.get("s3", {}).get("object", {}).get("userMetadata", {})
         )
 
-        if not bucket or not key:
+        if not (bucket and key):
             _LOGGER.warning("Invalid bucket and/or key, %s, %s", bucket, key)
             continue
 

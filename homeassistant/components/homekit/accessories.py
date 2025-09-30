@@ -740,7 +740,7 @@ class HomeAccessory(Accessory):  # type: ignore[misc]
 
         Only call this function if self._support_battery_level is True.
         """
-        if not self._char_battery or not self._char_low_battery:
+        if not (self._char_battery and self._char_low_battery):
             # Battery appeared after homekit was started
             return
 

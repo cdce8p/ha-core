@@ -127,7 +127,7 @@ class OpenAITaskEntity(
                 else:  # Remove image data from chat log to save memory
                     content.native.result = None
 
-        if image_call is None or image_call.result is None:
+        if image_call is None or image_call.result is None:  # TODO ?.
             raise HomeAssistantError("No image returned")
 
         image_data = base64.b64decode(image_call.result)

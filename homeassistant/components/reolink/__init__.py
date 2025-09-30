@@ -120,16 +120,16 @@ async def async_setup_entry(
         )
 
     # update the config info if needed for the next time
-    if (
-        host.api.port != config_entry.data[CONF_PORT]
-        or host.api.use_https != config_entry.data[CONF_USE_HTTPS]
-        or host.api.supported(None, "privacy_mode")
-        != config_entry.data.get(CONF_SUPPORTS_PRIVACY_MODE)
-        or host.api.baichuan.port != config_entry.data.get(CONF_BC_PORT)
-        or host.api.baichuan_only != config_entry.data.get(CONF_BC_ONLY)
-        or host.api.baichuan.connection_type.value
-        != config_entry.data.get(CONF_BC_CONNECT)
-        or host.api.uid != config_entry.data.get(CONF_UID)
+    if not (
+        host.api.port == config_entry.data[CONF_PORT]
+        and host.api.use_https == config_entry.data[CONF_USE_HTTPS]
+        and host.api.supported(None, "privacy_mode")
+        == config_entry.data.get(CONF_SUPPORTS_PRIVACY_MODE)
+        and host.api.baichuan.port == config_entry.data.get(CONF_BC_PORT)
+        and host.api.baichuan_only == config_entry.data.get(CONF_BC_ONLY)
+        and host.api.baichuan.connection_type.value
+        == config_entry.data.get(CONF_BC_CONNECT)
+        and host.api.uid == config_entry.data.get(CONF_UID)
     ):
         if host.api.port != config_entry.data[CONF_PORT]:
             _LOGGER.warning(

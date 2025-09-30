@@ -409,12 +409,12 @@ async def async_get_users(hass: HomeAssistant) -> list[str]:
     except HomeAssistantError:
         return []
 
-    if (
-        not isinstance(store_data, dict)
-        or not (data := store_data.get("data"))
-        or not isinstance(data, dict)
-        or not (agent_user_ids := data.get("agent_user_ids"))
-        or not isinstance(agent_user_ids, dict)
+    if not (  # TODO match!
+        isinstance(store_data, dict)
+        and (data := store_data.get("data"))
+        and isinstance(data, dict)
+        and (agent_user_ids := data.get("agent_user_ids"))
+        and isinstance(agent_user_ids, dict)
     ):
         return []
     return list(agent_user_ids)

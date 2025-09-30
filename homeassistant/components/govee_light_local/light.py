@@ -202,7 +202,7 @@ class GoveeLight(CoordinatorEntity[GoveeLocalApiCoordinator], LightEntity):
                     self._save_last_color_state()
                     await self.coordinator.set_scene(self._device, effect)
 
-        if not self.is_on or not kwargs:
+        if not (self.is_on and kwargs):
             await self.coordinator.turn_on(self._device)
 
         self.async_write_ha_state()

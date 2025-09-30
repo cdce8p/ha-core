@@ -95,7 +95,7 @@ class TraceElement:
         self._variables = {
             key: value
             for key, value in snapshot.items()
-            if key not in last_variables or last_variables[key] != value
+            if not (key in last_variables and last_variables[key] == value)
         }
 
     def as_dict(self) -> dict[str, Any]:

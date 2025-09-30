@@ -149,10 +149,10 @@ class FlumeNotificationDataUpdateCoordinator(DataUpdateCoordinator[None]):
         active_notifications_by_device: dict[str, set[str]] = {}
 
         for notification in self.notifications:
-            if (
-                not notification.get("device_id")
-                or not notification.get("extra")
-                or "event_rule_name" not in notification["extra"]
+            if not (  # TODO ?.
+                notification.get("device_id")
+                and notification.get("extra")
+                and "event_rule_name" in notification["extra"]
             ):
                 continue
             device_id = notification["device_id"]

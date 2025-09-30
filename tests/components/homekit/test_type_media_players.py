@@ -418,7 +418,7 @@ async def test_media_player_television_basic(
     await hass.async_block_till_done()
     assert acc.char_active.value == 1
 
-    assert not caplog.messages or "Error" not in caplog.messages[-1]
+    assert not (caplog.messages and "Error" in caplog.messages[-1])
 
 
 async def test_media_player_television_supports_source_select_no_sources(

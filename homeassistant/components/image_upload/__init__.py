@@ -273,6 +273,6 @@ def _validate_size_from_filename(filename: str) -> tuple[int, int]:
     width_s, _, height_s = image_size.partition("x")
     width = int(width_s)
     height = int(height_s)
-    if not width or width != height or width not in VALID_SIZES:
+    if not (width and width == height and width in VALID_SIZES):
         raise ValueError(f"Invalid size {image_size}")
     return (width, height)

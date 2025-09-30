@@ -80,9 +80,7 @@ class OptionsFlowHandler(OptionsFlowWithReload):
             cloud_password = self.config_entry.data.get(CONF_CLOUD_PASSWORD)
             cloud_country = self.config_entry.data.get(CONF_CLOUD_COUNTRY)
 
-            if use_cloud and (
-                not cloud_username or not cloud_password or not cloud_country
-            ):
+            if use_cloud and not (cloud_username and cloud_password and cloud_country):
                 errors["base"] = "cloud_credentials_incomplete"
                 self.config_entry.async_start_reauth(self.hass)
 
@@ -167,7 +165,7 @@ class XiaomiMiioFlowHandler(ConfigFlow, domain=DOMAIN):
             if (result := search(r"mac=\w+", poch)) is not None:
                 self.mac = result.group(0).split("=")[1]
 
-        if not name or not self.host or not self.mac:
+        if not (name and self.host and self.mac):
             return self.async_abort(reason="not_xiaomi_miio")
 
         self.mac = format_mac(self.mac)
@@ -230,7 +228,7 @@ class XiaomiMiioFlowHandler(ConfigFlow, domain=DOMAIN):
             cloud_password = user_input.get(CONF_CLOUD_PASSWORD)
             cloud_country = user_input.get(CONF_CLOUD_COUNTRY)
 
-            if not cloud_username or not cloud_password or not cloud_country:
+            if not (cloud_username and cloud_password and cloud_country):
                 errors["base"] = "cloud_credentials_incomplete"
                 return self.async_show_form(
                     step_id="cloud",

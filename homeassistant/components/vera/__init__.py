@@ -52,7 +52,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: VeraConfigEntry) -> bool
     exclude_ids = fix_device_id_list(saved_exclude_ids)
 
     # If the ids were corrected. Update the config entry.
-    if light_ids != saved_light_ids or exclude_ids != saved_exclude_ids:
+    if not (light_ids == saved_light_ids and exclude_ids == saved_exclude_ids):
         hass.config_entries.async_update_entry(
             entry=entry, options=new_options(light_ids, exclude_ids)
         )

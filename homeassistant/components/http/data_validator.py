@@ -56,7 +56,7 @@ class RequestDataValidator:
             try:
                 raw_data = await request.json()
             except ValueError:
-                if not self._allow_empty or (await request.content.read()) != b"":
+                if not (self._allow_empty and (await request.content.read()) == b""):
                     _LOGGER.error("Invalid JSON received")
                     return view.json_message("Invalid JSON.", HTTPStatus.BAD_REQUEST)
                 raw_data = {}

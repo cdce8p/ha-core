@@ -62,7 +62,7 @@ async def async_get_device_config(hass, config_entry):
                     break
 
         # Cannot be done concurrently due to issues with the underlying protocol.
-        if not device.aldb.is_loaded or not flags:
+        if not (device.aldb.is_loaded and flags):
             await device.async_read_config()
 
     await devices.async_save(workdir=hass.config.config_dir)

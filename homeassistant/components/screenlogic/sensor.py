@@ -291,7 +291,7 @@ async def async_setup_entry(
     ]
 
     for pump_index, pump_data in gateway.get_data(DEVICE.PUMP).items():
-        if not pump_data or not pump_data.get(VALUE.DATA):
+        if not (pump_data and pump_data.get(VALUE.DATA)):  # TODO ?.
             continue
         pump_type = pump_data[VALUE.TYPE]
         for proto_pump_sensor_description in SUPPORTED_PUMP_SENSORS:
