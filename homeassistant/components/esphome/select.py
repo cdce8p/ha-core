@@ -178,7 +178,7 @@ class EsphomeAssistSatelliteWakeWordSelect(
         self, config: AssistSatelliteConfiguration
     ) -> None:
         """Update options with available wake words."""
-        if (not config.available_wake_words) or (config.max_active_wake_words < 1):
+        if not (config.available_wake_words and config.max_active_wake_words >= 1):
             # No wake words
             self._wake_words.clear()
             self._attr_current_option = NO_WAKE_WORD

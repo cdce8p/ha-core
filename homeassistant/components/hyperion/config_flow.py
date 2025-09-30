@@ -134,7 +134,7 @@ class HyperionConfigFlow(ConfigFlow, domain=DOMAIN):
         auth_resp = await hyperion_client.async_is_auth_required()
 
         # Could not determine if auth is required.
-        if not auth_resp or not client.ResponseOK(auth_resp):
+        if not (auth_resp and client.ResponseOK(auth_resp)):
             return self.async_abort(reason="auth_required_error")
         auth_required = auth_resp.get(const.KEY_INFO, {}).get(const.KEY_REQUIRED, False)
         if auth_required:

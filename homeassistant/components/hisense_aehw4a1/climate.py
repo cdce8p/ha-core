@@ -250,8 +250,11 @@ class ClimateAehW4a1(ClimateEntity):
                 "AC at %s is off, could not set fan mode", self._attr_unique_id
             )
             return
-        if self._attr_hvac_mode in (HVACMode.COOL, HVACMode.FAN_ONLY) and (
-            self._attr_hvac_mode != HVACMode.FAN_ONLY or fan_mode != FAN_AUTO
+        if self._attr_hvac_mode in (
+            HVACMode.COOL,
+            HVACMode.FAN_ONLY,
+        ) and not (  # TODO questionable
+            self._attr_hvac_mode == HVACMode.FAN_ONLY and fan_mode == FAN_AUTO
         ):
             _LOGGER.debug(
                 "Setting fan mode of %s to %s", self._attr_unique_id, fan_mode

@@ -200,7 +200,7 @@ class ContentDetails:
 
     def add_citation_detail(self) -> None:
         """Add a new citation detail."""
-        if not self.citation_details or self.citation_details[-1].length > 0:
+        if not (self.citation_details and self.citation_details[-1].length == 0):
             self.citation_details.append(
                 CitationDetails(
                     index=self.citation_details[-1].index
@@ -305,8 +305,9 @@ def _convert_content(  # noqa: C901
                     "is_error": content.result.error,
                 }
                 external_tool = False
-            if not messages or messages[-1]["role"] != (
-                "assistant" if external_tool else "user"
+            if not (
+                messages
+                and messages[-1]["role"] == ("assistant" if external_tool else "user")
             ):
                 messages.append(
                     MessageParam(
@@ -332,7 +333,7 @@ def _convert_content(  # noqa: C901
                 # usable attachments
                 continue
             # Combine consequent user messages
-            if not messages or messages[-1]["role"] != "user":
+            if not (messages and messages[-1]["role"] == "user"):
                 messages.append(
                     MessageParam(
                         role="user",
@@ -353,7 +354,7 @@ def _convert_content(  # noqa: C901
                 )
         elif isinstance(content, conversation.AssistantContent):
             # Combine consequent assistant messages
-            if not messages or messages[-1]["role"] != "assistant":
+            if not (messages and messages[-1]["role"] == "assistant"):
                 messages.append(
                     MessageParam(
                         role="assistant",

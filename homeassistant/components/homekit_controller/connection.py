@@ -586,7 +586,7 @@ class HKDevice:
             device = device_registry.async_get_device_by_identifier(
                 identifier, self.config_entry.entry_id
             )
-            if not device or legacy_serial_identifier not in device.identifiers:
+            if not (device and legacy_serial_identifier in device.identifiers):
                 continue
 
             device_registry.async_update_device(device.id, new_identifiers={identifier})

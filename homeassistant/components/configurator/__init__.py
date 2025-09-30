@@ -289,7 +289,7 @@ class Configurator:
         """Handle a configure service call."""
         request_id: str | None = call.data.get(ATTR_CONFIGURE_ID)
 
-        if not request_id or not self._validate_request_id(request_id):
+        if not (request_id and self._validate_request_id(request_id)):
             return
 
         _, _, callback = self._requests[request_id]

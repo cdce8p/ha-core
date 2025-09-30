@@ -47,17 +47,17 @@ class MeaterSensorEntityDescription(SensorEntityDescription):
 
 def _elapsed_time_to_timestamp(probe: MeaterProbe) -> datetime | None:
     """Convert elapsed time to timestamp."""
-    if not probe.cook or not hasattr(probe.cook, "time_elapsed"):
+    if not (probe.cook and hasattr(probe.cook, "time_elapsed")):
         return None
     return dt_util.utcnow() - timedelta(seconds=probe.cook.time_elapsed)
 
 
 def _remaining_time_to_timestamp(probe: MeaterProbe) -> datetime | None:
     """Convert remaining time to timestamp."""
-    if (
-        not probe.cook
-        or not hasattr(probe.cook, "time_remaining")
-        or probe.cook.time_remaining < 0
+    if not (
+        probe.cook
+        and hasattr(probe.cook, "time_remaining")
+        and probe.cook.time_remaining >= 0
     ):
         return None
     return dt_util.utcnow() + timedelta(seconds=probe.cook.time_remaining)

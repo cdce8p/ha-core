@@ -257,8 +257,9 @@ class WebSocketHandler:
         If we reach PENDING_MSG_MAX_FORCE_READY, we will release the ready future
         immediately so avoid the coalesced messages from growing too large.
         """
-        if not (ready_future := self._ready_future) or not (
-            queue_size := len(self._message_queue)
+        if not (
+            (ready_future := self._ready_future)
+            and (queue_size := len(self._message_queue))
         ):
             self._release_ready_queue_size = 0
             return

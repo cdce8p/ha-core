@@ -101,10 +101,10 @@ async def async_setup_entry(
     )
 
     for description in NUMBER_SETTINGS_DATA:
-        if (
-            description.module_id not in available_settings_data
-            or description.data_id
-            not in (
+        if not (
+            description.module_id in available_settings_data
+            and description.data_id
+            in (
                 setting.id for setting in available_settings_data[description.module_id]
             )
         ):

@@ -122,10 +122,10 @@ async def websocket_handle_todo_item_list(
     hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]
 ) -> None:
     """Handle the list of To-do items in a To-do- list."""
-    if (
-        not (entity_id := msg[CONF_ENTITY_ID])
-        or not (entity := hass.data[DATA_COMPONENT].get_entity(entity_id))
-        or not isinstance(entity, TodoListEntity)
+    if not (
+        (entity_id := msg[CONF_ENTITY_ID])
+        and (entity := hass.data[DATA_COMPONENT].get_entity(entity_id))
+        and isinstance(entity, TodoListEntity)
     ):
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
@@ -161,9 +161,9 @@ async def websocket_handle_todo_item_move(
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
 
-    if (
-        not entity.supported_features
-        or not entity.supported_features & TodoListEntityFeature.MOVE_TODO_ITEM
+    if not (
+        entity.supported_features
+        and entity.supported_features & TodoListEntityFeature.MOVE_TODO_ITEM
     ):
         connection.send_message(
             websocket_api.error_message(

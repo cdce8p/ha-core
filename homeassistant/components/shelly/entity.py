@@ -597,7 +597,7 @@ class ShellyRpcAttributeEntity(ShellyRpcEntity, Entity):
         """Available."""
         available = super().available
 
-        if not available or not self.entity_description.available:
+        if not (available and self.entity_description.available):
             return available
 
         return self.entity_description.available(self.sub_status)

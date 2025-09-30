@@ -580,10 +580,10 @@ class VoipAssistSatellite(VoIPEntity, AssistSatelliteEntity, RtpDatagramProtocol
                     sample_width = wav_file.getsampwidth()
                     sample_channels = wav_file.getnchannels()
 
-                    if (
-                        (sample_rate != RATE)
-                        or (sample_width != WIDTH)
-                        or (sample_channels != CHANNELS)
+                    if not (
+                        sample_rate == RATE
+                        and sample_width == WIDTH
+                        and sample_channels == CHANNELS
                     ):
                         raise ValueError(
                             "Expected rate/width/channels as"

@@ -193,8 +193,8 @@ def async_migrate(
     )
     matching_reg_entry: RegistryEntry | None = None
     for entry in entities:
-        if entry.unique_id.endswith(unique_id_trailer) and (
-            not matching_reg_entry or "(" not in entry.unique_id
+        if entry.unique_id.endswith(unique_id_trailer) and not (
+            matching_reg_entry and "(" in entry.unique_id
         ):
             matching_reg_entry = entry
     if not matching_reg_entry or matching_reg_entry.unique_id == new_unique_id:

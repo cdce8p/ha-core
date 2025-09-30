@@ -35,7 +35,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: NetgearConfigEntry) -> b
 
     port = entry.data.get(CONF_PORT)
     ssl = entry.data.get(CONF_SSL)
-    if port != router.port or ssl != router.ssl:
+    if not (port == router.port and ssl == router.ssl):
         data = {**entry.data, CONF_PORT: router.port, CONF_SSL: router.ssl}
         hass.config_entries.async_update_entry(entry, data=data)
         _LOGGER.warning(

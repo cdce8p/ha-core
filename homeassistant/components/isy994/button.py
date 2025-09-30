@@ -117,7 +117,7 @@ class ISYNodeButtonEntity(ButtonEntity):
     async def async_added_to_hass(self) -> None:
         """Subscribe to the node change events."""
         # No status for NetworkResources or ISY Query buttons
-        if not hasattr(self._node, "status_events") or not hasattr(self._node, "isy"):
+        if not (hasattr(self._node, "status_events") and hasattr(self._node, "isy")):
             return
         self._availability_handler = self._node.isy.nodes.status_events.subscribe(
             self.async_on_update,
