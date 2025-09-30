@@ -171,9 +171,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: HyperionConfigEntry) -> 
         raise ConfigEntryAuthFailed
 
     # Cannot switch instance or cannot load state? => Not ready.
-    if (
-        not await hyperion_client.async_client_switch_instance()
-        or not client.ServerInfoResponseOK(await hyperion_client.async_get_serverinfo())
+    if not (
+        await hyperion_client.async_client_switch_instance()
+        and client.ServerInfoResponseOK(await hyperion_client.async_get_serverinfo())
     ):
         await hyperion_client.async_client_disconnect()
         raise ConfigEntryNotReady
@@ -188,7 +188,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HyperionConfigEntry) -> 
 
     async def async_instances_to_clients(response: dict[str, Any]) -> None:
         """Convert instances to Hyperion clients."""
-        if not response or hyperion_const.KEY_DATA not in response:
+        if not (response and hyperion_const.KEY_DATA in response):
             return
         await async_instances_to_clients_raw(response[hyperion_const.KEY_DATA])
 

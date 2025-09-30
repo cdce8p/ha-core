@@ -216,11 +216,11 @@ class GoogleGenerativeAITextToSpeechEntity(
         def _extract_audio_parts(
             response: types.GenerateContentResponse,
         ) -> tuple[bytes, str]:
-            if (
-                not response.candidates
-                or not response.candidates[0].content
-                or not response.candidates[0].content.parts
-                or not response.candidates[0].content.parts[0].inline_data
+            if not (  # TODO ?.
+                response.candidates
+                and response.candidates[0].content
+                and response.candidates[0].content.parts
+                and response.candidates[0].content.parts[0].inline_data
             ):
                 raise ValueError("No content returned from TTS generation")
 

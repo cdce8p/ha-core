@@ -127,7 +127,9 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
         isy_conf = Configuration(xml=isy_conf_xml)
     except ISYResponseParseError as error:
         raise CannotConnect from error
-    if not isy_conf or ISY_CONF_NAME not in isy_conf or not isy_conf[ISY_CONF_NAME]:
+    if not (
+        isy_conf and ISY_CONF_NAME in isy_conf and isy_conf[ISY_CONF_NAME]
+    ):  # TODO ?.
         raise CannotConnect
 
     # Return info that you want to store in the config entry.

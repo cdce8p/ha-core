@@ -108,9 +108,9 @@ class ZWaveFirmwareUpdateExtraStoredData(ExtraStoredData):
         """Initialize the extra data from a dict."""
         # If there was no firmware info stored, or if it's stale info, we don't restore
         # anything.
-        if (
-            not (firmware_dict := data[ATTR_LATEST_VERSION_FIRMWARE])
-            or "normalizedVersion" not in firmware_dict
+        if not (
+            (firmware_dict := data[ATTR_LATEST_VERSION_FIRMWARE])
+            and "normalizedVersion" in firmware_dict
         ):
             return cls(None)
 

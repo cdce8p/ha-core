@@ -456,7 +456,7 @@ class RediscoveryWatcher(WatcherBase):
     ) -> None:
         """Handle config entry changes."""
         for discovery_key in entry.discovery_keys[DOMAIN]:
-            if discovery_key.version != 1 or not isinstance(discovery_key.key, str):
+            if not (discovery_key.version == 1 and isinstance(discovery_key.key, str)):
                 continue
             mac_address = discovery_key.key
             _LOGGER.debug("Rediscover service %s", mac_address)

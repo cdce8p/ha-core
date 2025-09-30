@@ -143,9 +143,9 @@ class LcnVariableSensor(LcnEntity, SensorEntity):
     @override
     def input_received(self, input_obj: InputType) -> None:
         """Set sensor value when LCN input object (command) is received."""
-        if (
-            not isinstance(input_obj, pypck.inputs.ModStatusVar)
-            or input_obj.get_var() is not self.variable
+        if not (
+            isinstance(input_obj, pypck.inputs.ModStatusVar)
+            and input_obj.get_var() is self.variable
         ):
             return
         self._attr_available = True

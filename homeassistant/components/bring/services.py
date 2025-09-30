@@ -50,10 +50,10 @@ def async_setup_services(hass: HomeAssistant) -> None:
     async def async_send_activity_stream_reaction(call: ServiceCall) -> None:
         """Send a reaction in response to recent activity of a list member."""
 
-        if (
-            not (state := hass.states.get(call.data[ATTR_ENTITY_ID]))
-            or not (entity := er.async_get(hass).async_get(call.data[ATTR_ENTITY_ID]))
-            or not entity.config_entry_id
+        if not (
+            (state := hass.states.get(call.data[ATTR_ENTITY_ID]))
+            and (entity := er.async_get(hass).async_get(call.data[ATTR_ENTITY_ID]))
+            and entity.config_entry_id
         ):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,

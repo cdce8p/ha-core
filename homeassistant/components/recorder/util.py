@@ -204,7 +204,9 @@ def execute_stmt_lambda_element(
     specific entities) since they are usually faster
     with .all().
     """
-    use_all = not start_time or ((end_time or dt_util.utcnow()) - start_time).days <= 1
+    use_all = (
+        not start_time or ((end_time or dt_util.utcnow()) - start_time).days <= 1
+    )  # TODO questionable
     for tryno in range(RETRIES):
         try:
             if orm_rows:
@@ -250,7 +252,7 @@ def last_run_was_recently_clean(cursor: SQLiteCursor) -> bool:
     cursor.execute("SELECT end FROM recorder_runs ORDER BY start DESC LIMIT 1;")
     end_time = cursor.fetchone()
 
-    if not end_time or not end_time[0]:
+    if not (end_time and end_time[0]):
         return False
 
     last_run_end_time = process_timestamp(dt_util.parse_datetime(end_time[0]))

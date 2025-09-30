@@ -61,8 +61,9 @@ class HomeKitEntity(Entity):
         """Handle accessory or service disappearance."""
         entity_map = self._accessory.entity_map
         if not (
-            accessory := entity_map.aid_or_none(self._aid)
-        ) or not accessory.services.iid_or_none(self._iid):
+            (accessory := entity_map.aid_or_none(self._aid))
+            and accessory.services.iid_or_none(self._iid)
+        ):
             self._async_handle_entity_removed()
             return True
         return False

@@ -129,11 +129,11 @@ class OverseerrWebhookManager:
     async def check_need_change(self) -> bool:
         """Check if webhook needs to be changed."""
         current_config = await self.client.get_webhook_notification_config()
-        return (
-            not current_config.enabled
-            or current_config.options.webhook_url not in self.webhook_urls
-            or current_config.options.json_payload != JSON_PAYLOAD
-            or current_config.types != REGISTERED_NOTIFICATIONS
+        return not (
+            current_config.enabled
+            and current_config.options.webhook_url in self.webhook_urls
+            and current_config.options.json_payload == JSON_PAYLOAD
+            and current_config.types == REGISTERED_NOTIFICATIONS
         )
 
     async def test_and_set_webhook(self, url: str) -> bool:

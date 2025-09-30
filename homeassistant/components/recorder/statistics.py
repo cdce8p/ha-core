@@ -2804,7 +2804,9 @@ def _async_import_statistics(
             raise HomeAssistantError(
                 "Naive timestamp: no or invalid timezone info provided"
             )
-        if start.minute != 0 or start.second != 0 or start.microsecond != 0:
+        if not (
+            start.minute == 0 and start.second == 0 and start.microsecond == 0
+        ):  # TODO good
             raise HomeAssistantError(
                 "Invalid timestamp: timestamps must be from the"
                 " top of the hour (minutes and seconds = 0)"
@@ -2841,7 +2843,7 @@ def async_import_statistics(
         raise HomeAssistantError("Invalid statistic_id")
 
     # The source must not be empty and must be aligned with the statistic_id
-    if not metadata["source"] or metadata["source"] != DOMAIN:
+    if not metadata["source"] == DOMAIN:  # TODO simplify
         raise HomeAssistantError("Invalid source")
 
     if "mean_type" not in metadata and not _called_from_ws_api:  # type: ignore[unreachable]
@@ -2878,7 +2880,7 @@ def async_add_external_statistics(
 
     # The source must not be empty and must be aligned with the statistic_id
     domain, _object_id = split_statistic_id(metadata["statistic_id"])
-    if not metadata["source"] or metadata["source"] != domain:
+    if not metadata["source"] == domain:
         raise HomeAssistantError("Invalid source")
 
     if "mean_type" not in metadata and not _called_from_ws_api:  # type: ignore[unreachable]

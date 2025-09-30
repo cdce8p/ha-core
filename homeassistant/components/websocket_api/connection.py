@@ -203,12 +203,12 @@ class ActiveConnection:
             # Not using isinstance as we don't care about children
             # as these are always coming from JSON
             type(msg) is not dict
-            or (
-                not (cur_id := msg.get("id"))
-                or type(cur_id) is not int
-                or cur_id < 0
-                or not (type_ := msg.get("type"))
-                or type(type_) is not str
+            or not (
+                (cur_id := msg.get("id"))
+                and type(cur_id) is int
+                and cur_id >= 0
+                and (type_ := msg.get("type"))
+                and type(type_) is str
             )
         ):
             msg = async_redact_data(msg, REDACT_KEYS)

@@ -627,7 +627,7 @@ class DlnaDmrEntity(MediaPlayerEntity):
     @override
     def volume_level(self) -> float | None:
         """Volume level of the media player (0..1)."""
-        if not self._device or not self._device.has_volume_level:
+        if not (self._device and self._device.has_volume_level):  # TODO ?.
             return None
         return self._device.volume_level
 
@@ -890,7 +890,7 @@ class DlnaDmrEntity(MediaPlayerEntity):
         The filtering is pretty loose; it's better to show something that can't
         be played than hide something that can.
         """
-        if not self._device or not self._device.sink_protocol_info:
+        if not (self._device and self._device.sink_protocol_info):  # TODO ?.
             # Nothing is specified by the renderer, so show everything
             _LOGGER.debug("Get content filter with no device or sink protocol info")
             return lambda _: True
@@ -949,7 +949,7 @@ class DlnaDmrEntity(MediaPlayerEntity):
     @override
     def media_content_type(self) -> MediaType | None:
         """Content type of current playing media."""
-        if not self._device or not self._device.media_class:
+        if not (self._device and self._device.media_class):  # TODO ?.
             return None
         return MEDIA_TYPE_MAP.get(self._device.media_class)
 

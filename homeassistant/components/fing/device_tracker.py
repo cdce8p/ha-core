@@ -107,12 +107,12 @@ class FingTrackedDevice(CoordinatorEntity[FingDataUpdateCoordinator], ScannerEnt
         new_device_ip = new_device.ip[0] if new_device.ip else None
         current_device_ip = self._device.ip[0] if self._device.ip else None
 
-        return (
-            current_device_ip != new_device_ip
-            or self._device.active != new_device.active
-            or self._device.type != new_device.type
-            or self._attr_name != new_device.name
-            or self._attr_icon != get_icon_from_type(new_device.type)
+        return not (
+            current_device_ip == new_device_ip
+            and self._device.active == new_device.active
+            and self._device.type == new_device.type
+            and self._attr_name == new_device.name
+            and self._attr_icon == get_icon_from_type(new_device.type)
         )
 
     @callback

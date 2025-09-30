@@ -100,8 +100,9 @@ class SupervisorIssueRepairFlow(RepairsFlow):
         # Out of sync with supervisor: issue is resolved, or it is not
         # fixable — no suggestions, or none this Core can present (the
         # repair is created as not fixable then). Remove it.
-        if not self.issue or not (
-            suggestions := presentable_issue_suggestions(self.hass, self.issue)
+        if not (
+            self.issue
+            and (suggestions := presentable_issue_suggestions(self.hass, self.issue))
         ):
             return self.async_create_entry(data={})
 

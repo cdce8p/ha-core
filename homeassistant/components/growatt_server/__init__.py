@@ -180,7 +180,9 @@ async def async_migrate_entry(
                 # plant_list() is annotated as list, but the classic API returns
                 # {"data": [...]}. Remove once the annotation is fixed upstream:
                 # https://github.com/indykoning/PyPi_GrowattServer/issues/157
-                if not isinstance(plant_info, dict) or not plant_info.get("data"):
+                if not (  # TODO match expr
+                    isinstance(plant_info, dict) or not plant_info.get("data")
+                ):
                     raise ConfigEntryError(
                         translation_domain=DOMAIN,
                         translation_key="migration_no_plants",

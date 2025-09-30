@@ -122,10 +122,10 @@ class ToonDataUpdateCoordinator(DataUpdateCoordinator[Status]):
             await self.register_webhook()
             return
 
-        if (
-            "updateDataSet" not in data
-            or "commonName" not in data
-            or self.data.agreement.display_common_name != data["commonName"]
+        if not (
+            "updateDataSet" in data
+            and "commonName" in data
+            and self.data.agreement.display_common_name == data["commonName"]
         ):
             _LOGGER.warning("Received invalid data from Toon webhook - %s", data)
             return

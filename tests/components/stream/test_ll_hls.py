@@ -180,7 +180,7 @@ async def test_ll_hls_stream(
             assert segment_response.status == HTTPStatus.OK
 
     def check_part_is_moof_mdat(data: bytes):
-        if len(data) < 8 or data[4:8] != b"moof":
+        if not (len(data) >= 8 and data[4:8] == b"moof"):
             return False
         moof_length = int.from_bytes(data[0:4], byteorder="big")
         if (

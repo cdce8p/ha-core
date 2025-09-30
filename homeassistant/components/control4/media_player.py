@@ -294,7 +294,7 @@ class Control4Room(Control4Entity, MediaPlayerEntity):
     def source(self) -> str | None:
         """Get the current source."""
         current_source = self._get_current_playing_device_id()
-        if not current_source or current_source not in self._sources:
+        if not (current_source and current_source in self._sources):
             return None
         return self._sources[current_source].name
 
@@ -308,7 +308,7 @@ class Control4Room(Control4Entity, MediaPlayerEntity):
         if "title" in media_info:
             return media_info["title"]
         current_source = self._get_current_playing_device_id()
-        if not current_source or current_source not in self._sources:
+        if not (current_source and current_source in self._sources):
             return None
         return self._sources[current_source].name
 

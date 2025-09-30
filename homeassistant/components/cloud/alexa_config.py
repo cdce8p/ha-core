@@ -537,7 +537,7 @@ class CloudAlexaConfig(alexa_config.AbstractConfig):
         self, event: Event[er.EventEntityRegistryUpdatedData]
     ) -> None:
         """Handle when entity registry updated."""
-        if not self.enabled or not self._cloud.is_logged_in:
+        if not (self.enabled and self._cloud.is_logged_in):
             return
 
         entity_id = event.data["entity_id"]

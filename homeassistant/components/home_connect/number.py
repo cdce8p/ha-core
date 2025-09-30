@@ -203,7 +203,7 @@ class HomeConnectNumberEntity(HomeConnectEntity, NumberEntity):
         """Fetch the max and min values and step for the number entity."""
         setting_key = cast(SettingKey, self.bsh_key)
         data = self.appliance.settings.get(setting_key)
-        if not data or not data.unit or not data.constraints:
+        if not (data and data.unit and data.constraints):
             data = await self.coordinator.client.get_setting(
                 self.appliance.info.ha_id, setting_key=setting_key
             )
@@ -240,11 +240,11 @@ class HomeConnectNumberEntity(HomeConnectEntity, NumberEntity):
         await super().async_added_to_hass()
         data = self.appliance.settings[cast(SettingKey, self.bsh_key)]
         self.set_constraints(data)
-        if (
-            not hasattr(self, "_attr_native_unit_of_measurement")
-            or not hasattr(self, "_attr_native_min_value")
-            or not hasattr(self, "_attr_native_max_value")
-            or not hasattr(self, "_attr_native_step")
+        if not (  # TODO match expr
+            hasattr(self, "_attr_native_unit_of_measurement")
+            and hasattr(self, "_attr_native_min_value")
+            and hasattr(self, "_attr_native_max_value")
+            and hasattr(self, "_attr_native_step")
         ):
             await self.async_fetch_constraints()
 
@@ -267,25 +267,34 @@ class HomeConnectOptionNumberEntity(HomeConnectOptionEntity, NumberEntity):
                 candidate_unit = UNIT_MAP.get(
                     option_definition.unit, option_definition.unit
                 )
-                if (
-                    not hasattr(self, "_attr_native_unit_of_measurement")
-                    or candidate_unit != self._attr_native_unit_of_measurement
+                if not (
+                    hasattr(self, "_attr_native_unit_of_measurement")
+                    and candidate_unit == self._attr_native_unit_of_measurement
                 ):
                     self._attr_native_unit_of_measurement = candidate_unit
             option_constraints = option_definition.constraints
             if option_constraints:
                 if (
-                    not hasattr(self, "_attr_native_min_value")
-                    or self._attr_native_min_value != option_constraints.min
-                ) and option_constraints.min:
+                    not (
+                        hasattr(self, "_attr_native_min_value")
+                        and self._attr_native_min_value == option_constraints.min
+                    )
+                    and option_constraints.min
+                ):
                     self._attr_native_min_value = option_constraints.min
                 if (
-                    not hasattr(self, "_attr_native_max_value")
-                    or self._attr_native_max_value != option_constraints.max
-                ) and option_constraints.max:
+                    not (
+                        hasattr(self, "_attr_native_max_value")
+                        and self._attr_native_max_value == option_constraints.max
+                    )
+                    and option_constraints.max
+                ):
                     self._attr_native_max_value = option_constraints.max
                 if (
-                    not hasattr(self, "_attr_native_step")
-                    or self._attr_native_step != option_constraints.step_size
-                ) and option_constraints.step_size:
+                    not (
+                        hasattr(self, "_attr_native_step")
+                        and self._attr_native_step == option_constraints.step_size
+                    )
+                    and option_constraints.step_size
+                ):
                     self._attr_native_step = option_constraints.step_size
