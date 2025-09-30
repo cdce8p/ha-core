@@ -161,9 +161,9 @@ class LcnOutputLight(LcnEntity, LightEntity):
     @override
     def input_received(self, input_obj: InputType) -> None:
         """Set light state when LCN input object (command) is received."""
-        if (
-            not isinstance(input_obj, pypck.inputs.ModStatusOutput)
-            or input_obj.get_output_id() != self.output.value
+        if not (
+            isinstance(input_obj, pypck.inputs.ModStatusOutput)
+            and input_obj.get_output_id() == self.output.value
         ):
             return
         self._attr_available = True

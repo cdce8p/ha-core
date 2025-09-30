@@ -103,11 +103,11 @@ class IottyDataUpdateCoordinator(DataUpdateCoordinator[IottyData]):
         for device in self._devices:
             res = await self.iotty.get_status(device.device_id)
             json = res.get(RESULT, {})
-            if (
-                not isinstance(res, dict)
-                or RESULT not in res
-                or not isinstance(json := res[RESULT], dict)
-                or not (status := json.get(STATUS))
+            if not (
+                isinstance(res, dict)
+                and RESULT in res
+                and isinstance(json := res[RESULT], dict)
+                and (status := json.get(STATUS))
             ):
                 _LOGGER.warning("Unable to read status for device %s", device.device_id)
             else:

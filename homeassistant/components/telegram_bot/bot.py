@@ -204,7 +204,7 @@ class BaseTelegramBot:
 
     @staticmethod
     def _get_command_event_data(command_text: str | None) -> dict[str, str | list]:
-        if not command_text or not command_text.startswith("/"):
+        if not (command_text and command_text.startswith("/")):  # TODO ?.
             return {}
         command_parts = command_text.split()
         command = command_parts[0]

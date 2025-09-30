@@ -214,7 +214,7 @@ async def async_setup_entry(
     ]
 
     for p_index, p_data in gateway.get_data(DEVICE.PUMP).items():
-        if not p_data or not p_data.get(VALUE.DATA):
+        if not (p_data and p_data.get(VALUE.DATA)):  # TODO ?.
             continue
         entities.extend(
             ScreenLogicPumpBinarySensor(

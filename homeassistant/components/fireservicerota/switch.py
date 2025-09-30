@@ -146,7 +146,7 @@ class ResponseSwitch(SwitchEntity):
         """Update FireServiceRota response data."""
         data = await self._client.async_response_update()
 
-        if not data or "status" not in data:
+        if not (data and "status" in data):  # TODO ?.
             return
 
         self._state = data["status"] == "acknowledged"

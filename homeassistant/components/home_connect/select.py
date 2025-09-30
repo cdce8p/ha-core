@@ -533,10 +533,8 @@ class HomeConnectSelectEntity(HomeConnectEntity, SelectEntity):
     async def async_fetch_options(self) -> None:
         """Fetch options from the API."""
         setting = self.appliance.settings.get(cast(SettingKey, self.bsh_key))
-        if (
-            not setting
-            or not setting.constraints
-            or not setting.constraints.allowed_values
+        if not (  # TODO ?.
+            setting and setting.constraints and setting.constraints.allowed_values
         ):
             setting = await self.coordinator.client.get_setting(
                 self.appliance.info.ha_id,

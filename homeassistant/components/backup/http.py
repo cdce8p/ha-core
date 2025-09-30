@@ -80,7 +80,7 @@ class DownloadBackupView(HomeAssistantView):
         }
 
         try:
-            if not password or not backup.protected:
+            if not (password and backup.protected):
                 return await self._send_backup_no_password(
                     request, headers, backup_id, agent_id, agent, manager
                 )

@@ -300,7 +300,7 @@ class RussoundZoneDevice(RussoundBaseEntity, MediaPlayerEntity):
         if source_id:
             await self._zone.select_source(source_id)
             await asyncio.sleep(SELECT_SOURCE_DELAY)
-        if not self._source.presets or preset_id not in self._source.presets:
+        if not (self._source.presets and preset_id in self._source.presets):  # TODO ?.
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="missing_preset",

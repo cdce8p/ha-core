@@ -511,7 +511,7 @@ class GenericHygrostat(HumidifierEntity, RestoreEntity):
                     self._target_humidity,
                 )
 
-            if not self._active or not self._state:
+            if not (self._active and self._state):
                 return
 
             if force:

@@ -96,9 +96,9 @@ class SwitchBotCurtainEntity(SwitchbotEntity, CoverEntity, RestoreEntity):
         """Run when entity about to be added."""
         await super().async_added_to_hass()
         last_state = await self.async_get_last_state()
-        if (
-            not last_state
-            or CoverEntityStateAttribute.CURRENT_POSITION not in last_state.attributes
+        if not (  # TODO ?. / ??
+            last_state
+            and CoverEntityStateAttribute.CURRENT_POSITION in last_state.attributes
         ):
             return
 
@@ -195,10 +195,9 @@ class SwitchBotBlindTiltEntity(SwitchbotEntity, CoverEntity, RestoreEntity):
         """Run when entity about to be added."""
         await super().async_added_to_hass()
         last_state = await self.async_get_last_state()
-        if (
-            not last_state
-            or CoverEntityStateAttribute.CURRENT_TILT_POSITION
-            not in last_state.attributes
+        if not (  # TODO ?. / ??
+            last_state
+            and CoverEntityStateAttribute.CURRENT_TILT_POSITION in last_state.attributes
         ):
             return
 
@@ -297,9 +296,9 @@ class SwitchBotRollerShadeEntity(SwitchbotEntity, CoverEntity, RestoreEntity):
         """Run when entity about to be added."""
         await super().async_added_to_hass()
         last_state = await self.async_get_last_state()
-        if (
-            not last_state
-            or CoverEntityStateAttribute.CURRENT_POSITION not in last_state.attributes
+        if not (  # TODO ?. / ??
+            last_state
+            and CoverEntityStateAttribute.CURRENT_POSITION in last_state.attributes
         ):
             return
 

@@ -56,9 +56,9 @@ def _async_get_source_from_config_entry(
             return None
 
     # Just check if config entry exists and belongs to bluetooth
-    if (
-        not (entry := hass.config_entries.async_get_entry(config_entry_id))
-        or entry.domain != DOMAIN
+    if not (
+        (entry := hass.config_entries.async_get_entry(config_entry_id))
+        and entry.domain == DOMAIN
     ):
         connection.send_error(
             msg_id,

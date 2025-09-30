@@ -97,7 +97,7 @@ class MillHistoricDataUpdateCoordinator(DataUpdateCoordinator):
             last_stats = await recoder_instance.async_add_executor_job(
                 get_last_statistics, self.hass, 1, statistic_id, True, set()
             )
-            if not last_stats or not last_stats.get(statistic_id):
+            if not (last_stats and last_stats.get(statistic_id)):  # TODO ?.
                 hourly_data = (
                     await self.mill_data_connection.fetch_historic_energy_usage(
                         dev_id, n_days=TWO_YEARS_DAYS

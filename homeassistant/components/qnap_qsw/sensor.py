@@ -300,9 +300,9 @@ async def async_setup_entry(
     ]
 
     for description in LACP_PORT_SENSOR_TYPES:
-        if (
-            description.key not in coordinator.data
-            or QSD_LACP_PORTS not in coordinator.data[description.key]
+        if not (  # TODO ?.
+            description.key in coordinator.data
+            and QSD_LACP_PORTS in coordinator.data[description.key]
         ):
             continue
 
@@ -320,9 +320,9 @@ async def async_setup_entry(
             entities.append(QswSensor(coordinator, _desc, entry, port_id))
 
     for description in PORT_SENSOR_TYPES:
-        if (
-            description.key not in coordinator.data
-            or QSD_PORTS not in coordinator.data[description.key]
+        if not (  # TODO ?.
+            description.key in coordinator.data
+            and QSD_PORTS in coordinator.data[description.key]
         ):
             continue
 

@@ -124,7 +124,7 @@ class TariffSelect(SelectEntity, RestoreEntity):
         await super().async_added_to_hass()
 
         state = await self.async_get_last_state()
-        if not state or state.state not in self._tariffs:
+        if not (state and state.state in self._tariffs):  # TODO ?.
             self._current_tariff = self._tariffs[0]
         else:
             self._current_tariff = state.state

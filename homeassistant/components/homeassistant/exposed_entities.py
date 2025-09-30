@@ -433,7 +433,7 @@ def ws_list_exposed_entities(
         exposed_to = {}
         entity_settings = async_get_entity_settings(hass, entity_id)
         for assistant, settings in entity_settings.items():
-            if "should_expose" not in settings or not settings["should_expose"]:
+            if not settings.get("should_expose"):  # TODO ?.
                 continue
             exposed_to[assistant] = True
         if not exposed_to:

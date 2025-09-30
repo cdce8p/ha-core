@@ -68,8 +68,9 @@ class HistoryPeriodView(HomeAssistantView):
         if datetime and (datetime_ := dt_util.parse_datetime(datetime)) is None:
             return self.json_message("Invalid datetime", HTTPStatus.BAD_REQUEST)
 
-        if not (entity_ids_str := query.get("filter_entity_id")) or not (
-            entity_ids := entity_ids_str.strip().lower().split(",")
+        if not (  # TODO ?.
+            (entity_ids_str := query.get("filter_entity_id"))
+            and (entity_ids := entity_ids_str.strip().lower().split(","))
         ):
             return self.json_message(
                 "filter_entity_id is missing", HTTPStatus.BAD_REQUEST

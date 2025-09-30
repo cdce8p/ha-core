@@ -146,7 +146,7 @@ def nested_value(ndict, *keys):
     if len(keys) == 0:
         return ndict
     key = keys[0]
-    if not isinstance(ndict, dict) or key not in ndict:
+    if not (isinstance(ndict, dict) and key in ndict):
         return None
     return nested_value(ndict[key], *keys[1:])
 

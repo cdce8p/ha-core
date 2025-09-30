@@ -282,16 +282,21 @@ def get_positional_measurement_description(
     measurement_type: MeasurementType, measurement_position: MeasurementPosition
 ) -> WithingsMeasurementSensorEntityDescription | None:
     """Get the sensor description for a measurement type."""
-    if measurement_position not in (
-        MeasurementPosition.TORSO,
-        MeasurementPosition.LEFT_ARM,
-        MeasurementPosition.RIGHT_ARM,
-        MeasurementPosition.LEFT_LEG,
-        MeasurementPosition.RIGHT_LEG,
-    ) or measurement_type not in (
-        MeasurementType.MUSCLE_MASS_FOR_SEGMENTS,
-        MeasurementType.FAT_FREE_MASS_FOR_SEGMENTS,
-        MeasurementType.FAT_MASS_FOR_SEGMENTS,
+    if not (
+        measurement_position
+        in (  # TODO check
+            MeasurementPosition.TORSO,
+            MeasurementPosition.LEFT_ARM,
+            MeasurementPosition.RIGHT_ARM,
+            MeasurementPosition.LEFT_LEG,
+            MeasurementPosition.RIGHT_LEG,
+        )
+        and measurement_type
+        in (
+            MeasurementType.MUSCLE_MASS_FOR_SEGMENTS,
+            MeasurementType.FAT_FREE_MASS_FOR_SEGMENTS,
+            MeasurementType.FAT_MASS_FOR_SEGMENTS,
+        )
     ):
         return None
     return WithingsMeasurementSensorEntityDescription(

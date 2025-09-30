@@ -815,9 +815,9 @@ class HomeKit:
         devices_to_purge = [
             entry.id
             for entry in dr.async_entries_for_config_entry(dev_reg, self._entry_id)
-            if (
-                identifier not in entry.identifiers  # type: ignore[comparison-overlap]
-                or connection not in entry.connections  # type: ignore[unreachable]
+            if not (
+                identifier in entry.identifiers  # type: ignore[comparison-overlap]
+                and connection in entry.connections  # type: ignore[unreachable]
             )
         ]
 
@@ -1087,12 +1087,12 @@ class HomeKitPairingQRView(HomeAssistantView):
         entry_id, secret = request.query_string.split("-")
         hass = request.app[KEY_HASS]
         entry_data: HomeKitEntryData | None
-        if (
-            not (entry := hass.config_entries.async_get_entry(entry_id))
-            or not (entry_data := getattr(entry, "runtime_data", None))
-            or not secret
-            or not entry_data.pairing_qr_secret
-            or secret != entry_data.pairing_qr_secret
+        if not (
+            (entry := hass.config_entries.async_get_entry(entry_id))
+            and (entry_data := getattr(entry, "runtime_data", None))
+            and secret
+            and entry_data.pairing_qr_secret
+            and secret == entry_data.pairing_qr_secret
         ):
             raise Unauthorized
         return web.Response(
