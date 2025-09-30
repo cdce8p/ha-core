@@ -186,10 +186,10 @@ def _add_camera(
             )
             or not camera.get(key_url)
             or _is_recognized_web_hook(camera[key_url])
-        ) and (
-            not camera.get(key_enabled, False)
-            or camera.get(key_method) != KEY_HTTP_METHOD_POST_JSON
-            or camera.get(key_url) != url
+        ) and not (
+            camera.get(key_enabled, False)
+            and camera.get(key_method) == KEY_HTTP_METHOD_POST_JSON
+            and camera.get(key_url) == url
         ):
             camera[key_enabled] = True
             camera[key_method] = KEY_HTTP_METHOD_POST_JSON

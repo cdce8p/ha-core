@@ -116,7 +116,7 @@ class SonosSelectEntity(SonosEntity, SelectEntity):
     def current_option(self) -> str | None:
         """Return the current option for the entity."""
         option = getattr(self.speaker, self.speaker_attribute, None)
-        if not isinstance(option, int) or not (0 <= option < len(self._attr_options)):
+        if not (isinstance(option, int) and (0 <= option < len(self._attr_options))):
             _LOGGER.error(
                 "Invalid option %s for %s on %s",
                 option,

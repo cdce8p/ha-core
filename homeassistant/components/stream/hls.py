@@ -358,7 +358,7 @@ class HlsInitView(StreamView):
     ) -> web.Response:
         """Return init.mp4."""
         track = stream.add_provider(HLS_PROVIDER)
-        if not (segments := track.get_segments()) or not (body := segments[0].init):
+        if not ((segments := track.get_segments()) and (body := segments[0].init)):
             return web.HTTPNotFound()
         return web.Response(
             body=transform_init(body, stream.dynamic_stream_settings.orientation),

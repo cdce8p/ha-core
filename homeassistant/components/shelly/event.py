@@ -108,9 +108,8 @@ def _async_setup_block_entry(
         assert coordinator and coordinator.device.blocks
 
     for block in coordinator.device.blocks:
-        if (
-            "inputEvent" not in block.sensor_ids
-            or "inputEventCnt" not in block.sensor_ids
+        if not (  # TODO match expr
+            "inputEvent" in block.sensor_ids and "inputEventCnt" in block.sensor_ids
         ):
             continue
 

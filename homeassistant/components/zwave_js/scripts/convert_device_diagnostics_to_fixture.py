@@ -52,10 +52,10 @@ def load_file(path: Path) -> Any:
 
 def extract_fixture_data(diagnostics_data: Any) -> dict:
     """Extract fixture data from file."""
-    if (
-        not isinstance(diagnostics_data, dict)
-        or "data" not in diagnostics_data
-        or "state" not in diagnostics_data["data"]
+    if not (  # TODO match expr!
+        isinstance(diagnostics_data, dict)
+        and "data" in diagnostics_data
+        and "state" in diagnostics_data["data"]
     ):
         raise ValueError("Invalid diagnostics file format")
     state: dict = diagnostics_data["data"]["state"]

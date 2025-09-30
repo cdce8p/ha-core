@@ -26,9 +26,8 @@ async def async_setup_entry(
 
     hub = config_entry.runtime_data
 
-    if (
-        not (prop := hub.api.vapix.params.property_handler.get("0"))
-        or not prop.image_format
+    if not (
+        (prop := hub.api.vapix.params.property_handler.get("0")) and prop.image_format
     ):
         return
 

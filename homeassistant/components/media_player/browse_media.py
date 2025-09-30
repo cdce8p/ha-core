@@ -83,7 +83,7 @@ def async_process_play_media_url(
                 if (
                     hass.config.api
                     and hass.config.api.use_ssl
-                    and (not hass.config.external_url or not hass.config.internal_url)
+                    and not (hass.config.external_url and hass.config.internal_url)
                 ):
                     translation_key = "no_url_available_configure_urls"
                 raise HomeAssistantError(
