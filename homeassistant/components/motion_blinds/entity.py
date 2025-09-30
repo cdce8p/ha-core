@@ -139,14 +139,14 @@ class MotionCoordinatorEntity(CoordinatorEntity[DataUpdateCoordinatorMotionBlind
 
         self.coordinator.async_update_listeners()
 
-        if (
-            len(self._previous_positions) < 2
-            or not all(
+        if not (
+            len(self._previous_positions) >= 2
+            and all(
                 self._blind.position == prev_position
                 for prev_position in self._previous_positions
             )
-            or len(self._previous_angles) < 2
-            or not all(
+            and len(self._previous_angles) >= 2
+            and all(
                 self._blind.angle == prev_angle for prev_angle in self._previous_angles
             )
         ):

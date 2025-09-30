@@ -193,7 +193,7 @@ class YeelightScanner:
         assert host
         current_entry = self._unique_id_capabilities.get(unique_id)
         # Make sure we handle ip changes
-        if not current_entry or host != urlparse(current_entry["location"]).hostname:
+        if not (current_entry and host == urlparse(current_entry["location"]).hostname):
             _LOGGER.debug("Yeelight discovered with %s", headers)
             self._async_discovered_by_ssdp(headers)
         self._host_capabilities[host] = headers

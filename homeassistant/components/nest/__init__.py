@@ -185,7 +185,7 @@ class SignalUpdateCallback:
             self._hass.bus.async_fire(NEST_EVENT, message)
 
     def _supported_traits(self, device_id: str) -> list[str]:
-        if self._device_manager is None or not (
+        if self._device_manager is None or not (  # TODO ?.
             device := self._device_manager.devices.get(device_id)
         ):
             return []

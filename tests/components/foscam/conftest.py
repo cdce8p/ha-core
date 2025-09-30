@@ -26,20 +26,20 @@ def setup_mock_foscam_camera(mock_foscam_camera):
         dev_info_rc = 0
         dev_info_data = {}
 
-        if (
-            host != VALID_CONFIG[config_flow.CONF_HOST]
-            or port != VALID_CONFIG[config_flow.CONF_PORT]
+        if not (
+            host == VALID_CONFIG[config_flow.CONF_HOST]
+            and port == VALID_CONFIG[config_flow.CONF_PORT]
         ):
             product_all_info_rc = dev_info_rc = ERROR_FOSCAM_UNAVAILABLE
 
-        elif (
+        elif not (
             user
-            not in [
+            in [
                 VALID_CONFIG[config_flow.CONF_USERNAME],
                 OPERATOR_CONFIG[config_flow.CONF_USERNAME],
                 INVALID_RESPONSE_CONFIG[config_flow.CONF_USERNAME],
             ]
-            or passwd != VALID_CONFIG[config_flow.CONF_PASSWORD]
+            and passwd == VALID_CONFIG[config_flow.CONF_PASSWORD]
         ):
             product_all_info_rc = dev_info_rc = ERROR_FOSCAM_AUTH
 

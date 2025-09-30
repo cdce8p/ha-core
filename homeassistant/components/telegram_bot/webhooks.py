@@ -171,8 +171,9 @@ class PushBotView(HomeAssistantView):
 
     async def post(self, request: HomeAssistantRequest) -> Response | None:
         """Accept the POST from telegram."""
-        if not request.remote or not any(
-            ip_address(request.remote) in net for net in self.trusted_networks
+        if not (
+            request.remote
+            and any(ip_address(request.remote) in net for net in self.trusted_networks)
         ):
             _LOGGER.warning("Access denied from %s", request.remote)
             return self.json_message("Access denied", HTTPStatus.UNAUTHORIZED)

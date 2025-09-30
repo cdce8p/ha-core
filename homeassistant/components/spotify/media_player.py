@@ -92,7 +92,7 @@ def ensure_item[_R](
     """Ensure that the currently playing item is available."""
 
     def wrapper(self: SpotifyMediaPlayer) -> _R | None:
-        if not self.currently_playing or not self.currently_playing.item:
+        if not (self.currently_playing and self.currently_playing.item):  # TODO ?.
             return None
         return func(self, self.currently_playing.item)
 
