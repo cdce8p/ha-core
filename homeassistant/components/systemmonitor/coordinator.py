@@ -246,7 +246,7 @@ class SystemMonitorCoordinator(TimestampDataUpdateCoordinator[SensorData]):
                         )
 
                 except PROCESS_ERRORS as err:
-                    if not hasattr(err, "pid") or not hasattr(err, "name"):
+                    if not (hasattr(err, "pid") and hasattr(err, "name")):
                         _LOGGER.warning(
                             "Failed to load process: %s",
                             str(err),

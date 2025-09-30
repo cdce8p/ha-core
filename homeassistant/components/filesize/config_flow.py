@@ -20,7 +20,7 @@ _LOGGER = logging.getLogger(__name__)
 def validate_path(hass: HomeAssistant, path: str) -> tuple[str | None, dict[str, str]]:
     """Validate path."""
     get_path = pathlib.Path(path)
-    if not get_path.exists() or not get_path.is_file():
+    if not (get_path.exists() and get_path.is_file()):
         _LOGGER.error("Can not access file %s", path)
         return (None, {"base": "not_valid"})
 

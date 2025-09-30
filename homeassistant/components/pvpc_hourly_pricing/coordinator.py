@@ -62,10 +62,8 @@ class ElecPricesDataUpdateCoordinator(DataUpdateCoordinator[EsiosApiData]):
             api_data = await self.api.async_update_all(self.data, dt_util.utcnow())
         except BadApiTokenAuthError as exc:
             raise ConfigEntryAuthFailed from exc
-        if (
-            not api_data
-            or not api_data.sensors
-            or not any(api_data.availability.values())
+        if not (  # TODO ?.
+            api_data and api_data.sensors and any(api_data.availability.values())
         ):
             raise UpdateFailed
         return api_data

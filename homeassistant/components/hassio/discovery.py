@@ -56,7 +56,7 @@ def async_setup_discovery_view(hass: HomeAssistant) -> None:
     ) -> None:
         """Handle config entry changes."""
         for disc_key in entry.discovery_keys[DOMAIN]:
-            if disc_key.version != 1 or not isinstance(key := disc_key.key, str):
+            if not (disc_key.version == 1 and isinstance(key := disc_key.key, str)):
                 continue
             uuid = key
             _LOGGER.debug("Rediscover addon %s", uuid)
@@ -155,6 +155,8 @@ class HassIODiscovery(HomeAssistantView):
 
         # Use config flow
         for entry in self.hass.config_entries.async_entries(service):
-            if entry.source != config_entries.SOURCE_HASSIO or entry.unique_id != uuid:
+            if not (
+                entry.source == config_entries.SOURCE_HASSIO and entry.unique_id == uuid
+            ):
                 continue
             await self.hass.config_entries.async_remove(entry.entry_id)

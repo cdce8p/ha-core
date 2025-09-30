@@ -97,7 +97,7 @@ def _find_duplicates(
         return keys1 == keys2 and all(row1[k] == row2[k] for k in keys1)
 
     for duplicate in duplicates:
-        if start != duplicate.start or metadata_id != duplicate.metadata_id:
+        if not (start == duplicate.start and metadata_id == duplicate.metadata_id):
             original_as_dict = columns_to_dict(duplicate)
             start = duplicate.start
             metadata_id = duplicate.metadata_id

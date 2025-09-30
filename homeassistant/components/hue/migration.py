@@ -57,9 +57,8 @@ async def check_migration(hass: core.HomeAssistant, entry: HueConfigEntry) -> No
             await handle_v2_migration(hass, entry)
 
         # store api version in entry data
-        if (
-            CONF_API_VERSION not in entry.data
-            or conf_api_version != supported_api_version
+        if not (
+            CONF_API_VERSION in entry.data and conf_api_version == supported_api_version
         ):
             data = dict(entry.data)
             data[CONF_API_VERSION] = supported_api_version
@@ -97,7 +96,7 @@ async def handle_v2_migration(hass: core.HomeAssistant, entry: HueConfigEntry) -
         # migrate entities attached to a device
         for hue_dev in api.devices:
             zigbee = api.devices.get_zigbee_connectivity(hue_dev.id)
-            if not zigbee or not zigbee.mac_address:
+            if not (zigbee and zigbee.mac_address):
                 # not a zigbee device or invalid mac
                 continue
 

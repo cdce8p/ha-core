@@ -237,8 +237,9 @@ class CalendarEventView(http.HomeAssistantView):
         if not user.permissions.check_entity(entity_id, POLICY_READ):
             raise Unauthorized(entity_id=entity_id)
 
-        if not (entity := self.component.get_entity(entity_id)) or not isinstance(
-            entity, CalendarEntity
+        if not (
+            (entity := self.component.get_entity(entity_id))
+            and isinstance(entity, CalendarEntity)
         ):
             return web.Response(status=HTTPStatus.BAD_REQUEST)
 
@@ -322,9 +323,9 @@ async def handle_calendar_event_create(
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
 
-    if (
-        not entity.supported_features
-        or not entity.supported_features & CalendarEntityFeature.CREATE_EVENT
+    if not (
+        entity.supported_features
+        and entity.supported_features & CalendarEntityFeature.CREATE_EVENT
     ):
         connection.send_message(
             websocket_api.error_message(
@@ -364,9 +365,9 @@ async def handle_calendar_event_delete(
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
 
-    if (
-        not entity.supported_features
-        or not entity.supported_features & CalendarEntityFeature.DELETE_EVENT
+    if not (
+        entity.supported_features
+        and entity.supported_features & CalendarEntityFeature.DELETE_EVENT
     ):
         connection.send_message(
             websocket_api.error_message(
@@ -412,9 +413,9 @@ async def handle_calendar_event_update(
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
 
-    if (
-        not entity.supported_features
-        or not entity.supported_features & CalendarEntityFeature.UPDATE_EVENT
+    if not (
+        entity.supported_features
+        and entity.supported_features & CalendarEntityFeature.UPDATE_EVENT
     ):
         connection.send_message(
             websocket_api.error_message(

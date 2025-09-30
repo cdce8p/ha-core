@@ -96,9 +96,9 @@ class UkraineAlarmConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             # Only offer to browse subchildren if picked
             # region wasn't the previously picked one
-            if (
-                not self.selected_region
-                or user_input[CONF_REGION] != self.selected_region["regionId"]
+            if not (  # TODO ?.
+                self.selected_region
+                and user_input[CONF_REGION] == self.selected_region["regionId"]
             ):
                 self.selected_region = _find(source, user_input[CONF_REGION])
 

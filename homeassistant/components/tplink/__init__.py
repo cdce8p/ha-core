@@ -371,8 +371,8 @@ async def async_migrate_entry(
             ]
             # Nothing to fix if there's only one identifier. mac connection
             # should never be none but if it is there's no problem.
-            if len(tplink_identifiers) <= 1 or not (
-                mac := _mac_connection_or_none(device)
+            if not (
+                len(tplink_identifiers) > 1 and (mac := _mac_connection_or_none(device))
             ):
                 continue
             if not (

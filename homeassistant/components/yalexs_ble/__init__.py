@@ -113,9 +113,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: YALEXSBLEConfigEntry) ->
     except ConfigEntryAuthFailed:
         # If key has rotated, try to fetch it from the cache
         # and update
-        if (validated_config := async_get_validated_config(hass, address)) and (
-            validated_config.key != entry.data[CONF_KEY]
-            or validated_config.slot != entry.data[CONF_SLOT]
+        if (validated_config := async_get_validated_config(hass, address)) and not (
+            validated_config.key == entry.data[CONF_KEY]
+            and validated_config.slot == entry.data[CONF_SLOT]
         ):
             assert shutdown_callback is not None
             shutdown_callback()

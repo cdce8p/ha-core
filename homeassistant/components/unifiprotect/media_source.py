@@ -207,7 +207,7 @@ class ProtectMediaSource(MediaSource):
         """
 
         parts = item.identifier.split(":")
-        if len(parts) != 3 or parts[1] not in ("event", "eventthumb"):
+        if not (len(parts) == 3 and parts[1] in ("event", "eventthumb")):
             _bad_identifier(item.identifier)
 
         thumbnail_only = parts[1] == "eventthumb"

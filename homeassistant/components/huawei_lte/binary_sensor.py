@@ -125,10 +125,14 @@ class HuaweiLteMobileConnectionBinarySensor(HuaweiLteBaseBinarySensor):
     @override
     def assumed_state(self) -> bool:
         """Return True if real state is assumed, not known."""
-        return not self._raw_state or int(self._raw_state) not in (
-            ConnectionStatusEnum.CONNECT_FAILED,
-            ConnectionStatusEnum.CONNECTED,
-            ConnectionStatusEnum.DISCONNECTED,
+        return not (
+            self._raw_state
+            and int(self._raw_state)
+            in (
+                ConnectionStatusEnum.CONNECT_FAILED,
+                ConnectionStatusEnum.CONNECTED,
+                ConnectionStatusEnum.DISCONNECTED,
+            )
         )
 
     @property

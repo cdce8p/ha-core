@@ -64,12 +64,12 @@ class WiLightFlowHandler(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Handle a discovered WiLight."""
         # Filter out basic information
-        if (
-            not discovery_info.ssdp_location
-            or ATTR_UPNP_MANUFACTURER not in discovery_info.upnp
-            or ATTR_UPNP_SERIAL not in discovery_info.upnp
-            or ATTR_UPNP_MODEL_NAME not in discovery_info.upnp
-            or ATTR_UPNP_MODEL_NUMBER not in discovery_info.upnp
+        if not (
+            discovery_info.ssdp_location
+            and ATTR_UPNP_MANUFACTURER in discovery_info.upnp
+            and ATTR_UPNP_SERIAL in discovery_info.upnp
+            and ATTR_UPNP_MODEL_NAME in discovery_info.upnp
+            and ATTR_UPNP_MODEL_NUMBER in discovery_info.upnp
         ):
             return self.async_abort(reason="not_wilight_device")
         # Filter out non-WiLight devices
