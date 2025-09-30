@@ -110,7 +110,7 @@ class AprilaireCoordinator(BaseDataUpdateCoordinatorProtocol):
     ) -> bool:
         """Wait for the client to be ready."""
 
-        if not self.data or Attribute.MAC_ADDRESS not in self.data:
+        if not (self.data and Attribute.MAC_ADDRESS in self.data):  # TODO ??
             try:
                 data = await self.client.read_mac_address_and_wait(WAIT_TIMEOUT)
             except ResponseTimeoutError:
@@ -127,21 +127,21 @@ class AprilaireCoordinator(BaseDataUpdateCoordinatorProtocol):
 
                 return False
 
-            if not data or Attribute.MAC_ADDRESS not in data:
+            if not (data and Attribute.MAC_ADDRESS in data):  # TODO ??
                 _LOGGER.error("MAC address missing from the thermostat response")
                 await ready_callback(False)
 
                 return False
 
-        if not self.data or Attribute.THERMOSTAT_MODES not in self.data:
+        if not (self.data and Attribute.THERMOSTAT_MODES in self.data):  # TODO ??
             try:
                 await self.client.read_thermostat_iaq_available_and_wait(WAIT_TIMEOUT)
             except AprilaireResponseError as err:
                 _LOGGER.debug("Failed to read thermostat/IAQ available: %s", err)
 
-        if (
-            not self.data
-            or Attribute.INDOOR_TEMPERATURE_CONTROLLING_SENSOR_STATUS not in self.data
+        if not (  # TODO ?.
+            self.data
+            and Attribute.INDOOR_TEMPERATURE_CONTROLLING_SENSOR_STATUS in self.data
         ):
             try:
                 await self.client.read_sensors_and_wait(WAIT_TIMEOUT)

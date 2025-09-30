@@ -207,7 +207,9 @@ class SwitchbotConfigFlow(
         parsed = parse_advertisement_data(
             discovery_info.device, discovery_info.advertisement
         )
-        if not parsed or parsed.data.get("modelName") not in SUPPORTED_MODEL_TYPES:
+        if not (
+            parsed and parsed.data.get("modelName") in SUPPORTED_MODEL_TYPES
+        ):  # TODO ?.
             return self.async_abort(reason="not_supported")
         model_name = parsed.data.get("modelName")
         if (

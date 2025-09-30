@@ -153,7 +153,7 @@ class BraviaTVCoordinator(DataUpdateCoordinator[None]):
             title = item.get("title")
             label = item.get("label")
             uri = item.get("uri")
-            if not title or not uri:
+            if not (title and uri):
                 continue
             self.source_map[uri] = {**item, "type": source_type}
             if add_to_list:

@@ -174,10 +174,10 @@ class BaseHabiticaListEntity(HabiticaBase, TodoListEntity):
         ):  # Only todos support a due date.
             task["date"] = item.due
 
-        if (
-            item.summary != current_item.summary
-            or item.description != current_item.description
-            or item.due != current_item.due
+        if not (
+            item.summary == current_item.summary
+            and item.description == current_item.description
+            and item.due == current_item.due
         ):
             try:
                 await self.coordinator.habitica.update_task(UUID(item.uid), task)

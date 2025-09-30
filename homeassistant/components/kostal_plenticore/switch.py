@@ -72,10 +72,10 @@ async def async_setup_entry(
         hass, entry, _LOGGER, "Settings Data", timedelta(seconds=30), plenticore
     )
     for description in SWITCH_SETTINGS_DATA:
-        if (
-            description.module_id not in available_settings_data
-            or description.key
-            not in (
+        if not (
+            description.module_id in available_settings_data
+            and description.key
+            in (
                 setting.id for setting in available_settings_data[description.module_id]
             )
         ):

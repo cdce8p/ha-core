@@ -26,7 +26,7 @@ async def async_setup_entry(
     camera_info = await client.get_webcam_info()
     verify_ssl = config_entry.data[CONF_VERIFY_SSL]
 
-    if not camera_info or not camera_info.enabled:
+    if not (camera_info and camera_info.enabled):  # TODO ?.
         return
 
     async_add_entities(

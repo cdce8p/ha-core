@@ -78,9 +78,9 @@ class DevoloImageEntity(DevoloCoordinatorEntity[WifiGuestAccessGet], ImageEntity
     @override
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
-        if (
-            self._data.ssid != self.coordinator.data.ssid
-            or self._data.key != self.coordinator.data.key
+        if not (
+            self._data.ssid == self.coordinator.data.ssid
+            and self._data.key == self.coordinator.data.key
         ):
             self._data = self.coordinator.data
             self._attr_image_last_updated = dt_util.utcnow()

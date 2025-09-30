@@ -85,7 +85,7 @@ class BondFan(BondEntity, FanEntity):
     @override
     def percentage(self) -> int:
         """Return the current speed percentage for the fan."""
-        if not self._speed or not self._power:
+        if not (self._speed and self._power):
             return 0
         return min(
             100, max(0, ranged_value_to_percentage(self._speed_range, self._speed))

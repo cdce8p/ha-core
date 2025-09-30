@@ -103,7 +103,7 @@ class OpenUvProtectionWindowCoordinator(OpenUvCoordinator):
         from_dt = parse_datetime(data["from_time"])
         to_dt = parse_datetime(data["to_time"])
 
-        if not from_dt or not to_dt:
+        if not (from_dt and to_dt):
             LOGGER.warning(
                 "Unable to parse protection window datetimes: %s, %s",
                 data["from_time"],
