@@ -103,7 +103,7 @@ def session_scope(
         _LOGGER.exception("Error executing query")
         if need_rollback:
             session.rollback()
-        if not exception_filter or not exception_filter(err):
+        if not (exception_filter and exception_filter(err)):
             raise
     finally:
         if read_only:

@@ -108,8 +108,9 @@ class MatterLock(MatterEntity, LockEntity):
         node_event: MatterNodeEvent,
     ) -> None:
         """Call on NodeEvent."""
-        if (node_event.endpoint_id != self._endpoint.endpoint_id) or (
-            node_event.cluster_id != clusters.DoorLock.id
+        if not (
+            node_event.endpoint_id == self._endpoint.endpoint_id
+            and node_event.cluster_id == clusters.DoorLock.id
         ):
             return
 

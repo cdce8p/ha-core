@@ -117,8 +117,9 @@ def async_get_homekit_discovery(
     Return the domain to forward the discovery data to
     """
     if not (
-        model := props.get(HOMEKIT_MODEL_LOWER) or props.get(HOMEKIT_MODEL_UPPER)
-    ) or not isinstance(model, str):
+        (model := props.get(HOMEKIT_MODEL_LOWER) or props.get(HOMEKIT_MODEL_UPPER))
+        and isinstance(model, str)
+    ):
         return None
 
     for split_str in _HOMEKIT_MODEL_SPLITS:

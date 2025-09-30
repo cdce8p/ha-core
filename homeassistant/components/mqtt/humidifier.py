@@ -388,7 +388,7 @@ class MqttHumidifier(MqttEntity, HumidifierEntity):
         if not mode:
             _LOGGER.debug("Ignoring empty mode from '%s'", msg.topic)
             return
-        if not self.available_modes or mode not in self.available_modes:
+        if not (self.available_modes and mode in self.available_modes):
             _LOGGER.warning(
                 "'%s' received on topic %s. '%s' is not a valid mode",
                 msg.payload,
@@ -474,7 +474,7 @@ class MqttHumidifier(MqttEntity, HumidifierEntity):
 
         This method is a coroutine.
         """
-        if not self.available_modes or mode not in self.available_modes:
+        if not (self.available_modes and mode in self.available_modes):
             _LOGGER.warning("'%s'is not a valid mode", mode)
             return
 

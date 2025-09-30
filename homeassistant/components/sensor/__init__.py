@@ -135,8 +135,9 @@ def async_update_suggested_units(hass: HomeAssistant) -> None:
 
 def _display_precision(hass: HomeAssistant, entity_id: str) -> int | None:
     """Return the display precision."""
-    if not (entry := er.async_get(hass).async_get(entity_id)) or not (
-        sensor_options := entry.options.get(DOMAIN)
+    if not (
+        (entry := er.async_get(hass).async_get(entity_id))
+        and (sensor_options := entry.options.get(DOMAIN))
     ):
         return None
     if (display_precision := sensor_options.get("display_precision")) is not None:

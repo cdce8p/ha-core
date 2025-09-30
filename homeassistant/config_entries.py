@@ -1644,7 +1644,7 @@ class ConfigEntriesFlowManager(
         data: Any = None,
     ) -> ConfigFlowResult:
         """Start a configuration flow."""
-        if not context or "source" not in context:
+        if not (context and "source" in context):
             raise KeyError("Context not set or doesn't have a source set")
 
         # reauth/reconfigure flows should be linked to a config entry
@@ -2001,7 +2001,7 @@ class ConfigEntriesFlowManager(
         handler = await _async_get_flow_handler(
             self.hass, handler_key, self._hass_config
         )
-        if not context or "source" not in context:
+        if not (context and "source" in context):
             raise KeyError("Context not set or doesn't have a source set")
 
         flow = handler()
@@ -3907,7 +3907,7 @@ class ConfigSubentryFlowManager(
 
         The entry_id and flow.handler[0] is the same thing to map entry with flow.
         """
-        if not context or "source" not in context:
+        if not (context and "source" in context):
             raise KeyError("Context not set or doesn't have a source set")
 
         entry_id, subentry_type = handler_key

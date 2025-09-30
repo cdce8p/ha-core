@@ -211,7 +211,7 @@ def _significant_states_stmt(
         stmt = stmt.outerjoin(
             StateAttributes, States.attributes_id == StateAttributes.attributes_id
         )
-    if not include_start_time_state or not run_start_ts:
+    if not (include_start_time_state and run_start_ts):
         return stmt.order_by(States.metadata_id, States.last_updated_ts)
     unioned_subquery = union_all(
         _select_from_subquery(
@@ -271,10 +271,13 @@ def get_significant_states_with_session(
     metadata_ids_in_significant_domains: list[int] = []
     instance = get_instance(hass)
     if not (
-        entity_id_to_metadata_id := instance.states_meta_manager.get_many(
-            entity_ids, session, False
+        (
+            entity_id_to_metadata_id := instance.states_meta_manager.get_many(
+                entity_ids, session, False
+            )
         )
-    ) or not (possible_metadata_ids := extract_metadata_ids(entity_id_to_metadata_id)):
+        and (possible_metadata_ids := extract_metadata_ids(entity_id_to_metadata_id))
+    ):
         return {}
     metadata_ids = possible_metadata_ids
     if significant_changes_only:
@@ -443,7 +446,7 @@ def _state_changed_during_period_stmt(
     if limit:
         stmt = stmt.limit(limit)
     stmt = stmt.order_by(States.metadata_id, States.last_updated_ts)
-    if not include_start_time_state or not run_start_ts:
+    if not (include_start_time_state and run_start_ts):
         # If we do not need the start time state or the
         # oldest possible timestamp is newer than the start time
         # we can return the statement as is as there will

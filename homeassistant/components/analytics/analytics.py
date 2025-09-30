@@ -332,7 +332,7 @@ class Analytics:
 
     async def send_analytics(self, _: datetime | None = None) -> None:
         """Send analytics."""
-        if not self.onboarded or not self.preferences.get(ATTR_BASE, False):
+        if not (self.onboarded and self.preferences.get(ATTR_BASE, False)):
             return
 
         hass = self._hass
@@ -532,7 +532,7 @@ class Analytics:
 
     async def send_snapshot(self, _: datetime | None = None) -> None:
         """Send a snapshot."""
-        if not self.onboarded or not self.preferences.get(ATTR_SNAPSHOTS, False):
+        if not (self.onboarded and self.preferences.get(ATTR_SNAPSHOTS, False)):
             return
 
         payload = await _async_snapshot_payload(self._hass)

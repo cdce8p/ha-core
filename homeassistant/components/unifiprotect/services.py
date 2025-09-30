@@ -320,10 +320,10 @@ async def set_chime_paired_doorbells(call: ServiceCall) -> None:
     for camera_id in doorbell_refs.referenced | doorbell_refs.indirectly_referenced:
         doorbell_sensor = entity_registry.async_get(camera_id)
         assert doorbell_sensor is not None
-        if (
-            doorbell_sensor.platform != DOMAIN
-            or (doorbell_sensor.domain, doorbell_sensor.original_device_class)
-            not in _DOORBELL_ENTITY_CLASSES
+        if not (
+            doorbell_sensor.platform == DOMAIN
+            and (doorbell_sensor.domain, doorbell_sensor.original_device_class)
+            in _DOORBELL_ENTITY_CLASSES
         ):
             continue
         doorbell_mac = _async_unique_id_to_mac(doorbell_sensor.unique_id)

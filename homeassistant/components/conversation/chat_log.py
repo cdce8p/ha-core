@@ -123,9 +123,9 @@ def async_get_chat_log(
                 "Cannot attach chat log delta listener unless initial caller"
             )
         _async_check_owner(hass, session, user_input)
-        if user_input is not None and (
-            (content := chat_log.content[-1]).role != "user"
-            or content.content != user_input.text
+        if user_input is not None and not (
+            (content := chat_log.content[-1]).role == "user"
+            and content.content == user_input.text
         ):
             chat_log.async_add_user_content(UserContent(content=user_input.text))
 

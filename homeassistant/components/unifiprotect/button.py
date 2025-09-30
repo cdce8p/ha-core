@@ -142,7 +142,7 @@ async def async_setup_entry(
 
     @callback
     def _async_add_unadopted_device(device: ProtectAdoptableDeviceModel) -> None:
-        if not device.can_adopt or not device.can_create(data.api.bootstrap.auth_user):
+        if not (device.can_adopt and device.can_create(data.api.bootstrap.auth_user)):
             _LOGGER.debug("Device is not adoptable: %s", device.id)
             return
         async_add_entities(adopt_entities(ufp_device=device))

@@ -92,7 +92,7 @@ def async_handle_source_entity_changes(
             else:
                 await hass.config_entries.async_reload(helper_config_entry_id)
 
-        if not source_device_id or "device_id" not in data["changes"]:
+        if not (source_device_id and "device_id" in data["changes"]):
             return
 
         # Handle the source entity being moved to a different device or removed
