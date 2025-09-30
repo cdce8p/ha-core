@@ -422,7 +422,7 @@ class WindowCoveringBasic(OpeningDeviceBase, HomeAccessory):
             not self._supports_stop and value >= 50
         ):
             service, position = (SERVICE_OPEN_COVER, 100)
-        elif value < 30 or not self._supports_stop:
+        elif not (value >= 30 and self._supports_stop):  # TODO questionable
             service, position = (SERVICE_CLOSE_COVER, 0)
         else:
             service, position = (SERVICE_STOP_COVER, 50)

@@ -490,7 +490,7 @@ class Scanner:
             assert self._description_cache is not None
         cache = self._description_cache
         for discovery_key in entry.discovery_keys[DOMAIN]:
-            if discovery_key.version != 1 or not isinstance(discovery_key.key, str):
+            if not (discovery_key.version == 1 and isinstance(discovery_key.key, str)):
                 continue
             udn = discovery_key.key
             _LOGGER.debug("Rediscover service %s", udn)

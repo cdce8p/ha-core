@@ -167,9 +167,9 @@ class LockEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
         if self.code_format is None:
             self.__code_format_cmp = None
             return None
-        if (
-            not self.__code_format_cmp
-            or self.code_format != self.__code_format_cmp.pattern
+        if not (
+            self.__code_format_cmp
+            and self.code_format == self.__code_format_cmp.pattern
         ):
             self.__code_format_cmp = re.compile(self.code_format)
         return self.__code_format_cmp

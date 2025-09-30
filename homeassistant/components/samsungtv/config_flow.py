@@ -472,8 +472,8 @@ class SamsungTVConfigFlow(ConfigFlow, domain=DOMAIN):
 
     @callback
     def _abort_if_manufacturer_is_not_samsung(self) -> None:
-        if not self._manufacturer or not self._manufacturer.lower().startswith(
-            "samsung"
+        if not (
+            self._manufacturer and self._manufacturer.lower().startswith("samsung")
         ):
             raise AbortFlow(RESULT_NOT_SUPPORTED)
 

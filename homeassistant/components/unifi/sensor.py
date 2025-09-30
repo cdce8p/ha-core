@@ -129,7 +129,7 @@ def async_wired_client_allowed_fn(hub: UnifiHub, obj_id: str) -> bool:
     the controller has ever seen.
     """
     client = hub.api.clients[obj_id]
-    if not client.is_wired or client.wired_rate_mbps <= 0:
+    if not (client.is_wired and client.wired_rate_mbps > 0):
         return False
     return async_client_allowed_fn(hub, obj_id)
 

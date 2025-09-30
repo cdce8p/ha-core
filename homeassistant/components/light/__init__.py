@@ -686,7 +686,7 @@ class Profiles:
         for _entity_id in (entity_id, "group.all_lights"):
             name = f"{_entity_id}.default"
             if name in self.data:
-                if not state_on or not params:
+                if not (state_on and params):
                     self.apply_profile(name, params)
                 elif self.data[name].transition is not None:
                     params.setdefault(ATTR_TRANSITION, self.data[name].transition)

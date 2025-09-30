@@ -73,10 +73,14 @@ async def async_get_triggers(
     """List device triggers for YoLink devices."""
     device_registry = dr.async_get(hass)
     registry_device = device_registry.async_get(device_id, include_child_devices=False)
-    if not registry_device or registry_device.model not in [
-        ATTR_DEVICE_SMART_REMOTER,
-        ATTR_DEVICE_SWITCH,
-    ]:
+    if not (  # TODO ?.
+        registry_device
+        and registry_device.model
+        in [
+            ATTR_DEVICE_SMART_REMOTER,
+            ATTR_DEVICE_SWITCH,
+        ]
+    ):
         return []
     if registry_device.model_id not in list(TRIGGER_MAPPINGS.keys()):
         return []

@@ -111,7 +111,7 @@ class NotionEntity(CoordinatorEntity[NotionDataUpdateCoordinator]):
             (DOMAIN, bridge.hardware_id), self.coordinator.config_entry.entry_id
         )
 
-        if not bridge_device or not self.device_entry:
+        if not (bridge_device and self.device_entry):
             return
 
         device_registry.async_update_device(

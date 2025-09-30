@@ -217,13 +217,13 @@ class StatisticsMetaManager:
                 else StatisticMeanType.NONE
             )
         metadata_id, old_metadata = old_metadata_dict[statistic_id]
-        if not (
-            old_metadata["mean_type"] != new_metadata["mean_type"]
-            or old_metadata["has_sum"] != new_metadata["has_sum"]
-            or old_metadata["name"] != new_metadata["name"]
-            or old_metadata["unit_class"] != new_metadata["unit_class"]
-            or old_metadata["unit_of_measurement"]
-            != new_metadata["unit_of_measurement"]
+        if (
+            old_metadata["mean_type"] == new_metadata["mean_type"]
+            and old_metadata["has_sum"] == new_metadata["has_sum"]
+            and old_metadata["name"] == new_metadata["name"]
+            and old_metadata["unit_class"] == new_metadata["unit_class"]
+            and old_metadata["unit_of_measurement"]
+            == new_metadata["unit_of_measurement"]
         ):
             return None, metadata_id
 

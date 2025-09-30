@@ -263,7 +263,7 @@ class DynamicCurrentTempClimateDataTemplate(BaseDiscoverySchemaDataTemplate):
     @override
     def resolve_data(self, value: ZwaveValue) -> dict[str, Any]:
         """Resolve helper class data for a discovered value."""
-        if not self.lookup_table or not self.dependent_value:
+        if not (self.lookup_table and self.dependent_value):
             raise ValueError("Invalid discovery data template")
         data: dict[str, Any] = {
             "lookup_table": {},

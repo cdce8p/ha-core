@@ -97,7 +97,7 @@ class IRobotEntity(Entity):
 
     def new_state_filter(self, new_state):
         """Filter out wifi state messages."""
-        return len(new_state) > 1 or "signal" not in new_state
+        return not (len(new_state) <= 1 and "signal" in new_state)
 
     def on_message(self, json_data):
         """Update state on message change."""

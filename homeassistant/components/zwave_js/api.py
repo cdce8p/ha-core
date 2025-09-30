@@ -315,7 +315,7 @@ def async_get_entry(
             hass, connection, msg, msg[ENTRY_ID]
         )
 
-        if not entry or not client or not driver:
+        if not (entry and client and driver):
             return
 
         await orig_func(hass, connection, msg, entry, client, driver)
@@ -505,7 +505,7 @@ async def websocket_network_status(
     """Get the status of the Z-Wave JS network."""
     if ENTRY_ID in msg:
         _, client, driver = await _async_get_entry(hass, connection, msg, msg[ENTRY_ID])
-        if not client or not driver:
+        if not (client and driver):
             return
     elif DEVICE_ID in msg:
         node = await _async_get_node(hass, connection, msg, msg[DEVICE_ID])
@@ -2738,7 +2738,7 @@ class FirmwareUploadView(HomeAssistantView):
 
         data = await request.post()
 
-        if "file" not in data or not isinstance(data["file"], web_request.FileField):
+        if not ("file" in data and isinstance(data["file"], web_request.FileField)):
             raise web_exceptions.HTTPBadRequest
 
         uploaded_file: web_request.FileField = data["file"]

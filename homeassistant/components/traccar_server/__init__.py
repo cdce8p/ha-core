@@ -43,7 +43,7 @@ async def async_setup_entry(
     client_session = async_create_clientsession(
         hass,
         cookie_jar=CookieJar(
-            unsafe=not entry.data[CONF_SSL] or not entry.data[CONF_VERIFY_SSL]
+            unsafe=not (entry.data[CONF_SSL] and entry.data[CONF_VERIFY_SSL])
         ),
     )
     coordinator = TraccarServerCoordinator(

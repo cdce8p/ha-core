@@ -406,8 +406,9 @@ class EcovacsVacuum(
         """Get bot and chargers positions."""
         _LOGGER.debug("async_raw_get_positions")
 
-        if not (map_cap := self._capability.map) or not (
-            position_commands := map_cap.position.get
+        if not (
+            (map_cap := self._capability.map)
+            and (position_commands := map_cap.position.get)
         ):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,

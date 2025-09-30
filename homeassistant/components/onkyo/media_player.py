@@ -371,7 +371,7 @@ class OnkyoMediaPlayer(MediaPlayerEntity):
             return
 
         source = self._rev_source_mapping.get(self.source)
-        if media_type.lower() != "radio" or source not in PLAYABLE_SOURCES:
+        if not (media_type.lower() == "radio" and source in PLAYABLE_SOURCES):
             return
 
         message = command.TunerPreset(self._zone, int(media_id))

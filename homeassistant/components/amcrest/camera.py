@@ -111,7 +111,7 @@ class AmcrestCam(Camera):
 
     def _check_snapshot_ok(self) -> None:
         available = self.available
-        if not available or not self.is_on:
+        if not (available and self.is_on):
             _LOGGER.warning(
                 "Attempt to take snapshot when %s camera is %s",
                 self.name,

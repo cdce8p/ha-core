@@ -42,10 +42,10 @@ def _process_cast_platform(
     hass: HomeAssistant, integration_domain: str, platform: CastProtocol
 ) -> CastProtocol:
     """Process a cast platform."""
-    if (
-        not hasattr(platform, "async_get_media_browser_root_object")
-        or not hasattr(platform, "async_browse_media")
-        or not hasattr(platform, "async_play_media")
+    if not (  # TODO match expr
+        hasattr(platform, "async_get_media_browser_root_object")
+        and hasattr(platform, "async_browse_media")
+        and hasattr(platform, "async_play_media")
     ):
         raise HomeAssistantError(f"Invalid cast platform {platform}")
     return platform

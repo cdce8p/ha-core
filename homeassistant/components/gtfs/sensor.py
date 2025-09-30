@@ -617,12 +617,12 @@ class GTFSDepartureSensor(SensorEntity):
                 self._trip = None
             else:
                 trip_id = self._departure["trip_id"]
-                if not self._trip or self._trip.trip_id != trip_id:
+                if not (self._trip and self._trip.trip_id == trip_id):
                     _LOGGER.debug("Fetching trip details for %s", trip_id)
                     self._trip = self._pygtfs.trips_by_id(trip_id)[0]
 
                 route_id = self._departure["route_id"]
-                if not self._route or self._route.route_id != route_id:
+                if not (self._route and self._route.route_id == route_id):
                     _LOGGER.debug("Fetching route details for %s", route_id)
                     self._route = self._pygtfs.routes_by_id(route_id)[0]
 
@@ -749,8 +749,8 @@ class GTFSDepartureSensor(SensorEntity):
         key = "route_id"
         if not self._route and key in self._attributes:
             self.remove_keys("Route")
-        elif self._route and (
-            key not in self._attributes or self._attributes[key] != self._route.route_id
+        elif self._route and not (
+            key in self._attributes and self._attributes[key] == self._route.route_id
         ):
             self.append_keys(self.dict_for_table(self._route), "Route")
             self._attributes[ATTR_ROUTE_TYPE] = ROUTE_TYPE_OPTIONS[
@@ -761,8 +761,8 @@ class GTFSDepartureSensor(SensorEntity):
         key = "trip_id"
         if not self._trip and key in self._attributes:
             self.remove_keys("Trip")
-        elif self._trip and (
-            key not in self._attributes or self._attributes[key] != self._trip.trip_id
+        elif self._trip and not (
+            key in self._attributes and self._attributes[key] == self._trip.trip_id
         ):
             self.append_keys(self.dict_for_table(self._trip), "Trip")
             self._attributes[ATTR_BICYCLE] = BICYCLE_ALLOWED_OPTIONS.get(

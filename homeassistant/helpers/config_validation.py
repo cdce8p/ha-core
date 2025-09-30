@@ -443,7 +443,7 @@ def domain_key(config_key: Any) -> str:
 
     parts = config_key.partition(" ")
     _domain = parts[0] if parts[2].strip(" ") else config_key
-    if not _domain or _domain.strip(" ") != _domain:
+    if not (_domain and _domain.strip(" ") == _domain):
         raise vol.Invalid("invalid domain", path=[config_key])
 
     return _domain
@@ -789,7 +789,7 @@ def template_complex(value: Any) -> Any:
 
 def _positive_time_period_template_complex(value: Any) -> Any:
     """Do basic validation of a positive time period expressed as a templated dict."""
-    if not isinstance(value, dict) or not value:
+    if not (value and isinstance(value, dict)):
         raise vol.Invalid("template should be a dict")
     for key, element in value.items():
         if not isinstance(key, str):

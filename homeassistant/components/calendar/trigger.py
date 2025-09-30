@@ -131,8 +131,9 @@ type QueuedEventFetcher = Callable[[Timespan], Awaitable[list[QueuedCalendarEven
 def get_entity(hass: HomeAssistant, entity_id: str) -> CalendarEntity:
     """Get the calendar entity for the provided entity_id."""
     component: EntityComponent[CalendarEntity] = hass.data[DATA_COMPONENT]
-    if not (entity := component.get_entity(entity_id)) or not isinstance(
-        entity, CalendarEntity
+    if not (
+        (entity := component.get_entity(entity_id))
+        and isinstance(entity, CalendarEntity)
     ):
         raise HomeAssistantError(
             f"Entity does not exist {entity_id} or is not a calendar entity"

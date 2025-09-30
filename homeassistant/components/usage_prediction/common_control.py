@@ -123,7 +123,7 @@ async def async_predict_common_control(
         context_processed.add(context_id)
 
         # Parse the event data
-        if not time_fired_ts or not shared_data:
+        if not (time_fired_ts and shared_data):
             continue
 
         try:

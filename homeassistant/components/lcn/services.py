@@ -74,14 +74,17 @@ class LcnServiceCall:
         )
         device_id = service.data[CONF_DEVICE_ID]
         device_registry = dr.async_get(self.hass)
-        if not (device := device_registry.async_get(device_id)) or not (
-            entry := next(
-                (
-                    entry
-                    for entry in entries
-                    if entry.entry_id == device.primary_config_entry
-                ),
-                None,
+        if not (
+            (device := device_registry.async_get(device_id))
+            and (
+                entry := next(
+                    (
+                        entry
+                        for entry in entries
+                        if entry.entry_id == device.primary_config_entry
+                    ),
+                    None,
+                )
             )
         ):
             raise ServiceValidationError(

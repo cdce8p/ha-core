@@ -133,8 +133,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     username = domain_config.get(CONF_USERNAME)
     password = domain_config.get(CONF_PASSWORD)
 
-    if not (configured_by_user := DOMAIN in config) or not (
-        url := domain_config.get(CONF_URL)
+    if not (
+        (configured_by_user := DOMAIN in config)
+        and (url := domain_config.get(CONF_URL))
     ):
         if not is_docker_env():
             if not configured_by_user:
@@ -148,7 +149,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
             return False
 
         # Generate random credentials when not provided to secure the server
-        if not username or not password:
+        if not (username and password):
             username = token_hex()
             password = token_hex()
             _LOGGER.debug("Generated random credentials for go2rtc server")

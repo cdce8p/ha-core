@@ -473,7 +473,7 @@ class SensorGroup(GroupEntity, SensorEntity):
         )
         valid_state_numeric = self.mode(numeric_state for numeric_state in valid_states)
 
-        if not valid_state or not valid_state_numeric:
+        if not (valid_state and valid_state_numeric):
             self._attr_native_value = None
             self._extra_state_attribute = {}
             return

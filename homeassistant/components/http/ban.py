@@ -145,7 +145,7 @@ async def process_wrong_login(request: Request) -> None:
     )
 
     # Check if ban middleware is loaded
-    if KEY_BAN_MANAGER not in request.app or request.app[KEY_LOGIN_THRESHOLD] < 1:
+    if not (KEY_BAN_MANAGER in request.app and request.app[KEY_LOGIN_THRESHOLD] >= 1):
         return
 
     request.app[KEY_FAILED_LOGIN_ATTEMPTS][remote_addr] += 1
@@ -180,7 +180,7 @@ def process_success_login(request: Request) -> None:
     """
     app = request.app
     # Check if ban middleware is loaded
-    if KEY_BAN_MANAGER not in app or app[KEY_LOGIN_THRESHOLD] < 1:
+    if not (KEY_BAN_MANAGER in app and app[KEY_LOGIN_THRESHOLD] >= 1):
         return
 
     remote_addr = ip_address(request.remote)  # type: ignore[arg-type]

@@ -198,7 +198,7 @@ async def _async_migrate_unique_ids(
 
         # If it doesn't begin with a bed id or end with one of the sensor types,
         # it doesn't need to be migrated
-        if parts[0] not in bed_ids or not old_unique_id.endswith(tuple(sensor_types)):
+        if not (parts[0] in bed_ids and old_unique_id.endswith(tuple(sensor_types))):
             return None
 
         sensor_type = next(filter(old_unique_id.endswith, sensor_types))

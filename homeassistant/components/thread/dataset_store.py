@@ -186,9 +186,9 @@ class DatasetStoreStore(Store):
                         source=dataset["source"],
                         tlv=dataset["tlv"],
                     )
-                    if (
-                        MeshcopTLVType.EXTPANID not in entry.dataset
-                        or MeshcopTLVType.ACTIVETIMESTAMP not in entry.dataset
+                    if not (
+                        MeshcopTLVType.EXTPANID in entry.dataset
+                        and MeshcopTLVType.ACTIVETIMESTAMP in entry.dataset
                     ):
                         _LOGGER.warning(
                             "Dropped invalid Thread dataset:\n%s",
@@ -295,9 +295,9 @@ class DatasetStore:
 
         # Don't allow adding a dataset which does not have an extended pan id or
         # timestamp
-        if (
-            MeshcopTLVType.EXTPANID not in dataset
-            or MeshcopTLVType.ACTIVETIMESTAMP not in dataset
+        if not (
+            MeshcopTLVType.EXTPANID in dataset
+            and MeshcopTLVType.ACTIVETIMESTAMP in dataset
         ):
             raise HomeAssistantError("Invalid dataset")
 

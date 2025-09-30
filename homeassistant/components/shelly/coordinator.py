@@ -354,9 +354,8 @@ class ShellyBlockCoordinator(ShellyCoordinatorBase[BlockDevice]):
                         self._last_cfg_changed = None
                     self._last_effect = block.effect
 
-            if (
-                "inputEvent" not in block.sensor_ids
-                or "inputEventCnt" not in block.sensor_ids
+            if not (
+                "inputEvent" in block.sensor_ids and "inputEventCnt" in block.sensor_ids
             ):
                 LOGGER.debug("Skipping non-input event block %s", block.description)
                 continue
@@ -549,7 +548,7 @@ class ShellyRpcCoordinator(ShellyCoordinatorBase[RpcDevice]):
         """Handle device going online."""
         if not self.sleep_period:
             await self.async_request_refresh()
-        elif not self._came_online_once or not self.device.initialized:
+        elif not (self._came_online_once and self.device.initialized):
             LOGGER.debug(
                 "Sleepy device %s is online (source: %s), trying to poll and configure",
                 self.name,
@@ -757,7 +756,7 @@ class ShellyRpcCoordinator(ShellyCoordinatorBase[RpcDevice]):
         config = self.device.config
         if (
             (ws_config := config.get("ws"))
-            and (not ws_config["server"] or not ws_config["enable"])
+            and not (ws_config["server"] and ws_config["enable"])
             and (ws_url := get_rpc_ws_url(self.hass))
         ):
             LOGGER.debug(

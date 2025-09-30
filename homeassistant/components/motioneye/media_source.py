@@ -64,7 +64,7 @@ class MotionEyeMediaSource(MediaSource):
         """Resolve media to a url."""
         config_id, device_id, kind, path = self._parse_identifier(item.identifier)
 
-        if not config_id or not device_id or not kind or not path:
+        if not (config_id and device_id and kind and path):
             raise Unresolvable(
                 f"Incomplete media identifier specified: {item.identifier}"
             )
@@ -296,10 +296,10 @@ class MotionEyeMediaSource(MediaSource):
             return media.get(KEY_PATH, "")
 
         for media in sorted(media_list, key=get_media_sort_key):
-            if (
-                KEY_PATH not in media
-                or KEY_MIME_TYPE not in media
-                or media[KEY_MIME_TYPE] not in MIME_TYPE_MAP.values()
+            if not (  # TODO ?.
+                KEY_PATH in media
+                and KEY_MIME_TYPE in media
+                and media[KEY_MIME_TYPE] in MIME_TYPE_MAP.values()
             ):
                 continue
 

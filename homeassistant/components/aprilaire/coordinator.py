@@ -122,29 +122,29 @@ class AprilaireCoordinator(BaseDataUpdateCoordinatorProtocol):
     ) -> bool:
         """Wait for the client to be ready."""
 
-        if not self.data or Attribute.MAC_ADDRESS not in self.data:
+        if not (self.data and Attribute.MAC_ADDRESS in self.data):  # TODO ?.
             await self.client.read_mac_address()
 
             data = await self.client.wait_for_response(
                 FunctionalDomain.IDENTIFICATION, 2, WAIT_TIMEOUT
             )
 
-            if not data or Attribute.MAC_ADDRESS not in data:
+            if not (data and Attribute.MAC_ADDRESS in data):  # TODO ?.
                 _LOGGER.error("Missing MAC address")
                 await ready_callback(False)
 
                 return False
 
-        if not self.data or Attribute.THERMOSTAT_MODES not in self.data:
+        if not (self.data and Attribute.THERMOSTAT_MODES in self.data):  # TODO ?.
             await self.client.read_thermostat_iaq_available()
 
             await self.client.wait_for_response(
                 FunctionalDomain.CONTROL, 7, WAIT_TIMEOUT
             )
 
-        if (
-            not self.data
-            or Attribute.INDOOR_TEMPERATURE_CONTROLLING_SENSOR_STATUS not in self.data
+        if not (  # TODO ?.
+            self.data
+            and Attribute.INDOOR_TEMPERATURE_CONTROLLING_SENSOR_STATUS in self.data
         ):
             await self.client.read_sensors()
 

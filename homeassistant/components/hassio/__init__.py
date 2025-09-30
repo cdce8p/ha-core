@@ -477,7 +477,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         new_timezone = hass.config.time_zone
         new_country = hass.config.country
 
-        if new_timezone != last_timezone or new_country != last_country:
+        if not (new_timezone == last_timezone and new_country == last_country):
             last_timezone = new_timezone
             last_country = new_country
 

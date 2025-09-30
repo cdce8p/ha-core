@@ -58,7 +58,7 @@ class ESPHomeDashboardManager:
     async def async_setup(self) -> None:
         """Restore the dashboard from storage."""
         self._data = await self._store.async_load()
-        if not (data := self._data) or not (info := data.get("info")):
+        if not ((data := self._data) and (info := data.get("info"))):
             return
         if is_hassio(self._hass):
             from homeassistant.components.hassio import get_addons_info  # noqa: PLC0415

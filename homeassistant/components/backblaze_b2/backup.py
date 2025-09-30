@@ -476,7 +476,7 @@ class BackblazeBackupAgent(BackupAgent):
         file, metadata_file_version = await self._find_file_and_metadata_version_by_id(
             backup_id
         )
-        if not file or not metadata_file_version:
+        if not (file and metadata_file_version):
             raise BackupNotFound(f"Backup {backup_id} not found")
 
         try:

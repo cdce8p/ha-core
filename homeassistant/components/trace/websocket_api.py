@@ -146,9 +146,9 @@ def websocket_breakpoint_set(
     node: str = msg["node"]
     run_id: str | None = msg.get("run_id")
 
-    if (
-        SCRIPT_BREAKPOINT_HIT not in hass.data.get(DATA_DISPATCHER, {})
-        or not hass.data[DATA_DISPATCHER][SCRIPT_BREAKPOINT_HIT]
+    if not (  # TODO ?.
+        SCRIPT_BREAKPOINT_HIT in hass.data.get(DATA_DISPATCHER, {})
+        and hass.data[DATA_DISPATCHER][SCRIPT_BREAKPOINT_HIT]
     ):
         raise HomeAssistantError("No breakpoint subscription")
 
@@ -235,9 +235,9 @@ def websocket_subscribe_breakpoint_events(
     def unsub() -> None:
         """Unsubscribe from breakpoint events."""
         remove_signal()
-        if (
-            SCRIPT_BREAKPOINT_HIT not in hass.data.get(DATA_DISPATCHER, {})
-            or not hass.data[DATA_DISPATCHER][SCRIPT_BREAKPOINT_HIT]
+        if not (  # TODO ?.
+            SCRIPT_BREAKPOINT_HIT in hass.data.get(DATA_DISPATCHER, {})
+            and hass.data[DATA_DISPATCHER][SCRIPT_BREAKPOINT_HIT]
         ):
             breakpoint_clear_all(hass)
             async_dispatcher_send(hass, SCRIPT_DEBUG_CONTINUE_ALL)

@@ -132,9 +132,9 @@ async def async_validate_device_automation_config(
     # Find a config entry with the same domain as the device automation
     device_config_entry = None
     for entry_id in device.config_entries:
-        if (
-            not (entry := hass.config_entries.async_get_entry(entry_id))
-            or entry.domain != validated_config[CONF_DOMAIN]
+        if not (
+            (entry := hass.config_entries.async_get_entry(entry_id))
+            and entry.domain == validated_config[CONF_DOMAIN]
         ):
             continue
         device_config_entry = entry

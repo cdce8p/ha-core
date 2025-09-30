@@ -367,14 +367,14 @@ class MediaSearchAndPlayHandler(intent.IntentHandler):
             _LOGGER.error("Error calling search_media: %s", err)
             raise intent.IntentHandleError(f"Error searching media: {err}") from err
 
-        if (
-            not search_response
-            or not (
+        if not (
+            search_response
+            and (
                 entity_response := cast(
                     SearchMedia, search_response.get(target_entity_id)
                 )
             )
-            or not (results := entity_response.result)
+            and (results := entity_response.result)
         ):
             raise intent.IntentHandleError(f"No results found for {search_query}")
 

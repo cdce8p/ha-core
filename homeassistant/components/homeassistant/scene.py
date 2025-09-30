@@ -261,7 +261,7 @@ async def async_setup_platform(
         scene_config = SceneConfig(None, call.data[CONF_SCENE_ID], None, entities)
         entity_id = f"{SCENE_DOMAIN}.{scene_config.name}"
         if (old := platform.entities.get(entity_id)) is not None:
-            if not isinstance(old, HomeAssistantScene) or not old.from_service:
+            if not (isinstance(old, HomeAssistantScene) and old.from_service):
                 _LOGGER.warning("The scene %s already exists", entity_id)
                 return
             await platform.async_remove_entity(entity_id)

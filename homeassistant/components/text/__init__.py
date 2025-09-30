@@ -224,7 +224,9 @@ class TextEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
         if self.pattern is None:
             self.__pattern_cmp = None
             return None
-        if not self.__pattern_cmp or self.pattern != self.__pattern_cmp.pattern:
+        if not (
+            self.__pattern_cmp and self.pattern == self.__pattern_cmp.pattern
+        ):  # TODO ?.
             self.__pattern_cmp = re.compile(self.pattern)
         return self.__pattern_cmp
 

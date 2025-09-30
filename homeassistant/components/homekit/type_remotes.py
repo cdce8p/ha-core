@@ -180,7 +180,7 @@ class RemoteInputSelectAccessory(HomeAccessory, ABC):
     def _async_update_input_state(self, hk_state: int, new_state: State) -> None:
         """Update input state after state changed."""
         # Set active input
-        if not self.support_select_source or not self.sources:
+        if not (self.support_select_source and self.sources):
             return
         source = new_state.attributes.get(self.source_key)
         source_name = cleanup_name_for_homekit(source)

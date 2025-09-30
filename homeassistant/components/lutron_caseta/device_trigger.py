@@ -368,8 +368,11 @@ async def async_validate_trigger_config(
     device_id = config[CONF_DEVICE_ID]
     subtype = config[CONF_SUBTYPE]
 
-    if not (data := get_lutron_data_by_dr_id(hass, device_id)) or not (
-        keypad := data.keypad_data.dr_device_id_to_keypad.get(device_id)
+    if not (
+        (data := get_lutron_data_by_dr_id(hass, device_id))
+        and (  # TODO ?.
+            keypad := data.keypad_data.dr_device_id_to_keypad.get(device_id)
+        )
     ):
         return config
 
@@ -413,8 +416,11 @@ async def async_get_triggers(
 ) -> list[dict[str, str]]:
     """List device triggers for lutron caseta devices."""
     # Check if device is a valid keypad.  Return empty if not.
-    if not (data := get_lutron_data_by_dr_id(hass, device_id)) or not (
-        keypad := data.keypad_data.dr_device_id_to_keypad.get(device_id)
+    if not (
+        (data := get_lutron_data_by_dr_id(hass, device_id))
+        and (  # TODO ?.
+            keypad := data.keypad_data.dr_device_id_to_keypad.get(device_id)
+        )
     ):
         return []
 

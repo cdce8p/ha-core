@@ -157,10 +157,10 @@ class GoogleGenerativeAITaskEntity(
                 f" {response.prompt_feedback.block_reason_message}"
             )
 
-        if (
-            not response.candidates
-            or not response.candidates[0].content
-            or not response.candidates[0].content.parts
+        if not (  # TODO ?.
+            response.candidates
+            and response.candidates[0].content
+            and response.candidates[0].content.parts
         ):
             raise HomeAssistantError("Unknown error generating image")
 

@@ -254,9 +254,9 @@ class DenonAvrFlowHandler(ConfigFlow, domain=DOMAIN):
             return self.async_abort(reason="not_denonavr_manufacturer")
 
         # Check if required information is present to set the unique_id
-        if (
-            ATTR_UPNP_MODEL_NAME not in discovery_info.upnp
-            or ATTR_UPNP_SERIAL not in discovery_info.upnp
+        if not (
+            ATTR_UPNP_MODEL_NAME in discovery_info.upnp
+            and ATTR_UPNP_SERIAL in discovery_info.upnp
         ):
             return self.async_abort(reason="not_denonavr_missing")
 

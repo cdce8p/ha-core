@@ -48,9 +48,9 @@ class RuuviGatewayUpdateCoordinator(DataUpdateCoordinator[list[TagData]]):
                 bearer_token=self.token,
             )
         for tag in data.tags:
-            if (
-                tag.mac not in self.last_tag_datas
-                or self.last_tag_datas[tag.mac].data != tag.data
+            if not (
+                tag.mac in self.last_tag_datas
+                and self.last_tag_datas[tag.mac].data == tag.data
             ):
                 changed_tag_datas.append(tag)
                 self.last_tag_datas[tag.mac] = tag

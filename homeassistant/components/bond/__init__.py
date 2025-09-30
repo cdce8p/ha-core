@@ -134,7 +134,7 @@ async def async_remove_config_entry_device(
     data = config_entry.runtime_data
     hub = data.hub
     for identifier in device_entry.identifiers:
-        if identifier[0] != DOMAIN or len(identifier) != 3:
+        if not (identifier[0] == DOMAIN and len(identifier) == 3):
             continue
         bond_id: str = identifier[1]  # type: ignore[unreachable]
         # Bond still uses the 3 arg tuple before
@@ -142,8 +142,9 @@ async def async_remove_config_entry_device(
         device_id: str = identifier[2]
         # If device_id is no longer present on
         # the hub, we allow removal.
-        if hub.bond_id != bond_id or not any(
-            device_id == device.device_id for device in hub.devices
+        if not (
+            hub.bond_id == bond_id
+            and any(device_id == device.device_id for device in hub.devices)
         ):
             return True
     return False

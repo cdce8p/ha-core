@@ -197,10 +197,8 @@ async def async_disable_server_logging_if_needed(
     hass: HomeAssistant, entry: ZwaveJSConfigEntry, driver: Driver
 ) -> None:
     """Disable logging of zwave-js-server in the lib if still connected to server."""
-    if (
-        not driver
-        or not driver.client.connected
-        or not driver.client.server_logging_enabled
+    if not (  # TODO ?.
+        driver and driver.client.connected and driver.client.server_logging_enabled
     ):
         return
     LOGGER.info("Disabling zwave_js server logging")

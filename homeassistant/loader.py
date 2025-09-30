@@ -614,10 +614,10 @@ async def async_get_homekit(
 
     integrations = await async_get_custom_components(hass)
     for integration in integrations.values():
-        if (
-            not integration.homekit
-            or "models" not in integration.homekit
-            or not integration.homekit["models"]
+        if not (  # TODO check ?. with get()
+            integration.homekit
+            and "models" in integration.homekit
+            and integration.homekit["models"]
         ):
             continue
         for model in integration.homekit["models"]:
@@ -1720,7 +1720,7 @@ def async_get_issue_integration(
 ) -> Integration | None:
     """Return details of an integration for issue reporting."""
     integration: Integration | None = None
-    if not hass or not integration_domain:
+    if not (hass and integration_domain):
         # We are unable to get the integration
         return None
 

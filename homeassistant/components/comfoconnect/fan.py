@@ -172,7 +172,7 @@ class ComfoConnectFan(FanEntity):
     @override
     def set_preset_mode(self, preset_mode: str) -> None:
         """Set new preset mode."""
-        if not self.preset_modes or preset_mode not in self.preset_modes:
+        if not (self.preset_modes and preset_mode in self.preset_modes):  # TODO ?.
             raise ValueError(f"Invalid preset mode: {preset_mode}")
 
         _LOGGER.debug("Changing preset mode to %s", preset_mode)

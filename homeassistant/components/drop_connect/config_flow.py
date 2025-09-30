@@ -38,9 +38,9 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
         """Handle a flow initialized by MQTT discovery."""
 
         # Abort if the topic does not match our discovery topic or the payload is empty.
-        if (
-            discovery_info.subscribed_topic != DISCOVERY_TOPIC
-            or not discovery_info.payload
+        if not (
+            discovery_info.subscribed_topic == DISCOVERY_TOPIC
+            and discovery_info.payload
         ):
             return self.async_abort(reason="invalid_discovery_info")
 

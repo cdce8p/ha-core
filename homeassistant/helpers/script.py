@@ -2298,7 +2298,7 @@ def breakpoint_clear(
     """Clear a breakpoint."""
     run_id = run_id or RUN_ID_ANY
     breakpoints = hass.data[DATA_SCRIPT_BREAKPOINTS]
-    if key not in breakpoints or run_id not in breakpoints[key]:
+    if not (key in breakpoints and run_id in breakpoints[key]):  # TODO ?[]
         return
     breakpoints[key][run_id].discard(node)
 

@@ -261,7 +261,7 @@ class BluetoothConfigFlow(ConfigFlow, domain=DOMAIN):
         """Get the options flow for this handler."""
         if CONF_SOURCE in config_entry.data:
             return RemoteAdapterOptionsFlowHandler()
-        if not (manager := get_manager()) or not manager.supports_passive_scan:
+        if not ((manager := get_manager()) and manager.supports_passive_scan):
             return LocalNoPassiveOptionsFlowHandler()
         return SchemaOptionsFlowHandler(config_entry, OPTIONS_FLOW)
 

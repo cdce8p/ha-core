@@ -81,7 +81,7 @@ async def async_validate_trigger_config(
 
     if config[CONF_TYPE] in RPC_INPUTS_EVENTS_TYPES:
         rpc_coordinator = get_rpc_coordinator_by_device_id(hass, config[CONF_DEVICE_ID])
-        if not rpc_coordinator or not rpc_coordinator.device.initialized:
+        if not (rpc_coordinator and rpc_coordinator.device.initialized):  # TODO ?.
             return config
 
         input_triggers = get_rpc_input_triggers(rpc_coordinator.device)
@@ -92,7 +92,7 @@ async def async_validate_trigger_config(
         block_coordinator = get_block_coordinator_by_device_id(
             hass, config[CONF_DEVICE_ID]
         )
-        if not block_coordinator or not block_coordinator.device.initialized:
+        if not (block_coordinator and block_coordinator.device.initialized):  # TODO ?.
             return config
 
         assert block_coordinator.device.blocks
