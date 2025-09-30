@@ -1493,8 +1493,8 @@ class Recorder(threading.Thread):
         # connection to the database or the schema never reached a
         # good state.
         # In either case, we want to mark startup as failed.
-        startup_failed = (
-            not self.schema_version or self.schema_version != SCHEMA_VERSION
+        startup_failed = not (
+            self.schema_version and self.schema_version == SCHEMA_VERSION
         )
         self.hass.add_job(self._async_startup_done, startup_failed)
 

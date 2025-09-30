@@ -177,7 +177,7 @@ class XiaomiAqaraFlowHandler(ConfigFlow, domain=DOMAIN):
         self.host = discovery_info.host
         mac_address = discovery_info.properties.get("mac")
 
-        if not name or not self.host or not mac_address:
+        if not (name and self.host and mac_address):
             return self.async_abort(reason="not_xiaomi_aqara")
 
         # Check if the discovered device is an xiaomi aqara gateway.

@@ -126,10 +126,10 @@ class HomeWizardConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Handle zeroconf discovery."""
 
-        if (
-            CONF_PRODUCT_NAME not in discovery_info.properties
-            or CONF_PRODUCT_TYPE not in discovery_info.properties
-            or CONF_SERIAL not in discovery_info.properties
+        if not (
+            CONF_PRODUCT_NAME in discovery_info.properties
+            and CONF_PRODUCT_TYPE in discovery_info.properties
+            and CONF_SERIAL in discovery_info.properties
         ):
             return self.async_abort(reason="invalid_discovery_parameters")
 

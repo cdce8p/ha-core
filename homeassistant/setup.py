@@ -704,9 +704,7 @@ def async_pause_setup(hass: core.HomeAssistant, phase: SetupPhases) -> Generator
     setting up the base components so we can subtract it
     from the total setup time.
     """
-    if not (running := current_setup_group.get()) or running not in _setup_started(
-        hass
-    ):
+    if not ((running := current_setup_group.get()) and running in _setup_started(hass)):
         # This means we are likely in a late platform setup
         # that is running in a task so we do not want
         # to subtract out the time later as nothing is waiting

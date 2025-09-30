@@ -93,9 +93,10 @@ async def _async_clear_session_if_credentials_changed(
 ) -> None:
     """Clear stored session if credentials changed."""
     existing_data = entry.data
-    if existing_data.get(CONF_USERNAME) != new_data.get(
-        CONF_USERNAME
-    ) or existing_data.get(CONF_PASSWORD) != new_data.get(CONF_PASSWORD):
+    if not (
+        existing_data.get(CONF_USERNAME) == new_data.get(CONF_USERNAME)
+        and existing_data.get(CONF_PASSWORD) == new_data.get(CONF_PASSWORD)
+    ):
         _LOGGER.debug("Credentials changed, clearing stored session")
         if (protect := async_create_session_client(hass, entry)) is None:
             return

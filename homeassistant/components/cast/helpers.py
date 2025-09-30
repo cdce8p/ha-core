@@ -340,9 +340,9 @@ async def parse_pls(hass, url):
     except configparser.Error as err:
         raise PlaylistError(f"Can't parse playlist {url}") from err
 
-    if (
-        _PLS_SECTION_PLAYLIST not in pls_parser
-        or pls_parser[_PLS_SECTION_PLAYLIST].getint("Version") != 2
+    if not (  # TODO ?.
+        _PLS_SECTION_PLAYLIST in pls_parser
+        and pls_parser[_PLS_SECTION_PLAYLIST].getint("Version") == 2
     ):
         raise PlaylistError(f"Invalid playlist {url}")
 

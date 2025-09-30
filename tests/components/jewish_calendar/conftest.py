@@ -262,7 +262,7 @@ async def test_sequence(
     The test should compare the yielded expected state with the actual entity state.
     """
     # We expect a sequence of TimeStatePoint objects
-    if not hasattr(request, "param") or not request.param:
+    if not (hasattr(request, "param") and request.param):
         raise ValueError("time_sequence fixture requires parameters")
 
     sequence: list[TimeValue] = request.param.cases

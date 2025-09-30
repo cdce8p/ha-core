@@ -256,7 +256,7 @@ class SolarEdgeEnergyDetailsService(SolarEdgeDataService):
         self.unit = energy_details["unit"]
 
         for meter in energy_details["meters"]:
-            if "type" not in meter or "values" not in meter:
+            if not ("type" in meter and "values" in meter):
                 continue
             if meter["type"] not in [
                 "Production",

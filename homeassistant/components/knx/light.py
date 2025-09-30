@@ -97,9 +97,9 @@ def _create_yaml_light(xknx: XKNX, config: ConfigType) -> XknxLight:
 
     def individual_color_addresses(color: str, feature: str) -> Any | None:
         """Load individual color address list from configuration structure."""
-        if (
-            LightSchema.CONF_INDIVIDUAL_COLORS not in config
-            or color not in config[LightSchema.CONF_INDIVIDUAL_COLORS]
+        if not (  # TODO ?.
+            LightSchema.CONF_INDIVIDUAL_COLORS in config
+            and color in config[LightSchema.CONF_INDIVIDUAL_COLORS]
         ):
             return None
         return config[LightSchema.CONF_INDIVIDUAL_COLORS][color].get(feature)
@@ -552,13 +552,13 @@ class _KnxLight(LightEntity):
             # default to white if color not known for RGB(W)
             if self._attr_color_mode == ColorMode.RGBW:
                 _rgbw = self.rgbw_color
-                if not _rgbw or not any(_rgbw):
+                if not (_rgbw and any(_rgbw)):
                     _rgbw = (0, 0, 0, 255)
                 await set_color(_rgbw[:3], _rgbw[3], brightness)
                 return
             if self._attr_color_mode == ColorMode.RGB:
                 _rgb = self.rgb_color
-                if not _rgb or not any(_rgb):
+                if not (_rgb and any(_rgb)):
                     _rgb = (255, 255, 255)
                 await set_color(_rgb, None, brightness)
                 return

@@ -187,7 +187,7 @@ async def async_setup_internal(hass: HomeAssistant, entry: ConfigEntry) -> None:
             )
             return
 
-        if not event.device or not event.device.id_string:
+        if not (event.device and event.device.id_string):
             return
 
         event_data = {

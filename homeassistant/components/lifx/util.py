@@ -212,7 +212,7 @@ async def async_multi_execute_lifx_with_retries(
     results: list[Message] = []
     failed: list[str] = []
     for idx, future in enumerate(futures):
-        if not future.done() or not (result := future.result()):
+        if not (future.done() and (result := future.result())):
             method = methods[idx]
             failed.append(str(getattr(method, "__name__", method)))
         else:

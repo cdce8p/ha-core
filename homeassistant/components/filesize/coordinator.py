@@ -44,7 +44,7 @@ class FileSizeCoordinator(DataUpdateCoordinator[dict[str, int | float | datetime
         if not self.hass.config.is_allowed_path(path):
             raise UpdateFailed(f"Filepath {path} is not valid or allowed")
 
-        if not get_path.exists() or not get_path.is_file():
+        if not (get_path.exists() and get_path.is_file()):
             raise UpdateFailed(f"Can not access file {path}")
 
         return get_path.absolute()

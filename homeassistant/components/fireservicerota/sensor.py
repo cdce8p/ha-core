@@ -119,7 +119,7 @@ class IncidentsSensor(RestoreEntity, SensorEntity):
     def client_update(self) -> None:
         """Handle updated data from the data client."""
         data = self._client.websocket.incident_data
-        if not data or "body" not in data:
+        if not (data and "body" in data):
             return
 
         self._state = data["body"]

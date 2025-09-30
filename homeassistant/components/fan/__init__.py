@@ -275,7 +275,7 @@ class FanEntity(ToggleEntity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     def _valid_preset_mode_or_raise(self, preset_mode: str) -> None:
         """Raise NotValidPresetModeError on invalid preset_mode."""
         preset_modes = self.preset_modes
-        if not preset_modes or preset_mode not in preset_modes:
+        if not (preset_modes and preset_mode in preset_modes):  # TODO ?.
             preset_modes_str: str = ", ".join(preset_modes or [])
             raise NotValidPresetModeError(
                 translation_placeholders={

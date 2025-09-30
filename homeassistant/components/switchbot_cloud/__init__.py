@@ -503,16 +503,16 @@ def _create_handle_webhook(
 
         data = await request.json()
         # Structure validation
-        if (
-            not isinstance(data, dict)
-            or "eventType" not in data
-            or data["eventType"] != "changeReport"
-            or "eventVersion" not in data
-            or data["eventVersion"] != "1"
-            or "context" not in data
-            or not isinstance(data["context"], dict)
-            or "deviceType" not in data["context"]
-            or "deviceMac" not in data["context"]
+        if not (  # TODO good example  # TODO match!
+            isinstance(data, dict)
+            and "eventType" in data
+            and data["eventType"] == "changeReport"
+            and "eventVersion" in data
+            and data["eventVersion"] == "1"
+            and "context" in data
+            and isinstance(data["context"], dict)
+            and "deviceType" in data["context"]
+            and "deviceMac" in data["context"]
         ):
             _LOGGER.debug("Received invalid data from switchbot webhook %s", repr(data))
             return

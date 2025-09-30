@@ -125,7 +125,7 @@ class TradfriLight(TradfriBaseEntity, LightEntity):
     @override
     def color_temp_kelvin(self) -> int | None:
         """Return the color temperature value in Kelvin."""
-        if not self._device_data or not (color_temp := self._device_data.color_temp):
+        if not (self._device_data and (color_temp := self._device_data.color_temp)):
             return None
         return color_util.color_temperature_mired_to_kelvin(color_temp)
 
