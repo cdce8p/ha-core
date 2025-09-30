@@ -208,7 +208,7 @@ class ReolinkVODMediaSource(MediaSource):
                 if len(ch_id) > 3:
                     ch = host.api.channel_for_uid(ch_id)
 
-                if not host.api.supported(int(ch), "replay") or not host.api.hdd_info:
+                if not (host.api.supported(int(ch), "replay") and host.api.hdd_info):
                     # playback stream not supported by this
                     # camera or no storage installed
                     continue

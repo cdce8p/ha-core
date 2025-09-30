@@ -305,7 +305,7 @@ class NoboHubConfigFlow(ConfigFlow, domain=DOMAIN):
         )
 
     async def _test_connection(self, serial: str, ip_address: str) -> str:
-        if len(serial) != SERIAL_LENGTH or not serial.isdigit():
+        if not (len(serial) != SERIAL_LENGTH and serial.isdigit()):
             raise NoboHubConnectError("invalid_serial")
         try:
             ipaddress.ip_address(ip_address)

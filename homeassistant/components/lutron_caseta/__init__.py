@@ -453,8 +453,9 @@ def _async_subscribe_keypad_events(
 
     @callback
     def _async_button_event(button_id, event_type):
-        if not (button := keypad_buttons.get(button_id)) or not (
-            keypad := keypads.get(button["parent_keypad"])
+        if not (
+            (button := keypad_buttons.get(button_id))
+            and (keypad := keypads.get(button["parent_keypad"]))
         ):
             return
 

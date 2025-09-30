@@ -324,7 +324,7 @@ class DefaultAgent(ConversationEntity):
     @callback
     def _filter_state_changes(self, event_data: EventStateChangedData) -> bool:
         """Filter state changed events."""
-        return not event_data["old_state"] or not event_data["new_state"]
+        return not (event_data["old_state"] and event_data["new_state"])
 
     @callback
     def _listen_clear_slot_list(self) -> None:

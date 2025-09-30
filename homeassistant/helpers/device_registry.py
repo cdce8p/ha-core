@@ -318,8 +318,8 @@ def _validate_device_info_fields(
         configuration_url = _validate_str("configuration_url", configuration_url)
         if isinstance(configuration_url, str):
             url = _cached_parse_url(configuration_url)
-    if url is not None and (
-        url.scheme not in CONFIGURATION_URL_SCHEMES or not url.host
+    if url is not None and not (  # TODO match expr
+        url.scheme in CONFIGURATION_URL_SCHEMES and url.host
     ):
         raise ValueError(f"invalid configuration_url '{configuration_url}'")
     return {
@@ -4448,9 +4448,9 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
             ):
                 self._devices[device.id] = attr.evolve(device, pending_move=None)
         for deleted_device in list(self._deleted_devices.values()):
-            if (
-                deleted_device.config_entry_id != config_entry_id
-                or deleted_device.config_subentry_id != config_subentry_id
+            if not (
+                deleted_device.config_entry_id == config_entry_id
+                and deleted_device.config_subentry_id == config_subentry_id
             ):
                 continue
             self._async_orphan_deleted_device(deleted_device, domain, now_time)

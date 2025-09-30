@@ -613,10 +613,10 @@ class OverkizStateSensor(OverkizDescriptiveEntity, SensorEntity):
     @override
     def native_unit_of_measurement(self) -> str | None:
         """Return the unit of measurement."""
-        if (
-            not (default_unit := self.entity_description.native_unit_of_measurement)
-            or not (state := self.device.states.get(self.entity_description.key))
-            or not state.value
+        if not (
+            (default_unit := self.entity_description.native_unit_of_measurement)
+            and (state := self.device.states.get(self.entity_description.key))
+            and state.value
         ):
             return default_unit
 

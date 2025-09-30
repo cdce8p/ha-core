@@ -410,10 +410,10 @@ class CloudGoogleConfig(AbstractConfig):
     @override
     def async_get_agent_users(self) -> tuple:
         """Return known agent users."""
-        if (
-            not self._cloud.is_logged_in  # Can't call Cloud.username if not logged in
-            or not self._prefs.google_connected
-            or not self._cloud.username
+        if not (
+            self._cloud.is_logged_in  # Can't call Cloud.username if not logged in
+            and self._prefs.google_connected
+            and self._cloud.username
         ):
             return ()
         return (self._cloud.username,)
@@ -467,10 +467,10 @@ class CloudGoogleConfig(AbstractConfig):
         self, event: Event[er.EventEntityRegistryUpdatedData]
     ) -> None:
         """Handle when entity registry updated."""
-        if (
-            not self.enabled
-            or not self._cloud.is_logged_in
-            or self.hass.state is not CoreState.running
+        if not (
+            self.enabled
+            and self._cloud.is_logged_in
+            and self.hass.state is CoreState.running
         ):
             return
 
@@ -492,15 +492,17 @@ class CloudGoogleConfig(AbstractConfig):
         self, event: Event[dr.EventDeviceRegistryUpdatedData]
     ) -> None:
         """Handle when device registry updated."""
-        if (
-            not self.enabled
-            or not self._cloud.is_logged_in
-            or self.hass.state is not CoreState.running
+        if not (
+            self.enabled
+            and self._cloud.is_logged_in
+            and self.hass.state is CoreState.running
         ):
             return
 
         # Device registry is only used for area changes. All other changes are ignored.
-        if event.data["action"] != "update" or "area_id" not in event.data["changes"]:
+        if not (
+            event.data["action"] == "update" and "area_id" in event.data["changes"]
+        ):
             return
 
         device_id = event.data["device_id"]

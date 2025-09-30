@@ -279,9 +279,9 @@ async def async_create_default_pipeline(
         tts_engine_id=tts_engine_id,
         pipeline_name=pipeline_name,
     )
-    if (
-        pipeline_settings["stt_engine"] != stt_engine_id
-        or pipeline_settings["tts_engine"] != tts_engine_id
+    if not (
+        pipeline_settings["stt_engine"] == stt_engine_id
+        and pipeline_settings["tts_engine"] == tts_engine_id
     ):
         return None
     return await pipeline_store.async_create_item(pipeline_settings)
@@ -1355,9 +1355,9 @@ class PipelineRun:
         device_id: str | None,
     ) -> bool:
         """Return true if all targeted entities were in the same area as the device."""
-        if (
-            intent_response.response_type is not intent.IntentResponseType.ACTION_DONE
-            or not intent_response.matched_states
+        if not (
+            intent_response.response_type is intent.IntentResponseType.ACTION_DONE
+            and intent_response.matched_states
         ):
             return False
 

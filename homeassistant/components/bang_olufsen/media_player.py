@@ -845,7 +845,7 @@ class BeoMediaPlayer(BeoEntity, MediaPlayerEntity):
 
             elif offset_volume:
                 # Ensure that the volume is not above 100
-                if not self._volume.level or not self._volume.level.level:
+                if not (self._volume.level and self._volume.level.level):
                     _LOGGER.warning("Error setting volume")
                 else:
                     overlay_play_request.volume_absolute = min(

@@ -80,7 +80,9 @@ def _check_host_port_alias_match(
 ) -> bool:
     """Check if first and second have the same host, port and alias."""
 
-    if first[CONF_HOST] != second[CONF_HOST] or first[CONF_PORT] != second[CONF_PORT]:
+    if not (
+        first[CONF_HOST] == second[CONF_HOST] and first[CONF_PORT] == second[CONF_PORT]
+    ):
         return False
 
     first_alias = first.get(CONF_ALIAS)

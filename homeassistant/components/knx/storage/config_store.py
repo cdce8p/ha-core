@@ -182,9 +182,9 @@ class KNXConfigStore:
         if (entry := entity_registry.async_get(entity_id)) is None:
             raise ConfigStoreException(f"Entity not found: {entity_id}")
         unique_id = entry.unique_id
-        if (
-            platform not in self.data["entities"]
-            or unique_id not in self.data["entities"][platform]
+        if not (
+            platform in self.data["entities"]
+            and unique_id in self.data["entities"][platform]
         ):
             raise ConfigStoreException(
                 f"Entity not found in storage: {entity_id} - {unique_id}"

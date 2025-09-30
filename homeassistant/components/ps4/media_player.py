@@ -289,9 +289,9 @@ class PS4Device(MediaPlayerEntity):
         if self.media_content_id in self._games:
             store = cast(JsonObjectType, self._games[self.media_content_id])
 
-            if (
-                store.get(ATTR_MEDIA_TITLE) != self.media_title
-                or store.get(ATTR_MEDIA_IMAGE_URL) != self._media_image
+            if not (
+                store.get(ATTR_MEDIA_TITLE) == self.media_title
+                and store.get(ATTR_MEDIA_IMAGE_URL) == self._media_image
             ):
                 self._games.pop(self.media_content_id)
 

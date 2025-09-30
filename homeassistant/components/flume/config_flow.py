@@ -75,7 +75,7 @@ async def validate_input(
     except Exception as err:
         _LOGGER.exception("Auth exception")
         raise InvalidAuth from err
-    if not flume_devices or not flume_devices.device_list:
+    if not (flume_devices and flume_devices.device_list):  # TODO ?.
         raise CannotConnect
 
     # Return info that you want to store in the config entry.

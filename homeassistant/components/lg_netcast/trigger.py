@@ -21,7 +21,7 @@ TRIGGERS = {
 def _get_trigger_platform(config: ConfigType) -> TriggerProtocol:
     """Return trigger platform."""
     platform_split = config[CONF_PLATFORM].split(".", maxsplit=1)
-    if len(platform_split) < 2 or platform_split[1] not in TRIGGERS:
+    if not (len(platform_split) == 2 and platform_split[1] in TRIGGERS):
         raise ValueError(
             f"Unknown LG Netcast TV trigger platform {config[CONF_PLATFORM]}"
         )

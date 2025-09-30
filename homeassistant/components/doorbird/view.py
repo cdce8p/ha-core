@@ -23,7 +23,7 @@ class DoorBirdRequestView(HomeAssistantView):
         """Respond to requests from the device."""
         hass = request.app[KEY_HASS]
         token: str | None = request.query.get("token")
-        if not token or not (door_station := get_door_station_by_token(hass, token)):
+        if not (token and (door_station := get_door_station_by_token(hass, token))):
             return web.Response(
                 status=HTTPStatus.UNAUTHORIZED, text="Invalid token provided."
             )

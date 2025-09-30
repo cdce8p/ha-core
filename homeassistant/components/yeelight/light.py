@@ -654,10 +654,10 @@ class YeelightBaseLight(YeelightEntity, LightEntity):
     @_async_cmd
     async def async_set_hs(self, hs_color, duration) -> None:
         """Set bulb's color."""
-        if (
-            not hs_color
-            or not self.supported_color_modes
-            or ColorMode.HS not in self.supported_color_modes
+        if not (  # TODO ?. -> contains?
+            hs_color
+            and self.supported_color_modes
+            and ColorMode.HS in self.supported_color_modes
         ):
             return
         if (
@@ -679,10 +679,10 @@ class YeelightBaseLight(YeelightEntity, LightEntity):
     @_async_cmd
     async def async_set_rgb(self, rgb, duration) -> None:
         """Set bulb's color."""
-        if (
-            not rgb
-            or not self.supported_color_modes
-            or ColorMode.RGB not in self.supported_color_modes
+        if not (  # TODO ?.
+            rgb
+            and self.supported_color_modes
+            and ColorMode.RGB in self.supported_color_modes
         ):
             return
         if (
@@ -704,10 +704,10 @@ class YeelightBaseLight(YeelightEntity, LightEntity):
     @_async_cmd
     async def async_set_colortemp(self, temp_in_k, duration) -> None:
         """Set bulb's color temperature."""
-        if (
-            not temp_in_k
-            or not self.supported_color_modes
-            or ColorMode.COLOR_TEMP not in self.supported_color_modes
+        if not (  # TODO ?.
+            temp_in_k
+            and self.supported_color_modes
+            and ColorMode.COLOR_TEMP in self.supported_color_modes
         ):
             return
 
@@ -736,7 +736,7 @@ class YeelightBaseLight(YeelightEntity, LightEntity):
         """Activate flash."""
         if not flash:
             return
-        if int(self._get_property("color_mode")) != 1 or not self.hs_color:
+        if not (int(self._get_property("color_mode")) == 1 and self.hs_color):
             _LOGGER.error("Flash supported currently only in RGB mode")
             return
 

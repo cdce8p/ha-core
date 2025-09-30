@@ -94,8 +94,10 @@ def remove_x10_device(hass: HomeAssistant, housecode: str, unitcode: int):
     new_x10 = [
         existing_device
         for existing_device in config_entry.options.get(CONF_X10, [])
-        if existing_device[CONF_HOUSECODE].lower() != housecode.lower()
-        or existing_device[CONF_UNITCODE] != unitcode
+        if not (
+            existing_device[CONF_HOUSECODE].lower() == housecode.lower()
+            and existing_device[CONF_UNITCODE] == unitcode
+        )
     ]
 
     new_options[CONF_X10] = new_x10

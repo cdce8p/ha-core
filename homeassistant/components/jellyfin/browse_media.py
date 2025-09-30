@@ -144,7 +144,7 @@ def fetch_items(
     """Fetch items from Jellyfin server."""
     result = client.jellyfin.user_items(params=params)
 
-    if not result or "Items" not in result or len(result["Items"]) < 1:
+    if not (result and "Items" in result and len(result["Items"]) >= 1):  # TODO ?.
         return None
 
     items: list[dict[str, Any]] = result["Items"]

@@ -55,7 +55,7 @@ async def _service_handler(call: ServiceCall) -> None:
         if entry.data.get(CONF_HOST) == host:
             break
 
-    if not entry or not (modem := entry.runtime_data.modem).token:
+    if not (entry and (modem := entry.runtime_data.modem).token):  # TODO ?.
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="config_entry_not_found",

@@ -428,9 +428,9 @@ class ONVIFDevice:
 
         for key, onvif_profile in enumerate(result):
             # Only add H264 profiles
-            if (
-                not onvif_profile.VideoEncoderConfiguration
-                or onvif_profile.VideoEncoderConfiguration.Encoding != "H264"
+            if not (
+                onvif_profile.VideoEncoderConfiguration
+                and onvif_profile.VideoEncoderConfiguration.Encoding == "H264"
             ):
                 continue
 
@@ -534,7 +534,7 @@ class ONVIFDevice:
             req.ProfileToken = profile.token
             if move_mode == CONTINUOUS_MOVE:
                 # Guard against unsupported operation
-                if not profile.ptz or not profile.ptz.continuous:
+                if not (profile.ptz and profile.ptz.continuous):
                     LOGGER.warning(
                         "ContinuousMove not supported on device '%s'", self.name
                     )
@@ -562,7 +562,7 @@ class ONVIFDevice:
                     )
             elif move_mode == RELATIVE_MOVE:
                 # Guard against unsupported operation
-                if not profile.ptz or not profile.ptz.relative:
+                if not (profile.ptz and profile.ptz.relative):
                     LOGGER.warning(
                         "RelativeMove not supported on device '%s'", self.name
                     )
@@ -579,7 +579,7 @@ class ONVIFDevice:
                 await ptz_service.RelativeMove(req)
             elif move_mode == ABSOLUTE_MOVE:
                 # Guard against unsupported operation
-                if not profile.ptz or not profile.ptz.absolute:
+                if not (profile.ptz and profile.ptz.absolute):
                     LOGGER.warning(
                         "AbsoluteMove not supported on device '%s'", self.name
                     )
@@ -596,7 +596,7 @@ class ONVIFDevice:
                 await ptz_service.AbsoluteMove(req)
             elif move_mode == GOTOPRESET_MOVE:
                 # Guard against unsupported operation
-                if not profile.ptz or not profile.ptz.presets:
+                if not (profile.ptz and profile.ptz.presets):
                     LOGGER.warning(
                         "Absolute Presets not supported on device '%s'", self.name
                     )

@@ -258,7 +258,7 @@ class ThreadRouterDiscovery:
 
     async def async_stop(self) -> None:
         """Stop discovery."""
-        if not self._aiozc or not self._service_listener:
+        if not (self._aiozc and self._service_listener):
             return
         await self._aiozc.async_remove_service_listener(self._service_listener)
         self._service_listener = None

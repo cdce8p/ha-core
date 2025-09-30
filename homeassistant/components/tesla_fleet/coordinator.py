@@ -334,13 +334,13 @@ class TeslaFleetEnergySiteHistoryCoordinator(DataUpdateCoordinator[dict[str, Any
             raise UpdateFailed(e.message) from e
         self.updated_once = True
 
-        if (
-            not data
-            or not isinstance((time_series := data.get("time_series")), list)
-            or not time_series
-            or not isinstance((first_period := time_series[0]), dict)
-            or not isinstance((timestamp := first_period.get("timestamp")), str)
-            or (period_start := dt_util.parse_datetime(timestamp)) is None
+        if not (  # TODO match expr
+            data
+            and isinstance((time_series := data.get("time_series")), list)
+            and time_series
+            and isinstance((first_period := time_series[0]), dict)
+            and isinstance((timestamp := first_period.get("timestamp")), str)
+            and (period_start := dt_util.parse_datetime(timestamp)) is not None
         ):
             raise UpdateFailed(
                 translation_domain=DOMAIN,

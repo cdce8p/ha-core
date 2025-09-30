@@ -692,8 +692,8 @@ def process_component_status(status: ComponentStatus) -> None:
         )
         if disabled_capabilities is not None:
             for capability in disabled_capabilities:
-                if capability in status and (
-                    capability not in KEEP_CAPABILITY_QUIRK
-                    or not KEEP_CAPABILITY_QUIRK[capability](status[capability])
+                if capability in status and not (  # TODO ?.
+                    capability in KEEP_CAPABILITY_QUIRK
+                    and KEEP_CAPABILITY_QUIRK[capability](status[capability])
                 ):
                     del status[capability]

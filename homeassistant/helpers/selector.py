@@ -856,8 +856,8 @@ class CountrySelector(Selector[CountrySelectorConfig]):
     def __call__(self, data: Any) -> Any:
         """Validate the passed selection."""
         country: str = vol.Schema(str)(data)
-        if "countries" in self.config and (
-            country not in self.config["countries"] or country not in COUNTRIES
+        if "countries" in self.config and not (
+            country in self.config["countries"] and country in COUNTRIES
         ):
             raise vol.Invalid(f"Value {country} is not a valid option")
         return country

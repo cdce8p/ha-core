@@ -88,7 +88,7 @@ class TomatoDeviceScanner(DeviceScanner):
             item[0] for item in self.last_results["dhcpd_lease"] if item[2] == device
         ]
 
-        if not filter_named or not filter_named[0]:
+        if not (filter_named and filter_named[0]):  # TODO ?.
             return None
 
         return filter_named[0]

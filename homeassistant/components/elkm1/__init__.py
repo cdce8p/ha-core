@@ -89,7 +89,7 @@ def hostname_from_url(url: str) -> str:
 def _host_validator(config: dict[str, str]) -> dict[str, str]:
     """Validate that a host is properly configured."""
     if config[CONF_HOST].startswith(("elks://", "elksv1_2://")):
-        if CONF_USERNAME not in config or CONF_PASSWORD not in config:
+        if not (CONF_USERNAME in config and CONF_PASSWORD in config):
             raise vol.Invalid(
                 "Specify username and password for elks:// or elksv1_2://"
             )
@@ -228,7 +228,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ElkM1ConfigEntry) -> boo
 
     _LOGGER.debug("Setting up elkm1 %s", conf["host"])
 
-    if (not entry.unique_id or ":" not in entry.unique_id) and is_ip_address(host):
+    if not (entry.unique_id and ":" in entry.unique_id) and is_ip_address(host):
         _LOGGER.debug(
             "Unique id for %s is missing during setup, trying to fill from discovery",
             host,

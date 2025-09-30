@@ -249,8 +249,9 @@ async def _async_config_entry_app_credentials(
     config_entry: ConfigEntry,
 ) -> str | None:
     """Return the item id of an application credential for an existing ConfigEntry."""
-    if not await _get_platform(hass, config_entry.domain) or not (
-        auth_domain := config_entry.data.get("auth_implementation")
+    if not (
+        await _get_platform(hass, config_entry.domain)
+        and (auth_domain := config_entry.data.get("auth_implementation"))
     ):
         return None
 

@@ -54,9 +54,7 @@ async def async_prepare_image_generation_attachments(
     def prepare() -> list[LLMImageAttachment]:
         items: list[LLMImageAttachment] = []
         for attachment in attachments:
-            if not attachment.mime_type or not attachment.mime_type.startswith(
-                "image/"
-            ):
+            if not (attachment.mime_type and attachment.mime_type.startswith("image/")):
                 raise HomeAssistantError(
                     "Only image attachments are supported for image generation"
                 )

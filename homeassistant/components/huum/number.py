@@ -57,9 +57,9 @@ class HuumSteamer(HuumBaseEntity, NumberEntity):
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
         target_temperature = self.coordinator.data.target_temperature
-        if (
-            not target_temperature
-            or self.coordinator.data.status != SaunaStatus.ONLINE_HEATING
+        if not (
+            target_temperature
+            and self.coordinator.data.status == SaunaStatus.ONLINE_HEATING
         ):
             return
 

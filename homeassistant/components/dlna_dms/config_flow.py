@@ -152,7 +152,7 @@ class DlnaDmsFlowHandler(ConfigFlow, domain=DOMAIN):
             discovery_info.ssdp_usn,
         )
 
-        if not discovery_info.ssdp_location or not discovery_info.ssdp_usn:
+        if not (discovery_info.ssdp_location and discovery_info.ssdp_usn):
             raise AbortFlow("bad_ssdp")
 
         if not self._location:

@@ -119,7 +119,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     config = hass.data.pop(_KNX_YAML_CONFIG, None)
     if config is None:
         _conf = await async_integration_yaml_config(hass, DOMAIN)
-        if not _conf or DOMAIN not in _conf:
+        if not (_conf and DOMAIN in _conf):  # TODO ?.
             # generate defaults
             config = CONFIG_SCHEMA({DOMAIN: {}})[DOMAIN]
         else:

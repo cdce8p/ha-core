@@ -131,7 +131,7 @@ class ElevenLabsOptionsFlow(OptionsFlow):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Manage the options."""
-        if not self.voices or not self.models:
+        if not (self.voices and self.models):
             self.voices, self.models = await get_voices_models(self.hass, self.api_key)
 
         assert self.models and self.voices

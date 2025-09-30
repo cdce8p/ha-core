@@ -397,7 +397,7 @@ class MqttFan(MqttEntity, FanEntity):
         if not preset_mode:
             _LOGGER.debug("Ignoring empty preset_mode from '%s'", msg.topic)
             return
-        if not self.preset_modes or preset_mode not in self.preset_modes:
+        if not (self.preset_modes and preset_mode in self.preset_modes):
             _LOGGER.warning(
                 "'%s' received on topic %s. '%s' is not a valid preset mode",
                 msg.payload,

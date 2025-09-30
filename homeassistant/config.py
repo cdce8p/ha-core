@@ -219,7 +219,7 @@ async def async_hass_config_yaml(hass: HomeAssistant) -> dict:
             secrets,
         )
     except HomeAssistantError as exc:
-        if not (base_exc := exc.__cause__) or not isinstance(base_exc, MarkedYAMLError):
+        if not ((base_exc := exc.__cause__) and isinstance(base_exc, MarkedYAMLError)):
             raise
 
         # Rewrite path to offending YAML file to be relative the hass config dir

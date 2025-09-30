@@ -1531,7 +1531,7 @@ def mock_storage(data: dict[str, Any] | None = None) -> Generator[dict[str, Any]
 
             mock_data = data.get(store.key)
 
-            if "data" not in mock_data or "version" not in mock_data:
+            if not ("data" in mock_data and "version" in mock_data):
                 _LOGGER.error('Mock data needs "version" and "data"')
                 raise ValueError('Mock data needs "version" and "data"')
 

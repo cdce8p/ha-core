@@ -301,7 +301,7 @@ class MqttLightTemplate(MqttEntity, LightEntity, RestoreEntity):
                 msg.payload,
                 PayloadSentinel.NONE,
             )
-            if not red_value or not green_value or not blue_value:
+            if not (red_value and green_value and blue_value):
                 _LOGGER.debug(
                     "Ignoring message from '%s' with empty color value", msg.topic
                 )

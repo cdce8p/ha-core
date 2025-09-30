@@ -180,10 +180,10 @@ class SignalUpdateCallback:
             self._hass.bus.async_fire(NEST_EVENT, message)
 
     def _supported_traits(self, device_id: str) -> list[str]:
-        if (
-            not self._config_entry.runtime_data
-            or not (device_manager := self._config_entry.runtime_data.device_manager)
-            or not (device := device_manager.devices.get(device_id))
+        if not (
+            self._config_entry.runtime_data
+            and (device_manager := self._config_entry.runtime_data.device_manager)
+            and (device := device_manager.devices.get(device_id))
         ):
             return []
         return list(device.traits)

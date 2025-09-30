@@ -793,7 +793,7 @@ async def test_show_progress_legacy(
                 progress_action = "task_one"
             elif not self.task_two_done:
                 progress_action = "task_two"
-            if not self.task_one_done or not self.task_two_done:
+            if not (self.task_one_done and self.task_two_done):
                 return self.async_show_progress(
                     step_id="init",
                     progress_action=progress_action,

@@ -221,7 +221,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     repairs.async_delete_blocking_issues(hass)
 
     # Set unique_id if it was not migrated previously
-    if not config_entry.unique_id or not config_entry.unique_id.startswith("epid="):
+    if not (  # TODO ?.
+        config_entry.unique_id and config_entry.unique_id.startswith("epid=")
+    ):
         unique_id = get_config_entry_unique_id(zha_gateway.state.network_info)
         hass.config_entries.async_update_entry(config_entry, unique_id=unique_id)
 

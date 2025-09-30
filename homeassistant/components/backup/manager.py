@@ -420,8 +420,9 @@ class BackupManager:
         platform: BackupPlatformProtocol,
     ) -> None:
         """Add a backup platform."""
-        if not hasattr(platform, "async_pre_backup") or not hasattr(
-            platform, "async_post_backup"
+        if not (  # TODO match expr
+            hasattr(platform, "async_pre_backup")
+            and hasattr(platform, "async_post_backup")
         ):
             return
 

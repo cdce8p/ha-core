@@ -130,7 +130,7 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
             self.entry.options.get(CONF_LANGUAGE_CODE),
         )
 
-        if not self.assistant or language != self.language:
+        if not (self.assistant and language == self.language):
             credentials = Credentials(session.token[CONF_ACCESS_TOKEN])  # type: ignore[no-untyped-call]
             self.language = language
             self.assistant = TextAssistant(credentials, self.language)

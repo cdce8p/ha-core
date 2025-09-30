@@ -47,7 +47,7 @@ class HuaweiLteSmsNotificationService(BaseNotificationService):
         """Send message to target numbers."""
 
         targets = kwargs.get(ATTR_TARGET, self.default_targets)
-        if not targets or not message:
+        if not (targets and message):
             return
 
         if self.router.suspended:

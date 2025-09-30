@@ -783,7 +783,7 @@ class Thermostat(ClimateEntity):
                     sensor_names.append(device.name)
 
         # Ensure sensors provided are available for thermostat or not empty.
-        if not set(sensor_names).issubset(set(self._sensors)) or not sensor_names:
+        if not (set(sensor_names).issubset(set(self._sensors)) and sensor_names):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="invalid_sensor",

@@ -367,10 +367,10 @@ class EsphomeAssistSatellite(
             assert event.data is not None
             data_to_send = {"text": event.data["stt_output"]["text"]}
         elif event_type == VoiceAssistantEventType.VOICE_ASSISTANT_INTENT_PROGRESS:
-            if (
-                not event.data
-                or ("tts_start_streaming" not in event.data)
-                or (not event.data["tts_start_streaming"])
+            if not (  # TODO ?.
+                event.data
+                and "tts_start_streaming" in event.data
+                and event.data["tts_start_streaming"]
             ):
                 # ESPHome only needs to know if early TTS streaming is available
                 return

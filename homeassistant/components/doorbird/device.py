@@ -192,10 +192,10 @@ class ConfiguredDoorBird:
         hass_url = self._get_hass_url()
         for identifier, data in http_fav.items():
             title: str | None = data.get("title")
-            if not title or not title.startswith("Home Assistant"):
+            if not (title and title.startswith("Home Assistant")):  # TODO ?.
                 continue
             value: str | None = data.get("value")
-            if not value or not value.startswith(hass_url):
+            if not (value and value.startswith(hass_url)):  # TODO ?.
                 continue  # Not our favorite - different HA instance or stale
             event = title.partition("(")[2].strip(")")
             if input_type := favorite_input_type.get(identifier):

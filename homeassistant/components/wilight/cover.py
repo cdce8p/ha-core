@@ -90,7 +90,7 @@ class WiLightCover(WiLightDevice, CoverEntity):
     @override
     def is_closed(self) -> bool | None:
         """Return if the cover is closed or not."""
-        if "motor_state" not in self._status or "position_current" not in self._status:
+        if not ("motor_state" in self._status and "position_current" in self._status):
             return None
         return (
             self._status["motor_state"] == WL_STOPPED

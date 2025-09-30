@@ -734,9 +734,9 @@ class SpeedConverter(BaseUnitConverter):
         """Convert a speed from one unit to another, eg. 14m/s will return 7Bft."""
         # We cannot use the implementation from BaseUnitConverter here because the
         # Beaufort scale is not a constant value to divide or multiply with.
-        if (
-            from_unit not in SpeedConverter.VALID_UNITS
-            or to_unit not in SpeedConverter.VALID_UNITS
+        if not (
+            from_unit in SpeedConverter.VALID_UNITS
+            and to_unit in SpeedConverter.VALID_UNITS
         ):
             raise HomeAssistantError(
                 UNIT_NOT_RECOGNIZED_TEMPLATE.format(to_unit, cls.UNIT_CLASS)

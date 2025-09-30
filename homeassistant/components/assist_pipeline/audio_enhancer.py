@@ -60,7 +60,7 @@ class MicroVadSpeexEnhancer(AudioEnhancer):
         # Scale from 0-31
         self.auto_gain = auto_gain * 300
 
-        if (self.auto_gain != 0) or (self.noise_suppression != 0):
+        if not (self.auto_gain == 0 and self.noise_suppression == 0):
             self.audio_processor = AudioProcessor(
                 self.auto_gain, self.noise_suppression
             )

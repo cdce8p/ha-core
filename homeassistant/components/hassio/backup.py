@@ -112,11 +112,11 @@ def async_register_backup_agents_listener(
     @callback
     def handle_signal(data: Mapping[str, Any]) -> None:
         """Handle a job signal."""
-        if (
-            data.get("event") != "job"
-            or not (event_data := data.get("data"))
-            or event_data.get("name") not in MOUNT_JOBS
-            or event_data.get("done") is not True
+        if not (  # TODO match expr
+            data.get("event") == "job"
+            and (event_data := data.get("data"))
+            and event_data.get("name") in MOUNT_JOBS
+            and event_data.get("done") is True
         ):
             return
         _LOGGER.debug("Mount added or removed %s, calling listener", data)
@@ -754,10 +754,10 @@ class SupervisorBackupReaderWriter(BackupReaderWriter):
         @callback
         def handle_signal(data: Mapping[str, Any]) -> None:
             """Handle a job signal."""
-            if (
-                data.get("event") != "job"
-                or not (event_data := data.get("data"))
-                or event_data.get("uuid") != job_id.hex
+            if not (  # TODO ?.
+                data.get("event") == "job"
+                and (event_data := data.get("data"))
+                and event_data.get("uuid") == job_id.hex
             ):
                 return
             on_event(event_data)
@@ -785,10 +785,10 @@ def _collect_errors(
         if child_job.name != child_job_name:
             continue
         for grandchild in child_job.child_jobs:
-            if (
-                grandchild.name != grandchild_job_name
-                or not grandchild.errors
-                or not grandchild.reference
+            if not (
+                grandchild.name == grandchild_job_name
+                and grandchild.errors
+                and grandchild.reference
             ):
                 continue
             errors[grandchild.reference] = [

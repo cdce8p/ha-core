@@ -135,9 +135,8 @@ async def async_add_user_device_tracker(
 @callback
 def persons_with_entity(hass: HomeAssistant, entity_id: str) -> list[str]:
     """Return all persons that reference the entity."""
-    if (
-        DOMAIN not in hass.data
-        or split_entity_id(entity_id)[0] != DEVICE_TRACKER_DOMAIN
+    if not (
+        DOMAIN in hass.data and split_entity_id(entity_id)[0] == DEVICE_TRACKER_DOMAIN
     ):
         return []
 

@@ -107,9 +107,9 @@ class LcnOutputSwitch(LcnEntity, SwitchEntity):
     @override
     def input_received(self, input_obj: InputType) -> None:
         """Set switch state when LCN input object (command) is received."""
-        if (
-            not isinstance(input_obj, pypck.inputs.ModStatusOutput)
-            or input_obj.get_output_id() != self.output.value
+        if not (
+            isinstance(input_obj, pypck.inputs.ModStatusOutput)
+            and input_obj.get_output_id() == self.output.value
         ):
             return
         self._attr_available = True
@@ -207,9 +207,9 @@ class LcnRegulatorLockSwitch(LcnEntity, SwitchEntity):
     @override
     def input_received(self, input_obj: InputType) -> None:
         """Set switch state when LCN input object (command) is received."""
-        if (
-            not isinstance(input_obj, pypck.inputs.ModStatusVar)
-            or input_obj.get_var() is not self.setpoint_variable
+        if not (
+            isinstance(input_obj, pypck.inputs.ModStatusVar)
+            and input_obj.get_var() is self.setpoint_variable
         ):
             return
         self._attr_available = True
@@ -266,9 +266,9 @@ class LcnKeyLockSwitch(LcnEntity, SwitchEntity):
     @override
     def input_received(self, input_obj: InputType) -> None:
         """Set switch state when LCN input object (command) is received."""
-        if (
-            not isinstance(input_obj, pypck.inputs.ModStatusKeyLocks)
-            or self.key not in pypck.lcn_defs.Key
+        if not (
+            isinstance(input_obj, pypck.inputs.ModStatusKeyLocks)
+            and self.key in pypck.lcn_defs.Key
         ):
             return
         self._attr_available = True

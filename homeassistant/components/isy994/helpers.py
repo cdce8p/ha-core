@@ -407,7 +407,7 @@ def _categorize_programs(isy_data: IsyData, programs: Programs) -> None:
             entity_folder: Programs = folder[node_id]
             actions = None
             status = entity_folder.get_by_name(KEY_STATUS)
-            if not status or status.protocol != PROTO_PROGRAM:
+            if not (status and status.protocol == PROTO_PROGRAM):  # TODO ?.
                 LOGGER.warning(
                     "Program %s entity '%s' not loaded, invalid/missing status program",
                     platform,
@@ -417,7 +417,7 @@ def _categorize_programs(isy_data: IsyData, programs: Programs) -> None:
 
             if platform != Platform.BINARY_SENSOR:
                 actions = entity_folder.get_by_name(KEY_ACTIONS)
-                if not actions or actions.protocol != PROTO_PROGRAM:
+                if not (actions and actions.protocol == PROTO_PROGRAM):  # TODO ?.
                     LOGGER.warning(
                         (
                             "Program %s entity '%s' not loaded, invalid/missing actions"

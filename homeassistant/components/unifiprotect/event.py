@@ -355,7 +355,7 @@ class ProtectDeviceVehicleEventEntity(
         if thumbnails is None:
             # No stored thumbnails; try to get from current event
             event = self.entity_description.get_event_obj(self.device)
-            if not event or event.id != event_id:
+            if not (event and event.id == event_id):
                 return
             thumbnails = self._get_vehicle_thumbnails(event)
 

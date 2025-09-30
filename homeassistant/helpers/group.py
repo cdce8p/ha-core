@@ -213,7 +213,7 @@ def get_entity_ids(
     Async friendly.
     """
     group = hass.states.get(entity_id)
-    if not group or ATTR_ENTITY_ID not in group.attributes:
+    if not (group and ATTR_ENTITY_ID in group.attributes):
         return []
     entity_ids: list[str] = group.attributes[ATTR_ENTITY_ID]
     if not domain_filter:

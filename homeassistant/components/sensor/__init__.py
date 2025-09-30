@@ -158,7 +158,7 @@ def _calculate_precision_from_ratio(
         return None
     converter = UNIT_CONVERTERS[device_class]
 
-    if from_unit not in converter.VALID_UNITS or to_unit not in converter.VALID_UNITS:
+    if not (from_unit in converter.VALID_UNITS and to_unit in converter.VALID_UNITS):
         return None
 
     # Scale the precision when converting to a larger or smaller unit
@@ -1062,8 +1062,9 @@ def async_update_suggested_units(hass: HomeAssistant) -> None:
 
 def _display_precision(hass: HomeAssistant, entity_id: str) -> int | None:
     """Return the display precision."""
-    if not (entry := er.async_get(hass).async_get(entity_id)) or not (
-        sensor_options := entry.options.get(DOMAIN)
+    if not (
+        (entry := er.async_get(hass).async_get(entity_id))
+        and (sensor_options := entry.options.get(DOMAIN))
     ):
         return None
     if (display_precision := sensor_options.get("display_precision")) is not None:

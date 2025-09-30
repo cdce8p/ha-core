@@ -315,7 +315,7 @@ async def webhook_async_remove_entry(
     hass: HomeAssistant, entry: config_entries.ConfigEntry
 ) -> None:
     """Remove a webhook config entry."""
-    if not entry.data.get("cloudhook") or "cloud" not in hass.config.components:
+    if not (entry.data.get("cloudhook") and "cloud" in hass.config.components):
         return
 
     # Local import to be sure cloud is loaded and setup

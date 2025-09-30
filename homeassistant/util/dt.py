@@ -448,7 +448,7 @@ def find_next_time_expression_time(
     Timezones are also handled (the tzinfo of the now object is used),
     including daylight saving time.
     """
-    if not seconds or not minutes or not hours:
+    if not (seconds and minutes and hours):
         raise ValueError("Cannot find a next time: Time expression never matches!")
 
     while True:

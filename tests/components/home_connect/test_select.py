@@ -646,7 +646,7 @@ async def test_fetch_allowed_values(
     async def get_setting_side_effect(
         ha_id: str, setting_key: SettingKey
     ) -> GetSetting:
-        if ha_id != appliance.ha_id or setting_key != test_setting_key:
+        if not (ha_id == appliance.ha_id and setting_key == test_setting_key):
             return await original_get_setting_side_effect(ha_id, setting_key)
         return GetSetting(
             key=test_setting_key,

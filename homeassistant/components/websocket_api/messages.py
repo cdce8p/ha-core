@@ -240,7 +240,7 @@ def _state_diff_event(
         if added := {
             key: value
             for key, value in new_attributes.items()
-            if key not in old_attributes or old_attributes[key] != value
+            if not (key in old_attributes and old_attributes[key] == value)
         }:
             additions[COMPRESSED_STATE_ATTRIBUTES] = added
         if removed := old_attributes.keys() - new_attributes:

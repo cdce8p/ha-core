@@ -1048,7 +1048,7 @@ def _get_integration_quality_scale(integration: str) -> dict[str, Any]:
 def _get_integration_quality_scale_rule(integration: str, rule: str) -> str:
     """Get the quality scale for an integration."""
     quality_scale = _get_integration_quality_scale(integration)
-    if not quality_scale or rule not in quality_scale:
+    if not (quality_scale and rule in quality_scale):
         return "todo"
     status = quality_scale[rule]
     return status if isinstance(status, str) else status["status"]

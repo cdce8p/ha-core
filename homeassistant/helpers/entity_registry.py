@@ -1158,9 +1158,9 @@ def _validate_item(
         and config_subentry_id
         and config_subentry_id is not UNDEFINED
     ):
-        if (
-            not (config_entry := hass.config_entries.async_get_entry(config_entry_id))
-            or config_subentry_id not in config_entry.subentries
+        if not (
+            (config_entry := hass.config_entries.async_get_entry(config_entry_id))
+            and config_subentry_id in config_entry.subentries
         ):
             raise ValueError(
                 f"Config entry {config_entry_id} has no subentry {config_subentry_id}"

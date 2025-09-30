@@ -116,7 +116,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: SamsungTVConfigEntry) ->
     """Set up the Samsung TV platform."""
     # Initialize bridge
     if entry.data.get(CONF_METHOD) == METHOD_ENCRYPTED_WEBSOCKET:
-        if not entry.data.get(CONF_TOKEN) or not entry.data.get(CONF_SESSION_ID):
+        if not (entry.data.get(CONF_TOKEN) and entry.data.get(CONF_SESSION_ID)):
             raise ConfigEntryAuthFailed(
                 translation_domain=DOMAIN, translation_key="encrypted_mode_auth_failed"
             )

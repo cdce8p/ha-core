@@ -193,7 +193,7 @@ def get_block_input_triggers(
     device: BlockDevice, block: Block
 ) -> list[tuple[str, str]]:
     """Return list of input triggers for block."""
-    if "inputEvent" not in block.sensor_ids or "inputEventCnt" not in block.sensor_ids:
+    if not ("inputEvent" in block.sensor_ids and "inputEventCnt" in block.sensor_ids):
         return []
 
     if not is_block_momentary_input(device.settings, block, True):
@@ -552,7 +552,7 @@ def mac_address_from_name(name: str) -> str | None:
         return None
 
     mac = base.rsplit("-", 1)[-1]
-    if len(mac) != 12 or not all(char in "0123456789abcdefABCDEF" for char in mac):
+    if not (len(mac) == 12 and all(char in "0123456789abcdefABCDEF" for char in mac)):
         return None
 
     return mac.upper()

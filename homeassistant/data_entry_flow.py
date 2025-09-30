@@ -165,7 +165,7 @@ def _map_error_to_schema_errors(
     """
     schema = data_schema.schema
     error_path = error.path
-    if not error_path or (path_part := error_path[0]) not in schema:
+    if not (error_path and (path_part := error_path[0]) in schema):
         raise ValueError("Could not find path in schema")
 
     if len(error_path) > 1:
@@ -420,10 +420,10 @@ class FlowManager(abc.ABC, Generic[_FlowContextT, _FlowResultT, _HandlerT]):
             #   or description_placeholders has changed
             if cur_step["step_id"] != result.get("step_id") or (
                 result["type"] is FlowResultType.SHOW_PROGRESS
-                and (
-                    cur_step["progress_action"] != result.get("progress_action")
-                    or cur_step["description_placeholders"]
-                    != result.get("description_placeholders")
+                and not (
+                    cur_step["progress_action"] == result.get("progress_action")
+                    and cur_step["description_placeholders"]
+                    == result.get("description_placeholders")
                 )
             ):
                 flow.async_notify_flow_changed()

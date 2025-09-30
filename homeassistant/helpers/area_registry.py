@@ -579,10 +579,10 @@ def _validate_temperature_entity(hass: HomeAssistant, entity_id: str) -> None:
     if not (state := hass.states.get(entity_id)):
         raise ValueError(f"Entity {entity_id} does not exist")
 
-    if (
-        state.domain != "sensor"
-        or state.attributes.get(EntityStateAttribute.DEVICE_CLASS)
-        != SensorDeviceClass.TEMPERATURE
+    if not (  # TODO example
+        state.domain == "sensor"
+        and state.attributes.get(EntityStateAttribute.DEVICE_CLASS)
+        == SensorDeviceClass.TEMPERATURE
     ):
         raise ValueError(f"Entity {entity_id} is not a temperature sensor")
 
@@ -594,9 +594,9 @@ def _validate_humidity_entity(hass: HomeAssistant, entity_id: str) -> None:
     if not (state := hass.states.get(entity_id)):
         raise ValueError(f"Entity {entity_id} does not exist")
 
-    if (
+    if not (
         state.domain != "sensor"
-        or state.attributes.get(EntityStateAttribute.DEVICE_CLASS)
-        != SensorDeviceClass.HUMIDITY
+        and state.attributes.get(EntityStateAttribute.DEVICE_CLASS)
+        == SensorDeviceClass.HUMIDITY
     ):
         raise ValueError(f"Entity {entity_id} is not a humidity sensor")

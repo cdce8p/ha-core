@@ -3880,7 +3880,7 @@ def data_schema_from_fields(
             for field_name, field_details in data_schema_fields.items()
             if not field_details.is_schema_default
             and field_details.section == schema_section
-            and (not field_details.exclude_from_reconfig or not reconfig)
+            and not (field_details.exclude_from_reconfig and reconfig)
             and _check_conditions(field_details, component_data_with_user_input)
         }
         data_element_options = set(data_schema_element)
@@ -4552,7 +4552,7 @@ class MQTTOptionsFlowHandler(OptionsFlow):
             vol.Optional(
                 "birth_enable",
                 default=CONF_BIRTH_MESSAGE not in options_config
-                or options_config[CONF_BIRTH_MESSAGE] != {},
+                or options_config[CONF_BIRTH_MESSAGE] != {},  # TODO separate check!
             )
         ] = BOOLEAN_SELECTOR
         fields[
@@ -4574,7 +4574,7 @@ class MQTTOptionsFlowHandler(OptionsFlow):
         fields[
             vol.Optional(
                 "will_enable",
-                default=CONF_WILL_MESSAGE not in options_config
+                default=CONF_WILL_MESSAGE not in options_config  # TODO separate check
                 or options_config[CONF_WILL_MESSAGE] != {},
             )
         ] = BOOLEAN_SELECTOR

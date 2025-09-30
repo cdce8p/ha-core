@@ -372,7 +372,7 @@ class TeslemetryEnergyHistoryCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 translation_placeholders={"message": e.message},
             ) from e
 
-        if not data or not isinstance(data.get("time_series"), list):
+        if not (data and isinstance(data.get("time_series"), list)):
             raise UpdateFailed(
                 translation_domain=DOMAIN,
                 translation_key="update_failed_invalid_data",

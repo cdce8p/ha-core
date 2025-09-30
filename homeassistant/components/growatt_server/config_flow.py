@@ -400,7 +400,9 @@ class GrowattServerConfigFlow(ConfigFlow, domain=DOMAIN):
                 return self.async_abort(reason=ERROR_CANNOT_CONNECT)
 
             # Access plant_info["data"] - validate response structure
-            if not isinstance(plant_info, dict) or "data" not in plant_info:
+            if not (  # TODO match expr
+                isinstance(plant_info, dict) and "data" in plant_info
+            ):
                 _LOGGER.error(
                     "Invalid response format during plant list: missing 'data' key"
                 )

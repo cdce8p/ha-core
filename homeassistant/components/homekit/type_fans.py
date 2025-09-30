@@ -182,7 +182,7 @@ class Fan(HomeAccessory):
                 #
                 # Setting the speed will take care of turning
                 # on the fan if FanEntityFeature.SET_SPEED is set.
-                if not self.char_speed or CHAR_ROTATION_SPEED not in char_values:
+                if not (self.char_speed and CHAR_ROTATION_SPEED in char_values):
                     self.set_state(1)
             else:
                 # Its off, nothing more to do as setting the

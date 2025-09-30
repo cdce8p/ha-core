@@ -985,11 +985,11 @@ def update_statistics_issues(
         issues = set()
         issue_registry = ir.async_get(hass)
         for issue in issue_registry.issues.values():
-            if (
-                issue.domain != DOMAIN
-                or not (issue_data := issue.data)
-                or issue_data.get("issue_type")
-                not in (
+            if not (
+                issue.domain == DOMAIN
+                and (issue_data := issue.data)
+                and issue_data.get("issue_type")
+                in (
                     STATE_CLASS_REMOVED_ISSUE,
                     UNITS_CHANGED_ISSUE,
                     MEAN_TYPE_CHANGED_ISSUE,

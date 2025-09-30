@@ -172,7 +172,7 @@ class SelectEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     def _valid_option_or_raise(self, option: str) -> None:
         """Raise ServiceValidationError on invalid option."""
         options = self.options
-        if not options or option not in options:
+        if not (options and option in options):
             friendly_options: str = ", ".join(options or [])
             raise ServiceValidationError(
                 translation_domain=DOMAIN,

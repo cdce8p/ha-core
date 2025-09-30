@@ -189,7 +189,7 @@ async def async_prepare_files_for_prompt(
             if mime_type is None:
                 mime_type = guess_file_type(file_path)[0]
 
-            if not mime_type or not mime_type.startswith(("image/", "application/pdf")):
+            if not (mime_type and mime_type.startswith(("image/", "application/pdf"))):
                 raise HomeAssistantError(
                     "Only images and PDF are supported by the OpenRouter API, "
                     f"`{file_path}` is not an image file or PDF"

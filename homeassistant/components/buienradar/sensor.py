@@ -826,7 +826,7 @@ class BrSensor(SensorEntity):
 
                     img = condition.get(IMAGE)
 
-                    if new_state != self.state or img != self.entity_picture:
+                    if not (new_state == self.state and img == self.entity_picture):
                         self._attr_native_value = new_state
                         self._attr_entity_picture = img
                         return True
@@ -872,7 +872,7 @@ class BrSensor(SensorEntity):
 
                 img = condition.get(IMAGE)
 
-                if new_state != self.state or img != self.entity_picture:
+                if not (new_state == self.state and img == self.entity_picture):
                     self._attr_native_value = new_state
                     self._attr_entity_picture = img
                     return True

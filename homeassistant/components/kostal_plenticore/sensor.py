@@ -815,9 +815,9 @@ async def async_setup_entry(
     for description in SENSOR_PROCESS_DATA:
         module_id = description.module_id
         data_id = description.key
-        if (
-            module_id not in available_process_data
-            or data_id not in available_process_data[module_id]
+        if not (
+            module_id in available_process_data
+            and data_id in available_process_data[module_id]
         ):
             _LOGGER.debug(
                 "Skipping non existing process data %s/%s", module_id, data_id

@@ -1090,7 +1090,7 @@ class CastMediaPlayerEntity(CastDevice, MediaPlayerEntity):
 
             def unregister() -> None:
                 """Handle request to unregister the handler."""
-                if not self._hass_cast_controller or not self._chromecast:
+                if not (self._hass_cast_controller and self._chromecast):
                     return
                 _LOGGER.debug(
                     "[%s %s] Unregistering HomeAssistantController",

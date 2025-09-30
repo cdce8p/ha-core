@@ -291,7 +291,7 @@ def websocket_subscribe_chat_log(
 
     chat_logs = hass.data.get(DATA_CHAT_LOGS)
 
-    if not chat_logs or subscribed_conversation not in chat_logs:
+    if not (chat_logs and subscribed_conversation in chat_logs):
         connection.send_error(
             msg_id,
             websocket_api.ERR_NOT_FOUND,

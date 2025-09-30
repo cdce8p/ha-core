@@ -214,7 +214,9 @@ class EventTrigger(Trigger):
                 and isinstance(val, dict)
             ):
                 for key2, val2 in val.items():
-                    if key2 not in event_data[key] or event_data[key][key2] != val2:
+                    if not (
+                        key2 in event_data[key] and event_data[key][key2] == val2
+                    ):  # TODO ?.
                         return
                 continue
             if event_data[key] != val:

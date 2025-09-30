@@ -80,7 +80,7 @@ async def async_reload(hass: HomeAssistant, service_call: ServiceCall) -> None:
         if isinstance(conf.get(CONF_ACTION), script.Script):
             await conf[CONF_ACTION].async_unload()
 
-    if not new_config or DOMAIN not in new_config:
+    if not (new_config and DOMAIN in new_config):  # TODO ?.
         hass.data[DOMAIN] = {}
         return
 

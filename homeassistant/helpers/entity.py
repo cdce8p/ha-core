@@ -1042,7 +1042,7 @@ class Entity(
     @callback
     def _async_write_ha_state_from_call_soon_threadsafe(self) -> None:
         """Write the state to the state machine from the event loop thread."""
-        if not self.hass or not self._verified_state_writable:
+        if not (self.hass and self._verified_state_writable):
             self._async_verify_state_writable()
         self._async_write_ha_state()
 
@@ -1054,7 +1054,7 @@ class Entity(
         Note: Integrations which need to customize state write should
         override _async_write_ha_state, not this method.
         """
-        if not self.hass or not self._verified_state_writable:
+        if not (self.hass and self._verified_state_writable):
             self._async_verify_state_writable()
         if self.hass.loop_thread_id != threading.get_ident():
             report_non_thread_safe_operation("async_write_ha_state")
@@ -1218,11 +1218,11 @@ class Entity(
             # registry are up to date. Capabilities include capability
             # attributes, device class and supported features.
             supported_features = supported_features or 0
-            if (
-                capabilities != entry.capabilities
-                or original_device_class != entry.original_device_class
-                or supported_features != entry.supported_features
-                or original_name != entry.original_name
+            if not (
+                capabilities == entry.capabilities
+                and original_device_class == entry.original_device_class
+                and supported_features == entry.supported_features
+                and original_name == entry.original_name
             ):
                 if not self.__capabilities_updated_at_reported:
                     # _Entity__capabilities_updated_at is because of name mangling
@@ -1686,9 +1686,9 @@ class Entity(
             self._async_device_registry_updated,
             job_type=HassJobType.Callback,
         )
-        if (
-            not self._on_remove
-            or self._async_unsubscribe_device_updates not in self._on_remove
+        if not (
+            self._on_remove
+            and self._async_unsubscribe_device_updates in self._on_remove
         ):
             self.async_on_remove(self._async_unsubscribe_device_updates)
 

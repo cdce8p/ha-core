@@ -670,7 +670,7 @@ async def _async_setup_themes(
         hass, THEMES_STORAGE_VERSION, THEMES_STORAGE_KEY
     )
 
-    if not (theme_data := await store.async_load()) or not isinstance(theme_data, dict):
+    if not ((theme_data := await store.async_load()) and isinstance(theme_data, dict)):
         theme_data = {}
     theme_name = theme_data.get(DATA_DEFAULT_THEME, DEFAULT_THEME)
     dark_theme_name = theme_data.get(DATA_DEFAULT_DARK_THEME)

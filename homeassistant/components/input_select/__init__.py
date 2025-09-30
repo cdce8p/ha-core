@@ -294,7 +294,7 @@ class InputSelect(collection.CollectionEntity, SelectEntity, RestoreEntity):
             return
 
         state = await self.async_get_last_state()
-        if not state or state.state not in self.options:
+        if not (state and state.state in self.options):  # TODO ?.
             self._attr_current_option = self.options[0]
         else:
             self._attr_current_option = state.state

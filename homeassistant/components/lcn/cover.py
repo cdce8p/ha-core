@@ -149,9 +149,9 @@ class LcnOutputsCover(LcnEntity, CoverEntity):
     @override
     def input_received(self, input_obj: InputType) -> None:
         """Set cover states when LCN input object (command) is received."""
-        if (
-            not isinstance(input_obj, pypck.inputs.ModStatusOutput)
-            or input_obj.get_output_id() not in self.output_ids
+        if not (
+            isinstance(input_obj, pypck.inputs.ModStatusOutput)
+            and input_obj.get_output_id() in self.output_ids
         ):
             return
         self._attr_available = True

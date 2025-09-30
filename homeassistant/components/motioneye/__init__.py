@@ -103,7 +103,7 @@ def split_motioneye_device_identifier(
     identifier: tuple[str, str],
 ) -> tuple[str, str, int] | None:
     """Get the identifiers for a motionEye device."""
-    if len(identifier) != 2 or identifier[0] != DOMAIN or "_" not in identifier[1]:
+    if not (len(identifier) == 2 and identifier[0] == DOMAIN and "_" in identifier[1]):
         return None
     config_id, camera_id_str = identifier[1].split("_", 1)
     try:
@@ -192,10 +192,10 @@ def _add_camera(
             )
             or not camera.get(key_url)
             or _is_recognized_web_hook(camera[key_url])
-        ) and (
-            not camera.get(key_enabled, False)
-            or camera.get(key_method) != KEY_HTTP_METHOD_POST_JSON
-            or camera.get(key_url) != url
+        ) and not (
+            camera.get(key_enabled, False)
+            and camera.get(key_method) == KEY_HTTP_METHOD_POST_JSON
+            and camera.get(key_url) == url
         ):
             camera[key_enabled] = True
             camera[key_method] = KEY_HTTP_METHOD_POST_JSON

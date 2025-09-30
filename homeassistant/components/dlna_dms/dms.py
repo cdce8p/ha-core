@@ -606,7 +606,7 @@ class DmsDeviceSource:
             return self._device.get_absolute_url(album_art_uri)
 
         for resource in item.res:
-            if not resource.protocol_info or not resource.uri:
+            if not (resource.protocol_info and resource.uri):
                 continue
             if resource.protocol_info.startswith("http-get:*:image/"):
                 return self._device.get_absolute_url(resource.uri)

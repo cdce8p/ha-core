@@ -414,8 +414,8 @@ class Schedule(CollectionEntity):
             for time_range in weekday_config:
                 time_range_custom_data = time_range.get(CONF_DATA)
 
-                if not time_range_custom_data or not isinstance(
-                    time_range_custom_data, dict
+                if not (
+                    time_range_custom_data and isinstance(time_range_custom_data, dict)
                 ):
                     continue  # this time range has no custom data, or it is not a dict
 

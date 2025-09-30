@@ -174,9 +174,9 @@ class XboxConsoleStatusCoordinator(XboxBaseCoordinator[dict[str, ConsoleData]]):
                 else None
             )
 
-            if status.focus_app_aumid and (
-                not current_state
-                or status.focus_app_aumid != current_state.status.focus_app_aumid
+            if status.focus_app_aumid and not (
+                current_state
+                and status.focus_app_aumid == current_state.status.focus_app_aumid
             ):
                 catalog_result = (
                     await self.client.catalog.get_product_from_alternate_id(

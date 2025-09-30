@@ -108,7 +108,7 @@ def _validate_supported_features(
     for desc in TODO_ITEM_FIELDS:
         if desc.service_field not in call_data:
             continue
-        if not supported_features or not supported_features & desc.required_feature:
+        if not (supported_features and supported_features & desc.required_feature):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="update_field_not_supported",
@@ -396,10 +396,10 @@ async def websocket_handle_todo_item_list(
     hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]
 ) -> None:
     """Handle the list of To-do items in a To-do- list."""
-    if (
-        not (entity_id := msg[CONF_ENTITY_ID])
-        or not (entity := hass.data[DATA_COMPONENT].get_entity(entity_id))
-        or not isinstance(entity, TodoListEntity)
+    if not (
+        (entity_id := msg[CONF_ENTITY_ID])
+        and (entity := hass.data[DATA_COMPONENT].get_entity(entity_id))
+        and isinstance(entity, TodoListEntity)
     ):
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
@@ -435,9 +435,9 @@ async def websocket_handle_todo_item_move(
         connection.send_error(msg["id"], ERR_NOT_FOUND, "Entity not found")
         return
 
-    if (
-        not entity.supported_features
-        or not entity.supported_features & TodoListEntityFeature.MOVE_TODO_ITEM
+    if not (
+        entity.supported_features
+        and entity.supported_features & TodoListEntityFeature.MOVE_TODO_ITEM
     ):
         connection.send_message(
             websocket_api.error_message(
@@ -519,7 +519,7 @@ async def _async_remove_todo_items(entity: TodoListEntity, call: ServiceCall) ->
     uids = []
     for item in call.data.get("item", []):
         found = _find_by_uid_or_summary(item, entity.todo_items)
-        if not found or not found.uid:
+        if not (found and found.uid):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="item_not_found",
