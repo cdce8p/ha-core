@@ -105,9 +105,8 @@ class WaterHeater(CoordinatorEntity[CoilCoordinator], WaterHeaterEntity):
 
         def _add_lux_mode(temporary_lux: str, operation_mode: str) -> None:
             assert self._attr_operation_list is not None
-            if (
-                not self._coil_temporary_lux
-                or not self._coil_temporary_lux.reverse_mappings
+            if not (
+                self._coil_temporary_lux and self._coil_temporary_lux.reverse_mappings
             ):
                 return
 

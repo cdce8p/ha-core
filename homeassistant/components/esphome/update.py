@@ -70,7 +70,7 @@ async def async_setup_entry(
         """Set up the update entity."""
         assert dashboard is not None
         # Keep listening until device is available
-        if not entry_data.available or not dashboard.last_update_success:
+        if not (entry_data.available and dashboard.last_update_success):
             return
 
         # Do not add Dashboard Entity if this device is not

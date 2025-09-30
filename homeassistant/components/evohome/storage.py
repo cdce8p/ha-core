@@ -74,7 +74,7 @@ class TokenManager(AbstractTokenManager, AbstractSessionManager):
         cache = await self._store.async_load()
         self._store_initialized = True
 
-        if not cache or cache["username"] != self.client_id:
+        if not (cache and cache["username"] == self.client_id):
             return
 
         if SZ_SESSION_ID in cache:

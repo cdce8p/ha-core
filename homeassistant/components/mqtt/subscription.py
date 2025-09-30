@@ -54,7 +54,7 @@ class EntitySubscription:
     @callback
     def subscribe(self) -> None:
         """Subscribe to a topic."""
-        if not self.should_subscribe or not self.topic:
+        if not (self.should_subscribe and self.topic):
             return
         self.unsubscribe_callback = async_subscribe_internal(
             self.hass,

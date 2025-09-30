@@ -100,8 +100,9 @@ class BaseEntity(Entity):
                 self.async_generate_entity_options(),
             )
 
-        if not self._is_new_entity or not (
-            wrapped_switch := registry.async_get(self._switch_entity_id)
+        if not (
+            self._is_new_entity
+            and (wrapped_switch := registry.async_get(self._switch_entity_id))
         ):
             return
 

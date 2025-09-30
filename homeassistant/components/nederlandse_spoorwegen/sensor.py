@@ -36,7 +36,7 @@ def _get_time_str(time: datetime | None) -> str | None:
 
 def _get_route(trip: Trip | None) -> list[str]:
     """Get the route as a list of station names from trip data."""
-    if not trip or not (trip_parts := trip.trip_parts):
+    if not (trip and (trip_parts := trip.trip_parts)):  # TODO ?.
         return []
     route = []
     if departure := trip.departure:
