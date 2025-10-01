@@ -844,7 +844,7 @@ class NewZWaveNumericSensor(ZWaveBaseEntity, SensorEntity):
     @override
     def on_value_update(self) -> None:
         """Handle scale changes for this value on value updated event."""
-        # TODO: Try to limit this to metadata updated event.  # pylint: disable=fixme
+        # TODO: Try to limit this to metadata updated event.
         scale_type = self._get_scale_type()
         if scale_type is not self._scale_type:
             self.hass.config_entries.async_schedule_reload(self.config_entry.entry_id)
