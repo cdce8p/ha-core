@@ -610,7 +610,7 @@ jobs:
       REPO_ASTROID: cdce8p/astroid
       REPO_PYLINT: cdce8p/pylint
       BRANCH_ASTROID: dev
-      BRANCH_PYLINT: dev
+      BRANCH_PYLINT: dev-improve-conditionals
     outputs:
       astroid-sha: ${{ steps.fetch-astroid-sha.outputs.sha }}
       pylint-sha: ${{ steps.fetch-pylint-sha.outputs.sha }}
