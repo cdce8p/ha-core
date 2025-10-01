@@ -405,8 +405,11 @@ disable = [
   "used-before-assignment",
   "using-final-decorator-in-unsupported-version",
   "wrong-exception-operation",
+
+  "fixme",
 ]
 enable = [
+  "consider-rewriting-conditional",
   "useless-suppression",  # temporarily every now and then to clean them up
   "use-symbolic-message-instead",
 ]

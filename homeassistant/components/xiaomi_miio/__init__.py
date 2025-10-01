@@ -359,7 +359,7 @@ async def async_create_miio_device_and_coordinator(
     elif model in MODELS_VACUUM or model.startswith(
         (ROBOROCK_GENERIC, ROCKROBO_GENERIC)
     ):
-        # TODO: add lazy_discover as argument  # pylint: disable=fixme
+        # TODO: add lazy_discover as argument
         device = RoborockVacuum(host, token)
         update_method = _async_update_data_vacuum
         coordinator_class = DataUpdateCoordinator[VacuumCoordinatorData]

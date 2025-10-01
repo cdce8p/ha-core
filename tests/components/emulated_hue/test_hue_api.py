@@ -1716,7 +1716,6 @@ async def test_only_change_contrast(
     )
 
     # Check that only setting the contrast will also turn on the light.
-    # pylint: disable-next=fixme
     # TODO: It should be noted that a real Hue hub will not
     # allow to change the brightness if the underlying entity
     # is off, giving the error:
@@ -1734,7 +1733,6 @@ async def test_only_change_hue_or_saturation(
 ) -> None:
     """Test setting either the hue or the saturation but not both."""
 
-    # pylint: disable-next=fixme
     # TODO: The handling of this appears wrong, as setting
     # only one will set the other to 0.
     # The return values also appear wrong.
