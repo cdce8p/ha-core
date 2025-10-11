@@ -400,7 +400,7 @@ disable = [
   "wrong-exception-operation",
 ]
 enable = [
-  #"useless-suppression",  # temporarily every now and then to clean them up
+  "useless-suppression",  # temporarily every now and then to clean them up
   "use-symbolic-message-instead",
 ]
 per-file-ignores = [
