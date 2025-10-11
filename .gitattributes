@@ -27,3 +27,4 @@ script/hassfest/docker/Dockerfile linguist-generated=true
 .gitattributes linguist-generated=true
 .github/actions/**/*.yml linguist-generated=true
 .github/workflows/ci.yaml linguist-generated=true
+.github/workflows/matchers/pylint.json linguist-generated=true
