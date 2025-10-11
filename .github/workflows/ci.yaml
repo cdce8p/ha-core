@@ -765,7 +765,7 @@ jobs:
         run: |
           . venv/bin/activate
           python --version
-          pylint --jobs 0 --ignore-missing-annotations=y homeassistant
+          pylint --jobs 0 --ignore-missing-annotations=y --fail-on=useless-suppression homeassistant
       - name: Run pylint (partially)
         if: needs.info.outputs.test_full_suite == 'false'
         shell: bash
@@ -816,7 +816,7 @@ jobs:
         run: |
           . venv/bin/activate
           python --version
-          pylint --jobs 0 tests packages/pytest-home-assistant/pytest_homeassistant
+          pylint --jobs 0 --fail-on=useless-suppression tests packages/pytest-home-assistant/pytest_homeassistant
       - name: Run pylint (partially)
         if: needs.info.outputs.test_full_suite == 'false'
         shell: bash
