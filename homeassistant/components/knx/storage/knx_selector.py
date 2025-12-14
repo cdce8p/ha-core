@@ -617,7 +617,7 @@ class KnxSelectOptionsSelector(KNXSelectorBase):
                 translation_key="select_option_not_a_mapping",
             )
         option = data.get(SelectConf.OPTION)
-        if not isinstance(option, str) or not option:
+        if not (isinstance(option, str) and option):
             raise probatio.Invalid(
                 "Option name is required",
                 path=[SelectConf.OPTION],

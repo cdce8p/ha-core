@@ -38,7 +38,7 @@ async def async_register_webhook(
     webhook_id = entry.data.get(CONF_WEBHOOK_ID)
     secret = entry.data.get(CONF_WEBHOOK_SECRET)
     # Without a secret no push can be verified, so there is nothing to listen for.
-    if not webhook_id or not secret:
+    if not (webhook_id and secret):
         return
 
     async def _handle(

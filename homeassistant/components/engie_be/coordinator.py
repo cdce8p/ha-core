@@ -258,7 +258,7 @@ def epex_slots_cover_day(
     start, end = epex_window(day)
     duration = timedelta(minutes=granularity.value)
     day_slots = sorted(epex_slots_for_day(slots, day), key=lambda slot: slot.start)
-    if not day_slots or day_slots[0].start != start or day_slots[-1].end != end:
+    if not (day_slots and day_slots[0].start == start and day_slots[-1].end == end):
         return False
     if any(slot.end - slot.start != duration for slot in day_slots):
         return False

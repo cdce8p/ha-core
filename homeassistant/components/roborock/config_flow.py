@@ -121,7 +121,9 @@ class RoborockFlowHandler(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             url = user_input[CONF_ROBOROCK_SERVER_URL].strip()
             parsed = urlparse(url)
-            if parsed.scheme not in ("http", "https") or not parsed.netloc:
+            if not (  # TODO match expr
+                parsed.scheme in ("http", "https") and parsed.netloc
+            ):
                 errors[CONF_ROBOROCK_SERVER_URL] = "invalid_url_format"
             else:
                 self._client = RoborockApiClient(

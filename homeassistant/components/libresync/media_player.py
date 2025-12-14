@@ -118,7 +118,7 @@ class LibreSyncMediaPlayer(LibreSyncEntity, MediaPlayerEntity):
         # on course is not written.
         playing = state.playback is PlayState.PLAYING
         was_playing = self._written.playback is PlayState.PLAYING
-        if state.position_ms != received or playing != was_playing:
+        if not (state.position_ms == received and playing == was_playing):
             self._take_position(state)
         self._written = state
         super()._handle_state(state)

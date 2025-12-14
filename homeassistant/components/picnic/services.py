@@ -29,11 +29,7 @@ class PicnicServiceException(Exception):
 
 def validate_gtin(value: str) -> str:
     """Validate the format and check digit of a GTIN."""
-    if (
-        len(value) not in (8, 12, 13, 14)
-        or not value.isascii()
-        or not value.isdecimal()
-    ):
+    if not (len(value) in (8, 12, 13, 14) and value.isascii() and value.isdecimal()):
         raise probatio.Invalid("GTIN must contain 8, 12, 13 or 14 digits")
 
     checksum = sum(

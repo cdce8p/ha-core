@@ -136,7 +136,7 @@ class GoveeLocalApiCoordinator(DataUpdateCoordinator[list[GoveeDevice]]):
         """Retry the addresses that did not bind."""
         async with self._rebind_lock:
             # Losing every endpoint is handled by the update, which reloads the entry.
-            if not self._controller.bind_failures or not self._controller.protocols:
+            if not (self._controller.bind_failures and self._controller.protocols):
                 return
             if await self._controller.rebind_failed():
                 log_bound_addresses(self._controller)

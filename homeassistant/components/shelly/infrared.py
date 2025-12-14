@@ -71,7 +71,9 @@ class ShellyInfraredReceiver(ShellyRpcAttributeEntity, InfraredReceiverEntity):
     @callback
     def _handle_device_event(self, event: dict[str, Any]) -> None:
         """Handle a device event."""
-        if event.get("component") != "ir" or event.get("event") != "raw_receive":
+        if not (  # TODO match expr
+            event.get("component") == "ir" and event.get("event") == "raw_receive"
+        ):
             return
 
         if not (timings := event.get("timings")):

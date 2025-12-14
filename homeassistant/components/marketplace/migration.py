@@ -534,7 +534,7 @@ def _remove_legacy_files(config_path: str) -> list[str]:
 
     for legacy_key, storage_key in legacy_files.items():
         legacy_path = storage_path / legacy_key
-        if not legacy_path.is_file() or not (storage_path / storage_key).is_file():
+        if not (legacy_path.is_file() and (storage_path / storage_key).is_file()):
             continue
         # Not a file the data could have come from, so it was never taken over
         if not is_adoptable_legacy_file(str(legacy_path)):

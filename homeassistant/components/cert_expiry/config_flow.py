@@ -103,9 +103,9 @@ class CertexpiryConfigFlow(ConfigFlow, domain=DOMAIN):
             host = user_input[CONF_HOST]
             port = user_input.get(CONF_PORT, DEFAULT_PORT)
 
-            if (
-                host != reconfigure_entry.data[CONF_HOST]
-                or port != reconfigure_entry.data[CONF_PORT]
+            if not (
+                host == reconfigure_entry.data[CONF_HOST]
+                and port == reconfigure_entry.data[CONF_PORT]
             ):
                 self._async_abort_entries_match({CONF_HOST: host, CONF_PORT: port})
 

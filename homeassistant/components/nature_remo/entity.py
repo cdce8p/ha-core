@@ -113,9 +113,8 @@ class NatureRemoApplianceEntity(CoordinatorEntity[NatureRemoCoordinator]):
         older firmware never reports it, so only an explicit False counts
         as offline.
         """
-        if (
-            not super().available
-            or self._appliance_id not in self.coordinator.data.appliances
+        if not (
+            super().available and self._appliance_id in self.coordinator.data.appliances
         ):
             return False
         hub_id = self.appliance.device_id

@@ -59,7 +59,7 @@ class Usage:
     @staticmethod
     def from_tuple(usage: HourlyUsageTuple) -> Usage | None:
         """Initialize Usage from a raw API tuple, or None if unparsable."""
-        if not usage or len(usage) != 5:
+        if len(usage) != 5:
             return None
         parsed = dt_util.parse_datetime(usage[2])
         if parsed is None:
@@ -316,7 +316,7 @@ class SRPEnergyDataUpdateCoordinator(DataUpdateCoordinator[float]):
         # in the dataset.
         last_nonzero = -1
         for i, usage in enumerate(hourly_usage):
-            if usage.kwh != 0 or usage.cost != 0:
+            if not (usage.kwh == 0 and usage.cost == 0):
                 last_nonzero = i
         hourly_usage = hourly_usage[: last_nonzero + 1]
 

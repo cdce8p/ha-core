@@ -547,9 +547,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     @callback
     def _async_handle_supervisor_network_event(event: dict[str, Any]) -> None:
         """Handle supervisor network update events."""
-        if (
-            event.get(ATTR_WS_EVENT) != EVENT_SUPERVISOR_UPDATE
-            or event.get(ATTR_UPDATE_KEY) != UPDATE_KEY_NETWORK
+        if not (  # TODO match expr
+            event.get(ATTR_WS_EVENT) == EVENT_SUPERVISOR_UPDATE
+            and event.get(ATTR_UPDATE_KEY) == UPDATE_KEY_NETWORK
         ):
             return
 

@@ -49,7 +49,7 @@ async def async_create_fix_flow(
     hass: HomeAssistant, issue_id: str, data: dict[str, str | int | float | None] | None
 ) -> RepairsFlow:
     """Create flow."""
-    if not data or "entity_id" not in data:
+    if not (data and "entity_id" in data):
         raise ValueError("Missing data for repair flow")
     return (
         DeprecatedEntityRepairFlow(issue_id, data)

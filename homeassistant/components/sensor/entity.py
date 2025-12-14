@@ -91,7 +91,7 @@ def _calculate_precision_from_ratio(
         return None
     converter = UNIT_CONVERTERS[device_class]
 
-    if from_unit not in converter.VALID_UNITS or to_unit not in converter.VALID_UNITS:
+    if not (from_unit in converter.VALID_UNITS and to_unit in converter.VALID_UNITS):
         return None
 
     # Scale the precision when converting to a larger or smaller unit

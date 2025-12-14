@@ -288,7 +288,7 @@ class GoogleGenerativeAITextToSpeechEntity(
                 page_size=VOICES_PAGE_SIZE, page_token=page_token, type_=["prebuilt"]
             )
             for voice in response.voices or []:
-                if not voice.id or not voice.language_code:
+                if not (voice.id and voice.language_code):
                     continue
                 if voice.id in known_voice_ids:
                     continue
