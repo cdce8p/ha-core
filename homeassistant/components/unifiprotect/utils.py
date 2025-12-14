@@ -150,7 +150,7 @@ def async_create_session_client(
     so a session stored before the switch has to be cleared through a
     full-access client. ``None`` when no credentials are stored.
     """
-    if not entry.data.get(CONF_USERNAME) or not entry.data.get(CONF_PASSWORD):
+    if not (entry.data.get(CONF_USERNAME) and entry.data.get(CONF_PASSWORD)):
         return None
     return _async_create_full_client(hass, entry)
 

@@ -363,7 +363,9 @@ class PrometheusMetrics:
         self, event: Event[EventDeviceRegistryUpdatedData]
     ) -> None:
         """Listen for changes of devices' area_id."""
-        if event.data["action"] != "update" or "area_id" not in event.data["changes"]:
+        if not (  # TODO match expr
+            event.data["action"] == "update" and "area_id" in event.data["changes"]
+        ):
             return
 
         device_id = event.data["device_id"]

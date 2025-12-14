@@ -805,7 +805,7 @@ async def test_subscribe(
     # An earlier state write may re-publish the pre-update list; read until the
     # refreshed item arrives.
     items = []
-    while not items or items[0]["summary"] != "Milk":
+    while not (items and items[0]["summary"] != "Milk"):
         msg = await client.receive_json()
         assert msg["id"] == subscription_id
         assert msg["type"] == "event"

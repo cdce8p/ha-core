@@ -249,7 +249,7 @@ class BrandsIntegrationView(_BrandsBaseView):
         """Handle GET request for an integration brand image."""
         self._authenticate(request)
 
-        if not valid_domain(domain) or image not in ALLOWED_IMAGES:
+        if not (valid_domain(domain) and image in ALLOWED_IMAGES):
             return web.Response(status=HTTPStatus.NOT_FOUND)
 
         use_placeholder = request.query.get("placeholder") != "no"

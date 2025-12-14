@@ -37,7 +37,7 @@ class OpenSenseMapConfigFlow(ConfigFlow, domain=DOMAIN):
             await api.get_data()
         except OpenSenseMapError as err:
             raise CannotConnect from err
-        if not api.data or not api.data.get("name"):
+        if not (api.data and api.data.get("name")):  # TODO ?.
             raise InvalidStation
         return api.data["name"]
 

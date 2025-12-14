@@ -320,7 +320,7 @@ class MyNeoClimate(ClimateEntity):
             if self._is_sub_device:
                 gateway = self._parents.get("gateway")
                 rfid = self._device.get("rfid")
-                if not gateway or not rfid:
+                if not (gateway and rfid):
                     _LOGGER.error(
                         "Missing gateway or rfid for sub-device %s, cannot set mode",
                         self._attr_unique_id,
@@ -341,7 +341,7 @@ class MyNeoClimate(ClimateEntity):
             if self._is_sub_device:
                 gateway = self._parents.get("gateway")
                 rfid = self._device.get("rfid")
-                if not gateway or not rfid:
+                if not (gateway and rfid):
                     _LOGGER.error(
                         "Missing gateway or rfid for sub-device"
                         " %s, cannot set temperature",

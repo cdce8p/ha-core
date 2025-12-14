@@ -50,9 +50,9 @@ def async_get_config_entry_for_service_call(
         call.hass, DOMAIN, call.data[ATTR_DEVICE_ID]
     )
 
-    if (
-        config_entry.data.get(CONF_SLEEP_PERIOD, 0) > 0
-        or get_device_entry_gen(config_entry) not in RPC_GENERATIONS
+    if not (
+        config_entry.data.get(CONF_SLEEP_PERIOD, 0) <= 0
+        and get_device_entry_gen(config_entry) in RPC_GENERATIONS
     ):
         raise ServiceValidationError(
             translation_domain=DOMAIN,

@@ -1313,7 +1313,7 @@ def _via_device_identifier(
     specifications: dict[str, Any] | None,
 ) -> tuple[str, str] | None:
     """Return the device registry identifier of the referenced via device."""
-    if not specifications or CONF_VIA_DEVICE not in specifications:
+    if not (specifications and CONF_VIA_DEVICE in specifications):  # TODO ??
         return None
     return (DOMAIN, specifications[CONF_VIA_DEVICE])
 

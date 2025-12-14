@@ -42,11 +42,11 @@ def _amount_to_minor_units(value: Any) -> int:
     except (DecimalException, ValueError) as err:
         raise vol.Invalid("Amount must be a number") from err
 
-    if (
-        not amount.is_finite()
-        or amount <= 0
-        or minor_units <= 0
-        or minor_units != minor_units.to_integral_value()
+    if not (
+        amount.is_finite()
+        and amount > 0
+        and minor_units > 0
+        and minor_units == minor_units.to_integral_value()
     ):
         raise vol.Invalid("Amount must be positive with no more than 2 decimal places")
 
@@ -55,8 +55,8 @@ def _amount_to_minor_units(value: Any) -> int:
 
 def _transfer_rejection_reason(error: InvalidMonzoAPIResponseError) -> str | None:
     """Return the rejection details supplied by Monzo."""
-    if not error.response or not isinstance(
-        message := error.response.get("message"), str
+    if not (  # TODO ?.
+        error.response and isinstance(message := error.response.get("message"), str)
     ):
         return None
     if isinstance(code := error.response.get("code"), str):

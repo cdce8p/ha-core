@@ -29,7 +29,7 @@ class WAVHeaderParser:
                 if len(bytes_buffer) < 12:
                     return False
                 riff, _, wave_fmt = struct.unpack("<4sI4s", bytes_buffer[:12])
-                if riff != b"RIFF" or wave_fmt != b"WAVE":
+                if not (riff == b"RIFF" and wave_fmt == b"WAVE"):
                     raise ValueError("Invalid WAV format: missing RIFF/WAVE header")
                 self.riff_checked = True
                 del bytes_buffer[:12]

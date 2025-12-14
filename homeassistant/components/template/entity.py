@@ -303,7 +303,7 @@ class AbstractTemplateEntity(Entity):
             (CONF_NAME, EntityStateAttribute.FRIENDLY_NAME, "_attr_name"),
             (CONF_PICTURE, EntityStateAttribute.ENTITY_PICTURE, "_attr_entity_picture"),
         ):
-            if conf_key not in self._config or attr not in last_state.attributes:
+            if not (conf_key in self._config and attr in last_state.attributes):
                 continue
             value = last_state.attributes[attr]
             self.restore_attribute(conf_key, _attr, value)

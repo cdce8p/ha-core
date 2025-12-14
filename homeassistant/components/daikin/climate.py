@@ -111,7 +111,7 @@ def _zone_is_configured(zone: DaikinZone) -> bool:
 def _zone_temperature_lists(device: Appliance) -> tuple[list[str], list[str]]:
     """Return the decoded zone temperature lists."""
     values = device.values
-    if DAIKIN_ZONE_TEMP_HEAT not in values or DAIKIN_ZONE_TEMP_COOL not in values:
+    if not (DAIKIN_ZONE_TEMP_HEAT in values and DAIKIN_ZONE_TEMP_COOL in values):
         return ([], [])
 
     heating = device.represent(DAIKIN_ZONE_TEMP_HEAT)[1]
@@ -489,7 +489,7 @@ class DaikinZoneClimate(DaikinEntity, ClimateEntity):
                 translation_key="zone_temperature_missing",
             )
         zones = self.device.zones
-        if not zones or not _supports_zone_temperature_control(self.device):
+        if not (zones and _supports_zone_temperature_control(self.device)):
             raise _zone_error("zone_parameters_unavailable")
 
         try:

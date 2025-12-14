@@ -106,7 +106,7 @@ class XthingsCloudCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self, device_uuid: str, status: dict[str, Any]
     ) -> None:
         """Handle WebSocket device status update."""
-        if not self.data or device_uuid not in self.data:
+        if not (self.data and device_uuid in self.data):
             LOGGER.debug(
                 "WebSocket received status for unknown device: %s", device_uuid
             )

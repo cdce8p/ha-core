@@ -162,8 +162,10 @@ async def async_migrate_entry(hass: HomeAssistant, entry: MideaConfigEntry) -> b
             connections = {
                 connection
                 for connection in device_entry.connections
-                if connection[0] != dr.CONNECTION_NETWORK_MAC
-                or str(connection[1]).lower() not in ("", "none")
+                if not (
+                    connection[0] == dr.CONNECTION_NETWORK_MAC
+                    and str(connection[1]).lower() in ("", "none")
+                )
             }
             if connections != device_entry.connections:
                 device_registry.async_update_device(

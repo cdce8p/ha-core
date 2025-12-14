@@ -514,7 +514,7 @@ class AppleTVConfigFlow(ConfigFlow, domain=DOMAIN):
         assert self.protocol
         if user_input is not None:
             pin = user_input[CONF_PIN]
-            if not pin.isascii() or not pin.isdigit():
+            if not (pin.isascii() and pin.isdigit()):
                 errors["pin"] = "invalid_pin"
             else:
                 try:

@@ -133,6 +133,6 @@ def _normalize_url(raw_url: str) -> str | None:
         parsed_url = URL(raw_url.strip())
     except ValueError:
         return None
-    if parsed_url.scheme not in ("http", "https") or not parsed_url.host:
+    if not (parsed_url.scheme in ("http", "https") and parsed_url.host):
         return None
     return str(parsed_url).rstrip("/")

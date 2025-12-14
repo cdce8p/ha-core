@@ -3038,10 +3038,10 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
                 f"Can't move device to unknown config entry {new_config_entry_id}"
             )
 
-        if (
+        if (  # pylint: disable-next=consider-rewriting-conditional
             new_config_entry_id is not UNDEFINED
             or new_config_subentry_id is not UNDEFINED
-        ) and (
+        ) and (  # pylint: disable-next=consider-rewriting-conditional
             add_config_entry_id is not UNDEFINED
             or remove_config_entry_id is not UNDEFINED
         ):
@@ -3732,11 +3732,11 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
             return self._async_update_composite_device(
                 device_id, underlying_ids, update_args
             )
-        if (
-            add_config_entry_id is not UNDEFINED
-            or add_config_subentry_id is not UNDEFINED
-            or remove_config_entry_id is not UNDEFINED
-            or remove_config_subentry_id is not UNDEFINED
+        if not (
+            add_config_entry_id is UNDEFINED
+            and add_config_subentry_id is UNDEFINED
+            and remove_config_entry_id is UNDEFINED
+            and remove_config_subentry_id is UNDEFINED
         ):
             report_usage(
                 "calls `device_registry.async_update_device` with one of "
@@ -3755,7 +3755,7 @@ class DeviceRegistry(BaseRegistry[dict[str, list[dict[str, Any]]]]):
                 core_behavior=ReportBehavior.LOG,
                 breaks_in_ha_version="2026.9.0",
             )
-        if merge_connections is not UNDEFINED or merge_identifiers is not UNDEFINED:
+        if not (merge_connections is UNDEFINED and merge_identifiers is UNDEFINED):
             report_usage(
                 "calls `device_registry.async_update_device` with `merge_connections` "
                 "or `merge_identifiers`; these only add to the device's existing "

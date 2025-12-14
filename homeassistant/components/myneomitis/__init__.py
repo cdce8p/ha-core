@@ -114,7 +114,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: MyNeomitisConfigEntry) -
 
 def process_connection_update(new_state: dict[str, Any]) -> bool | None:
     """Return availability from a connection update."""
-    if not new_state or "connected" not in new_state:
+    if not (new_state and "connected" in new_state):
         return None
 
     return bool(new_state.get("connected"))

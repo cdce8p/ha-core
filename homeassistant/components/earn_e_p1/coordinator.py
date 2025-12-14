@@ -48,7 +48,7 @@ class EarnEP1Coordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     def _handle_update(self, device: EarnEP1Device, _raw: dict[str, Any]) -> None:
         """Handle data update from the listener."""
-        if self.model != device.model or self.sw_version != device.sw_version:
+        if not (self.model == device.model and self.sw_version == device.sw_version):
             self.model = device.model
             self.sw_version = device.sw_version
             device_registry = dr.async_get(self.hass)

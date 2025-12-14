@@ -156,7 +156,7 @@ async def async_migrate_entry(
                 password = config.get(CONF_PASSWORD)
                 url = config.get(CONF_URL, DEFAULT_URL)
 
-                if not username or not password:
+                if not (username and password):
                     # Credentials missing - cannot migrate
                     _LOGGER.error(
                         "Cannot migrate DEFAULT_PLANT_ID due to missing credentials"

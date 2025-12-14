@@ -307,7 +307,7 @@ class ProtectData:
             return
         self._public_baseline_taken = True
         api = self.api
-        if not api.is_public_only or not api.has_public_bootstrap:
+        if not (api.is_public_only and api.has_public_bootstrap):
             return
         self._known_public_macs.update(
             device.mac

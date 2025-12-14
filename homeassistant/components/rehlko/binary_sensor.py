@@ -165,8 +165,9 @@ class RehlkoLoadshedBinarySensorEntity(RehlkoEntity, BinarySensorEntity):
     @override
     def is_on(self) -> bool | None:
         """Return the state of the binary sensor."""
-        if not (loadshed_data := self.coordinator.data.get("loadShed")) or not (
-            parameters := loadshed_data.get("parameters")
+        if not (  # TODO ?.
+            (loadshed_data := self.coordinator.data.get("loadShed"))
+            and (parameters := loadshed_data.get("parameters"))
         ):
             return None
 

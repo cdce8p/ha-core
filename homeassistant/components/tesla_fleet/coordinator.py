@@ -54,7 +54,9 @@ def _is_stale_site_info_error(err: TeslaFleetError) -> bool:
     """Return whether a Tesla API site_info error indicates a stale energy site."""
     if isinstance(err, NotFound):
         return True
-    if not isinstance(err, InternalServerError) or not isinstance(err.data, dict):
+    if not (  # TODO match expr
+        isinstance(err, InternalServerError) and isinstance(err.data, dict)
+    ):
         return False
     return (
         "response" in err.data

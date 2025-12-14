@@ -640,7 +640,7 @@ def _async_strip_prefix_from_entity_name(
 
     Returns None if the prefix does not meaningfully match.
     """
-    if not entity_name or not prefix:
+    if not (entity_name and prefix):
         return None
 
     prefix_lower = prefix.casefold()
@@ -1976,10 +1976,10 @@ class EntityRegistry(BaseRegistry):
 
         self.hass.verify_event_loop_thread("entity_registry.async_update_entity")
 
-        if original_name_unprefixed is UNDEFINED and (
-            original_name is not UNDEFINED
-            or device_id is not UNDEFINED
-            or has_entity_name is not UNDEFINED
+        if original_name_unprefixed is UNDEFINED and not (
+            original_name is UNDEFINED
+            and device_id is UNDEFINED
+            and has_entity_name is UNDEFINED
         ):
             device_id = device_id if device_id is not UNDEFINED else old.device_id
             has_entity_name = (

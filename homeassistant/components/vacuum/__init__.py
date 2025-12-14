@@ -429,9 +429,9 @@ class StateVacuumEntity(
 
         options: Mapping[str, Any] = self.registry_entry.options.get(DOMAIN, {})
 
-        if self._segments_changed_last_seen is not None and (
-            VacuumEntityFeature.CLEAN_AREA not in self.supported_features
-            or options.get("last_seen_segments") != self._segments_changed_last_seen
+        if self._segments_changed_last_seen is not None and not (
+            VacuumEntityFeature.CLEAN_AREA in self.supported_features
+            and options.get("last_seen_segments") == self._segments_changed_last_seen
         ):
             issue_id = f"{ISSUE_SEGMENTS_CHANGED}_{self.registry_entry.id}"
             ir.async_delete_issue(self.hass, DOMAIN, issue_id)

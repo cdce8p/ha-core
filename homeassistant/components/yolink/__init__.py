@@ -62,9 +62,12 @@ class YoLinkHomeMessageListener(MessageListener):
 
     def on_message(self, device: YoLinkDevice, msg_data: dict[str, Any]) -> None:
         """On YoLink home message received."""
-        if self._entry.state is not ConfigEntryState.LOADED or not (
-            device_coordinator := self._entry.runtime_data.device_coordinators.get(
-                device.device_id
+        if not (
+            self._entry.state is ConfigEntryState.LOADED
+            and (
+                device_coordinator := self._entry.runtime_data.device_coordinators.get(
+                    device.device_id
+                )
             )
         ):
             return

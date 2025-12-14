@@ -110,9 +110,9 @@ def fan_mode_to_speed(ordered_fan_speeds: list[str], fan_mode: Any) -> int | Non
 
     Returns ``None`` when the mode is not one of the ordered predefined speeds.
     """
-    if (
-        not isinstance(fan_mode, str)
-        or (fan_mode_lower := fan_mode.lower()) not in ordered_fan_speeds
+    if not (
+        isinstance(fan_mode, str)
+        and (fan_mode_lower := fan_mode.lower()) in ordered_fan_speeds
     ):
         return None
     return ordered_list_item_to_percentage(ordered_fan_speeds, fan_mode_lower)

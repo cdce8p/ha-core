@@ -740,7 +740,7 @@ class DefaultAgent(ConversationEntity):
             user_input.text, chat_log.conversation_id, satellite_area
         )
 
-        if not interpretation.accepted or not interpretation.frames:
+        if not (interpretation.accepted and interpretation.frames):
             _LOGGER.debug(
                 "Gazetteer rejected '%s': %s (%s)",
                 user_input.text,

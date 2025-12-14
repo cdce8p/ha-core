@@ -605,7 +605,7 @@ class EntityTriggerBase(Trigger):
                     behavior, pending_timers, target_state_change_data
                 )
 
-            if not from_state or not to_state:
+            if not (from_state and to_state):  # TODO match expr
                 return
 
             if to_state.state in self._excluded_states:

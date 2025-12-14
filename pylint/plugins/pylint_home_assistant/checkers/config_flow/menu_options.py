@@ -46,7 +46,9 @@ def _const_str_elements(elements: list[nodes.NodeNG]) -> set[str] | None:
     """Return the string values of *elements*, or None if any is not a string."""
     step_ids: set[str] = set()
     for element in elements:
-        if not isinstance(element, nodes.Const) or not isinstance(element.value, str):
+        if not (  # TODO match expr
+            isinstance(element, nodes.Const) and isinstance(element.value, str)
+        ):
             return None
         step_ids.add(element.value)
     return step_ids

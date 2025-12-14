@@ -61,7 +61,7 @@ def _async_capability_supported(
     if (capability := description.ufp_capability) is None:
         return True
     public = data.async_get_public_device(device)
-    if not isinstance(public, PublicSensor) or not public.has_feature_flags:
+    if not (isinstance(public, PublicSensor) and public.has_feature_flags):  # TODO ?.
         return True
     return public.supports(capability)
 
