@@ -123,7 +123,7 @@ def _mil_trouble(vehicle_data: dict[str, Any], feature: str) -> bool | None:
     """Return vehicle_health.FEATURES[feature].ISTROUBLE, or None if not reported."""
     features = (vehicle_data.get(VEHICLE_HEALTH) or {}).get(HEALTH_FEATURES) or {}
     feature_health = features.get(feature)
-    if not feature_health or HEALTH_ISTROUBLE not in feature_health:
+    if not (feature_health and HEALTH_ISTROUBLE in feature_health):  # TODO ??
         return None
     return bool(feature_health[HEALTH_ISTROUBLE])
 
@@ -165,9 +165,9 @@ OVERALL_HEALTH_BINARY_SENSOR = SubaruBinarySensorEntityDescription(
     translation_key="health_istrouble",
     device_class=BinarySensorDeviceClass.PROBLEM,
     entity_category=EntityCategory.DIAGNOSTIC,
-    is_on_fn=lambda d: (
+    is_on_fn=lambda d: (  # TODO ?.
         None
-        if not (health := d.get(VEHICLE_HEALTH)) or HEALTH_ISTROUBLE not in health
+        if not ((health := d.get(VEHICLE_HEALTH)) and HEALTH_ISTROUBLE in health)
         else bool(health[HEALTH_ISTROUBLE])
     ),
 )

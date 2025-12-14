@@ -96,9 +96,9 @@ class LyricDataUpdateCoordinator(DataUpdateCoordinator[Lyric]):
         except LyricException as exception:
             payload = exception.args[0] if exception.args else {}
             response = payload.get("response") or {}
-            if (
-                payload.get("status") != HTTPStatus.BAD_REQUEST
-                or response.get("code") != "GetPriorityFailed"
+            if not (
+                payload.get("status") == HTTPStatus.BAD_REQUEST
+                and response.get("code") == "GetPriorityFailed"
             ):
                 raise
             _LOGGER.debug("Device %s does not support room priority data", device_id)

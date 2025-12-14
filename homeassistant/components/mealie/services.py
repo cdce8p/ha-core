@@ -430,7 +430,7 @@ async def _async_parse_ingredient(call: ServiceCall) -> ServiceResponse:
             translation_domain=DOMAIN,
             translation_key="connection_error",
         ) from err
-    if not result or not result.confidence:
+    if not (result and result.confidence):  # TODO ?.
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="could_not_parse_ingredient",

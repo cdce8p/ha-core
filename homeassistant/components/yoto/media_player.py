@@ -516,6 +516,6 @@ def _parse_group_uri(media_id: str) -> str:
     if not media_id.startswith(prefix):
         raise ValueError(f"Not a Yoto group identifier: {media_id}")
     parts = media_id[len(prefix) :].split("/")
-    if len(parts) != 1 or not parts[0]:
+    if not (len(parts) == 1 and parts[0]):
         raise ValueError(f"Not a Yoto group identifier: {media_id}")
     return parts[0]

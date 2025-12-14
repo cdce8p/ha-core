@@ -117,7 +117,9 @@ class LoqedDataCoordinator(DataUpdateCoordinator[StatusMessage]):
     ) -> Response | None:
         """Handle incoming Loqed messages."""
         _LOGGER.debug("Callback received: %s", request.headers)
-        if "TIMESTAMP" not in request.headers or "HASH" not in request.headers:
+        if not (  # TODO match expr
+            "TIMESTAMP" in request.headers and "HASH" in request.headers
+        ):
             _LOGGER.warning("Callback without TIMESTAMP or HASH header rejected")
             return Response(status=HTTPStatus.BAD_REQUEST)
         received_ts = request.headers["TIMESTAMP"]

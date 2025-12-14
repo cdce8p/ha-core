@@ -172,21 +172,21 @@ def _remaining_ac_time_value(entity: SkodaEntity) -> datetime | None:
 
 def _charging_power_value(entity: SkodaEntity) -> float | None:
     charging = entity.open_api_charging
-    if not charging or not charging.status:
+    if not (charging and charging.status):  # TODO ?.
         return None
     return charging.status.charge_power_in_kw
 
 
 def _charging_state_value(entity: SkodaEntity) -> str | None:
     charging = entity.open_api_charging
-    if not charging or not charging.status:
+    if not (charging and charging.status):  # TODO ?.
         return None
     return _CHARGING_STATE_MAP.get(charging.status.state)
 
 
 def _remaining_time_to_full_charge_value(entity: SkodaEntity) -> datetime | None:
     charging = entity.open_api_charging
-    if not charging or not charging.status:
+    if not (charging and charging.status):  # TODO ?.
         return None
     if charging.status.state != ChargingState.CHARGING:
         return None
@@ -201,7 +201,7 @@ def _remaining_time_to_full_charge_value(entity: SkodaEntity) -> datetime | None
 
 def _charge_type_value(entity: SkodaEntity) -> str | None:
     charging = entity.open_api_charging
-    if not charging or not charging.status or not charging.status.state:
+    if not (charging and charging.status and charging.status.state):  # TODO ?.
         return None
 
     if charging.status.state != ChargingState.CHARGING:

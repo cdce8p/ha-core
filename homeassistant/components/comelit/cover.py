@@ -189,10 +189,10 @@ class ComelitCoverEntity(ComelitBridgeBaseEntity, RestoreEntity, CoverEntity):
         movement_start = self._movement_start
         # Status may be stale: stopping an idle cover would start it moving
         await self.coordinator.async_refresh()
-        if (
-            not self.coordinator.last_update_success
+        if not (
+            self.coordinator.last_update_success
             # Superseded by a stop, a reversal or a newer command
-            or self._movement_start is not movement_start
+            and self._movement_start is movement_start
         ):
             return
 

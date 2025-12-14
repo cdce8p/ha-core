@@ -135,9 +135,9 @@ class BoschCameraCoordinator(DataUpdateCoordinator[dict[str, Camera]]):
             )
             if camera is None:
                 device_registry.async_remove_device(device.id)
-            elif (
-                device.name != camera.title
-                or device.sw_version != camera.firmware_version
+            elif not (
+                device.name == camera.title
+                and device.sw_version == camera.firmware_version
             ):
                 device_registry.async_update_device(
                     device.id, name=camera.title, sw_version=camera.firmware_version

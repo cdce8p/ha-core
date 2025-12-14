@@ -75,7 +75,7 @@ class EVSEConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         except json.JSONDecodeError, AttributeError:
             return self.async_abort(reason="invalid_discovery_data")
 
-        if not isinstance(serial, str) or not serial.strip():
+        if not (isinstance(serial, str) and serial.strip()):
             return self.async_abort(reason="invalid_discovery_data")
 
         await self.async_set_unique_id(serial)

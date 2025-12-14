@@ -140,7 +140,7 @@ class TeslemetryTariffSchedule(TeslemetryEnergyInfoEntity, CalendarEntity):
         now = dt_util.now(self._time_zone)
         current_season_name = self._get_current_season(now)
 
-        if not current_season_name or not self.seasons.get(current_season_name):
+        if not (current_season_name and self.seasons.get(current_season_name)):
             return None
 
         # Time of use (TOU) periods define the tariff schedule within a season
@@ -194,7 +194,7 @@ class TeslemetryTariffSchedule(TeslemetryEnergyInfoEntity, CalendarEntity):
         ) - timedelta(days=1)
         while current_day < end_date:
             season_name = self._get_current_season(current_day)
-            if not season_name or not self.seasons.get(season_name):
+            if not (season_name and self.seasons.get(season_name)):
                 current_day += timedelta(days=1)
                 continue
 

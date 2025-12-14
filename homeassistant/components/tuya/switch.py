@@ -1037,7 +1037,7 @@ def _check_deprecation(
     unique_id = f"tuya.{device.id}{description.key}"
     entity_id = entity_registry.async_get_entity_id(SWITCH_DOMAIN, DOMAIN, unique_id)
 
-    if not entity_id or not (entity_entry := entity_registry.async_get(entity_id)):
+    if not (entity_id and (entity_entry := entity_registry.async_get(entity_id))):
         async_delete_issue(hass, DOMAIN, f"deprecated_entity_{unique_id}")
         return False
 

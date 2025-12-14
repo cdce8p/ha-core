@@ -739,7 +739,7 @@ def _async_strip_prefix_from_entity_name(
 
     Returns None if the prefix does not meaningfully match.
     """
-    if not entity_name or not prefix:
+    if not (entity_name and prefix):
         return None
 
     prefix_lower = prefix.casefold()
@@ -2070,7 +2070,7 @@ class EntityRegistry(BaseRegistry):
 
         if disabled_by is None or (
             disabled_by is Undefined
-            and (config_entry_id is not Undefined or device_id is not Undefined)
+            and not (config_entry_id is Undefined and device_id is Undefined)
             and old.disabled_by in _DERIVED_DISABLED_BY
         ):
             new_config_entry_id = (
@@ -2172,10 +2172,10 @@ class EntityRegistry(BaseRegistry):
 
         new_values["modified_at"] = utcnow()
 
-        if original_name_unprefixed is Undefined and (
-            original_name is not Undefined
-            or device_id is not Undefined
-            or has_entity_name is not Undefined
+        if original_name_unprefixed is Undefined and not (
+            original_name is Undefined
+            and device_id is Undefined
+            and has_entity_name is Undefined
         ):
             device_id = device_id if device_id is not Undefined else old.device_id
             has_entity_name = (

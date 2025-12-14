@@ -38,7 +38,7 @@ class AddItemIntent(intent.IntentHandler):
         normalized_name = item_name.casefold()
         for item in shopping_data.items:
             name = item["name"]
-            if not isinstance(name, str) or name.casefold() != normalized_name:
+            if not (isinstance(name, str) and name.casefold() == normalized_name):
                 continue
             if not item["complete"]:
                 return intent_obj.create_response()

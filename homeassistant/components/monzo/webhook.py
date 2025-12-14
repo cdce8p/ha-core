@@ -287,8 +287,9 @@ class MonzoWebhookManager:
             return
 
         transaction = payload.get(ATTR_DATA)
-        if not isinstance(transaction, dict) or not isinstance(
-            account_id := transaction.get("account_id"), str
+        if not (  # TODO ?.
+            isinstance(transaction, dict)
+            and isinstance(account_id := transaction.get("account_id"), str)
         ):
             _LOGGER.warning("Received an invalid Monzo transaction webhook")
             return
