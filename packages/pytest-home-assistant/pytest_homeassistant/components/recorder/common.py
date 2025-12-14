@@ -103,7 +103,7 @@ def do_adhoc_statistics(hass: HomeAssistant, **kwargs: Any) -> None:
     """Trigger an adhoc statistics run."""
     if not (start := kwargs.get("start")):
         start = statistics.get_start_time()
-    elif (start.minute % 5) != 0 or start.second != 0 or start.microsecond != 0:
+    elif not ((start.minute % 5) == 0 and start.second == 0 and start.microsecond == 0):
         raise ValueError(f"Statistics must start on 5 minute boundary got {start}")
     get_instance(hass).queue_task(StatisticsTask(start, False))
 

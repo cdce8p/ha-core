@@ -187,7 +187,7 @@ class ModelDeprecatedRepairFlow(RepairsFlow):
             if not model:
                 continue
             model_info, found = entry.runtime_data.get_model_info(model)
-            if not found or model_info.lifecycle not in ("deprecated", "retired"):
+            if not (found and model_info.lifecycle in ("deprecated", "retired")):
                 continue
 
             self._current_entry_id = entry_id

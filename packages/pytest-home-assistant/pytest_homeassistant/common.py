@@ -1517,7 +1517,9 @@ def mock_storage(data: dict[str, Any] | None = None) -> Generator[dict[str, Any]
             if self._key not in data:
                 return {}
             envelope = data[self._key]
-            if "data" not in envelope or "version" not in envelope:
+            if not (  # TODO match expr
+                "data" in envelope and "version" in envelope
+            ):
                 _LOGGER.error('Mock data needs "version" and "data"')
                 raise ValueError('Mock data needs "version" and "data"')
             return deepcopy(envelope)

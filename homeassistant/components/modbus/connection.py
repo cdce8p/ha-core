@@ -41,7 +41,7 @@ def _canonical(params: ModbusParams) -> ModbusParams:
     the serial link over a `socket://` device that `ModbusSerialParams` names
     directly. Both spellings of that link have to reach the same connection.
     """
-    if not isinstance(params, ModbusTcpParams) or params.framer not in ("rtu", "ascii"):
+    if not (isinstance(params, ModbusTcpParams) and params.framer in ("rtu", "ascii")):
         return params
     # An IPv6 literal is bracketed, or its own colons read as the port separator.
     host = f"[{params.host}]" if ":" in params.host else params.host

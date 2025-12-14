@@ -162,9 +162,10 @@ class MatterCover(MatterEntity, CoverEntity):
                 continue
             if not feature_map & position_aware_feature:
                 return None
-            if not self._entity_info.endpoint.has_attribute(
-                None, current_attribute
-            ) or not self._entity_info.endpoint.has_attribute(None, target_attribute):
+            if not (
+                self._entity_info.endpoint.has_attribute(None, current_attribute)
+                and self._entity_info.endpoint.has_attribute(None, target_attribute)
+            ):
                 return None
             current_position = self.get_matter_attribute_value(current_attribute)
             target_position = self.get_matter_attribute_value(target_attribute)

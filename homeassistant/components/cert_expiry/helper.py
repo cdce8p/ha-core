@@ -66,7 +66,7 @@ async def get_cert_expiry_timestamp(
     except ssl.SSLError as err:
         raise ValidationFailure(err.args[0]) from err
 
-    if not cert or "notAfter" not in cert:
+    if not (cert and "notAfter" in cert):
         raise ValidationFailure(
             f"No certificate expiration found for: {hostname}:{port}"
         )

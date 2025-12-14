@@ -164,7 +164,7 @@ def _fetch_and_process_data(
             context_processed.add(context_id)
 
             # Parse the event data
-            if not time_fired_ts or not shared_data:
+            if not (time_fired_ts and shared_data):
                 continue
 
             try:

@@ -50,9 +50,8 @@ class HotSpringDataUpdateCoordinator(DataUpdateCoordinator[Spa]):
                 translation_key="invalid_response",
             ) from error
 
-        if (
-            not spa.info.mac_address
-            or spa.info.mac_address != self.config_entry.unique_id
+        if not (  # TODO ?.
+            spa.info.mac_address and spa.info.mac_address == self.config_entry.unique_id
         ):
             raise UpdateFailed(
                 translation_domain=DOMAIN,

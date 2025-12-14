@@ -80,7 +80,9 @@ class S20ConfigFlow(ConfigFlow, domain=DOMAIN):
 
         if user_input.get(CONF_MAC):
             user_input[CONF_MAC] = format_mac(user_input[CONF_MAC]).lower()
-            if len(user_input[CONF_MAC]) != 17 or user_input[CONF_MAC].count(":") != 5:
+            if not (
+                len(user_input[CONF_MAC]) == 17 and user_input[CONF_MAC].count(":") == 5
+            ):
                 return "invalid_mac"
 
         try:

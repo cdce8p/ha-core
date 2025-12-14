@@ -78,7 +78,7 @@ class LivisiDataUpdateCoordinator(DataUpdateCoordinator[list[LivisiDevice]]):
 
     def _async_dispatch_reachability(self, device_id: str, is_reachable: bool) -> None:
         """Dispatch a reachability update with its current generation."""
-        if not is_reachable or device_id not in self._unreachable_devices:
+        if not (is_reachable and device_id in self._unreachable_devices):
             self.mark_device_unreachable(device_id)
         async_dispatcher_send(
             self.hass,

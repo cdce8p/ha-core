@@ -181,7 +181,7 @@ def _find_open_call(code: str) -> _OpenCall | None:
 
         index += 1
 
-    if not brackets or code[(start := brackets[-1][0])] != "(":
+    if not (brackets and code[(start := brackets[-1][0])] == "("):
         return None
 
     if (callee := _CALLEE.search(code, 0, start)) is None:

@@ -397,7 +397,7 @@ def _parse_streaming_wav_header(header: bytes) -> _StreamingPcmInfo | None:
     """
     if len(header) < 12:
         raise _IncompleteWavHeader
-    if header[0:4] != b"RIFF" or header[8:12] != b"WAVE":
+    if not (header[0:4] == b"RIFF" and header[8:12] == b"WAVE"):
         return None
 
     bits_per_sample: int | None = None
@@ -880,7 +880,7 @@ class ResultStream:
                 return None
             return self._override_media_path
 
-        if not self.use_file_cache or not self._result_cache.done():
+        if not (self.use_file_cache and self._result_cache.done()):
             return None
 
         return self._manager.async_get_cache_file_path(

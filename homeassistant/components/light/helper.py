@@ -229,7 +229,7 @@ def process_turn_on_params(  # noqa: C901
 
         preprocess_turn_on_alternatives(hass, params)
 
-    if (not params or not light.is_on) or (
+    if not (params and light.is_on) or (
         params and LightServiceArgument.TRANSITION not in params
     ):
         hass.data[DATA_PROFILES].apply_default(light.entity_id, light.is_on, params)

@@ -168,7 +168,9 @@ class BSBLANClimate(BSBLanCircuitEntity, ClimateEntity):
     @override
     def hvac_action(self) -> HVACAction | None:
         """Return the current running hvac action."""
-        if (action := self._circuit_state.hvac_action) is None or action.value is None:
+        if (
+            action := self._circuit_state.hvac_action
+        ) is None or action.value is None:  # TODO ?.
             return None
         hvac_action = HVACAction(get_hvac_action_category(action.value).name.lower())
         # In protection mode the circuit is off unless frost protection heats

@@ -72,7 +72,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: BlinkConfigEntry) -> N
             data.pop("hardware_id", None)
         version = 5
 
-    if version != entry.version or data != dict(entry.data):
+    if not (version == entry.version and data == dict(entry.data)):
         hass.config_entries.async_update_entry(entry, data=data, version=version)
 
 

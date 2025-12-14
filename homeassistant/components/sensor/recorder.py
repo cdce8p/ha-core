@@ -298,7 +298,7 @@ def _get_unit_class(
     The unit class is determined from the device class and unit if possible,
     otherwise from the unit.
     """
-    if not _is_hashable(device_class) or not _is_hashable(unit):
+    if not (_is_hashable(device_class) and _is_hashable(unit)):
         # This is reached from paths which pass unvalidated state attributes
         return None
     if (
@@ -964,10 +964,10 @@ def _update_issues(
                     custom_units_for_entities.get(entity_id)
                 )
 
-                if numeric and (
+                if numeric and not (
                     # An unhashable unit can't match the unit of the statistics
-                    not _is_hashable(state_unit)
-                    or not _equivalent_units(
+                    _is_hashable(state_unit)
+                    and _equivalent_units(
                         {state_unit, metadata_unit}, equivalent_units_for_entity
                     )
                 ):
@@ -984,8 +984,8 @@ def _update_issues(
                             "supported_unit": metadata_unit,
                         },
                     )
-            elif numeric and (
-                not _is_hashable(state_unit) or state_unit not in converter.VALID_UNITS
+            elif numeric and not (
+                _is_hashable(state_unit) and state_unit in converter.VALID_UNITS
             ):
                 # The state unit can't be converted to the unit in metadata
                 valid_units = (unit or "<None>" for unit in converter.VALID_UNITS)

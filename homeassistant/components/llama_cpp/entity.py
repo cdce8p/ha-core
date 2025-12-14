@@ -187,7 +187,7 @@ def _convert_content_to_param(
                 {"data": content.result.data, "error": content.result.error}
             ),
         )
-    if not isinstance(content, conversation.AssistantContent) or not content.tool_calls:
+    if not (isinstance(content, conversation.AssistantContent) and content.tool_calls):
         if isinstance(content, conversation.SystemContent):
             return ChatCompletionSystemMessageParam(
                 role="system",
@@ -241,7 +241,7 @@ async def _transform_stream(
                 yield_dict["content"] = delta.content
             if yield_dict:
                 yield yield_dict
-        elif (
+        elif (  # TODO ?[ ]
             delta.tool_calls
             and (delta_tool_call := delta.tool_calls[0])
             and delta_tool_call.function
@@ -438,7 +438,9 @@ async def async_prepare_files_for_prompt(
 
             mime_type, _ = guess_file_type(file_path)
 
-            if not mime_type or not mime_type.startswith(("image/", "application/pdf")):
+            if not (  # TODO ?.
+                mime_type and mime_type.startswith(("image/", "application/pdf"))
+            ):
                 raise HomeAssistantError(
                     translation_domain=DOMAIN,
                     translation_key="unsupported_file_type",
