@@ -982,9 +982,9 @@ class MusicAssistantDashboardPlayer(MusicAssistantDashboardEntity, MediaPlayerEn
         previous_title = self._attr_media_title
         previous_image_url = self._attr_media_image_url
         self._update_from_session()
-        if (
-            self._attr_media_title != previous_title
-            or self._attr_media_image_url != previous_image_url
+        if not (
+            self._attr_media_title == previous_title
+            and self._attr_media_image_url == previous_image_url
         ):
             self.async_write_ha_state()
 

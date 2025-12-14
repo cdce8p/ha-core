@@ -671,7 +671,7 @@ class OverkizCover(OverkizDescriptiveEntity, CoverEntity):
         """
         state_name = self.entity_description.current_position_state
 
-        if not state_name or not (state := self.device.states.get(state_name)):
+        if not (state_name and (state := self.device.states.get(state_name))):
             return None
 
         position = state.value_as_int
@@ -899,10 +899,10 @@ class OverkizCover(OverkizDescriptiveEntity, CoverEntity):
         )
         target_closure = self.device.states.get(OverkizState.CORE_TARGET_CLOSURE)
 
-        if not current_closure or not target_closure:
+        if not (current_closure and target_closure):
             return None
 
-        current_value = current_closure.value_as_int
+        current_value = current_closure.value_as_int  # TODO ?.
         target_value = target_closure.value_as_int
 
         if current_value is None or target_value is None:

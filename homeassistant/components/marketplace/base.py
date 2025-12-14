@@ -701,7 +701,7 @@ class MarketplaceManager:
         previous_prefix = f"{RESTART_ISSUE_PREFIX}{previous_id}_"
         issue_registry = ir.async_get(self.hass)
         for domain, issue_id in list(issue_registry.issues):
-            if domain != DOMAIN or not issue_id.startswith(previous_prefix):
+            if not (domain == DOMAIN and issue_id.startswith(previous_prefix)):
                 continue
 
             issue = issue_registry.issues[(domain, issue_id)]
@@ -1188,9 +1188,9 @@ class MarketplaceManager:
 
     async def async_check_rate_limit(self, _: datetime | None = None) -> None:
         """Check rate limit."""
-        if (
-            not self.system.disabled
-            or self.system.disabled_reason != DisabledReason.RATE_LIMIT
+        if not (
+            self.system.disabled
+            and self.system.disabled_reason == DisabledReason.RATE_LIMIT
         ):
             return
 

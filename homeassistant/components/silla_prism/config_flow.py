@@ -98,7 +98,7 @@ class PrismConfigFlow(ConfigFlow, domain=DOMAIN):
     ) -> ConfigFlowResult:
         """Handle discovery via the Prism ``hello`` topic."""
         payload = discovery_info.payload
-        if not payload or not isinstance(payload, str):
+        if not (payload and isinstance(payload, str)):
             return self.async_abort(reason="invalid_discovery_info")
 
         # Discovery is registered on "<base_topic>/hello".

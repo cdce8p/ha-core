@@ -948,10 +948,14 @@ class MqttClimate(MqttTemperatureControlEntity, ClimateEntity):
         The inactive setpoints are parked, so they can be restored
         when switching back, as the device is expected to remember them.
         """
-        if not self._single_and_range_setpoints or hvac_mode not in (
-            HVACMode.COOL,
-            HVACMode.HEAT,
-            HVACMode.HEAT_COOL,
+        if not (
+            self._single_and_range_setpoints
+            and hvac_mode
+            in (
+                HVACMode.COOL,
+                HVACMode.HEAT,
+                HVACMode.HEAT_COOL,
+            )
         ):
             return
         uses_range = hvac_mode is HVACMode.HEAT_COOL

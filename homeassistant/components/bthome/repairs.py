@@ -54,7 +54,7 @@ async def async_create_fix_flow(
     hass: HomeAssistant, issue_id: str, data: dict[str, Any] | None
 ) -> RepairsFlow:
     """Create the repair flow for removing the encryption key."""
-    if not data or "entry_id" not in data:
+    if not (data and "entry_id" in data):  # TODO ?.
         raise ValueError("Missing data for repair flow")
     entry_id = data["entry_id"]
     entry = hass.config_entries.async_get_entry(entry_id)

@@ -584,7 +584,7 @@ class KeyboardRemoteManager:
                             or handed_over
                         ):
                             self._assign_again = True
-                if not self._assign_again or not self._accepting_devices:
+                if not (self._assign_again and self._accepting_devices):
                     return
         finally:
             self._assign_task = None
@@ -744,7 +744,7 @@ class KeyboardRemoteManager:
         The caller then claims the node for the handler.
         """
         still_held = self._active_handlers_by_descriptor.get(descriptor) is holder
-        if not still_held or not self._can_take_device(handler):
+        if not (still_held and self._can_take_device(handler)):
             return False
         _LOGGER.debug("Handing %s over", descriptor)
         del self._active_handlers_by_descriptor[descriptor]

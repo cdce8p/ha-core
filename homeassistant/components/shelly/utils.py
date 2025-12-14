@@ -344,7 +344,7 @@ def get_device_from_manufacturer_data(
 ) -> ShellyDevice | None:
     """Return the Shelly device matching the advertised BLE model ID."""
     parsed = parse_shelly_manufacturer_data(manufacturer_data)
-    if not parsed or not isinstance(model_id := parsed.get("model_id"), int):
+    if not (parsed and isinstance(model_id := parsed.get("model_id"), int)):  # TODO ?.
         return None
 
     return get_device_from_model_id(model_id)

@@ -88,8 +88,8 @@ def async_migrate_insecure_cameras(hass: HomeAssistant, entry: UFPConfigEntry) -
     """
     registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.domain != Platform.CAMERA or not entity.unique_id.endswith(
-            "_insecure"
+        if not (
+            entity.domain == Platform.CAMERA and entity.unique_id.endswith("_insecure")
         ):
             continue
         secure_unique_id = entity.unique_id.removesuffix("_insecure")
@@ -172,8 +172,9 @@ def async_remove_package_binary_sensor(
     """
     registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.domain != Platform.BINARY_SENSOR or not entity.unique_id.endswith(
-            "_smart_obj_package"
+        if not (
+            entity.domain == Platform.BINARY_SENSOR
+            and entity.unique_id.endswith("_smart_obj_package")
         ):
             continue
         _async_repair_if_used(
@@ -200,8 +201,8 @@ def async_remove_hdr_switch(hass: HomeAssistant, entry: UFPConfigEntry) -> None:
     ir.async_delete_issue(hass, DOMAIN, "deprecate_hdr_switch")
     registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.domain != Platform.SWITCH or not entity.unique_id.endswith(
-            "_hdr_mode"
+        if not (
+            entity.domain == Platform.SWITCH and entity.unique_id.endswith("_hdr_mode")
         ):
             continue
         _async_repair_if_used(
@@ -227,8 +228,9 @@ def async_migrate_sensor_signal_strength(
     """
     registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.domain != Platform.SENSOR or not entity.unique_id.endswith(
-            "_ble_signal"
+        if not (
+            entity.domain == Platform.SENSOR
+            and entity.unique_id.endswith("_ble_signal")
         ):
             continue
         mac = entity.unique_id.removesuffix("_ble_signal")
@@ -383,7 +385,7 @@ def _async_deprecate_setting_mirrors(
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
         mac, _, key = entity.unique_id.partition("_")
         mirror = (entity.domain, key)
-        if mirror not in replacements or mac not in macs:
+        if not (mirror in replacements and mac in macs):
             continue
         platform, replacement_key, translation_key = replacements[mirror]
         replacement_id = registry.async_get_entity_id(

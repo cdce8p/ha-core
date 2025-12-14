@@ -88,7 +88,7 @@ async def _handle_homekit_reload(service: ServiceCall) -> None:
     """Handle start HomeKit service call."""
     hass = service.hass
     config = await async_integration_yaml_config(hass, DOMAIN)
-    if not config or DOMAIN not in config:
+    if not (config and DOMAIN in config):
         return
     async_update_entries_from_yaml(hass, config, start_import_flow=False)
     await asyncio.gather(
