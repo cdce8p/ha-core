@@ -64,7 +64,9 @@ def _load_legacy_file(path: str) -> Any:
     Its string version is not something the Store helper can read.
     """
     data = json_util.load_json(path)
-    if not isinstance(data, dict) or data.get("version") != LEGACY_HACS_STORAGE_VERSION:
+    if not (  # TODO match expr
+        isinstance(data, dict) and data.get("version") == LEGACY_HACS_STORAGE_VERSION
+    ):
         return None
     return data.get("data")
 

@@ -39,7 +39,7 @@ def async_bypass_dynamic_config_validation(hass: HomeAssistant, device_id: str) 
     )
     if device is None:
         raise ValueError(f"Device {device_id} not found")
-    if not config_entry or config_entry.state is not ConfigEntryState.LOADED:
+    if not (config_entry and config_entry.state is ConfigEntryState.LOADED):  # TODO ?.
         return True
 
     # The driver may not be ready when the config entry is loaded.

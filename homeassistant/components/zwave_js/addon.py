@@ -38,7 +38,7 @@ def _redact_sensitive_option_values(message: str, config: dict[str, Any]) -> str
 
     for key in REDACT_ADDON_OPTION_KEYS:
         option_value = config.get(key)
-        if not isinstance(option_value, str) or not option_value:
+        if not (option_value and isinstance(option_value, str)):
             continue
         redacted_value = redacted_config.get(key)
         if not isinstance(redacted_value, str):

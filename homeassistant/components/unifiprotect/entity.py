@@ -86,7 +86,7 @@ def _async_capability_supported(
         return camera.can_detect(capability)
     if not isinstance(public, PublicSensor):
         return True
-    return public.supports(capability)
+    return public.supports(capability)  # TODO public?.supports(capability) ?? True
 
 
 @callback

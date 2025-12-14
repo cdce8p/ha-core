@@ -299,7 +299,7 @@ class STTFlowHandler(LiteLLMSubentryFlowHandler):
             if custom_prompt_keywords == self.last_rendered_custom_prompt_keywords:
                 self.options = user_input.copy()
                 for field in (CONF_STT_PROMPT, CONF_STT_KEYWORDS):
-                    if not custom_prompt_keywords or not self.options.get(field):
+                    if not (custom_prompt_keywords and self.options.get(field)):
                         self.options.pop(field, None)
                 if self._is_new:
                     return self.async_create_entry(

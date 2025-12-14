@@ -71,7 +71,7 @@ def _quote_credentials(url: str) -> str:
     """
     scheme, separator, rest = url.partition("://")
     credentials, at_sign, location = rest.rpartition("@")
-    if not separator or not at_sign:
+    if not (separator and at_sign):
         return url
 
     user, colon, password = credentials.partition(":")

@@ -1066,7 +1066,7 @@ class MideaSensor(MideaEntity, SensorEntity):
             except ValueError:
                 return None
         if description.device_class == SensorDeviceClass.TIMESTAMP:
-            if not isinstance(value, (int, float)) or value <= 0:
+            if not (isinstance(value, (int, float)) and value > 0):
                 return None
             # round to the closest minute
             return (dt_util.utcnow() + timedelta(seconds=30)).replace(

@@ -15,7 +15,9 @@ def get_authenticated_owner_name(
         if not isinstance(owners := account.get("owners"), list):
             continue
         for owner in owners:
-            if not isinstance(owner, dict) or owner.get("user_id") != user_id:
+            if not (  # TODO ?.
+                isinstance(owner, dict) and owner.get("user_id") == user_id
+            ):
                 continue
             for key in ("preferred_name", "preferred_first_name"):
                 if isinstance(name := owner.get(key), str) and name:

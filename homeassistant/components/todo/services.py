@@ -90,7 +90,9 @@ def _validate_supported_features(
     for desc in TODO_ITEM_FIELDS:
         if desc.service_field not in call_data:
             continue
-        if not supported_features or not supported_features & desc.required_feature:
+        if not (  # TODO ??
+            supported_features and supported_features & desc.required_feature
+        ):
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="update_field_not_supported",
@@ -160,7 +162,7 @@ async def _async_remove_todo_items(entity: TodoListEntity, call: ServiceCall) ->
     uids = []
     for item in call.data.get("item", []):
         found = _find_by_uid_or_summary(item, entity.todo_items)
-        if not found or not found.uid:
+        if not (found and found.uid):  # TODO ?.
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="item_not_found",

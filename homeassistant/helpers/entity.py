@@ -1814,9 +1814,9 @@ class Entity(
             self._async_registry_updated,
             job_type=HassJobType.Callback,
         )
-        if (
-            not self._on_remove
-            or self._async_unsubscribe_registry_updates not in self._on_remove
+        if not (  # TODO ??
+            self._on_remove
+            and self._async_unsubscribe_registry_updates in self._on_remove
         ):
             self.async_on_remove(self._async_unsubscribe_registry_updates)
 

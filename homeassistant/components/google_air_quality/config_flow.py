@@ -80,7 +80,7 @@ async def _validate_input(
             custom_laqi = custom_options.get(CUSTOM_LAQI)
 
             # When custom LAQI is enabled, both country and custom_laqi must be provided
-            if not country or not custom_laqi:
+            if not (country and custom_laqi):
                 errors[CUSTOM_LOCAL_AQI_OPTIONS] = "missing_custom_laqi_options"
                 return False
 

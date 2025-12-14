@@ -89,7 +89,7 @@ class PluginRepository(Repository):
                 continue
             if remote == "dist" and not filename.startswith("dist"):
                 continue
-            if not remote and (not filename.endswith(".js") or directory != ""):
+            if not remote and not (filename.endswith(".js") and directory == ""):
                 continue
 
             files.append(self._tree_file_information(entry))
@@ -419,7 +419,9 @@ class PluginRepository(Repository):
             )
             return None
 
-        if resources.store.key != "lovelace_resources" or resources.store.version != 1:
+        if not (
+            resources.store.key == "lovelace_resources" and resources.store.version == 1
+        ):
             self.logger.warning("%s Can not use the dashboard resources", self.string)
             return None
 

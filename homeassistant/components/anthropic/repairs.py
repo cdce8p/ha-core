@@ -168,7 +168,7 @@ class ModelDeprecatedRepairFlow(RepairsFlow):
                 continue
 
             model = subentry.data.get(CONF_CHAT_MODEL)
-            if not model or model not in DEPRECATED_MODELS:
+            if not (model and model in DEPRECATED_MODELS):
                 continue
 
             self._current_entry_id = entry_id

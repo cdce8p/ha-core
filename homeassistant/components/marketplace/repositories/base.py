@@ -161,7 +161,7 @@ def _path_below(path: str, directory: str | None) -> str | None:
 
 def _remove_written_content(marketplace: MarketplaceManager, path: str) -> None:
     """Remove what a failed first install wrote, this does I/O."""
-    if not os.path.lexists(path) or not is_safe(marketplace, path):
+    if not (os.path.lexists(path) and is_safe(marketplace, path)):
         return
 
     if os.path.isdir(path) and not os.path.islink(path):
