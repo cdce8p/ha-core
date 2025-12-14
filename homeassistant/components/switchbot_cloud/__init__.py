@@ -503,21 +503,20 @@ def _create_handle_webhook(
 
         data = await request.json()
         # Structure validation
-        if not (  # TODO good example  # TODO match!
-            isinstance(data, dict)
-            and "eventType" in data
-            and data["eventType"] == "changeReport"
-            and "eventVersion" in data
-            and data["eventVersion"] == "1"
-            and "context" in data
-            and isinstance(data["context"], dict)
-            and "deviceType" in data["context"]
-            and "deviceMac" in data["context"]
-        ):
-            _LOGGER.debug("Received invalid data from switchbot webhook %s", repr(data))
-            return
+        match data:
+            case {
+                "eventType": "changeReport",
+                "eventVersion": "1",
+                "context": {"deviceType": _, "deviceMac": device_mac} as context,
+            }:
+                pass
+            case _:
+                _LOGGER.debug(
+                    "Received invalid data from switchbot webhook %s", repr(data)
+                )
+                return
+
         _LOGGER.debug("Received data from switchbot webhook: %s", repr(data))
-        device_mac = data["context"]["deviceMac"]
 
         registered_device_macs = [
             coordinator.data.get("deviceMac") or coordinator.data.get("deviceId")
@@ -532,6 +531,6 @@ def _create_handle_webhook(
             return
         coordinator = coordinators_by_id[device_mac]
         coordinator.webhook_subscription_listener(True)
-        coordinator.async_set_updated_data(data["context"])
+        coordinator.async_set_updated_data(context)
 
     return _internal_handle_webhook
