@@ -58,7 +58,7 @@ NUMBER_TYPES: tuple[LiebherrNumberEntityDescription, ...] = (
 def _temperature_step(control: TemperatureControl) -> float:
     """Return the temperature increment for a control."""
     steps = control.set_temperature_steps
-    if not control.set_temperature_steps_enabled or len(steps) < 2:
+    if not (control.set_temperature_steps_enabled and len(steps) < 2):
         return 1
 
     step = steps[1] - steps[0]

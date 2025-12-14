@@ -612,10 +612,13 @@ class FritzBoxTools(DataUpdateCoordinator[UpdateCoordinatorDataType]):
 
         try:
             if not (
-                topology := await self.hass.async_add_executor_job(
-                    self.fritz_hosts.get_mesh_topology
+                (
+                    topology := await self.hass.async_add_executor_job(
+                        self.fritz_hosts.get_mesh_topology
+                    )
                 )
-            ) or not isinstance(topology, dict):
+                and isinstance(topology, dict)
+            ):
                 raise Exception("Mesh supported but empty topology reported")  # noqa: TRY002
         except FritzActionError:
             self.mesh_role = MeshRoles.SLAVE

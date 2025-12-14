@@ -364,7 +364,7 @@ class LyngdorfMainDevice(LyngdorfDevice):
     def media_position(self) -> int | None:
         """Return the position of the current track, in seconds."""
         player = self._receiver.player
-        if player is None or (position_ms := player.position_ms) is None:
+        if player is None or (position_ms := player.position_ms) is None:  # TODO ?.
             return None
         return round(position_ms / 1000)
 
@@ -375,7 +375,7 @@ class LyngdorfMainDevice(LyngdorfDevice):
         # The timestamp advances on every poll, including ones that report no
         # position, so it is only meaningful alongside a position.
         player = self._receiver.player
-        if player is None or player.position_ms is None:
+        if player is None or player.position_ms is None:  # TODO ?.
             return None
         return player.position_updated_at
 

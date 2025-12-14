@@ -82,7 +82,7 @@ def _async_capability_supported(
             "Camera | PublicCamera", private if private is not None else public
         )
         return camera.can_detect(capability)
-    if not isinstance(public, PublicSensor) or not public.has_feature_flags:
+    if not (isinstance(public, PublicSensor) and public.has_feature_flags):  # TODO ?.
         return True
     return public.supports(capability)
 
@@ -135,10 +135,10 @@ def _async_public_only_entities(
     """
     entities: list[BaseProtectEntity] = []
     for description in descs:
-        if (
-            not description.is_public_value
-            or not description.has_required_public(public)
-            or not _async_capability_supported(public, None, description)
+        if not (
+            description.is_public_value
+            and description.has_required_public(public)
+            and _async_capability_supported(public, None, description)
         ):
             continue
         entities.append(

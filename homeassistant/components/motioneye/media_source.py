@@ -124,7 +124,7 @@ class MotionEyeMediaSource(MediaSource):
     def _get_config_or_raise(self, config_id: str) -> MotionEyeConfigEntry:
         """Get a config entry from a URL."""
         entry = self.hass.config_entries.async_get_entry(config_id)
-        if not entry or entry.state is not ConfigEntryState.LOADED:
+        if not (entry and entry.state is ConfigEntryState.LOADED):  # TODO ?.
             raise MediaSourceError(f"Unable to find config entry with id: {config_id}")
         return entry
 

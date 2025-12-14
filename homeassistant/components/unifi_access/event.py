@@ -101,10 +101,10 @@ class UnifiAccessEventEntity(UnifiAccessEntity, EventEntity):
     @callback
     def _async_handle_event(self, event: DoorEvent) -> None:
         """Handle incoming event from coordinator."""
-        if (
-            event.door_id != self._door_id
-            or event.category != self.entity_description.category
-            or event.event_type not in self.event_types
+        if not (  # TODO match expr
+            event.door_id == self._door_id
+            and event.category == self.entity_description.category
+            and event.event_type in self.event_types
         ):
             return
         self._trigger_event(event.event_type, event.event_data)

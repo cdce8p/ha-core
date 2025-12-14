@@ -152,7 +152,7 @@ class ListRemoveItemIntentHandler(ListBaseIntentHandler):
             ):
                 matching_item = todo_item
                 break
-        if not matching_item or not matching_item.uid:
+        if not (matching_item and matching_item.uid):  # TODO ?.
             raise intent.IntentHandleError(
                 f"Item '{item}' not found on list", "item_not_found"
             )
