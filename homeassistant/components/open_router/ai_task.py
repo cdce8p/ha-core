@@ -119,7 +119,7 @@ class OpenRouterAITaskEntity(
             ) from err
 
         mime_type = metadata.removeprefix("data:").split(";")[0]
-        if not metadata.startswith("data:") or not mime_type or not image_data:
+        if not (metadata.startswith("data:") and mime_type and image_data):
             raise HomeAssistantError(
                 translation_domain=DOMAIN, translation_key="invalid_image_returned"
             )

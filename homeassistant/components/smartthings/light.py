@@ -46,11 +46,13 @@ CAPABILITIES = (
 LAMP_CAPABILITY_EXISTS: dict[str, Callable[[FullDevice, ComponentStatus], bool]] = {
     "lamp": lambda _, __: True,
     "hood": lambda device, component: (
-        Capability.SAMSUNG_CE_CONNECTION_STATE not in component
-        or component[Capability.SAMSUNG_CE_CONNECTION_STATE][
-            Attribute.CONNECTION_STATE
-        ].value
-        != "disconnected"
+        not (
+            Capability.SAMSUNG_CE_CONNECTION_STATE in component
+            and component[Capability.SAMSUNG_CE_CONNECTION_STATE][
+                Attribute.CONNECTION_STATE
+            ].value
+            == "disconnected"
+        )
     ),
     "cavity-02": lambda _, __: True,
     "main": lambda device, component: (
@@ -313,7 +315,7 @@ class SmartThingsLamp(SmartThingsEntity, LightEntity):
         # If "off" is in supported levels, the switch doesn't control the lamp
         self._use_switch = "off" not in levels
         color_modes = set()
-        if "off" not in levels or len(levels) > 2:
+        if not ("off" in levels and len(levels) <= 2):
             color_modes.add(ColorMode.BRIGHTNESS)
         if not color_modes:
             color_modes.add(ColorMode.ONOFF)

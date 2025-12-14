@@ -97,7 +97,7 @@ class WattwaechterConfigFlow(ConfigFlow, domain=DOMAIN):
     @callback
     def _abort_if_set_up_through_mqtt(self) -> None:
         """Abort a discovery of a device that is already set up through MQTT."""
-        if self.source != SOURCE_ZEROCONF or not self._mqtt_client_id:
+        if not (self.source == SOURCE_ZEROCONF and self._mqtt_client_id):
             return
         device_registry = dr.async_get(self.hass)
         if any(

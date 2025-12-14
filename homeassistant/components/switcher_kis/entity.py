@@ -69,7 +69,7 @@ class SwitcherEntity(CoordinatorEntity[SwitcherDataUpdateCoordinator]):
                 translation_placeholders={"entity": str(self.name)},
             ) from err
 
-        if not response or not response.successful:
+        if not (response and response.successful):  # TODO ?.
             _LOGGER.debug("Unsuccessful response from %s: %s", self.name, response)
             raise HomeAssistantError(
                 translation_domain=DOMAIN,

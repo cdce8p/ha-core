@@ -300,7 +300,7 @@ def get_engine_db_url(db_url: str) -> URL:
 
 def is_file_sqlite_url(url: URL) -> bool:
     """Return if the URL is for a SQLite database stored in a file."""
-    if url.get_backend_name() != "sqlite" or not url.database:
+    if not (url.get_backend_name() == "sqlite" and url.database):
         return False
     return ":memory:" not in url.database
 

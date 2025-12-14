@@ -208,7 +208,7 @@ async def async_update_pin_code(call: ServiceCall) -> None:
     data = call.data
     device_id: str = data[CommonServiceArgument.DEVICE_ID]
     new_pin: str = data[NintendoParentalServiceArgument.PIN]
-    if not new_pin.isdigit() or len(new_pin) < 4 or len(new_pin) > 8:
+    if not (new_pin.isdigit() and 4 <= len(new_pin) <= 8):
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="invalid_pin_length",

@@ -134,10 +134,8 @@ class IndiAllSkyMediaProxyView(HomeAssistantView):
     ) -> web.StreamResponse:
         """Handle media asset requests from the INDI Allsky device."""
         entry = self.hass.config_entries.async_get_entry(entry_id)
-        if (
-            not entry
-            or entry.domain != DOMAIN
-            or entry.state is not ConfigEntryState.LOADED
+        if not (  # TODO ?.
+            entry and entry.domain == DOMAIN and entry.state is ConfigEntryState.LOADED
         ):
             return web.Response(status=404)
 
@@ -259,7 +257,7 @@ class IndiAllSkyMediaSource(MediaSource):
         """Resolve media item to a URL and mime type."""
         entry_id, path = self._parse_identifier(item.identifier)
 
-        if not entry_id or not path or not _is_valid_media_path(path):
+        if not (entry_id and path and _is_valid_media_path(path)):
             raise Unresolvable(
                 translation_domain=DOMAIN,
                 translation_key="incomplete_media_identifier",
@@ -370,10 +368,8 @@ class IndiAllSkyMediaSource(MediaSource):
     def _get_config_entry_or_raise(self, entry_id: str) -> IndiAllSkyConfigEntry:
         """Get config entry or raise Unresolvable."""
         entry = self.hass.config_entries.async_get_entry(entry_id)
-        if (
-            not entry
-            or entry.domain != DOMAIN
-            or entry.state is not ConfigEntryState.LOADED
+        if not (  # TODO ?.
+            entry and entry.domain == DOMAIN and entry.state is ConfigEntryState.LOADED
         ):
             raise Unresolvable(
                 translation_domain=DOMAIN,

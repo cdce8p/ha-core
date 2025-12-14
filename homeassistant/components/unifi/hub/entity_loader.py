@@ -275,7 +275,7 @@ class UnifiEntityLoader:
         api = self.hub.api
         # A failed fetch leaves its list empty, so both lists have to be loaded
         # before an entry missing from them is taken as removed
-        if not api.clients_all.values() or not api.devices.values():
+        if not (api.clients_all.values() and api.devices.values()):
             return
 
         device_registry = dr.async_get(self.hub.hass)

@@ -55,11 +55,8 @@ def _sleep_stage_minutes(
     data: GoogleHealthSleepData | None, stage_type: str
 ) -> int | None:
     """Return duration in minutes for a sleep stage type."""
-    if (
-        not data
-        or not data.sleep
-        or not data.sleep.summary
-        or not data.sleep.summary.stages_summary
+    if not (  # TODO ?.
+        data and data.sleep and data.sleep.summary and data.sleep.summary.stages_summary
     ):
         return None
     return next(

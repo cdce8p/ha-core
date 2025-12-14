@@ -50,7 +50,7 @@ class SkodaNumberEntityDescription(NumberEntityDescription):
 
 def _charge_limit_value(entity: SkodaEntity) -> int | None:
     charging = entity.open_api_charging
-    if not charging or not charging.settings:
+    if not (charging and charging.settings):  # TODO ?.
         return None
     return charging.settings.target_state_of_charge_in_percent
 

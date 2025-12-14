@@ -208,7 +208,7 @@ class ButtonHeldTrigger(StatelessEntityTriggerBase):
             # Any new event, or the entity becoming unavailable, ends the hold.
             cancel_repeat(entity_id)
 
-            if not from_state or not to_state:
+            if not (from_state and to_state):
                 return
 
             if to_state.state in self._excluded_states:
@@ -315,10 +315,10 @@ class ButtonHoldEndedTrigger(StatelessEntityTriggerBase):
         event_types = state.attributes.get(EventEntityCapabilityAttribute.EVENT_TYPES)
         # Requires both, as the held trigger fires on long_press_end for entities
         # that don't declare long_press_start.
-        if (
-            not event_types
-            or ButtonEventType.LONG_PRESS_START not in event_types
-            or ButtonEventType.LONG_PRESS_END not in event_types
+        if not (  # TODO ??
+            event_types
+            and ButtonEventType.LONG_PRESS_START in event_types
+            and ButtonEventType.LONG_PRESS_END in event_types
         ):
             report_not_triggered(
                 "entity_event_types_not_supported",

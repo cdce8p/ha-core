@@ -184,7 +184,7 @@ async def async_update_registration(
         reloaded = False
 
     # The reload doesn't set up the entry if it was disabled meanwhile
-    if not reloaded or entry.state is not ConfigEntryState.LOADED:
+    if not (reloaded and entry.state is ConfigEntryState.LOADED):
         # The app keeps using the old registration when registering fails
         _async_move_sensors(hass, entry, new_webhook_id, old_webhook_id)
         hass.config_entries.async_update_entry(

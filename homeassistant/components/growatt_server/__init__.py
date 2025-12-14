@@ -155,7 +155,7 @@ async def async_migrate_entry(
                 password = config.get(CONF_PASSWORD)
                 url = config.get(CONF_URL, DEFAULT_URL)
 
-                if not username or not password:
+                if not (username and password):
                     raise ConfigEntryError(
                         translation_domain=DOMAIN,
                         translation_key="migration_missing_credentials",

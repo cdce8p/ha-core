@@ -42,7 +42,7 @@ def energy_by_period_start(wh_period: Mapping[datetime, int]) -> dict[datetime, 
         start: wh_period[end]
         for start, end in pairwise(sorted(wh_period))
         # A zero at midnight starts a new API day, not a period that ended there.
-        if wh_period[end] != 0 or (end.hour, end.minute, end.second) != (0, 0, 0)
+        if not (wh_period[end] == 0 and (end.hour, end.minute, end.second) == (0, 0, 0))
     }
 
 

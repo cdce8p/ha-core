@@ -66,11 +66,11 @@ class AxisHub:
         """
         hub = config_entry.runtime_data
         config = AxisConfig.from_config_entry(config_entry)
-        if (
-            config.username != hub.config.username
-            or config.password != hub.config.password
-            or config.protocol != hub.config.protocol
-            or config.port != hub.config.port
+        if not (
+            config.username == hub.config.username
+            and config.password == hub.config.password
+            and config.protocol == hub.config.protocol
+            and config.port == hub.config.port
         ):
             await hass.config_entries.async_reload(config_entry.entry_id)
             return

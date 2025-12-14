@@ -137,10 +137,14 @@ class XboxMediaPlayer(XboxConsoleBaseEntity, MediaPlayerEntity):
     @override
     def supported_features(self) -> MediaPlayerEntityFeature:
         """Flag media player features that are supported."""
-        if not self.available or self.state not in [
-            MediaPlayerState.PLAYING,
-            MediaPlayerState.PAUSED,
-        ]:
+        if not (
+            self.available
+            and self.state
+            in [
+                MediaPlayerState.PLAYING,
+                MediaPlayerState.PAUSED,
+            ]
+        ):
             return (
                 SUPPORT_XBOX
                 & ~MediaPlayerEntityFeature.NEXT_TRACK

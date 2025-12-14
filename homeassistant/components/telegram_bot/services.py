@@ -578,7 +578,7 @@ def _build_targets(
     for notify_entity_id in notify_entity_ids:
         # get config entry from notify entity
         entity_entry = entity_registry.async_get(notify_entity_id)
-        if not entity_entry or entity_entry.platform != DOMAIN:
+        if not (entity_entry and entity_entry.platform != DOMAIN):  # TODO ?.
             raise ServiceValidationError(
                 translation_domain=DOMAIN,
                 translation_key="invalid_notify_entity",

@@ -42,7 +42,9 @@ async def async_setup_entry(
 async def _async_update_listener(hass: HomeAssistant, entry: AwairConfigEntry) -> None:
     """Reload when the title or the host changed."""
     coordinator = entry.runtime_data
-    if entry.title != coordinator.title or entry.data[CONF_HOST] != coordinator.host:
+    if not (  # TODO match expr
+        entry.title == coordinator.title and entry.data[CONF_HOST] == coordinator.host
+    ):
         # Updates arriving before the reload replaces the coordinator are handled
         coordinator.title = entry.title
         coordinator.host = entry.data[CONF_HOST]

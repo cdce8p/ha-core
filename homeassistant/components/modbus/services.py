@@ -140,7 +140,7 @@ async def _async_reload_config(call: ServiceCall) -> None:
         await reset_platform.async_reset()
     reload_config = await async_integration_yaml_config(hass, DOMAIN)
     # The loaded YAML holds every integration's config, not just this one's
-    if not reload_config or DOMAIN not in reload_config:
+    if not (reload_config and DOMAIN in reload_config):  # TODO ??
         LOGGER.debug("Modbus not present anymore")
         hubs.clear()
         return

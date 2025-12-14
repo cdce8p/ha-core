@@ -72,7 +72,7 @@ def is_incomplete(code: str) -> bool:
     # Like the Python REPL, an indented block continues until an empty line.
     # Only a block: the last line of a call can be indented too.
     last_line = code.rsplit("\n", 1)[-1]
-    if not last_line[:1].isspace() or not last_line.strip():
+    if not (last_line[:1].isspace() and last_line.strip()):
         return False
 
     statements = ast.parse(code, CONSOLE_FILENAME, "exec").body
@@ -162,7 +162,7 @@ def console_print(
         capture.truncated = True
         return
 
-    if sep not in (" ", None) or end not in ("\n", None):
+    if not (sep in (" ", None) and end in ("\n", None)):
         text = io.StringIO()
         print(*values, sep=sep, end=end, file=text)
         capture.logs.append([_describe_text(text.getvalue().removesuffix("\n"))])

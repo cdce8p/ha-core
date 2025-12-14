@@ -947,9 +947,9 @@ async def _async_invoke_cc_api(call: ServiceCall) -> None:
         endpoints.add(node.endpoints[0])
 
     for entity_id in call.data.get(ATTR_ENTITY_ID, []):
-        if (
-            not (entity_entry := ent_reg.async_get(entity_id))
-            or entity_entry.platform != const.DOMAIN
+        if not (  # TODO ?.
+            (entity_entry := ent_reg.async_get(entity_id))
+            and entity_entry.platform == const.DOMAIN
         ):
             _LOGGER.warning(
                 "Skipping entity %s as it is not a valid %s entity",
