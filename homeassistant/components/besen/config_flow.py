@@ -74,7 +74,7 @@ async def _async_validate_input(
 ) -> str:
     """Validate setup by logging into the charger."""
 
-    if len(pin) != 6 or not pin.isdecimal():
+    if not (len(pin) == 6 and pin.isdecimal()):
         raise InvalidAuth("PIN must be exactly 6 digits")
 
     def _ble_device_provider() -> BLEDevice | None:

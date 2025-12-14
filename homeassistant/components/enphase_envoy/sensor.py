@@ -1576,7 +1576,7 @@ class EnvoyACBInventoryEntity(EnvoyACBBatteryEntity, SensorEntity):
     def native_value(self) -> int | str | datetime.datetime | None:
         """Return the state of the per-device ACB battery sensors."""
         acb_inventory = self.data.acb_inventory
-        if not acb_inventory or self._serial_number not in acb_inventory:
+        if not (acb_inventory and self._serial_number in acb_inventory):
             return None
         return self.entity_description.value_fn(acb_inventory[self._serial_number])
 

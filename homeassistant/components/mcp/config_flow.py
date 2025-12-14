@@ -508,10 +508,10 @@ async def async_discover_protected_resource(
     # expect to find at least one authorization server in the response and
     # a valid resource field that matches the MCP server URL.
     data = response.json()
-    if (
-        not (authorization_servers := data.get("authorization_servers"))
-        or not (resource := data.get("resource"))
-        or (resource != mcp_server_url)
+    if not (
+        (authorization_servers := data.get("authorization_servers"))
+        and (resource := data.get("resource"))
+        and (resource == mcp_server_url)
     ):
         _LOGGER.error("Invalid OAuth resource metadata: %s", data)
         raise CannotConnect("OAuth resource metadata is invalid")

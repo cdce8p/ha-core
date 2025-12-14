@@ -655,9 +655,8 @@ class Analytics:
                 ),
             )
 
-        if (
-            not self.preferences.get(ATTR_SNAPSHOTS, False)
-            or not self._snapshots_enabled
+        if not (
+            self.preferences.get(ATTR_SNAPSHOTS, False) and self._snapshots_enabled
         ):
             LOGGER.debug("Snapshot analytics not scheduled")
             if self._snapshot_scheduled:

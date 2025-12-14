@@ -264,9 +264,13 @@ def _parse_metadata_document_redirect_uris(
     # redirect_uris entries are returned unmodified for RFC 6749 exact matching
     # rather than resolving relative references.
     redirect_uris = document.get("redirect_uris")
-    if not isinstance(redirect_uris, list) or not all(
-        isinstance(redirect_uri, str) and _is_valid_metadata_redirect_uri(redirect_uri)
-        for redirect_uri in redirect_uris
+    if not (
+        isinstance(redirect_uris, list)
+        and all(
+            isinstance(redirect_uri, str)
+            and _is_valid_metadata_redirect_uri(redirect_uri)
+            for redirect_uri in redirect_uris
+        )
     ):
         _LOGGER.debug(
             "Client ID metadata document at %s has missing or invalid redirect_uris",

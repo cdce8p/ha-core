@@ -422,7 +422,7 @@ class KnxSelectOptionsSelector(KNXSelectorBase):
         if not isinstance(data, dict):
             raise probatio.Invalid("Each option must be a dictionary")
         option = data.get(SelectConf.OPTION)
-        if not isinstance(option, str) or not option:
+        if not (isinstance(option, str) and option):
             raise probatio.Invalid("Option name is required", path=[SelectConf.OPTION])
         payload = {
             key: value for key, value in data.items() if key != SelectConf.OPTION

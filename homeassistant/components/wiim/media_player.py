@@ -289,8 +289,9 @@ class WiimMediaPlayerEntity(WiimBaseEntity, MediaPlayerEntity):
         except ValueError:
             return await super()._async_fetch_image(url)
 
-        if image_address != device_address or not (
-            image_address.is_private or image_address.is_link_local
+        if not (
+            image_address == device_address
+            and (image_address.is_private or image_address.is_link_local)
         ):
             return await super()._async_fetch_image(url)
 

@@ -182,7 +182,7 @@ class BitvisDataUpdateCoordinator(DataUpdateCoordinator[BitvisData]):
                 device_info = diagnostic.device_info
                 model = device_info.model_name or MODEL_NAME
                 sw_version = device_info.sw_version or None
-                if device.model != model or device.sw_version != sw_version:
+                if not (device.model == model and device.sw_version == sw_version):
                     device_reg.async_update_device(
                         device.id,
                         model=model,

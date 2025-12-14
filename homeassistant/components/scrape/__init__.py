@@ -221,7 +221,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ScrapeConfigEntry) -> 
         devices = dr.async_entries_for_config_entry(device_reg, entry.entry_id)
         for device in devices:
             for domain, identifier in device.identifiers:
-                if domain != DOMAIN or identifier not in old_to_new_sensor_id:
+                if not (domain == DOMAIN and identifier in old_to_new_sensor_id):
                     continue
 
                 subentry_id = old_to_new_sensor_id[identifier]
