@@ -78,8 +78,9 @@ def _parse_assets(
     """Parse list of ImmichAsset to list of BrowseMediaSource."""
     ret: list[BrowseMediaSource] = []
     for asset in assets:
-        if not (mime_type := asset.original_mime_type) or not mime_type.startswith(
-            ("image/", "video/")
+        if not (  # TODO ?.
+            (mime_type := asset.original_mime_type)
+            and mime_type.startswith(("image/", "video/"))
         ):
             continue
 

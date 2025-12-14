@@ -368,7 +368,7 @@ class VeSyncFanHA(VeSyncBaseEntity[VeSyncFanBase | VeSyncPurifier], FanEntity):
             device = cast(VeSyncFanBase, self.device)
             vertical_ok = await device.toggle_vertical_oscillation(oscillating)
             horizontal_ok = await device.toggle_horizontal_oscillation(oscillating)
-            if not vertical_ok or not horizontal_ok:
+            if not (vertical_ok and horizontal_ok):
                 if self.device.last_response:
                     raise HomeAssistantError(self.device.last_response.message)
                 raise HomeAssistantError(

@@ -318,8 +318,10 @@ class IZoneConfigFlow(ConfigFlow, domain=DOMAIN):
                 continue
             uid = context.get("unique_id")
             placeholders = context.get("title_placeholders")
-            host = placeholders.get("host") if placeholders is not None else None
-            if not isinstance(uid, str) or not isinstance(host, str):
+            host = (  # TODO ?.
+                placeholders.get("host") if placeholders is not None else None
+            )
+            if not (isinstance(uid, str) and isinstance(host, str)):
                 continue
             candidates.append(
                 _ShelfCandidate(uid=uid, host=host, flow_id=flow["flow_id"])

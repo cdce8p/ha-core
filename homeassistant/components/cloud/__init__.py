@@ -389,7 +389,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     def _on_cloud_login_failed(event: CloudEvent) -> None:
         """Handle hass_nabucasa giving up on a pending auto-login."""
         # The event bus types every handler against the CloudEvent base class.
-        if not isinstance(event, LoginFailedEvent) or not event.auto:
+        if not (isinstance(event, LoginFailedEvent) and event.auto):
             return
 
         async_dispatcher_send(

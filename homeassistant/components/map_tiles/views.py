@@ -225,7 +225,7 @@ class MapTilesGlyphsView(_MapTilesView):
         """Handle a GET request for a glyph range."""
         self._authenticate(request)
 
-        if not FONTSTACK_RE.match(fontstack) or not GLYPH_RANGE_RE.match(glyph_range):
+        if not (FONTSTACK_RE.match(fontstack) and GLYPH_RANGE_RE.match(glyph_range)):
             return web.Response(status=HTTPStatus.NOT_FOUND)
 
         return await self._async_serve(
@@ -247,7 +247,7 @@ class _MapTilesSpritesView(_MapTilesView):
         """Handle a GET request for a sprite set."""
         self._authenticate(request)
 
-        if not SPRITE_SET_RE.match(sprite_set) or not SPRITE_NAME_RE.match(name):
+        if not (SPRITE_SET_RE.match(sprite_set) and SPRITE_NAME_RE.match(name)):
             return web.Response(status=HTTPStatus.NOT_FOUND)
 
         path = f"sprites/{sprite_set}/{name}{self.extension}"
@@ -309,7 +309,7 @@ class MapTilesTileJsonView(_MapTilesView):
             _LOGGER.error("Upstream TileJSON is not valid JSON")
             return None
 
-        if not isinstance(tilejson, dict) or not tilejson.get("tiles"):
+        if not (isinstance(tilejson, dict) and tilejson.get("tiles")):
             _LOGGER.error("Upstream TileJSON does not list any tiles")
             return None
 

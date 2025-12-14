@@ -24,8 +24,9 @@ class AuthenticateHeader:
         cls, url: str, error_response: httpx.Response
     ) -> AuthenticateHeader | None:
         """Create AuthenticateHeader from WWW-Authenticate header."""
-        if not (header := error_response.headers.get(WWW_AUTHENTICATE_HEADER)) or not (
-            match := re.search(RESOURCE_METADATA_REGEXP, header)
+        if not (
+            (header := error_response.headers.get(WWW_AUTHENTICATE_HEADER))
+            and (match := re.search(RESOURCE_METADATA_REGEXP, header))
         ):
             return None
         resource_metadata_url = str(URL(url).join(URL(match.group(1))))

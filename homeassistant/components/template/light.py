@@ -236,7 +236,7 @@ def two_color_list(
             and all(isinstance(value, (int, float)) for value in result)
         ):
             one, two = result
-            if not (min_1 <= one <= max_1) or not (min_2 <= two <= max_2):
+            if not ((min_1 <= one <= max_1) and (min_2 <= two <= max_2)):
                 tcv.log_validation_result_error(
                     entity,
                     option,

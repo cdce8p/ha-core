@@ -1015,10 +1015,10 @@ class AnthropicBaseLLMEntity(CoordinatorEntity[AnthropicCoordinator]):
         if options[CONF_CODE_EXECUTION]:
             # The `web_search_20260209` and `web_fetch_20260209` tools
             # automatically enable `code_execution_20260120` tool
-            if (
-                not self.model_info.capabilities
-                or not self.model_info.capabilities.code_execution.supported
-                or (not options[CONF_WEB_SEARCH] and not options[CONF_WEB_FETCH])
+            if not (  # TODO ?.
+                self.model_info.capabilities
+                and self.model_info.capabilities.code_execution.supported
+                and (options[CONF_WEB_SEARCH] or options[CONF_WEB_FETCH])
             ):
                 tools.append(
                     CodeExecutionTool20250825Param(
@@ -1028,10 +1028,10 @@ class AnthropicBaseLLMEntity(CoordinatorEntity[AnthropicCoordinator]):
                 )
 
         if options[CONF_WEB_SEARCH]:
-            if (
-                not self.model_info.capabilities
-                or not self.model_info.capabilities.code_execution.supported
-                or not options[CONF_CODE_EXECUTION]
+            if not (  # TODO ?.
+                self.model_info.capabilities
+                and self.model_info.capabilities.code_execution.supported
+                and options[CONF_CODE_EXECUTION]
             ):
                 web_search: WebSearchTool20250305Param | WebSearchTool20260209Param = (
                     WebSearchTool20250305Param(
@@ -1057,10 +1057,10 @@ class AnthropicBaseLLMEntity(CoordinatorEntity[AnthropicCoordinator]):
             tools.append(web_search)
 
         if options[CONF_WEB_FETCH]:
-            if (
-                not self.model_info.capabilities
-                or not self.model_info.capabilities.code_execution.supported
-                or not options[CONF_CODE_EXECUTION]
+            if not (  # TODO ?.
+                self.model_info.capabilities
+                and self.model_info.capabilities.code_execution.supported
+                and options[CONF_CODE_EXECUTION]
             ):
                 tools.append(
                     WebFetchTool20250910Param(

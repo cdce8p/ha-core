@@ -221,10 +221,8 @@ class TessieEnergyHistoryCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 translation_key="cannot_connect",
             ) from e
 
-        if (
-            not data
-            or not isinstance(data.get("time_series"), list)
-            or not data["time_series"]
+        if not (  # TODO match expr
+            data and isinstance(data.get("time_series"), list) and data["time_series"]
         ):
             _LOGGER.warning(
                 "Tessie returned no energy history"

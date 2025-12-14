@@ -211,7 +211,7 @@ async def _check_temperature_options(
     options: list[Option],
     method_call: Callable[..., Awaitable[Program | ProgramDefinition]],
 ) -> None:
-    if not options or not (
+    if not (
         options_to_check := {
             option.key: option
             for option in options

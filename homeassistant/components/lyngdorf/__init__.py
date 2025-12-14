@@ -29,7 +29,7 @@ def _serial_as_mac(serial: str) -> str | None:
     not formally guaranteed — fall back gracefully if the value is not a MAC.
     """
     cleaned = serial.replace(":", "").replace("-", "").replace(".", "")
-    if len(cleaned) != 12 or not all(c in "0123456789abcdefABCDEF" for c in cleaned):
+    if not (len(cleaned) == 12 and all(c in "0123456789abcdefABCDEF" for c in cleaned)):
         return None
     return format_mac(cleaned)
 

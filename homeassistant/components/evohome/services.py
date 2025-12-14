@@ -131,10 +131,10 @@ def _resolve_ctl_unique_id(
         )
 
     # currently, evohome supports only 1 controller
-    if (
-        entry.domain != CLIMATE_DOMAIN
-        or entry.platform != DOMAIN
-        or entry.unique_id != tcs_id
+    if not (
+        entry.domain == CLIMATE_DOMAIN
+        and entry.platform == DOMAIN
+        and entry.unique_id == tcs_id
     ):
         raise ServiceValidationError(
             translation_domain=DOMAIN,

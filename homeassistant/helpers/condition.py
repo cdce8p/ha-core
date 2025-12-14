@@ -634,7 +634,7 @@ class EntityConditionBase(Condition):
     @override
     async def _async_setup(self) -> None:
         """Set up state tracking for duration-based conditions."""
-        if not self._duration or not self._needs_duration_tracking:
+        if not (self._duration and self._needs_duration_tracking):
             return
 
         @callback

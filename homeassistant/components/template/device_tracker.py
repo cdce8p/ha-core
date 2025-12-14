@@ -48,7 +48,7 @@ CONF_LOCATION_ACCURACY = "location_accuracy"
 
 def _validate_in_zones_or_lat_and_lon(obj: dict) -> dict:
     if CONF_IN_ZONES not in obj:
-        if CONF_LATITUDE not in obj or CONF_LONGITUDE not in obj:
+        if not (CONF_LATITUDE in obj and CONF_LONGITUDE in obj):
             raise vol.Invalid(
                 f"Either '{CONF_IN_ZONES}' or both '{CONF_LATITUDE}' and '{CONF_LONGITUDE}' must be specified"
             )

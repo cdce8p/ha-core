@@ -223,10 +223,12 @@ class LocalSource(MediaSource):
                 relative = path.relative_to(base_path)
                 if any(part.startswith(".") for part in relative.parts):
                     continue
-                if query_str not in path.name.casefold() or not path.is_file():
+                if not (query_str in path.name.casefold() and path.is_file()):
                     continue
                 mime_type, _ = mimetypes.guess_type(str(path))
-                if not mime_type or mime_type.split("/")[0] not in MEDIA_MIME_TYPES:
+                if not (  # TODO ?.
+                    mime_type and mime_type.split("/")[0] in MEDIA_MIME_TYPES
+                ):
                     continue
                 media_class = MEDIA_CLASS_MAP.get(
                     mime_type.split("/")[0], MediaClass.DIRECTORY

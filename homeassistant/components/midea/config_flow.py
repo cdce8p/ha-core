@@ -543,7 +543,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                 phase1_error_code = self._cloud_error_code
 
                 # no available key, continue the phase 2
-                if not keys.get("token") or not keys.get("key"):
+                if not (keys.get("token") and keys.get("key")):  # TODO match expr
                     LOGGER.debug(
                         "Can't get valid token using user credentials on %s",
                         self._login_data[CONF_SERVER],
@@ -566,7 +566,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                     )
 
                     # phase 2 got no available token/key, disable device add
-                    if not keys.get("token") or not keys.get("key"):
+                    if not (keys.get("token") and keys.get("key")):  # TODO match expr
                         LOGGER.debug(
                             "Can't get available token from Midea server for device %s",
                             device_id,
@@ -745,7 +745,7 @@ class MideaConfigFlow(ConfigFlow, domain=DOMAIN):
                 keys = await self._check_key_from_cloud(int(user_input[CONF_DEVICE_ID]))
 
                 # no available token/key, disable device add
-                if not keys.get("token") or not keys.get("key"):
+                if not (keys.get("token") and keys.get("key")):  # TODO match expr
                     LOGGER.debug(
                         "Can't get a valid token from Midea server for device %s",
                         user_input[CONF_DEVICE_ID],

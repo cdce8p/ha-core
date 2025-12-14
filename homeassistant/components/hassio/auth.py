@@ -54,7 +54,7 @@ class HassIOBaseAuth(HomeAssistantView):
             hassio_ip = os.environ["SUPERVISOR"].split(":")[0]
             assert request.transport
             peername = request.transport.get_extra_info("peername")
-            if not peername or ip_address(peername[0]) != ip_address(hassio_ip):
+            if not (peername and ip_address(peername[0]) == ip_address(hassio_ip)):
                 _LOGGER.error("Invalid auth request from %s", request.remote)
                 raise HTTPUnauthorized
 

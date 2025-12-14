@@ -430,7 +430,7 @@ class ProtectFlowHandler(ConfigFlow, domain=DOMAIN):
     ) -> tuple[NVR | None, dict[str, str]]:
         username = user_input.get(CONF_USERNAME, "")
         password = user_input.get(CONF_PASSWORD, "")
-        if not username or not password:
+        if not (username and password):
             # An entry created in public-API-only mode has no stored
             # credentials to fall back on; the client constructor rejects an
             # incomplete pair, so fail as invalid_auth before building it.

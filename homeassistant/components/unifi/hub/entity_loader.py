@@ -128,7 +128,7 @@ class UnifiEntityLoader:
         for entry in er.async_entries_for_config_entry(
             entity_registry, config.entry.entry_id
         ):
-            if entry.domain != Platform.DEVICE_TRACKER or "-" not in entry.unique_id:
+            if not (entry.domain == Platform.DEVICE_TRACKER and "-" in entry.unique_id):
                 continue
 
             mac = entry.unique_id.split("-", 1)[1]

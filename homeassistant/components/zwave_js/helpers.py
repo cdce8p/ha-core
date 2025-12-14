@@ -137,9 +137,9 @@ def _get_notification_type(value: ZwaveValue) -> int | None:
 
 def is_opening_state_notification_value(value: ZwaveValue) -> bool:
     """Return if the value is the Access Control Opening state notification."""
-    if (
-        value.command_class != CommandClass.NOTIFICATION
-        or _get_notification_type(value) != NotificationType.ACCESS_CONTROL
+    if not (
+        value.command_class == CommandClass.NOTIFICATION
+        or _get_notification_type(value) == NotificationType.ACCESS_CONTROL
     ):
         return False
 

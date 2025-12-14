@@ -222,9 +222,9 @@ class SatelConfigFlow(ConfigFlow, domain=DOMAIN):
             # Normalize user_input to include None for missing optional encryption key
             normalized_input = {CONF_ENCRYPTION_KEY: None, **user_input}
 
-            if (
-                reconfigure_entry.state is not ConfigEntryState.LOADED
-                or reconfigure_entry.data != normalized_input
+            if not (
+                reconfigure_entry.state is ConfigEntryState.LOADED
+                and reconfigure_entry.data == normalized_input
             ):
                 errors = await self.test_connection(
                     normalized_input[CONF_HOST],

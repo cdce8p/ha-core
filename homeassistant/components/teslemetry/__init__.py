@@ -389,7 +389,7 @@ async def _async_resolve_energy_site_api(
     data = entry.subentries[subentry_id].data
     host = data.get(CONF_HOST)
     password = data.get(CONF_PASSWORD)
-    if not host or not password:
+    if not (host and password):
         return cloud_energy_site
 
     key_pem = await _async_get_rsa_key_pem(hass)
