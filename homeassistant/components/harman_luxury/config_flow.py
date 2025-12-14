@@ -59,7 +59,7 @@ class HarmanLuxuryConfigFlow(ConfigFlow, domain=DOMAIN):
         """Handle a flow initiated by SSDP discovery."""
         host = urlparse(discovery_info.ssdp_location or "").hostname
         serial = discovery_info.upnp.get(ATTR_UPNP_SERIAL)
-        if not host or not serial:
+        if not (host and serial):
             return self.async_abort(reason="cannot_connect")
 
         await self.async_set_unique_id(serial)

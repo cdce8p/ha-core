@@ -52,9 +52,8 @@ class ImouEntity(CoordinatorEntity[ImouDataUpdateCoordinator]):
     @override
     def available(self) -> bool:
         """Return if the entity is available."""
-        if (
-            not super().available
-            or self._device_key not in self.coordinator.devices_by_key
+        if not (
+            super().available and self._device_key in self.coordinator.devices_by_key
         ):
             return False
         if self._entity_type == PARAM_STATUS:

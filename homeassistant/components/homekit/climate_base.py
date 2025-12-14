@@ -236,7 +236,7 @@ class HomeKitClimateAccessory(HomeAccessory):
     def _fan_speed_params(self, speed: int) -> dict[str, Any] | None:
         """Return the set_fan_mode data for a HomeKit rotation speed."""
         _LOGGER.debug("%s: Set fan speed to %s", self.entity_id, speed)
-        if not self.ordered_fan_speeds or not 0 < speed <= 100:
+        if not (self.ordered_fan_speeds and 0 < speed <= 100):
             return None
         mode = fan_speed_to_mode(self.ordered_fan_speeds, self.fan_modes, speed)
         return {ClimateServiceArgument.FAN_MODE: mode}

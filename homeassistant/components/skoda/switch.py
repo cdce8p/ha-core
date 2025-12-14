@@ -55,7 +55,7 @@ class SkodaSwitchEntityDescription(SwitchEntityDescription):
 
 def _charging_value(entity: SkodaEntity) -> bool | None:
     charging = entity.open_api_charging
-    if not charging or not charging.status:
+    if not (charging and charging.status):  # TODO ?.
         return None
     if charging.status.state in (None, ChargingState.UNKNOWN):
         return None

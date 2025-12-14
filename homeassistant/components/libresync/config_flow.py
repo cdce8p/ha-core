@@ -59,7 +59,7 @@ class LibreSyncConfigFlow(ConfigFlow, domain=DOMAIN):
         """Handle a hub found by SSDP."""
         udn = discovery_info.upnp.get(ATTR_UPNP_UDN)
         host = urlparse(discovery_info.ssdp_location or "").hostname
-        if not udn or not host:
+        if not (udn and host):
             return self.async_abort(reason="cannot_connect")
 
         # A known or ignored hub stops here, before anything is sent to it.

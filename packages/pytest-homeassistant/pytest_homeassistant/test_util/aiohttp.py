@@ -223,10 +223,10 @@ class AiohttpClientMockResponse:
         if isinstance(self._url, RETYPE):
             return self._url.search(str(url)) is not None
 
-        if (
-            self._url.scheme != url.scheme
-            or self._url.raw_host != url.raw_host
-            or self._url.raw_path != url.raw_path
+        if not (
+            self._url.scheme == url.scheme
+            and self._url.raw_host == url.raw_host
+            and self._url.raw_path == url.raw_path
         ):
             return False
 

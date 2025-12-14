@@ -265,7 +265,7 @@ class ThreemaConfigFlow(ConfigFlow, domain=DOMAIN):
                     reauth_entry,
                     data={**reauth_entry.data, CONF_API_SECRET: new_api_secret},
                 )
-                if not changed or not reauth_entry.update_listeners:
+                if not (changed and reauth_entry.update_listeners):
                     self.hass.config_entries.async_schedule_reload(
                         reauth_entry.entry_id
                     )

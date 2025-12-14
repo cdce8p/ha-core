@@ -67,8 +67,8 @@ class R2ConfigFlow(ConfigFlow, domain=DOMAIN):
             )
 
             parsed = urlparse(user_input[CONF_ENDPOINT_URL])
-            if not parsed.hostname or not parsed.hostname.endswith(
-                CLOUDFLARE_R2_DOMAIN
+            if not (  # TODO ?.
+                parsed.hostname and parsed.hostname.endswith(CLOUDFLARE_R2_DOMAIN)
             ):
                 errors[CONF_ENDPOINT_URL] = "invalid_endpoint_url"
             else:

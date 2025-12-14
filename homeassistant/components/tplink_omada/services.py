@@ -97,7 +97,7 @@ async def _resolve_client_controller(
     entry = hass.config_entries.async_get_entry(
         call.data[CommonServiceArgument.CONFIG_ENTRY_ID]
     )
-    if not entry or entry.domain != DOMAIN:
+    if not (entry and entry.domain == DOMAIN):  # TODO ?.
         raise ServiceValidationError(
             translation_domain=DOMAIN,
             translation_key="controller_not_found",

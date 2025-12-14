@@ -36,7 +36,7 @@ def raise_mirrored_observations(
     entity: str,
 ) -> None:
     """Raise an issue if a config entry has a pair of mirrored observations."""
-    if len(observations) != 2 or not observations[0].is_mirror(observations[1]):
+    if not (len(observations) == 2 and observations[0].is_mirror(observations[1])):
         return
     ir.async_create_issue(
         hass,

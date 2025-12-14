@@ -338,9 +338,10 @@ class BraviaTVConfigFlow(ConfigFlow, domain=DOMAIN):
                         self._abort_if_unique_id_mismatch()
                     # Entries without a CID keep an empty unique ID until the
                     # migration sets the MAC, and without a MAC can't be verified
-                    elif (
-                        not formatted_mac
-                        or format_mac(reconfigure_entry.data[CONF_MAC]) != formatted_mac
+                    elif not (
+                        formatted_mac
+                        and format_mac(reconfigure_entry.data[CONF_MAC])
+                        == formatted_mac
                     ):
                         return self.async_abort(reason="unique_id_mismatch")
                     return self.async_update_reload_and_abort(

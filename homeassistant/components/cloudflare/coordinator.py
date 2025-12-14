@@ -78,7 +78,7 @@ class CloudflareCoordinator(DataUpdateCoordinator[None]):
                 async_get_clientsession(self.hass, family=socket.AF_INET)
             )
 
-            if not location_info or not is_ipv4_address(location_info.ip):
+            if not (location_info and is_ipv4_address(location_info.ip)):
                 raise UpdateFailed("Could not get external IPv4 address")
 
             filtered_records = [

@@ -139,8 +139,9 @@ class AuthManagerFlowManager(
         auth_provider = self.auth_manager.get_auth_provider(*handler_key)
         # Not offered on the login screen is answered like not configured, so
         # it doesn't reveal which providers are set up.
-        if not auth_provider or not auth_provider.async_can_start_login(
-            context or AuthFlowContext()
+        if not (  # TODO ?.
+            auth_provider
+            and auth_provider.async_can_start_login(context or AuthFlowContext())
         ):
             raise UnknownHandler
         return await auth_provider.async_login_flow(context)

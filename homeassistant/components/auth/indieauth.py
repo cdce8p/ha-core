@@ -310,9 +310,13 @@ def _parse_metadata_document_redirect_uris(
 
     # Return entries unmodified; redirect verification handles loopback ports.
     redirect_uris = document.get("redirect_uris")
-    if not isinstance(redirect_uris, list) or not all(
-        isinstance(redirect_uri, str) and _is_valid_metadata_redirect_uri(redirect_uri)
-        for redirect_uri in redirect_uris
+    if not (
+        isinstance(redirect_uris, list)
+        and all(
+            isinstance(redirect_uri, str)
+            and _is_valid_metadata_redirect_uri(redirect_uri)
+            for redirect_uri in redirect_uris
+        )
     ):
         _LOGGER.debug(
             "Client ID metadata document at %s has missing or invalid redirect_uris",

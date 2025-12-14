@@ -417,7 +417,7 @@ async def async_remove_duplicate_entries(hass: HomeAssistant) -> None:
     ):
         options[CONF_PROFILE] = profile
 
-    if data != kept.data or options != kept.options:
+    if not (data == kept.data and options == kept.options):
         hass.config_entries.async_update_entry(kept, data=data, options=options)
 
     for entry in duplicates:
@@ -585,7 +585,7 @@ def _remove_legacy_files(config_path: str) -> list[str]:
 
     for legacy_key, storage_key in legacy_files.items():
         legacy_path = storage_path / legacy_key
-        if not legacy_path.is_file() or not (storage_path / storage_key).is_file():
+        if not (legacy_path.is_file() and (storage_path / storage_key).is_file()):
             continue
         # Not a file the data could have come from, so it was never taken over
         if not is_adoptable_legacy_file(str(legacy_path)):

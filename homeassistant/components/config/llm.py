@@ -391,7 +391,7 @@ def _interpolate_placeholders(
     text: str | None, placeholders: Mapping[str, Any] | None
 ) -> str | None:
     """Replace {key} placeholders in text using a single regex pass."""
-    if not text or not placeholders:
+    if not (text and placeholders):
         return text
     return _PLACEHOLDER_RE.sub(
         lambda m: (

@@ -1408,7 +1408,7 @@ def _is_single_item(key: str, value: Any) -> bool:
     if isinstance(value, list):
         return False
     # A dict with only a triggers key is a list of triggers
-    return key != CONF_TRIGGERS or value.keys() != {CONF_TRIGGERS}
+    return not (key == CONF_TRIGGERS and value.keys() == {CONF_TRIGGERS})
 
 
 def _drop_list_index(err: probatio.Invalid) -> None:

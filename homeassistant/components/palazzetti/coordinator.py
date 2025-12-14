@@ -43,7 +43,7 @@ class PalazzettiDataUpdateCoordinator(DataUpdateCoordinator[None]):
     @override
     async def _async_setup(self) -> None:
         try:
-            if not await self.client.connect() or not await self.client.update_state():
+            if not (await self.client.connect() and await self.client.update_state()):
                 raise UpdateFailed("Error communicating with the API")
         except (CommunicationError, ValidationError) as err:
             raise UpdateFailed(f"Error communicating with the API: {err}") from err

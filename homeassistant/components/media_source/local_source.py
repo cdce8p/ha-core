@@ -250,7 +250,9 @@ class LocalSource(MediaSource):
                 if not path.is_file():
                     continue
                 mime_type, _ = mimetypes.guess_type(str(path))
-                if not mime_type or mime_type.split("/")[0] not in MEDIA_MIME_TYPES:
+                if not (  # TODO ?.
+                    mime_type and mime_type.split("/")[0] in MEDIA_MIME_TYPES
+                ):
                     continue
                 media_class = MEDIA_CLASS_MAP.get(
                     mime_type.split("/")[0], MediaClass.DIRECTORY
