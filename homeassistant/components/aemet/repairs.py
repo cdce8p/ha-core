@@ -136,7 +136,7 @@ async def async_create_fix_flow(
     data: dict[str, str | int | float | None] | None,
 ) -> RepairsFlow:
     """Create a fix flow for an AEMET repair issue."""
-    if not issue_id.startswith(ISSUE_API_KEY_EXPIRING) or not data:
+    if not (issue_id.startswith(ISSUE_API_KEY_EXPIRING) and data):
         raise ValueError(f"Unknown repair issue {issue_id}")
 
     entry_id = data.get("entry_id")

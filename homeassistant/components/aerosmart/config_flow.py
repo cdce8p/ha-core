@@ -164,8 +164,9 @@ class AerosmartConfigFlow(ConfigFlow, domain=DOMAIN):
         return {
             field: "invalid_integer"
             for field in fields
-            if not isinstance(data[field], int | float)
-            or not float(data[field]).is_integer()
+            if not (
+                isinstance(data[field], int | float) and float(data[field]).is_integer()
+            )
         }
 
     async def _async_can_connect(self, data: dict[str, Any]) -> bool:

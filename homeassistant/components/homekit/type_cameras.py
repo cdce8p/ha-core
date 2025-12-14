@@ -794,9 +794,9 @@ class Camera(HomeDoorbellAccessory, PyhapCamera):  # type: ignore[misc]
         recording = self._recording_stream
         if recording is None or not recording.streaming:
             return
-        if (
-            not self.recording_active
-            or self.recording_audio_active != self._recording_with_audio
+        if not (  # TODO ?.
+            self.recording_active
+            and self.recording_audio_active == self._recording_with_audio
         ):
             recording.close(RecordingReason.NOT_ALLOWED)
 

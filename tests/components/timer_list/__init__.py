@@ -110,7 +110,7 @@ class MockTimerListEntity(TimerListEntity):
     async def async_add_time(self, timer_id: str, duration: timedelta) -> None:
         """Add (or, with a negative duration, subtract) time on a timer."""
         timer = self._get_timer(timer_id)
-        if timer.status not in (TimerStatus.ACTIVE, TimerStatus.PAUSED) or not duration:
+        if not (timer.status in (TimerStatus.ACTIVE, TimerStatus.PAUSED) and duration):
             return
         now = dt_util.utcnow()
         remaining = timer.remaining_at(now) + duration

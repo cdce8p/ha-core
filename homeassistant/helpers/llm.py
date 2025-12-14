@@ -127,11 +127,11 @@ async def async_get_authorized_api_instance(
     api: API, llm_context: LLMContext
 ) -> APIInstance:
     """Get an API instance, requiring an admin user if the API requires it."""
-    if api.requires_admin and (
-        not llm_context.context
-        or not llm_context.context.user_id
-        or not (user := await api.hass.auth.async_get_user(llm_context.context.user_id))
-        or not user.is_admin
+    if api.requires_admin and not (
+        llm_context.context  # TODO ?.
+        and llm_context.context.user_id
+        and (user := await api.hass.auth.async_get_user(llm_context.context.user_id))
+        and user.is_admin
     ):
         raise Unauthorized(context=llm_context.context)
 
@@ -930,7 +930,7 @@ def substitute_translation_placeholders(
     Leaves unknown placeholders intact and avoids re-expanding placeholder
     syntax contained inside replacement values.
     """
-    if not text or not placeholders:
+    if not (text and placeholders):
         return text
     return _PLACEHOLDER_RE.sub(
         lambda match: (

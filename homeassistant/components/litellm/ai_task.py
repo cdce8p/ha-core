@@ -166,11 +166,11 @@ class LiteLLMEvaluationEntity(LiteLLMEntity, ai_task.AITaskEntity):
                     for option in answer.probabilities
                     if isinstance(option.value, str)
                 }
-                if (
-                    not isinstance(answer.choice, str)
-                    or answer.choice not in question["criteria"]
-                    or len(probabilities) != len(answer.probabilities)
-                    or probabilities.keys() != question["criteria"].keys()
+                if not (
+                    isinstance(answer.choice, str)
+                    and answer.choice in question["criteria"]
+                    and len(probabilities) == len(answer.probabilities)
+                    and probabilities.keys() == question["criteria"].keys()
                 ):
                     raise HomeAssistantError(
                         f"LiteLLM returned an invalid choice for {question_id}"

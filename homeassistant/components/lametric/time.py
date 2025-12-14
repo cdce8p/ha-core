@@ -86,7 +86,7 @@ async def async_setup_entry(
         return
 
     screensaver = coordinator.data.display.screensaver
-    if not screensaver or not screensaver.modes:
+    if not (screensaver and screensaver.modes):  # TODO ?.
         return
 
     async_add_entities(

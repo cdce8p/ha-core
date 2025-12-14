@@ -5280,9 +5280,12 @@ def _validate_certificate_settings(
     ):
         return "client_key_password_with_file"
     # The client certificate and key must both be uploaded, or both be files
-    if bool(other_settings.get(CONF_CLIENT_CERT)) != bool(
-        other_settings.get(CONF_CLIENT_KEY)
-    ) or (CONF_CLIENT_CERT_FILE in file_paths) != (CONF_CLIENT_KEY_FILE in file_paths):
+    if not (
+        bool(other_settings.get(CONF_CLIENT_CERT))
+        == bool(other_settings.get(CONF_CLIENT_KEY))
+        and (CONF_CLIENT_CERT_FILE in file_paths)
+        == (CONF_CLIENT_KEY_FILE in file_paths)
+    ):
         return "invalid_inclusion"
     return None
 

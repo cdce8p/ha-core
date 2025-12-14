@@ -178,7 +178,9 @@ def is_legacy_topic(topic_name: str) -> bool:
 def cloud_project_from_subscription(subscription_name: str) -> str | None:
     """Return the cloud project id from a `projects/X/subscriptions/Y` name."""
     parts = subscription_name.split("/")
-    if len(parts) != 4 or parts[0] != "projects" or parts[2] != "subscriptions":
+    if not (  # TODO match expr
+        len(parts) == 4 and parts[0] == "projects" and parts[2] == "subscriptions"
+    ):
         return None
     return parts[1]
 

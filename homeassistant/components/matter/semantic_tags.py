@@ -162,9 +162,13 @@ def _row_column_name(endpoint: MatterEndpoint) -> ChildDeviceName | None:
     """Return the name from Common Position Row and Column tags."""
     found: dict[str, str] = {}
     for tag in _standard_tags(endpoint):
-        if tag.namespaceID != NAMESPACE_COMMON_POSITION or tag.tag not in (
-            POSITION_ROW,
-            POSITION_COLUMN,
+        if not (
+            tag.namespaceID == NAMESPACE_COMMON_POSITION
+            and tag.tag
+            in (
+                POSITION_ROW,
+                POSITION_COLUMN,
+            )
         ):
             continue
         key = "row" if tag.tag == POSITION_ROW else "column"
@@ -189,7 +193,7 @@ def _number_name(endpoint: MatterEndpoint) -> ChildDeviceName | None:
         for tag in _standard_tags(endpoint)
         if tag.namespaceID == NAMESPACE_COMMON_NUMBER
     ]
-    if len(numbers) != 1 or not 0 <= numbers[0] <= MAX_COMMON_NUMBER:
+    if not (len(numbers) == 1 and 0 <= numbers[0] <= MAX_COMMON_NUMBER):
         return None
     return _channel_name(str(numbers[0]))
 

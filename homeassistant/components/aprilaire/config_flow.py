@@ -31,7 +31,7 @@ async def _async_read_mac_address(host: str, port: int) -> str | None:
     finally:
         client.stop_listen()
 
-    if not data or Attribute.MAC_ADDRESS not in data:
+    if not (data and Attribute.MAC_ADDRESS in data):  # TODO match expr
         return None
     return format_mac(data[Attribute.MAC_ADDRESS])
 

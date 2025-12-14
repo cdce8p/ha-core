@@ -129,7 +129,9 @@ async def _get_models(
     return [
         model
         for model in models
-        if model not in model_modes or not model_modes[model].isdisjoint(allowed)
+        if not (  # TODO ?.
+            model in model_modes and model_modes[model].isdisjoint(allowed)
+        )
     ]
 
 

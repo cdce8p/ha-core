@@ -167,7 +167,7 @@ async def _async_count_wrong_login(
 ) -> bool:
     """Count a wrong login attempt and return if it got the address banned."""
     # Check if ban middleware is loaded
-    if KEY_BAN_MANAGER not in app or app[KEY_LOGIN_THRESHOLD] < 1:
+    if not (KEY_BAN_MANAGER in app and app[KEY_LOGIN_THRESHOLD] >= 1):
         return False
 
     app[KEY_FAILED_LOGIN_ATTEMPTS][remote_addr] += 1

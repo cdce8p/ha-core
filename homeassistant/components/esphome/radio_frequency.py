@@ -125,9 +125,9 @@ class EsphomeRadioFrequencyReceiverEntity(
     @callback
     def _on_infrared_rf_receive(self, event: InfraredRFReceiveEventModel) -> None:
         """Handle a received RF signal from the device."""
-        if (
-            event.key != self._static_info.key
-            or event.device_id != self._static_info.device_id
+        if not (  # TODO match expr
+            event.key == self._static_info.key
+            and event.device_id == self._static_info.device_id
         ):
             return
         self._handle_received_signal(

@@ -175,7 +175,7 @@ class EcobeeWeather(WeatherEntity):
 
     def _forecast(self) -> list[Forecast] | None:
         """Return the forecast array."""
-        if not self.weather or "forecasts" not in self.weather:
+        if not (self.weather and "forecasts" in self.weather):  # TODO ??
             return None
 
         forecasts: list[Forecast] = []

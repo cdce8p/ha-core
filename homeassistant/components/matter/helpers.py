@@ -242,8 +242,9 @@ def endpoint_requires_child_device(endpoint: MatterEndpoint) -> bool:
     `get_entity_child_device_owner`.
     """
     # Skip naming the whole node for endpoints that can never split.
-    if not _endpoint_maps_to_node_device(endpoint) or not (
-        CHILD_DEVICE_TYPES & endpoint.device_types
+    if not (
+        _endpoint_maps_to_node_device(endpoint)
+        and (CHILD_DEVICE_TYPES & endpoint.device_types)
     ):
         return False
     return endpoint.endpoint_id in get_child_device_names(endpoint.node)
@@ -263,7 +264,7 @@ def get_power_topology_endpoint_id(endpoint: MatterEndpoint) -> int | None:
     available_endpoints: list[int] | None = endpoint.get_attribute_value(
         None, clusters.PowerTopology.Attributes.AvailableEndpoints
     )
-    if not available_endpoints or len(available_endpoints) != 1:
+    if not (available_endpoints and len(available_endpoints) == 1):  # TODO match expr
         return None
     return available_endpoints[0]
 
@@ -280,7 +281,7 @@ def get_child_device_owner(endpoint: MatterEndpoint) -> MatterEndpoint | None:
     device_endpoint = get_device_endpoint(endpoint)
     if endpoint_requires_child_device(device_endpoint):
         return device_endpoint
-    if device_endpoint is not endpoint or not _endpoint_maps_to_node_device(endpoint):
+    if not (device_endpoint is endpoint and _endpoint_maps_to_node_device(endpoint)):
         return None
     if (
         (measured_id := get_power_topology_endpoint_id(endpoint)) is not None

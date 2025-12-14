@@ -1311,9 +1311,9 @@ async def async_setup_entry(
         if capability in capabilities
         for attribute, descriptions in attributes.items()
         for description in descriptions
-        if (
-            not description.capability_ignore_list
-            or not any(
+        if not (
+            description.capability_ignore_list
+            and any(
                 all(capability in device.status[MAIN] for capability in capability_list)
                 for capability_list in description.capability_ignore_list
             )

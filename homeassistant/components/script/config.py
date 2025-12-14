@@ -325,7 +325,7 @@ async def _async_collect_errors(
     else:
         errors = []
 
-    if not isinstance(config, dict) or CONF_SEQUENCE not in config:
+    if not (isinstance(config, dict) and CONF_SEQUENCE in config):  # TODO match expr
         return errors
 
     reported = {(info.path, info.message) for info in errors}

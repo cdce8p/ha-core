@@ -289,7 +289,7 @@ class UnifiEntityLoader:
         api = self.hub.api
         # A failed fetch leaves its list empty, so both lists have to be loaded
         # before an entry missing from them is taken as removed
-        if not api.clients_all.values() or not api.devices.values():
+        if not (api.clients_all.values() and api.devices.values()):
             return
 
         device_registry = dr.async_get(self.hub.hass)
@@ -331,7 +331,7 @@ class UnifiEntityLoader:
         coordinator = self._data_coordinators[id(policies)]
         # A failed fetch leaves the list empty, while a loaded list always has
         # the predefined policies
-        if not coordinator.last_update_success or not policies.values():
+        if not (coordinator.last_update_success and policies.values()):
             return
 
         device_registry = dr.async_get(self.hub.hass)

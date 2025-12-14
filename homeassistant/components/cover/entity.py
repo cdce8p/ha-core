@@ -241,7 +241,7 @@ class CoverEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     def _resolved_open_tilt_position(self) -> int:
         """Return the open tilt position, with the default applied."""
         if (position := self.open_tilt_position) is not None:
-            if type(position) is not int or not 0 <= position <= 100:
+            if not (type(position) is int and 0 <= position <= 100):
                 raise ValueError(
                     f"Entity {self.entity_id} ({type(self)}) has an invalid open tilt "
                     f"position {position}, expected an integer from 0 to 100"

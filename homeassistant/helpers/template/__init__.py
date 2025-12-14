@@ -389,7 +389,7 @@ def _render_json_path(
         return ""
     value = value_json
     for key in json_path:
-        if type(value) is not dict or key not in value:
+        if not (type(value) is dict and key in value):
             return None
         value = value[key]
     try:

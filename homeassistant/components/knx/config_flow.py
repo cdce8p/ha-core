@@ -740,9 +740,9 @@ class KNXConfigFlow(ConfigFlow, domain=DOMAIN):
             return
         self._configured_gateway_described = True
         connection_type = self.initial_data[CONF_KNX_CONNECTION_TYPE]
-        if (
-            connection_type not in CONF_KNX_TUNNELING_TYPE_LABELS
-            or CONF_HOST not in self.initial_data
+        if not (
+            connection_type in CONF_KNX_TUNNELING_TYPE_LABELS
+            and CONF_HOST in self.initial_data
         ):
             return
         # the description is requested over UDP - TCP entries have no route back

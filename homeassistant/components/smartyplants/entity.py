@@ -44,6 +44,6 @@ class SmartyPlantsEntity(CoordinatorEntity[SmartyPlantsCoordinator]):
     @override
     def available(self) -> bool:
         """Report unavailable once the sensor stops reporting."""
-        if not super().available or self._sensor_id not in self.coordinator.data:
+        if not (super().available and self._sensor_id in self.coordinator.data):
             return False
         return self.sensor.is_online or not self._requires_online

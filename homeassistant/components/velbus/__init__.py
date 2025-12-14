@@ -102,7 +102,7 @@ def _is_channel_subdevice_identifier(
     parent_identifiers: set[tuple[str, str]],
 ) -> bool:
     """Return whether the child identifier denotes a module channel."""
-    if len(child_identifiers) != 1 or len(parent_identifiers) != 1:
+    if not (len(child_identifiers) == 1 and len(parent_identifiers) == 1):
         return False
     _, child_id = next(iter(child_identifiers))
     _, parent_id = next(iter(parent_identifiers))

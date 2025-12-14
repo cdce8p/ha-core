@@ -93,7 +93,7 @@ def cleanup_occupied_aux_entities(
     """
     registry = er.async_get(hass)
     for entry in registry.entities.get_entries_for_config_entry_id(entry_id):
-        if entry.domain != platform or not entry.disabled:
+        if not (entry.domain == platform and entry.disabled):
             continue
         match = _AUX_UNIQUE_ID_RE.search(entry.unique_id)
         if match and not aux_relay_available(int(match.group(1)), data):

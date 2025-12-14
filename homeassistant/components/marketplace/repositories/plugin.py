@@ -123,7 +123,7 @@ class PluginRepository(Repository):
     ) -> list[FileInformation] | None:
         """Install the ZIP of the resource, return what is left to download if not."""
         archive_name = _archive_name(self.data.file_name or "")
-        if self.content.path.remote != "release" or not archive_name:
+        if not (self.content.path.remote == "release" and archive_name):
             return contents
 
         for archive in contents:
@@ -251,7 +251,7 @@ class PluginRepository(Repository):
                 continue
             if remote == "dist" and not filename.startswith("dist"):
                 continue
-            if not remote and (not filename.endswith(".js") or directory != ""):
+            if not remote and not (filename.endswith(".js") and directory == ""):
                 continue
 
             files.append(self._tree_file_information(entry))
@@ -614,7 +614,9 @@ class PluginRepository(Repository):
             )
             return None
 
-        if resources.store.key != "lovelace_resources" or resources.store.version != 1:
+        if not (
+            resources.store.key == "lovelace_resources" and resources.store.version == 1
+        ):
             self.logger.warning("%s Can not use the dashboard resources", self.string)
             return None
 

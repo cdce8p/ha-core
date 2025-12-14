@@ -56,11 +56,8 @@ def _sleep_stage_minutes(
     data: GoogleHealthSleepData | None, stage_type: str
 ) -> int | None:
     """Return duration in minutes for a sleep stage type."""
-    if (
-        not data
-        or not data.sleep
-        or not data.sleep.summary
-        or not data.sleep.summary.stages_summary
+    if not (  # TODO ?.
+        data and data.sleep and data.sleep.summary and data.sleep.summary.stages_summary
     ):
         return None
     return next(
@@ -75,7 +72,7 @@ def _sleep_stage_minutes(
 
 def _nutrient_grams(data: GoogleHealthNutritionData | None, nutrient: str) -> float:
     """Return daily intake in grams for a nutrient type."""
-    if not data or not data.nutrition:
+    if not (data and data.nutrition):  # TODO ?.
         return 0.0
     return next(
         (

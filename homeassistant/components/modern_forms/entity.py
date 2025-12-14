@@ -17,7 +17,7 @@ def strip_device_name_prefix(device_name: str, name: str) -> str | None:
     Returns None (rather than a name identical to the device name) when
     the fixture name adds nothing beyond the device name.
     """
-    if not device_name or not name.lower().startswith(device_name.lower()):
+    if not (device_name and name.lower().startswith(device_name.lower())):
         return name
     rest = name[len(device_name) :]
     if rest and rest[0] not in _NAME_SEPARATORS:

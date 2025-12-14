@@ -611,8 +611,9 @@ def _validate_battery_measurement(val: dict[str, Any]) -> dict[str, Any]:
             )
         return val
 
-    if not any(energy_key in val for energy_key, _ in BATTERY_CHARGE_DIRECTIONS) or (
-        not any(energy_key in val for energy_key, _ in BATTERY_DISCHARGE_DIRECTIONS)
+    if not (
+        any(energy_key in val for energy_key, _ in BATTERY_CHARGE_DIRECTIONS)
+        and any(energy_key in val for energy_key, _ in BATTERY_DISCHARGE_DIRECTIONS)
     ):
         raise probatio.Invalid(
             "Battery needs stat_energy_from and stat_energy_to, or at least one"

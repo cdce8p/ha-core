@@ -144,7 +144,7 @@ class SwitchbotConfigFlow(
     async def async_oauth_create_entry(self, data: dict[str, Any]) -> ConfigFlowResult:
         """Continue device setup without persisting the OAuth token."""
         access_token = data[CONF_TOKEN].get(CONF_ACCESS_TOKEN)
-        if not isinstance(access_token, str) or not access_token:
+        if not (isinstance(access_token, str) and access_token):
             return self.async_abort(reason="oauth_error")
 
         self._oauth_access_token = access_token

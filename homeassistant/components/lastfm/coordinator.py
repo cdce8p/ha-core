@@ -123,7 +123,9 @@ class LastFMDataUpdateCoordinator(DataUpdateCoordinator[dict[str, LastFMUserData
             last_tracks = user.get_recent_tracks(limit=1)
         except PyLastError as exc:
             self._raise_if_auth_failed(exc)
-            if not isinstance(exc, WSError) or exc.status != ERROR_CODE_LOGIN_REQUIRED:
+            if not (
+                isinstance(exc, WSError) and exc.status == ERROR_CODE_LOGIN_REQUIRED
+            ):
                 if self.last_update_success:
                     LOGGER.error(
                         "LastFM update for %s failed: %s",

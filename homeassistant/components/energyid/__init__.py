@@ -167,11 +167,11 @@ async def config_entry_update_listener(
     runtime_data = entry.runtime_data
     client = runtime_data.client
     # Directives and new credentials only take effect after a reload.
-    if (
+    if not (
         runtime_data.directive_coordinator.directives_enabled
-        != async_directives_enabled(entry)
-        or client.provisioning_key != entry.data[CONF_PROVISIONING_KEY]
-        or client.provisioning_secret != entry.data[CONF_PROVISIONING_SECRET]
+        == async_directives_enabled(entry)
+        and client.provisioning_key == entry.data[CONF_PROVISIONING_KEY]
+        and client.provisioning_secret == entry.data[CONF_PROVISIONING_SECRET]
     ):
         await hass.config_entries.async_reload(entry.entry_id)
         return

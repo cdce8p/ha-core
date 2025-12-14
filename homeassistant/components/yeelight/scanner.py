@@ -233,7 +233,7 @@ class YeelightScanner:
     @callback
     def _async_process_alive(self, headers: CaseInsensitiveDict) -> None:
         """Process an alive advertisement, sent by bulbs joining the network."""
-        if "id" not in headers or "location" not in headers:
+        if not ("id" in headers and "location" in headers):  # TODO match expr
             return
         self._async_process_entry(headers)
         async_dispatcher_send(

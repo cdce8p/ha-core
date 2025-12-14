@@ -372,9 +372,9 @@ class AutoUpdateManager:
     def _async_is_unsafe(self) -> bool:
         """Return if the data is stale or another Core update is running."""
         jobs_coordinator = self._hass.data[JOBS_COORDINATOR]
-        if (
-            not self._coordinator.last_update_success
-            or not jobs_coordinator.last_update_success
+        if not (
+            self._coordinator.last_update_success
+            and jobs_coordinator.last_update_success
         ):
             return True
 
