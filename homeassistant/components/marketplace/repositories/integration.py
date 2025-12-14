@@ -47,7 +47,7 @@ def _validated_domain(domain: Any) -> str:
     The domain names the directory below custom_components/ the install is
     written to, so anything else would let a repository pick its own target.
     """
-    if not isinstance(domain, str) or not VALID_DOMAIN.match(domain):
+    if not (isinstance(domain, str) and VALID_DOMAIN.match(domain)):
         raise MarketplaceError(
             translation_domain=DOMAIN,
             translation_key="invalid_domain",

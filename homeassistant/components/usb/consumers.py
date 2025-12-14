@@ -68,7 +68,7 @@ def _resolve_key_path(data: Mapping[str, Any], key_path: tuple[str, ...]) -> Any
     value: Any = data
 
     for key in key_path:
-        if not isinstance(value, Mapping) or key not in value:
+        if not (isinstance(value, Mapping) and key in value):  # TODO match expr
             return None
         value = value[key]
 

@@ -163,8 +163,8 @@ def async_migrate_insecure_cameras(hass: HomeAssistant, entry: UFPConfigEntry) -
     """
     registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.domain != Platform.CAMERA or not entity.unique_id.endswith(
-            "_insecure"
+        if not (
+            entity.domain == Platform.CAMERA and entity.unique_id.endswith("_insecure")
         ):
             continue
         secure_unique_id = entity.unique_id.removesuffix("_insecure")
@@ -247,8 +247,9 @@ def async_remove_package_binary_sensor(
     """
     registry = er.async_get(hass)
     for entity in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if entity.domain != Platform.BINARY_SENSOR or not entity.unique_id.endswith(
-            "_smart_obj_package"
+        if not (
+            entity.domain == Platform.BINARY_SENSOR
+            and entity.unique_id.endswith("_smart_obj_package")
         ):
             continue
         _async_repair_if_used(

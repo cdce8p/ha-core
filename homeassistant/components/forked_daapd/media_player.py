@@ -476,9 +476,9 @@ class ForkedDaapdMaster(MediaPlayerEntity):
                     translation_key="entity_not_found",
                     translation_placeholders={"entity_id": entity_id},
                 )
-            if (
-                entity_entry.platform != DOMAIN
-                or entity_entry.config_entry_id != self._entry_id
+            if not (
+                entity_entry.platform == DOMAIN
+                and entity_entry.config_entry_id == self._entry_id
             ):
                 raise ServiceValidationError(
                     translation_domain=DOMAIN,

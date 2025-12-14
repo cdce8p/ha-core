@@ -163,7 +163,7 @@ class AnglianWaterUpdateCoordinator(DataUpdateCoordinator[None]):
                             start,
                         )
 
-                if not stats or not stats.get(usage_statistic_id):
+                if not (stats and stats.get(usage_statistic_id)):
                     _LOGGER.debug(
                         "Could not find existing statistics during"
                         " period lookup for %s, falling back to"

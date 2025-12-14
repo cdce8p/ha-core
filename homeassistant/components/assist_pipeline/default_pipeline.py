@@ -845,9 +845,9 @@ class _DefaultPipelineProcessor:
         device_id: str | None,
     ) -> bool:
         """Return true if all targeted entities were in the same area as the device."""
-        if (
-            intent_response.response_type is not intent.IntentResponseType.ACTION_DONE
-            or not intent_response.matched_states
+        if not (
+            intent_response.response_type is intent.IntentResponseType.ACTION_DONE
+            and intent_response.matched_states
         ):
             return False
 

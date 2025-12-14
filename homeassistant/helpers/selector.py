@@ -1062,7 +1062,7 @@ class DurationSelectorConfig(BaseSelectorConfig, total=False):
 
 
 def _validate_duration_selector_mode(config: dict[str, Any]) -> dict[str, Any]:
-    if "allow_negative" not in config or "mode" not in config:
+    if not ("allow_negative" in config and "mode" in config):  # TODO match expr
         return config
     if (config["mode"] == DurationSelectorMode.POSITIVE) == config["allow_negative"]:
         raise probatio.Invalid(f"allow_negative conflicts with mode {config['mode']}")

@@ -149,7 +149,9 @@ def _flatten_all_of(schema: dict[str, Any], path: str) -> None:
     """Unwrap intersections only when sibling constraints can all be retained."""
     while "allOf" in schema:
         branches = schema["allOf"]
-        if len(branches) != 1 or not isinstance(branches[0], dict):
+        if not (  # TODO match expr
+            len(branches) == 1 and isinstance(branches[0], dict)
+        ):
             raise HomeAssistantError(
                 f"Unsupported OpenAI output schema allOf at {path}"
             )

@@ -68,9 +68,9 @@ def _async_check_legacy_sensors(
     for entity_entry in er.async_entries_for_config_entry(
         entity_registry, config_entry.entry_id
     ):
-        if (
-            entity_entry.domain != Platform.SENSOR
-            or not entity_entry.unique_id.endswith(_LEGACY_EVCHARGER_SENSOR_SUFFIXES)
+        if not (
+            entity_entry.domain == Platform.SENSOR
+            and entity_entry.unique_id.endswith(_LEGACY_EVCHARGER_SENSOR_SUFFIXES)
         ):
             continue
 

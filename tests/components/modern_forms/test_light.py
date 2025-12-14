@@ -284,7 +284,7 @@ async def test_light_unavailable_when_fixture_disappears_gen4(
         hass: HomeAssistant, method: str, url: URL, data: dict[str, Any]
     ) -> AiohttpClientMockResponse:
         """Serve the normal Gen4 fixtures, minus any addresses removed."""
-        if not url.path.endswith("/fixture") or not removed_addresses:
+        if not (url.path.endswith("/fixture") and removed_addresses):
             return await modern_forms_gen4_call_mock(hass, method, url, data)
         payload = await async_load_json_object_fixture(
             hass, "fixture_gen4.json", DOMAIN
