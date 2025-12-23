@@ -219,7 +219,6 @@ async def test_report_notifications(
         for call in mock_report_state.mock_calls:
             if "states" in call[1][0]["devices"]:
                 states = call[1][0]["devices"]["states"]
-        # pylint: disable-next=used-before-assignment
         assert states["event.doorbell"] == {"online": True}
 
     # Test the notification request failed
