@@ -374,6 +374,7 @@ async def mcp_streamable_session(
         mcp.client.streamable_http.streamable_http_client(
             mcp_url, http_client=create_async_httpx_client(hass, headers=headers)
         ) as (read_stream, write_stream, _),
+        # pylint: disable-next=used-before-assignment
         mcp.client.session.ClientSession(read_stream, write_stream) as session,
     ):
         await session.initialize()
