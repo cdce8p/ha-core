@@ -82,7 +82,7 @@ async def mcp_client(
                 url=url,
                 http_client=create_async_httpx_client(hass, headers=headers),
             ) as (read_stream, write_stream, _),
-            ClientSession(read_stream, write_stream) as session,
+            ClientSession(read_stream, write_stream) as session,  # pylint: disable=used-before-assignment
         ):
             await session.initialize()
             yield session
