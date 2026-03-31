@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 import logging
-from typing import Any, override
+from typing import Any, cast, override
 
 import probatio
 
@@ -143,7 +143,7 @@ class TimerStorageCollection(collection.DictStorageCollection):
     @override
     async def _process_create_data(self, data: dict) -> dict:
         """Validate the config is valid."""
-        data = self.CREATE_UPDATE_SCHEMA(data)
+        data = cast(dict, self.CREATE_UPDATE_SCHEMA(data))
         # make duration JSON serializeable
         data[CONF_DURATION] = _format_timedelta(data[CONF_DURATION])
         return data

@@ -47,7 +47,7 @@ class TimePattern:
         except ValueError as err:
             raise probatio.Invalid("invalid time_pattern value") from err
 
-        return value  # type: ignore[no-any-return]
+        return value
 
 
 TRIGGER_SCHEMA = probatio.All(

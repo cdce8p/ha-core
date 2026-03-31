@@ -2,7 +2,7 @@
 
 from collections.abc import Callable
 import functools
-from typing import Any, override
+from typing import Any, cast, override
 
 import probatio
 from zwave_js_server.const import CommandClass
@@ -86,7 +86,7 @@ async def async_validate_trigger_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate config."""
-    config = _CONFIG_SCHEMA(config)
+    config = cast(ConfigType, _CONFIG_SCHEMA(config))
     options = config[CONF_OPTIONS]
 
     if async_bypass_dynamic_config_validation(hass, options):
