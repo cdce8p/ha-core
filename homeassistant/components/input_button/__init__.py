@@ -63,7 +63,7 @@ class InputButtonStorageCollection(collection.DictStorageCollection):
     @override
     async def _update_data(self, item: dict, update_data: dict) -> dict:
         """Return a new updated data object."""
-        update_data = self.CREATE_UPDATE_SCHEMA(update_data)
+        update_data = cast(dict, self.CREATE_UPDATE_SCHEMA(update_data))
         return {CONF_ID: item[CONF_ID]} | update_data
 
 

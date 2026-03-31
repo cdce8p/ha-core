@@ -5,7 +5,7 @@ from collections.abc import Callable
 from contextvars import copy_context
 from dataclasses import dataclass
 import logging
-from typing import Any, Never, TypedDict, Unpack, final
+from typing import Any, Never, TypedDict, Unpack, cast, final
 
 import probatio
 
@@ -250,7 +250,7 @@ class Condition(ConditionChecker):
         This method should be overridden by conditions that need to migrate
         from the old-style config.
         """
-        complete_config = _CONDITION_SCHEMA(complete_config)
+        complete_config = cast(ConfigType, _CONDITION_SCHEMA(complete_config))
 
         specific_config: ConfigType = {}
         for key in (CONF_OPTIONS, CONF_TARGET):

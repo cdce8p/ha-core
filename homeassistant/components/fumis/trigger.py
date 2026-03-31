@@ -1,6 +1,6 @@
 """Provides triggers for Fumis pellet stoves."""
 
-from typing import override
+from typing import cast, override
 
 from fumis import StoveAlert
 import probatio
@@ -67,7 +67,7 @@ class FuelBecameLowTrigger(Trigger):
         cls, hass: HomeAssistant, config: ConfigType
     ) -> ConfigType:
         """Validate config."""
-        config = _CONFIG_SCHEMA(config)
+        config = cast(ConfigType, _CONFIG_SCHEMA(config))
         for device_id in config[CONF_OPTIONS][ATTR_DEVICE_ID]:
             _, entry = dr.async_get_device_and_config_entry_for_domain(
                 hass, device_id, domain=DOMAIN

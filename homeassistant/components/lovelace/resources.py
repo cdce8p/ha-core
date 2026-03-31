@@ -3,7 +3,7 @@
 import logging
 import os
 import posixpath
-from typing import Any, override
+from typing import Any, cast, override
 from urllib.parse import unquote, urlsplit
 import uuid
 
@@ -132,7 +132,7 @@ class ResourceStorageCollection(collection.DictStorageCollection):
     @override
     async def _process_create_data(self, data: dict) -> dict:
         """Validate the config is valid."""
-        data = self.CREATE_SCHEMA(data)
+        data = cast(dict, self.CREATE_SCHEMA(data))
         data[CONF_TYPE] = data.pop(CONF_RESOURCE_TYPE_WS)
         return data
 
