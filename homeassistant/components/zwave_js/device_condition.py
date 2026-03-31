@@ -93,7 +93,7 @@ async def async_validate_condition_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate config."""
-    config = CONDITION_SCHEMA(config)
+    config = cast(ConfigType, CONDITION_SCHEMA(config))
 
     # We return early if the config entry for this device is not ready because we can't
     # validate the value without knowing the state of the device

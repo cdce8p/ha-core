@@ -1,6 +1,6 @@
 """Provides device triggers for Shelly."""
 
-from typing import Final
+from typing import Final, cast
 
 import voluptuous as vol
 
@@ -74,7 +74,7 @@ async def async_validate_trigger_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate config."""
-    config = TRIGGER_SCHEMA(config)
+    config = cast(ConfigType, TRIGGER_SCHEMA(config))
 
     # if device is available verify parameters against device capabilities
     trigger = (config[CONF_TYPE], config[CONF_SUBTYPE])

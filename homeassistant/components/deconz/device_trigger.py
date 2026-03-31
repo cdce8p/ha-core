@@ -1,5 +1,7 @@
 """Provides device automations for deconz events."""
 
+from typing import cast
+
 import voluptuous as vol
 
 from homeassistant.components.device_automation import (
@@ -699,7 +701,7 @@ async def async_validate_trigger_config(
     config: ConfigType,
 ) -> ConfigType:
     """Validate config."""
-    config = TRIGGER_SCHEMA(config)
+    config = cast(ConfigType, TRIGGER_SCHEMA(config))
 
     device_registry = dr.async_get(hass)
     device = device_registry.async_get(

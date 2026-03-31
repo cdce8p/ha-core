@@ -2,7 +2,7 @@
 
 from collections.abc import Callable
 import logging
-from typing import TYPE_CHECKING, Any, final, override
+from typing import TYPE_CHECKING, Any, cast, final, override
 import uuid
 
 import voluptuous as vol
@@ -139,7 +139,7 @@ class TagStorageCollection(collection.DictStorageCollection):
     @override
     async def _process_create_data(self, data: dict) -> dict:
         """Validate the config is valid."""
-        data = self.CREATE_SCHEMA(data)
+        data = cast(dict, self.CREATE_SCHEMA(data))
         if not data[TAG_ID]:
             data[TAG_ID] = str(uuid.uuid4())
         # Move tag id to id

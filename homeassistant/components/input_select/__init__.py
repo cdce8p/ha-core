@@ -244,7 +244,7 @@ class InputSelectStorageCollection(collection.DictStorageCollection):
         self, item: dict[str, Any], update_data: dict[str, Any]
     ) -> dict[str, Any]:
         """Return a new updated data object."""
-        update_data = self.CREATE_UPDATE_SCHEMA(update_data)
+        update_data = cast(dict[str, Any], self.CREATE_UPDATE_SCHEMA(update_data))
         return {CONF_ID: item[CONF_ID]} | update_data
 
 

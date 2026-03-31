@@ -411,7 +411,7 @@ class Condition(ConditionChecker):
         This method should be overridden by conditions that need to migrate
         from the old-style config.
         """
-        complete_config = _CONDITION_SCHEMA(complete_config)
+        complete_config = cast(ConfigType, _CONDITION_SCHEMA(complete_config))
 
         specific_config: ConfigType = {}
         for key in (CONF_OPTIONS, CONF_TARGET):

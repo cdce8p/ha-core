@@ -7,7 +7,7 @@ from enum import Enum
 from functools import wraps
 import logging
 from types import ModuleType
-from typing import TYPE_CHECKING, Any, Literal, overload
+from typing import TYPE_CHECKING, Any, Literal, cast, overload
 
 from probatio import to_field_list
 import voluptuous as vol
@@ -342,7 +342,7 @@ def async_validate_entity_schema(
     hass: HomeAssistant, config: ConfigType, schema: VolSchemaType
 ) -> ConfigType:
     """Validate schema and resolve entity registry entry id to entity_id."""
-    config = schema(config)
+    config = cast(ConfigType, schema(config))
 
     registry = er.async_get(hass)
     if CONF_ENTITY_ID in config:

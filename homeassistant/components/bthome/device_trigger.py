@@ -1,6 +1,6 @@
 """Provides device triggers for BTHome BLE."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import voluptuous as vol
 
@@ -81,7 +81,7 @@ async def async_validate_trigger_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate trigger config."""
-    config = TRIGGER_SCHEMA(config)
+    config = cast(ConfigType, TRIGGER_SCHEMA(config))
     event_class = config[CONF_TYPE]
     event_type = config[CONF_SUBTYPE]
     device_id = config[CONF_DEVICE_ID]
