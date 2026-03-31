@@ -5,7 +5,7 @@ import logging
 import pathlib
 import secrets
 import shutil
-from typing import Any, override
+from typing import Any, cast, override
 
 from aiohttp import hdrs, web
 from aiohttp.web_request import FileField
@@ -76,7 +76,7 @@ class ImageStorageCollection(collection.DictStorageCollection):
     @override
     async def _process_create_data(self, data: dict[str, Any]) -> dict[str, Any]:
         """Validate the config is valid."""
-        data = self.CREATE_SCHEMA(dict(data))
+        data = cast(dict[str, Any], self.CREATE_SCHEMA(dict(data)))
         uploaded_file: FileField = data["file"]
 
         if uploaded_file.content_type not in (
