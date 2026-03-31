@@ -3,7 +3,7 @@
 import abc
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Unpack, override
+from typing import TYPE_CHECKING, Any, Unpack, cast, override
 
 import probatio
 from zwave_js_server.const import CommandClass
@@ -135,7 +135,7 @@ class _ZwaveNodeCondition(Condition):
         cls, hass: HomeAssistant, config: ConfigType
     ) -> ConfigType:
         """Validate config."""
-        config = cls._schema(config)
+        config = cast(ConfigType, cls._schema(config))
         device_ids = config[CONF_OPTIONS][ATTR_DEVICE_ID]
         if async_bypass_dynamic_config_validation(hass, {ATTR_DEVICE_ID: device_ids}):
             return config
