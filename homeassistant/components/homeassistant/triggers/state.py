@@ -3,6 +3,7 @@
 from collections.abc import Callable
 from datetime import timedelta
 import logging
+from typing import cast
 
 import voluptuous as vol
 
@@ -82,9 +83,9 @@ async def async_validate_trigger_config(
     # We use this approach instead of vol.Any because
     # this gives better error messages.
     if CONF_ATTRIBUTE in config:
-        config = TRIGGER_ATTRIBUTE_SCHEMA(config)
+        config = cast(ConfigType, TRIGGER_ATTRIBUTE_SCHEMA(config))
     else:
-        config = TRIGGER_STATE_SCHEMA(config)
+        config = cast(ConfigType, TRIGGER_STATE_SCHEMA(config))
 
     registry = er.async_get(hass)
     config[CONF_ENTITY_ID] = er.async_validate_entity_ids(

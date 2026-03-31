@@ -3,7 +3,7 @@
 from collections.abc import Callable
 from datetime import datetime, timedelta
 import logging
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 
 import voluptuous as vol
 
@@ -177,7 +177,7 @@ class TimerStorageCollection(collection.DictStorageCollection):
     @override
     async def _process_create_data(self, data: dict) -> dict:
         """Validate the config is valid."""
-        data = self.CREATE_UPDATE_SCHEMA(data)
+        data = cast(dict, self.CREATE_UPDATE_SCHEMA(data))
         # make duration JSON serializeable
         data[CONF_DURATION] = _format_timedelta(data[CONF_DURATION])
         return data

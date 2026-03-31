@@ -2,7 +2,7 @@
 
 from collections.abc import Callable
 import logging
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 
 import voluptuous as vol
 
@@ -275,7 +275,7 @@ class PersonStorageCollection(collection.DictStorageCollection):
     @override
     async def _process_create_data(self, data: dict) -> dict:
         """Validate the config is valid."""
-        data = self.CREATE_SCHEMA(data)
+        data = cast(dict, self.CREATE_SCHEMA(data))
 
         if (user_id := data.get(CONF_USER_ID)) is not None:
             await self._validate_user_id(user_id)

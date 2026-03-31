@@ -253,7 +253,7 @@ class Trigger(abc.ABC):
         This method should be overridden by triggers that need to migrate
         from the old-style config.
         """
-        complete_config = _TRIGGER_SCHEMA(complete_config)
+        complete_config = cast(ConfigType, _TRIGGER_SCHEMA(complete_config))
 
         specific_config: ConfigType = {}
         for key in (CONF_OPTIONS, CONF_TARGET):

@@ -1,7 +1,7 @@
 """Provides device triggers for Z-Wave JS."""
 
 import asyncio
-from typing import Any
+from typing import Any, cast
 
 import voluptuous as vol
 from zwave_js_server.const import CommandClass
@@ -209,7 +209,7 @@ async def async_validate_trigger_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate config."""
-    config = TRIGGER_SCHEMA(config)
+    config = cast(ConfigType, TRIGGER_SCHEMA(config))
 
     # We return early if the config entry for this device is not ready because we can't
     # validate the value without knowing the state of the device

@@ -1,7 +1,7 @@
 """Component to count within automations."""
 
 import logging
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 
 import voluptuous as vol
 
@@ -151,7 +151,7 @@ class CounterStorageCollection(collection.DictStorageCollection):
     @override
     async def _update_data(self, item: dict, update_data: dict) -> dict:
         """Return a new updated data object."""
-        update_data = self.CREATE_UPDATE_SCHEMA(update_data)
+        update_data = cast(dict, self.CREATE_UPDATE_SCHEMA(update_data))
         return {CONF_ID: item[CONF_ID]} | update_data
 
 

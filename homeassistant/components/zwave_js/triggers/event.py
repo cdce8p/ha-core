@@ -2,7 +2,7 @@
 
 from collections.abc import Callable
 import functools
-from typing import Any, override
+from typing import Any, cast, override
 
 from pydantic import ValidationError
 import voluptuous as vol
@@ -149,7 +149,7 @@ class EventTrigger(Trigger):
         cls, hass: HomeAssistant, config: ConfigType
     ) -> ConfigType:
         """Validate config."""
-        config = _CONFIG_SCHEMA(config)
+        config = cast(ConfigType, _CONFIG_SCHEMA(config))
         options = config[CONF_OPTIONS]
 
         if ATTR_CONFIG_ENTRY_ID in options:

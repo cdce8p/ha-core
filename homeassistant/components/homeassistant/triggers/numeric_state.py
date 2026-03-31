@@ -3,7 +3,7 @@
 from collections.abc import Callable
 from datetime import timedelta
 import logging
-from typing import Any
+from typing import Any, cast
 
 import voluptuous as vol
 
@@ -85,7 +85,7 @@ async def async_validate_trigger_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate trigger config."""
-    config = _TRIGGER_SCHEMA(config)
+    config = cast(ConfigType, _TRIGGER_SCHEMA(config))
     registry = er.async_get(hass)
     config[CONF_ENTITY_ID] = er.async_validate_entity_ids(
         registry, cv.entity_ids_or_uuids(config[CONF_ENTITY_ID])

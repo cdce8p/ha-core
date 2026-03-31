@@ -1,5 +1,7 @@
 """Provides device automations for control of Samsung TV."""
 
+from typing import cast
+
 import voluptuous as vol
 
 from homeassistant.components.device_automation import (
@@ -35,7 +37,7 @@ async def async_validate_trigger_config(
     hass: HomeAssistant, config: ConfigType
 ) -> ConfigType:
     """Validate config."""
-    config = TRIGGER_SCHEMA(config)
+    config = cast(ConfigType, TRIGGER_SCHEMA(config))
 
     if config[CONF_TYPE] == TURN_ON_PLATFORM_TYPE:
         device_id = config[CONF_DEVICE_ID]
