@@ -100,7 +100,6 @@ jobs:
       tests: ${{ steps.info.outputs.tests }}
       lint_only: ${{ steps.info.outputs.lint_only }}
       skip_coverage: ${{ steps.info.outputs.skip_coverage }}
-      is_pr: ${{ steps.info.outputs.is_pr }}
     steps:
       - name: Check out code from GitHub
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -156,7 +155,6 @@ jobs:
           REPO_FULL_NAME: ${{ github.event.repository.full_name }}
           INPUT_SKIP_COVERAGE: ${{ github.event.inputs.skip-coverage }}
           HAS_CI_SKIP_COVERAGE_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'ci-skip-coverage') }}
-          GH_EVENT_NAME: ${{ github.event_name }}
         run: |
           # Defaults
           integrations_glob=""
@@ -169,7 +167,6 @@ jobs:
           tests_glob=""
           lint_only=""
           skip_coverage=""
-          is_pr=""
           default_python=$(cat .python-version)
           all_python_versions=$(jq -cn \
             --arg default_python "${default_python}" \
@@ -239,11 +236,6 @@ jobs:
             skip_coverage="true"
           fi
 
-          if [[ "${GH_EVENT_NAME}" == "pull_request" ]];
-          then
-            is_pr="true"
-          fi
-
           # Output & sent to GitHub Actions
           echo "mariadb_groups: ${mariadb_groups}"
           echo "mariadb_groups=${mariadb_groups}" >> $GITHUB_OUTPUT
@@ -267,8 +259,6 @@ jobs:
           echo "lint_only=${lint_only}" >> $GITHUB_OUTPUT
           echo "skip_coverage: ${skip_coverage}"
           echo "skip_coverage=${skip_coverage}" >> $GITHUB_OUTPUT
-          echo "is_pr: ${is_pr}"
-          echo "is_pr=${is_pr}" >> $GITHUB_OUTPUT
 
   prek:
     name: Run prek checks
@@ -384,36 +374,30 @@ jobs:
           key: >-
             ${{ runner.os }}-${{ runner.arch }}-${{ steps.python.outputs.python-version }}-${{
             needs.info.outputs.python_cache_key }}
-      - name: Restore base Python virtual environment (PR)
-        if: needs.info.outputs.is_pr == 'true' && steps.cache-venv.outputs.cache-hit != 'true'
-        id: cache-venv-pr
-        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
-        with:
-          path: venv
-          key: >-
-            ${{ runner.os }}-${{ runner.arch }}-${{ steps.python.outputs.python-version }}-${{
-            needs.info.outputs.python_cache_key }}-PR
       - name: Python cache info
         id: cache-info
         env:
-          IS_PR: ${{ needs.info.outputs.is_pr }}
           CACHE_KEY: ${{ needs.info.outputs.python_cache_key }}
           CACHE_VENV_HIT: ${{ steps.cache-venv.outputs.cache-hit }}
-          CACHE_VENV_PR_HIT: ${{ steps.cache-venv-pr.outputs.cache-hit }}
+          CACHE_VENV_MATCHED_KEY: ${{ steps.cache-venv.outputs.cache-matched-key }}
+          GH_EVENT_NAME: ${{ github.event_name }}
         run: |
           # Defaults
           python_cache_hit=""
           python_cache_key="${CACHE_KEY}"
 
-          if [[ "${CACHE_VENV_HIT}" == "true" ]] \
-            || [[ "${CACHE_VENV_PR_HIT}" == "true" ]];
+          # cache-matched-key is set if a cache entry was restored,
+          # even if the primary key didn't match the full cache key
+          if [[ "${CACHE_VENV_MATCHED_KEY}" != "" ]];
           then
             python_cache_hit="true"
-          fi
 
-          if [[ "${IS_PR}" == "true" ]];
-          then
-            python_cache_key="${CACHE_KEY}-PR"
+            # No direct cache hit and PR, modify cache key used to store venv
+            if [[ "${CACHE_VENV_HIT}" != "true" ]] \
+              && [[ "${GH_EVENT_NAME}" == "pull_request" ]];
+            then
+              python_cache_key="${CACHE_KEY}-PR"
+            fi
           fi
 
           # Output & sent to GitHub Actions
