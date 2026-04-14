@@ -391,13 +391,13 @@ jobs:
           if [[ "${CACHE_VENV_MATCHED_KEY}" != "" ]];
           then
             python_cache_hit="true"
+          fi
 
-            # No direct cache hit and PR, modify cache key used to store venv
-            if [[ "${CACHE_VENV_HIT}" != "true" ]] \
-              && [[ "${GH_EVENT_NAME}" == "pull_request" ]];
-            then
-              python_cache_key="${CACHE_KEY}-PR"
-            fi
+          # No direct cache hit and PR, modify cache key used to store venv
+          if [[ "${CACHE_VENV_HIT}" != "true" ]] \
+            && [[ "${GH_EVENT_NAME}" == "pull_request" ]];
+          then
+            python_cache_key="${CACHE_KEY}-PR"
           fi
 
           # Output & sent to GitHub Actions
