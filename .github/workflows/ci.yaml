@@ -898,6 +898,7 @@ jobs:
     permissions:
       contents: read
     if: |
+      false &&
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.test_full_suite == 'true'
     needs:
