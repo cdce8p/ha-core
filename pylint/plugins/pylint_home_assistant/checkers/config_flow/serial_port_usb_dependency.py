@@ -44,15 +44,14 @@ class HassEnforceSerialPortSelectorUsbChecker(BaseChecker):
 
     def visit_call(self, node: nodes.Call) -> None:
         """Check that SerialPortSelector usage declares the usb dependency."""
-        func = node.func
-        if isinstance(func, nodes.Attribute):
-            name = func.attrname
-        elif isinstance(func, nodes.Name):
-            name = func.name
-        else:
-            return
-        if name != "SerialPortSelector":
-            return
+        match node.func:
+            case (
+                nodes.Attribute(attrname="SerialPortSelector")
+                | nodes.Name(name="SerialPortSelector")
+            ):
+                pass
+            case _:
+                return
 
         parsed = parse_module(node.root().name)
         if parsed is None or parsed.module != Module.CONFIG_FLOW:

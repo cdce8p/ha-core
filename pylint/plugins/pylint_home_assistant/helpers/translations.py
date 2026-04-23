@@ -123,13 +123,15 @@ def extract_placeholder_keys(node: nodes.NodeNG | None) -> set[str] | None:
 
 def _resolve_string_key(key: nodes.NodeNG) -> str | None:
     """Resolve a dict key to a string value."""
-    if isinstance(key, nodes.Const) and isinstance(key.value, str):
-        return key.value
+    match key:
+        case nodes.Const(value=str() as value):
+            return value
     # Try inference for constant references (e.g., CONF_DOMAIN)
     try:
         for inferred in key.infer():
-            if isinstance(inferred, nodes.Const) and isinstance(inferred.value, str):
-                return str(inferred.value)
+            match inferred:
+                case nodes.Const(value=str() as value):
+                    return value
     except _InferenceError:
         pass
     return None

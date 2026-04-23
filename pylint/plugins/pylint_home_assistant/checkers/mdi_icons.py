@@ -88,13 +88,10 @@ class MdiIconsChecker(BaseChecker):
         if not self._in_integration:
             return
 
-        if not isinstance(node.value, str):
+        if not (isinstance(node.value, str) and node.value.startswith("mdi:")):
             return
 
-        if not node.value.startswith("mdi:"):
-            return
-
-        icon_name = node.value[4:]  # Strip "mdi:" prefix
+        icon_name = node.value.removeprefix("mdi:")
 
         # Only check names that look like intentional icon name attempts.
         # This skips f-string fragments, format templates (%s, {}),

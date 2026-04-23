@@ -19,22 +19,16 @@ def _is_executor_job_await(node: nodes.NodeNG) -> bool:
     if not isinstance(node, (nodes.Assign, nodes.AnnAssign, nodes.Expr, nodes.Return)):
         return False
 
-    value = node.value
-    if value is None:
-        return False
-
-    # Must be an Await
-    if not isinstance(value, nodes.Await):
-        return False
-
-    call = value.value
-    if not isinstance(call, nodes.Call):
-        return False
-
-    return (
-        isinstance(call.func, nodes.Attribute)
-        and call.func.attrname == "async_add_executor_job"
-    )
+    match node:
+        case nodes.NodeNG(
+            value=nodes.Await(
+                value=nodes.Call(
+                    func=nodes.Attribute(attrname="async_add_executor_job")
+                )
+            )
+        ):
+            return True
+    return False
 
 
 class SequentialExecutorJobsChecker(BaseChecker):

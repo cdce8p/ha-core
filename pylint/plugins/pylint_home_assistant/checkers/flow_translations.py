@@ -18,6 +18,8 @@ The expected translation paths are::
 - ``W7432``: Missing subentry flow field translation
 """
 
+from dataclasses import dataclass
+
 import astroid
 from astroid import nodes
 from pylint.checkers import BaseChecker, utils
@@ -39,7 +41,7 @@ def _extract_step_id(call: nodes.Call) -> str | None:
         if kw.arg == "step_id":
             inferred = utils.safe_infer(kw.value, compare_constants=True)
             if isinstance(inferred, nodes.Const) and isinstance(inferred.value, str):
-                return str(inferred.value)
+                return inferred.value
             return None
 
     # No step_id keyword: infer from enclosing async_step_* method
@@ -47,7 +49,7 @@ def _extract_step_id(call: nodes.Call) -> str | None:
     while current is not None:
         if isinstance(current, nodes.FunctionDef):
             if current.name.startswith("async_step_"):
-                return str(current.name).removeprefix("async_step_")
+                return current.name.removeprefix("async_step_")
             break
         current = current.parent
     return None
@@ -56,23 +58,19 @@ def _extract_step_id(call: nodes.Call) -> str | None:
 # Result types for schema extraction
 
 
+@dataclass(slots=True)
 class _Field:
     """A regular form field."""
 
-    __slots__ = ("name",)
-
-    def __init__(self, name: str) -> None:
-        self.name = name
+    name: str
 
 
+@dataclass(slots=True)
 class _Section:
     """A section containing nested fields."""
 
-    __slots__ = ("fields", "key")
-
-    def __init__(self, key: str, fields: list[str]) -> None:
-        self.key = key
-        self.fields = fields
+    key: str
+    fields: list[str]
 
 
 def _extract_schema_items(call: nodes.Call) -> list[_Field | _Section]:
@@ -259,14 +257,7 @@ def _get_flow_type(class_node: nodes.ClassDef) -> str | None:
     """Determine flow type from a class definition."""
     for base in class_node.bases:
         match base:
-            case nodes.Name(name=name):
-                if "SubentryFlow" in name:
-                    return "subentry"
-                if "OptionsFlow" in name:
-                    return "options"
-                if "ConfigFlow" in name or name == "FlowHandler":
-                    return "config"
-            case nodes.Attribute(attrname=name):
+            case nodes.Name(name=name) | nodes.Attribute(attrname=name):
                 if "SubentryFlow" in name:
                     return "subentry"
                 if "OptionsFlow" in name:
