@@ -31,14 +31,13 @@ def _is_guard_clause(node: nodes.If) -> bool:
     - ``raise`` (e.g., ``pytest.fail`` or assertion helpers)
     """
     for child in node.body:
-        if isinstance(child, (nodes.Return, nodes.Raise)):
-            return True
-        if isinstance(child, nodes.Expr) and isinstance(child.value, nodes.Call):
-            call = child.value
-            if isinstance(call.func, nodes.Attribute) and call.func.attrname in (
-                "skip",
-                "xfail",
-                "fail",
+        match child:
+            case nodes.Return() | nodes.Raise():
+                return True
+            case nodes.Expr(
+                value=nodes.Call(
+                    func=nodes.Attribute(attrname="skip" | "xfail" | "fail")
+                )
             ):
                 return True
     return False
