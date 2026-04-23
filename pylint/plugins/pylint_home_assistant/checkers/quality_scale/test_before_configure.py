@@ -99,15 +99,17 @@ def _module_surfaces_failures(module: nodes.Module) -> bool:
 
 def _creates_entry(class_node: nodes.ClassDef) -> bool:
     """Return True if the class calls ``async_create_entry``."""
-    return any(
-        isinstance(call.func, nodes.Attribute)
-        and call.func.attrname == "async_create_entry"
-        for call in class_node.nodes_of_class(nodes.Call)
-    )
+    for call in class_node.nodes_of_class(nodes.Call):
+        match call.func:
+            case nodes.Attribute(attrname="async_create_entry"):
+                return True
+    return False
 
 
 class TestBeforeConfigureChecker(BaseChecker):
     """Checker for connection testing in config flow modules."""
+
+    __test__ = False  # prevent test collection of class by pytest
 
     name = "home_assistant_test_before_configure"
     priority = -1

@@ -76,21 +76,16 @@ def _update_defaults(defaults: dict[str, object], class_node: nodes.ClassDef) ->
     is removed so that parent defaults do not leak through.
     """
     for item in class_node.body:
-        if not isinstance(item, nodes.AnnAssign):
-            continue
-        if not isinstance(item.target, nodes.AssignName):
-            continue
-        if item.value is None:
-            # Annotation-only (no default), leave existing entry untouched
-            continue
-
-        name = item.target.name
-        if isinstance(item.value, nodes.Const) and _is_flaggable(item.value.value):
-            defaults[name] = item.value.value
-        else:
-            # Subclass overrides with a non-flaggable value; remove
-            # so we don't flag instances using the parent's default.
-            defaults.pop(name, None)
+        match item:
+            case nodes.AnnAssign(target=nodes.AssignName(name=name), value=value) if (
+                value is not None
+            ):
+                if isinstance(value, nodes.Const) and _is_flaggable(value.value):
+                    defaults[name] = value.value
+                else:
+                    # Subclass overrides with a non-flaggable value; remove
+                    # so we don't flag instances using the parent's default.
+                    defaults.pop(name, None)
 
 
 _ENTITY_DESCRIPTION_QNAME = "homeassistant.helpers.entity.EntityDescription"

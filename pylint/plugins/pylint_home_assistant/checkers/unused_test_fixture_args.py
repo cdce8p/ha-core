@@ -57,9 +57,7 @@ class UnusedTestFixtureArgsChecker(BaseChecker):
             return
 
         # Collect all Name references in the function body
-        used_names: set[str] = set()
-        for child in node.nodes_of_class(nodes.Name):
-            used_names.add(child.name)
+        used_names = {child.name for child in node.nodes_of_class(nodes.Name)}
 
         for arg_name in sorted(arg_names - used_names):
             arg_node = next(arg for arg in node.args.args if arg.name == arg_name)

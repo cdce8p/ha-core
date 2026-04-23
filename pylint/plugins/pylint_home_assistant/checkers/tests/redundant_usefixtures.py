@@ -22,14 +22,13 @@ from pylint_home_assistant.helpers.module_info import is_test_module
 
 def _is_pytest_mark_usefixtures(node: nodes.Call) -> bool:
     """Check if a call node is ``pytest.mark.usefixtures(...)``."""
-    if not isinstance(node.func, nodes.Attribute):
-        return False
-    if node.func.attrname != "usefixtures":
-        return False
-    # Verify the chain is *.mark.usefixtures
-    if not isinstance(node.func.expr, nodes.Attribute):
-        return False
-    return bool(node.func.expr.attrname == "mark")
+    match node.func:
+        case nodes.Attribute(
+            expr=nodes.Attribute(attrname="mark"), attrname="usefixtures"
+        ):
+            return True
+        case _:
+            return False
 
 
 def _extract_usefixtures_names(node: nodes.NodeNG) -> set[str]:
@@ -92,13 +91,12 @@ def _collect_autouse_fixtures(module: nodes.Module) -> set[str]:
         if not node.decorators:
             continue
         for decorator in node.decorators.nodes:
-            if not isinstance(decorator, nodes.Call):
-                continue
-            # Check for @pytest.fixture(autouse=True)
-            if not isinstance(decorator.func, nodes.Attribute):
-                continue
-            if decorator.func.attrname != "fixture":
-                continue
+            match decorator:
+                # Check for @pytest.fixture(autouse=True)
+                case nodes.Call(func=nodes.Attribute(attrname="fixture")):
+                    pass
+                case _:
+                    continue
             for kw in decorator.keywords:
                 if kw.arg == "autouse" and isinstance(kw.value, nodes.Const):
                     if kw.value.value is True:
