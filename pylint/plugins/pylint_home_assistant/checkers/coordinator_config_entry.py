@@ -153,7 +153,7 @@ class CoordinatorConfigEntryChecker(BaseChecker):
         """Flag ``config_entry`` annotated as a plain ``ConfigEntry``."""
         annotations: list[nodes.NodeNG] = [
             item.annotation
-            for item in node.body
+            for item in node.body  # TODO match expr
             if isinstance(item, nodes.AnnAssign)
             and isinstance(item.target, nodes.AssignName)
             and item.target.name == "config_entry"
