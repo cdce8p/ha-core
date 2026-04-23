@@ -90,10 +90,14 @@ def _sets_should_poll_on_self(
     assign: nodes.AssignAttr, method: nodes.FunctionDef
 ) -> bool:
     """Return True if *assign* sets ``self._attr_should_poll`` of *method*."""
-    if assign.attrname != _ATTR_SHOULD_POLL:
-        return False
-    if not isinstance(assign.expr, nodes.Name) or assign.expr.name != "self":
-        return False
+    match assign:
+        case nodes.AssignAttr(attrname=attrname, expr=nodes.Name(name="self")) if (
+            attrname == _ATTR_SHOULD_POLL
+        ):
+            ...
+        case _:
+            return False
+
     # An annotation without a value declares the attribute but doesn't set it.
     if isinstance(assign.parent, nodes.AnnAssign) and assign.parent.value is None:
         return False

@@ -16,13 +16,12 @@ def _is_type_checking_block(node: nodes.NodeNG) -> bool:
     """Return whether the node is an ``if TYPE_CHECKING:`` block."""
     if not isinstance(node, nodes.If):
         return False
-    test = node.test
-    return (isinstance(test, nodes.Name) and test.name == "TYPE_CHECKING") or (
-        isinstance(test, nodes.Attribute)
-        and test.attrname == "TYPE_CHECKING"
-        and isinstance(test.expr, nodes.Name)
-        and test.expr.name == "typing"
-    )
+    match node.test:
+        case nodes.Name(name="TYPE_CHECKING"):
+            return True
+        case nodes.Attribute(attrname="TYPE_CHECKING", expr=nodes.Name(name="typing")):
+            return True
+    return False
 
 
 class HassTypeCheckingBlockChecker(BaseChecker):

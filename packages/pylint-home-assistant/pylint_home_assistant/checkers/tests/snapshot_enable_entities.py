@@ -25,21 +25,20 @@ _UPDATE_ENTITY = "async_update_entity"
 
 def _call_name(node: nodes.Call) -> str | None:
     """Return the called function or method name, if it is a plain name."""
-    func = node.func
-    name: str | None = None
-    if isinstance(func, nodes.Name):
-        name = func.name
-    elif isinstance(func, nodes.Attribute):
-        name = func.attrname
-    return name
+    match node.func:
+        case nodes.Name(name=name) | nodes.Attribute(attrname=name):
+            return name
+        case _:
+            return None
 
 
 def _enables_entity(node: nodes.Call) -> bool:
     """Return True when *node* is ``*.async_update_entity(..., disabled_by=None)``."""
-    if not isinstance(node.func, nodes.Attribute):
-        return False
-    if node.func.attrname != _UPDATE_ENTITY:
-        return False
+    match node.func:
+        case nodes.Attribute(attrname=attrname) if attrname == _UPDATE_ENTITY:
+            ...
+        case _:
+            return False
     return any(
         keyword.arg == "disabled_by"
         and isinstance(keyword.value, nodes.Const)

@@ -55,47 +55,27 @@ class HassLoggerFormatChecker(BaseChecker):
         if self._in_const_module:
             self._check_const_logger_name(node)
 
-        if not isinstance(node.func, nodes.Attribute) or not isinstance(
-            node.func.expr, nodes.Name
-        ):
-            return
+        match node:
+            case nodes.Call(
+                func=nodes.Attribute(attrname=attrname, expr=nodes.Name(name=name)),
+                args=[nodes.Const(value=log_message), *_],
+            ) if name in LOGGER_NAMES and len(log_message) > 0:
+                if log_message[-1] == ".":
+                    self.add_message("home-assistant-logger-period", node=node)
 
-        if node.func.expr.name not in LOGGER_NAMES:
-            return
-
-        if not node.args:
-            return
-
-        first_arg = node.args[0]
-
-        if not isinstance(first_arg, nodes.Const) or not first_arg.value:
-            return
-
-        log_message = first_arg.value
-
-        if len(log_message) < 1:
-            return
-
-        if log_message[-1] == ".":
-            self.add_message("home-assistant-logger-period", node=node)
-
-        if (
-            isinstance(node.func.attrname, str)
-            and node.func.attrname not in LOG_LEVEL_ALLOWED_LOWER_START
-            and log_message[0].upper() != log_message[0]
-        ):
-            self.add_message("home-assistant-logger-capital", node=node)
+                if (
+                    attrname not in LOG_LEVEL_ALLOWED_LOWER_START
+                    and log_message[0].upper() != log_message[0]
+                ):
+                    self.add_message("home-assistant-logger-capital", node=node)
 
     def _check_const_logger_name(self, node: nodes.Call) -> None:
         """Check that getLogger in a const module does not use __name__."""
-        if isinstance(node.func, nodes.Attribute):
-            func_name = node.func.attrname
-        elif isinstance(node.func, nodes.Name):
-            func_name = node.func.name
-        else:
-            return
-        if func_name != "getLogger":
-            return
+        match node.func:
+            case nodes.Attribute(attrname="getLogger") | nodes.Name(name="getLogger"):
+                ...
+            case _:
+                return
         if node.args:
             name_node = node.args[0]
         else:
