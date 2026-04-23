@@ -30,15 +30,11 @@ _FIXTURE_LOADER_NAMES = frozenset(
 
 def _is_json_parse_call(node: nodes.Call) -> bool:
     """Return True if the call parses JSON."""
-    func = node.func
-    if isinstance(func, nodes.Attribute):
-        return (
-            func.attrname in _JSON_PARSE_ATTRS
-            and isinstance(func.expr, nodes.Name)
-            and func.expr.name == "json"
-        )
-    if isinstance(func, nodes.Name):
-        return func.name in _JSON_PARSE_NAMES
+    match node.func:
+        case nodes.Attribute(expr=nodes.Name(name="json"), attrname=attrname):
+            return attrname in _JSON_PARSE_ATTRS
+        case nodes.Name(name=name):
+            return name in _JSON_PARSE_NAMES
     return False
 
 
@@ -46,13 +42,9 @@ def _is_fixture_loader(node: nodes.NodeNG) -> bool:
     """Return True if the node is a call to a fixture loader."""
     if isinstance(node, nodes.Await):
         node = node.value
-    if not isinstance(node, nodes.Call):
-        return False
-    func = node.func
-    if isinstance(func, nodes.Attribute):
-        return func.attrname in _FIXTURE_LOADER_NAMES
-    if isinstance(func, nodes.Name):
-        return func.name in _FIXTURE_LOADER_NAMES
+    match node:
+        case nodes.Call(func=nodes.Attribute(attrname=name) | nodes.Name(name=name)):
+            return name in _FIXTURE_LOADER_NAMES
     return False
 
 

@@ -43,9 +43,9 @@ def _get_rule_status(integration_dir: Path, rule: str) -> str | None:
         return None
 
     match rules.get(rule):
-        case str(status):
+        case str() as status:
             return status
-        case {"status": str(status)}:
+        case {"status": str() as status}:
             return status
         case _:
             return None
