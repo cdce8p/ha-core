@@ -55,13 +55,11 @@ class ParallelUpdatesChecker(BaseChecker):
                 for target in item.targets
             ):
                 return
-            if (
-                isinstance(item, nodes.AnnAssign)
-                and isinstance(item.target, nodes.AssignName)
-                and item.target.name == "PARALLEL_UPDATES"
-                and item.value is not None
-            ):
-                return
+            match item:
+                case nodes.AnnAssign(
+                    target=nodes.AssignName(name="PARALLEL_UPDATES"), value=value
+                ) if value is not None:
+                    return
 
         self.add_message("home-assistant-missing-parallel-updates", node=node)
 

@@ -76,7 +76,7 @@ def get_schema_field_name(node: nodes.Call) -> str | None:
     match node:
         case nodes.Call(
             func=nodes.Attribute(attrname="Required" | "Optional"),
-            args=[nodes.Name(name=val) | nodes.Const(value=str(val)), *_],
+            args=[nodes.Name(name=val) | nodes.Const(value=str() as val), *_],
         ):
             return str(val)
     return None
@@ -89,10 +89,8 @@ def is_in_subentry_flow(node: nodes.NodeNG) -> bool:
         if isinstance(current, nodes.ClassDef):
             for base in current.bases:
                 match base:
-                    case nodes.Name(name=name) if "SubentryFlow" in name:
-                        return True
-                    case nodes.Attribute(attrname=attrname) if (
-                        "SubentryFlow" in attrname
+                    case nodes.Name(name=name) | nodes.Attribute(attrname=name) if (
+                        "SubentryFlow" in name
                     ):
                         return True
         current = current.parent
