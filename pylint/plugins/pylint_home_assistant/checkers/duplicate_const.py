@@ -34,26 +34,18 @@ def _load_ha_consts() -> dict[str, str]:
         return _ha_consts
 
     for item in module.body:
-        name: str | None = None
-        value_node: nodes.NodeNG | None = None
-
-        if isinstance(item, nodes.AnnAssign) and isinstance(
-            item.target, nodes.AssignName
-        ):
-            name = item.target.name
-            value_node = item.value
-        elif isinstance(item, nodes.Assign) and len(item.targets) == 1:
-            target = item.targets[0]
-            if isinstance(target, nodes.AssignName):
-                name = target.name
-                value_node = item.value
-
-        if (
-            name is not None
-            and isinstance(value_node, nodes.Const)
-            and isinstance(value_node.value, str)
-        ):
-            _ha_consts[name] = value_node.value
+        match item:
+            case (
+                nodes.AnnAssign(
+                    target=nodes.AssignName(name=name),
+                    value=nodes.Const(value=str() as value),
+                )
+                | nodes.Assign(
+                    targets=[nodes.AssignName(name=name)],
+                    value=nodes.Const(value=str() as value),
+                )
+            ):
+                _ha_consts[name] = value
 
     return _ha_consts
 
@@ -68,13 +60,7 @@ def _check_assignment(
     if not isinstance(node.parent, nodes.Module):
         return
 
-    if value_node is None:
-        return
-
-    if not isinstance(value_node, nodes.Const):
-        return
-
-    if not isinstance(value_node.value, str):
+    if not (isinstance(value_node, nodes.Const) and isinstance(value_node.value, str)):
         return
 
     ha_consts = _load_ha_consts()
@@ -113,11 +99,10 @@ class DuplicateConstChecker(BaseChecker):
         if not self._in_integration:
             return
 
-        if len(node.targets) != 1:
-            return
-
-        target = node.targets[0]
-        if not isinstance(target, nodes.AssignName):
+        if not (
+            len(node.targets) == 1
+            and isinstance(target := node.targets[0], nodes.AssignName)
+        ):
             return
 
         _check_assignment(self, node, target.name, node.value)

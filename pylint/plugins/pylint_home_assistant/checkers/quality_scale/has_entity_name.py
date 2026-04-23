@@ -82,14 +82,11 @@ def _class_body_sets_attr_true(class_node: nodes.ClassDef, attr_name: str) -> bo
             and item.value.value is True
         ):
             return True
-        if (
-            isinstance(item, nodes.AnnAssign)
-            and isinstance(item.target, nodes.AssignName)
-            and item.target.name == attr_name
-            and isinstance(item.value, nodes.Const)
-            and item.value.value is True
-        ):
-            return True
+        match item:
+            case nodes.AnnAssign(
+                target=nodes.AssignName(name=name), value=nodes.Const(value=True)
+            ) if name == attr_name:
+                return True
     return False
 
 
@@ -114,30 +111,27 @@ def _method_unconditionally_sets_attr_true(class_node: nodes.ClassDef) -> bool:
         if not isinstance(method, nodes.FunctionDef | nodes.AsyncFunctionDef):
             continue
         for stmt in method.body:
-            if isinstance(stmt, nodes.Assign):
-                targets = stmt.targets
-                value = stmt.value
-            elif isinstance(stmt, nodes.AnnAssign):
-                targets = [stmt.target]
-                value = stmt.value
-            elif isinstance(stmt, nodes.Expr | nodes.AugAssign | nodes.Pass):
-                # Flow-safe; keep scanning past it.
-                continue
-            else:
-                # Control-flow statement (Return/Raise/If/For/While/Try/
-                # Assert/etc.); the target assignment after this point
-                # is no longer guaranteed to run.
-                break
+            match stmt:
+                case nodes.Assign(targets=targets, value=value):
+                    ...
+                case nodes.AnnAssign(target=target, value=value):
+                    targets = [target]
+                case nodes.Expr() | nodes.AugAssign() | nodes.Pass():
+                    # Flow-safe; keep scanning past it.
+                    continue
+                case _:
+                    # Control-flow statement (Return/Raise/If/For/While/Try/
+                    # Assert/etc.); the target assignment after this point
+                    # is no longer guaranteed to run.
+                    break
             if not (isinstance(value, nodes.Const) and value.value is True):
                 continue
             for target in targets:
-                if (
-                    isinstance(target, nodes.AssignAttr)
-                    and target.attrname == _ATTR_NAME
-                    and isinstance(target.expr, nodes.Name)
-                    and target.expr.name == "self"
-                ):
-                    return True
+                match target:
+                    case nodes.AssignAttr(
+                        expr=nodes.Name(name="self"), attrname=attrname
+                    ) if attrname == _ATTR_NAME:
+                        return True
     return False
 
 
@@ -173,15 +167,14 @@ def _entity_description_annotation_satisfies(class_node: nodes.ClassDef) -> bool
     the typed description class supplies a True default.
     """
     for item in class_node.body:
-        if not isinstance(item, nodes.AnnAssign):
-            continue
-        if not isinstance(item.target, nodes.AssignName):
-            continue
-        if item.target.name != _DESCRIPTION_ATTR:
-            continue
-        annotation = item.annotation
-        if isinstance(annotation, nodes.Subscript):
-            annotation = annotation.value
+        match item:
+            case nodes.AnnAssign(
+                target=nodes.AssignName(name=name),
+                annotation=nodes.Subscript(value=annotation) | annotation,
+            ) if name == _DESCRIPTION_ATTR:
+                ...
+            case _:
+                continue
         try:
             inferred = list(annotation.infer())
         except astroid.exceptions.InferenceError:

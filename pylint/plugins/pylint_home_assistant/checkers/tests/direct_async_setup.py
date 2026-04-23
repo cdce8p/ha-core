@@ -27,14 +27,11 @@ from pylint_home_assistant.helpers.module_info import is_test_module, parse_modu
 def _is_integration_async_setup(call: nodes.Call) -> bool:
     """Return True if *call* targets an integration's ``async_setup``."""
     func = call.func
-    if isinstance(func, nodes.Attribute):
-        if func.attrname != "async_setup":
+    match func:
+        case nodes.Attribute(attrname="async_setup") | nodes.Name(name="async_setup"):
+            pass
+        case _:
             return False
-    elif isinstance(func, nodes.Name):
-        if func.name != "async_setup":
-            return False
-    else:
-        return False
 
     try:
         inferred_values = list(func.infer())

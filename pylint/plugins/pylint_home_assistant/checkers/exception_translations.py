@@ -87,9 +87,11 @@ def _get_keyword_value(call: nodes.Call, name: str) -> nodes.NodeNG | None:
 
 def _extract_const_string(node: nodes.NodeNG | None) -> str | None:
     """Extract a constant string value from a node."""
-    if isinstance(node, nodes.Const) and isinstance(node.value, str):
-        return node.value
-    return None
+    match node:
+        case nodes.Const(value=str() as value):
+            return value
+        case _:
+            return None
 
 
 class ExceptionTranslationsChecker(BaseChecker):

@@ -47,10 +47,11 @@ def _build_alias_map(module: nodes.Module) -> dict[str, str]:
     """
     alias_map: dict[str, str] = {}
     for node in module.body:
-        if not isinstance(node, nodes.ImportFrom):
-            continue
-        if node.modname != "homeassistant.helpers":
-            continue
+        match node:
+            case nodes.ImportFrom(modname="homeassistant.helpers"):
+                pass
+            case _:
+                continue
         for name, asname in node.names:
             if name not in _REGISTRY_HELPERS:
                 continue
@@ -101,13 +102,9 @@ def _is_pytest_fixture(
     for decorator in func.decorators.nodes:
         # ``@pytest.fixture(...)`` — a Call whose func is an Attribute
         target = decorator.func if isinstance(decorator, nodes.Call) else decorator
-        if not isinstance(target, nodes.Attribute):
-            continue
-        if target.attrname != "fixture":
-            continue
-        expr = target.expr
-        if isinstance(expr, nodes.Name) and expr.name == "pytest":
-            return True
+        match target:
+            case nodes.Attribute(expr=nodes.Name(name="pytest"), attrname="fixture"):
+                return True
     return False
 
 
@@ -153,15 +150,15 @@ class RegistryFixturesChecker(BaseChecker):
         if not self._active or not self._alias_map:
             return
 
-        func = node.func
-        if not isinstance(func, nodes.Attribute):
-            return
-        if func.attrname != "async_get":
-            return
-        if not isinstance(func.expr, nodes.Name):
-            return
+        match node.func:
+            case nodes.Attribute(
+                expr=nodes.Name(name=name) as expr, attrname="async_get"
+            ):
+                pass
+            case _:
+                return
 
-        helper = self._alias_map.get(func.expr.name)
+        helper = self._alias_map.get(name)
         if helper is None:
             return
 
@@ -170,7 +167,7 @@ class RegistryFixturesChecker(BaseChecker):
         # a non-aliased import, so confirm the name still binds to the
         # recorded ``from homeassistant.helpers import ...`` statement before
         # flagging.
-        if not _binds_to_import(func.expr):
+        if not _binds_to_import(expr):
             return
 
         if _in_test_or_fixture(node):
