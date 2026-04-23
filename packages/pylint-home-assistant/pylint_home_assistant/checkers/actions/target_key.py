@@ -74,13 +74,13 @@ def _declares_target(action: nodes.NodeNG) -> bool:
 
 def _is_async_call(node: nodes.Call) -> bool:
     """Check if a call is ``<...>.services.async_call(...)``."""
-    func = node.func
-    return (
-        isinstance(func, nodes.Attribute)
-        and func.attrname == "async_call"
-        and isinstance(func.expr, nodes.Attribute)
-        and func.expr.attrname == "services"
-    )
+    match node.func:
+        case nodes.Attribute(
+            expr=nodes.Attribute(attrname="services"), attrname="async_call"
+        ):
+            return True
+        case _:
+            return False
 
 
 def _is_exclude_key(key: nodes.NodeNG | None) -> bool:
