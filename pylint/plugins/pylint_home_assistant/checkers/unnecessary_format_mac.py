@@ -24,21 +24,20 @@ from pylint_home_assistant.helpers.module_info import is_integration_module
 def _is_connection_network_mac(node: nodes.NodeNG) -> bool:
     """Check if a node refers to CONNECTION_NETWORK_MAC."""
     match node:
-        case nodes.Name(name="CONNECTION_NETWORK_MAC"):
-            return True
-        case nodes.Attribute(attrname="CONNECTION_NETWORK_MAC"):
+        case (
+            nodes.Name(name="CONNECTION_NETWORK_MAC")
+            | nodes.Attribute(attrname="CONNECTION_NETWORK_MAC")
+        ):
             return True
     return False
 
 
 def _is_format_mac_call(node: nodes.NodeNG) -> bool:
     """Check if a node is a call to format_mac()."""
-    if not isinstance(node, nodes.Call):
-        return False
-    match node.func:
-        case nodes.Name(name="format_mac"):
-            return True
-        case nodes.Attribute(attrname="format_mac"):
+    match node:
+        case nodes.Call(
+            func=nodes.Name(name="format_mac") | nodes.Attribute(attrname="format_mac")
+        ):
             return True
     return False
 
