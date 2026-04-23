@@ -83,13 +83,13 @@ class FlowStartHelpersChecker(BaseChecker):
         """Check flow init calls."""
         if not self._in_integration_test:
             return
-        if not (
-            isinstance(node.func, nodes.Attribute)
-            and node.func.attrname == "async_init"
-            and isinstance(node.func.expr, nodes.Attribute)
-            and node.func.expr.attrname == "flow"
-        ):
-            return
+        match node.func:
+            case nodes.Attribute(
+                expr=nodes.Attribute(attrname="flow"), attrname="async_init"
+            ):
+                pass
+            case _:
+                return
         if (helper := _get_source_helper(node)) is None:
             return
         self.add_message(

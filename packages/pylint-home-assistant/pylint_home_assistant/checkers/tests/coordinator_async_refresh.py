@@ -41,7 +41,7 @@ def _is_other_receiver(receiver: nodes.NodeNG) -> bool:
     # A getter typed ``... | None`` also infers to None
     inferred = [
         value
-        for value in inferred
+        for value in inferred  # TODO match expr
         if not (isinstance(value, nodes.Const) and value.value is None)
     ]
     if not inferred:
