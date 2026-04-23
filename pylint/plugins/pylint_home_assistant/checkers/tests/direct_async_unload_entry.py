@@ -24,9 +24,10 @@ def _is_integration_async_unload_entry(call: nodes.Call) -> bool:
     """Return True if *call* targets an integration's ``async_unload_entry``."""
     func = call.func
     match func:
-        case nodes.Attribute(attrname="async_unload_entry"):
-            pass
-        case nodes.Name(name="async_unload_entry"):
+        case (
+            nodes.Name(name="async_unload_entry")
+            | nodes.Attribute(attrname="async_unload_entry")
+        ):
             pass
         case _:
             return False

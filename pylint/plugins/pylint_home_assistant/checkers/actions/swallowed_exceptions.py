@@ -39,13 +39,14 @@ def _except_block_swallows(handler: nodes.ExceptHandler) -> bool:
         if isinstance(child, nodes.Pass):
             continue
         has_any_statement = True
-        if isinstance(child, nodes.Expr) and isinstance(child.value, nodes.Call):
-            call = child.value
-            if (
-                isinstance(call.func, nodes.Attribute)
-                and call.func.attrname in ("error", "exception", "warning")
-                and isinstance(call.func.expr, nodes.Name)
-                and call.func.expr.name in ("_LOGGER", "LOGGER")
+        match child:
+            case nodes.Expr(
+                value=nodes.Call(
+                    func=nodes.Attribute(
+                        expr=nodes.Name(name="_LOGGER" | "LOGGER"),
+                        attrname="error" | "exception" | "warning",
+                    ),
+                )
             ):
                 has_log_call = True
                 continue
@@ -62,14 +63,15 @@ def _is_contextlib_suppress(node: nodes.NodeNG) -> bool:
     Only matches ``contextlib.suppress(...)`` (attribute access form),
     not a bare ``suppress(...)`` which could be an unrelated function.
     """
-    if not isinstance(node, nodes.Call):
-        return False
-    return (
-        isinstance(node.func, nodes.Attribute)
-        and node.func.attrname == "suppress"
-        and isinstance(node.func.expr, nodes.Name)
-        and node.func.expr.name == "contextlib"
-    )
+    match node:
+        case nodes.Call(
+            func=nodes.Attribute(
+                expr=nodes.Name(name="contextlib"), attrname="suppress"
+            ),
+        ):
+            return True
+        case _:
+            return False
 
 
 def _is_action_handler(node: nodes.FunctionDef, handlers: ActionHandlers) -> bool:
@@ -231,10 +233,11 @@ def _find_returned_function(func: nodes.FunctionDef) -> nodes.FunctionDef | None
         return None
 
     for child in func.body:
-        if isinstance(child, nodes.Return) and isinstance(child.value, nodes.Name):
-            if returned := inner_funcs.get(child.value.name):
-                deeper = _find_returned_function(returned)
-                return deeper if deeper is not None else returned
+        match child:
+            case nodes.Return(value=nodes.Name(name=name)):
+                if returned := inner_funcs.get(name):
+                    deeper = _find_returned_function(returned)
+                    return deeper if deeper is not None else returned
 
     if len(inner_funcs) == 1:
         inner = next(iter(inner_funcs.values()))
