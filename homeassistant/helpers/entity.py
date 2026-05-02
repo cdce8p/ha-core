@@ -27,6 +27,7 @@ from typing import (
 )
 
 from propcache.api import cached_property
+from typing_extensions import sentinel
 import voluptuous as vol
 
 from homeassistant.const import (
@@ -244,7 +245,7 @@ class EntityPlatformState(Enum):
     REMOVED = auto()
 
 
-_SENTINEL = object()
+_SENTINEL = sentinel("_SENTINEL")
 
 
 class EntityDescription(metaclass=FrozenOrThawed, frozen_or_thawed=True):

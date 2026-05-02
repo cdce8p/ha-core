@@ -10,6 +10,7 @@ from unittest.mock import ANY, MagicMock, patch
 
 from freezegun import freeze_time
 import pytest
+from typing_extensions import sentinel
 import voluptuous as vol
 import yaml
 
@@ -966,7 +967,7 @@ MOCK_SUBENTRY_DATA_SET_MIX = {
     | MOCK_SUBENTRY_SENSOR_COMPONENT_UOM_NULL
     | MOCK_SUBENTRY_SIREN_COMPONENT,
 } | MOCK_SUBENTRY_AVAILABILITY_DATA
-_SENTINEL = object()
+_SENTINEL = sentinel("_SENTINEL")
 
 DISCOVERY_COUNT = sum(len(discovery_topic) for discovery_topic in MQTT.values())
 DEVICE_DISCOVERY_COUNT = 2
