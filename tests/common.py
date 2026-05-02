@@ -32,6 +32,7 @@ import attr
 from paho.mqtt.client import MQTTMessage
 import pytest
 from syrupy.assertion import SnapshotAssertion
+from typing_extensions import sentinel
 import voluptuous as vol
 
 from homeassistant import auth, bootstrap, config_entries, loader
@@ -1716,7 +1717,7 @@ def async_mock_signal[*_Ts](
     return calls
 
 
-_SENTINEL = object()
+_SENTINEL = sentinel("_SENTINEL")
 
 
 class _HA_ANY:

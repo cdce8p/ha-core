@@ -8,6 +8,7 @@ import threading
 import time
 from typing import override
 
+from typing_extensions import sentinel
 import voluptuous as vol
 
 from homeassistant.const import (
@@ -87,7 +88,7 @@ class GraphiteFeeder(threading.Thread):
         # rstrip any trailing dots in case they think they need it
         self._prefix = prefix.rstrip(".")
         self._queue = queue.Queue()
-        self._quit_object = object()
+        self._quit_object = sentinel("_quit_object")
         self._unsub_state_changed = None
 
         hass.bus.listen_once(EVENT_HOMEASSISTANT_START, self.start_listen)

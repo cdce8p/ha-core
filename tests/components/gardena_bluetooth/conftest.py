@@ -12,6 +12,7 @@ from gardena_bluetooth.const import DeviceInformation
 from gardena_bluetooth.exceptions import CharacteristicNotFound
 from gardena_bluetooth.parse import Characteristic, Service
 import pytest
+from typing_extensions import sentinel
 
 from homeassistant.components import bluetooth
 from homeassistant.components.gardena_bluetooth import async_get_product
@@ -120,7 +121,7 @@ def mock_client(
 
     client_class = Mock()
 
-    SENTINEL = object()
+    SENTINEL = sentinel("SENTINEL")
 
     def _chars() -> list[Characteristic]:
         product_type = client_class.call_args.args[1]
