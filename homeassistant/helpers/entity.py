@@ -28,6 +28,7 @@ from typing import (
 
 import probatio
 from propcache.api import cached_property
+from typing_extensions import sentinel
 
 from homeassistant.const import (
     DEVICE_DEFAULT_NAME,
@@ -244,7 +245,7 @@ class EntityPlatformState(Enum):
     REMOVED = auto()
 
 
-_SENTINEL = object()
+_SENTINEL = sentinel("_SENTINEL")
 
 
 class EntityDescription(metaclass=FrozenOrThawed, frozen_or_thawed=True):
