@@ -8,7 +8,7 @@ from enum import Enum, auto
 import logging
 from pathlib import Path
 import time
-from typing import IO, Any, cast, override
+from typing import IO, Any, override
 
 from gazetteer_matcher import FrameCandidate, GazetteerMatcher
 from hassil.expression import Expression, Group, ListReference, TextChunk
@@ -1194,20 +1194,12 @@ class DefaultAgent(ConversationEntity):
     async def async_get_or_load_intents(self, language: str) -> LanguageIntents | None:
         """Load all intents of a language with lock."""
         if lang_intents := self._lang_intents.get(language):
-            return (
-                None
-                if lang_intents is ERROR_SENTINEL
-                else cast(LanguageIntents, lang_intents)
-            )
+            return lang_intents if lang_intents is not ERROR_SENTINEL else None
 
         async with self._load_intents_lock:
             # In case it was loaded now
             if lang_intents := self._lang_intents.get(language):
-                return (
-                    None
-                    if lang_intents is ERROR_SENTINEL
-                    else cast(LanguageIntents, lang_intents)
-                )
+                return lang_intents if lang_intents is not ERROR_SENTINEL else None
 
             start = time.monotonic()
 

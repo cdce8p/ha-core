@@ -1,7 +1,7 @@
 """Type casting functions for Home Assistant templates."""
 
 import math
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import jinja2.filters
 from typing_extensions import sentinel
@@ -70,7 +70,9 @@ class TypeCastExtension(BaseTemplateExtension):
     @staticmethod
     def forgiving_int(value: Any, default: Any = _SENTINEL, base: int = 10) -> Any:
         """Try to convert value to an int, and raise if it fails."""
-        result = jinja2.filters.do_int(value, default=default, base=base)
+        result = cast(
+            int | _SENTINEL, jinja2.filters.do_int(value, default=default, base=base)
+        )
         if result is _SENTINEL:
             raise_no_default("int", value)
         return result
