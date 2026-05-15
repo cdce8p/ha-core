@@ -24,8 +24,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    # Uses legacy hass.data[DOMAIN] pattern
-    # pylint: disable-next=home-assistant-use-runtime-data
     if LOG_INTERVAL_SUB in hass.data[DOMAIN]:
         hass.data[DOMAIN][LOG_INTERVAL_SUB]()
     return True
