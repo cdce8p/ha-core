@@ -26,8 +26,6 @@ STEP_USER_DATA_SCHEMA = probatio.Schema(
     {
         probatio.Optional(CONF_TOKEN): str,
         probatio.Optional(CONF_NEW_TOKEN): BooleanSelector(BooleanSelectorConfig()),
-        # Name field is no longer allowed in config flow schemas
-        # pylint: disable-next=home-assistant-config-flow-name-field
         probatio.Required(CONF_NAME, default=DEFAULT_NAME): str,
     }
 )
