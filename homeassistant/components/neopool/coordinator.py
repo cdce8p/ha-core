@@ -50,7 +50,7 @@ _TIMER_OPTIONS: dict[str, str] = {
 }
 
 
-type NeoPoolConfigEntry = ConfigEntry["NeoPoolCoordinator"]
+type NeoPoolConfigEntry = ConfigEntry[NeoPoolCoordinator]
 
 
 class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):
