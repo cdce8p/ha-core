@@ -40,7 +40,7 @@ _AUX_TIMER_BLOCKS: dict[str, str] = {
 }
 
 
-type NeoPoolConfigEntry = ConfigEntry["NeoPoolCoordinator"]
+type NeoPoolConfigEntry = ConfigEntry[NeoPoolCoordinator]
 
 
 class NeoPoolCoordinator(DataUpdateCoordinator[dict[str, Any]]):

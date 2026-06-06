@@ -21,7 +21,7 @@ _TOKEN = "test-token"
 _PRIOR = "1234567890abcdef1234567890abcdef12345678"
 _HEAD = "fedcba0987654321fedcba0987654321fedcba09"
 
-InstallGithub = Callable[..., MagicMock]
+type InstallGithubType = Callable[..., MagicMock]
 
 
 def _body(sha: str | None) -> str:
@@ -47,7 +47,7 @@ def _file(filename: str) -> SimpleNamespace:
 
 
 @pytest.fixture
-def install_github(monkeypatch: pytest.MonkeyPatch) -> InstallGithub:
+def install_github(monkeypatch: pytest.MonkeyPatch) -> InstallGithubType:
     """Install a fake PyGithub client and return the installer for assertions."""
 
     def _install(
@@ -106,7 +106,7 @@ def test_extract_prior_sha_round_trips_rendered_comment() -> None:
 
 
 def test_fetch_marker_comment_bodies_returns_all_bot_comments(
-    install_github: InstallGithub,
+    install_github: InstallGithubType,
 ) -> None:
     """Every bot comment body is returned in API order; the marker is not filtered on."""
     install_github(
@@ -131,7 +131,7 @@ def test_fetch_marker_comment_bodies_returns_all_bot_comments(
     ],
 )
 def test_fetch_marker_comment_bodies_ignores_non_actions_author(
-    install_github: InstallGithub,
+    install_github: InstallGithubType,
     author: str,
 ) -> None:
     """A forged marker comment from anyone but github-actions is ignored."""
@@ -140,21 +140,21 @@ def test_fetch_marker_comment_bodies_ignores_non_actions_author(
 
 
 def test_fetch_marker_comment_bodies_handles_api_error(
-    install_github: InstallGithub,
+    install_github: InstallGithubType,
 ) -> None:
     """A GitHub API error yields no bodies (fails open) instead of raising."""
     install_github(comments_exc=GithubException(500, {}, {}))
     assert fetch_marker_comment_bodies(7, _REPO, _TOKEN) == []
 
 
-def test_decide_skip_no_head_sha(install_github: InstallGithub) -> None:
+def test_decide_skip_no_head_sha(install_github: InstallGithubType) -> None:
     """An empty head SHA never skips and makes no API calls."""
     client = install_github()
     assert decide_skip(7, "", _REPO, _TOKEN).skip is False
     client.get_repo.assert_not_called()
 
 
-def test_decide_skip_no_prior_comment(install_github: InstallGithub) -> None:
+def test_decide_skip_no_prior_comment(install_github: InstallGithubType) -> None:
     """The first run (no prior comment) runs the checks."""
     install_github(
         comments=[SimpleNamespace(body="hi", user=SimpleNamespace(login="x"))]
@@ -162,14 +162,14 @@ def test_decide_skip_no_prior_comment(install_github: InstallGithub) -> None:
     assert decide_skip(7, _HEAD, _REPO, _TOKEN).skip is False
 
 
-def test_decide_skip_head_unchanged(install_github: InstallGithub) -> None:
+def test_decide_skip_head_unchanged(install_github: InstallGithubType) -> None:
     """When head matches the last comment's SHA, skip without comparing."""
     client = install_github(comments=[_comment(_HEAD)])
     assert decide_skip(7, _HEAD, _REPO, _TOKEN).skip is True
     client.get_repo.return_value.compare.assert_not_called()
 
 
-def test_decide_skip_tracked_files_changed(install_github: InstallGithub) -> None:
+def test_decide_skip_tracked_files_changed(install_github: InstallGithubType) -> None:
     """A requirement file changed since the comment runs the checks."""
     install_github(
         comments=[_comment(_PRIOR)],
@@ -182,7 +182,9 @@ def test_decide_skip_tracked_files_changed(install_github: InstallGithub) -> Non
     assert "homeassistant/foo.py" not in decision.reason
 
 
-def test_decide_skip_no_tracked_files_changed(install_github: InstallGithub) -> None:
+def test_decide_skip_no_tracked_files_changed(
+    install_github: InstallGithubType,
+) -> None:
     """Only non-requirement files changed since the comment, so skip."""
     install_github(
         comments=[_comment(_PRIOR)],
@@ -191,7 +193,9 @@ def test_decide_skip_no_tracked_files_changed(install_github: InstallGithub) -> 
     assert decide_skip(7, _HEAD, _REPO, _TOKEN).skip is True
 
 
-def test_decide_skip_compare_unavailable_runs(install_github: InstallGithub) -> None:
+def test_decide_skip_compare_unavailable_runs(
+    install_github: InstallGithubType,
+) -> None:
     """A failed compare falls back to running the checks."""
     install_github(
         comments=[_comment(_PRIOR)], compare_exc=GithubException(404, {}, {})
@@ -199,7 +203,7 @@ def test_decide_skip_compare_unavailable_runs(install_github: InstallGithub) -> 
     assert decide_skip(7, _HEAD, _REPO, _TOKEN).skip is False
 
 
-def test_decide_skip_comments_error_runs(install_github: InstallGithub) -> None:
+def test_decide_skip_comments_error_runs(install_github: InstallGithubType) -> None:
     """A failed comments fetch fails open (runs the checks), never skips."""
     install_github(comments_exc=GithubException(500, {}, {}))
     assert decide_skip(7, _HEAD, _REPO, _TOKEN).skip is False
