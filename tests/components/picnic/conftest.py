@@ -17,7 +17,7 @@ from tests.typing import WebSocketGenerator
 
 ENTITY_ID = "todo.mock_title_shopping_cart"
 
-SetupDeliveryFixture = Callable[
+type SetupDeliveryFixture = Callable[
     [str, tuple[timedelta, timedelta] | None, tuple[timedelta, timedelta]],
     Awaitable[DeliverySummary],
 ]
