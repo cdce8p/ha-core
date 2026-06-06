@@ -48,7 +48,7 @@ class SHCSensorEntityDescription[_DeviceT: SHCDevice](SensorEntityDescription):
     attributes_fn: Callable[[_DeviceT], dict[str, Any]] | None = None
 
 
-_PowerMeterDevice = SHCSmartPlug | SHCLightSwitchBSM | SHCMicromoduleShutterControl
+type _PowerMeterDevice = SHCSmartPlug | SHCLightSwitchBSM | SHCMicromoduleShutterControl
 
 TEMPERATURE_SENSOR = "temperature"
 HUMIDITY_SENSOR = "humidity"

@@ -131,8 +131,10 @@ from .knx_selector import (
     ga,
 )
 
-SyncState = Annotated[bool | str | int, SyncStateSelector()]
-SyncStateAllowFalse = Annotated[bool | str | int, SyncStateSelector(allow_false=True)]
+type SyncState = Annotated[bool | str | int, SyncStateSelector()]
+type SyncStateAllowFalse = Annotated[
+    bool | str | int, SyncStateSelector(allow_false=True)
+]
 
 
 def base_entity_schema(platform: Platform) -> probatio.All:
