@@ -25,6 +25,10 @@ inputs:
   save:
     description: Whether to save the rebuilt venv and uv cache. Only the prepare job should.
     default: "false"
+  pip-cache-dir:
+    default: /tmp/pip-cache
+  pip-cache-version:
+    default: 1
 
 outputs:
   python-version:
@@ -34,12 +38,13 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Set up uv and managed Python
+    - name: Setup Python
       id: python
-      uses: ./.github/actions/setup-uv-python
+      uses: actions/setup-python@v7
       with:
-        uv-version: ${{ inputs.uv-version }}
-        python-version: ${{ inputs.python-version }}
+        python-version: "3.15"
+        allow-prereleases: true
+        check-latest: true
     - name: Restore full Python virtual environment
       id: cache-venv
       uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -48,26 +53,21 @@ runs:
         key: >-
           ${{ runner.os }}-${{ runner.arch }}-${{ steps.python.outputs.python-version }}-${{
           inputs.python-cache-key }}
-    - name: Generate partial uv restore key
-      if: steps.cache-venv.outputs.cache-hit != 'true'
-      id: generate-uv-key
+    - name: Generate partial pip restore key
+      id: generate-pip-key
       shell: bash
-      env:
-        RUNNER_OS: ${{ runner.os }}
-        RUNNER_ARCH: ${{ runner.arch }}
-        PYTHON_VERSION: ${{ steps.python.outputs.python-version }}
-        HASH_FILES: ${{ hashFiles('requirements.txt', 'requirements_all.txt', 'requirements_test.txt', 'homeassistant/package_constraints.txt') }}
-      run: |
-        partial_key="${RUNNER_OS}-${RUNNER_ARCH}-${PYTHON_VERSION}-uv-"
-        echo "partial_key=${partial_key}" >> $GITHUB_OUTPUT
-        echo "full_key=${partial_key}${HASH_FILES}" >> $GITHUB_OUTPUT
-    - name: Restore uv wheel cache
+      run: >-
+        echo "key=pip-${{ inputs.pip-cache-version }}-$(date -u '+%Y-%m-%dT%H:%M:%s')" >> $GITHUB_OUTPUT
+    - name: Restore pip wheel cache
       if: steps.cache-venv.outputs.cache-hit != 'true'
-      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      uses: actions/cache/restore@v6
       with:
-        path: ${{ inputs.uv-cache-dir }}
-        key: ${{ steps.generate-uv-key.outputs.full_key }}
-        restore-keys: ${{ steps.generate-uv-key.outputs.partial_key }}
+        path: ${{ inputs.pip-cache-dir }}
+        key: >-
+          ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+          steps.generate-pip-key.outputs.key }}
+        restore-keys: |
+          ${{ runner.os }}-${{ steps.python.outputs.python-version }}-pip-${{ inputs.pip-cache-version }}-
     # Only runs on a cache miss when the venv is rebuilt. Composite steps cannot
     # set timeout-minutes, so a stuck apt download is bounded by the job-level
     # timeout instead of a per-step cap.
@@ -96,25 +96,22 @@ runs:
       shell: bash
       env:
         PYTHON_VERSION: ${{ steps.python.outputs.python-version }}
+        PIP_CACHE: ${{ inputs.pip-cache-dir }}
       run: |
-        uv venv venv --python "${PYTHON_VERSION}"
+        python -m venv venv
         . venv/bin/activate
         python --version
-        uv pip install -r requirements.txt
-        uv pip install -r requirements_all.txt -r requirements_test.txt
-        uv pip install -e . --config-settings editable_mode=compat
-    - name: Prune uv cache
-      if: inputs.save == 'true' && steps.cache-venv.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        . venv/bin/activate
-        uv cache prune --ci
-    - name: Save uv wheel cache
-      if: inputs.save == 'true' && steps.cache-venv.outputs.cache-hit != 'true'
-      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements.txt
+        PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements_all.txt -r requirements_test.txt
+        PIP_CACHE_DIR=$PIP_CACHE pip install -e . --config-settings editable_mode=compat
+    - name: Save pip wheel cache
+      if: always() && inputs.save == 'true' && steps.cache-venv.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v6
       with:
-        path: ${{ inputs.uv-cache-dir }}
-        key: ${{ steps.generate-uv-key.outputs.full_key }}
+        path: ${{ inputs.pip-cache-dir }}
+        key: >-
+          ${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{
+          steps.generate-pip-key.outputs.key }}
     - name: Save full Python virtual environment
       if: always() && inputs.save == 'true' && steps.create-venv.outcome == 'success'
       uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
