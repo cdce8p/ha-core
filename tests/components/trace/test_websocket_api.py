@@ -15,7 +15,7 @@ from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import Context, CoreState, HomeAssistant, callback
 from homeassistant.helpers.json import ExtendedJSONEncoder
 from homeassistant.helpers.trace import TraceElement
-from homeassistant.helpers.typing import UNDEFINED
+from homeassistant.helpers.typing import Undefined
 from homeassistant.setup import async_setup_component
 from homeassistant.util.uuid import random_uuid_hex
 
@@ -129,7 +129,7 @@ async def _assert_contexts(client, next_id, contexts, domain=None, item_id=None)
             "parent_id",
             [True],
         ),
-        ("script", "sequence", [set(), set()], [UNDEFINED, UNDEFINED], "id", []),
+        ("script", "sequence", [set(), set()], [Undefined, Undefined], "id", []),
     ],
 )
 @pytest.mark.usefixtures("enable_custom_integrations")
@@ -225,7 +225,7 @@ async def test_get_trace(
     assert trace["script_execution"] == "error"
     assert trace["item_id"] == "sun"
     assert trace["context"][context_key] == context.id
-    assert trace.get("trigger", UNDEFINED) == trigger[0]
+    assert trace.get("trigger", Undefined) == trigger[0]
     contexts[trace["context"]["id"]] = {
         "run_id": trace["run_id"],
         "domain": domain,
@@ -272,7 +272,7 @@ async def test_get_trace(
     assert trace["script_execution"] == "finished"
     assert trace["item_id"] == "moon"
 
-    assert trace.get("trigger", UNDEFINED) == trigger[1]
+    assert trace.get("trigger", Undefined) == trigger[1]
 
     assert len(trace["trace"].get("condition/0", [])) == len(condition_results)
     for idx, condition_result in enumerate(condition_results):
@@ -815,7 +815,7 @@ async def test_trace_no_traces(
         (
             "script",
             "sequence",
-            [UNDEFINED, UNDEFINED, UNDEFINED, UNDEFINED],
+            [Undefined, Undefined, Undefined, Undefined],
             ["{prefix}/0", "{prefix}/0", "{prefix}/0", "{prefix}/0"],
             ["error", "finished", "finished", "finished"],
         ),
@@ -923,7 +923,7 @@ async def test_list_traces(
     assert trace["script_execution"] == script_execution[0]
     assert trace["timestamp"]
     assert trace["item_id"] == "sun"
-    assert trace.get("trigger", UNDEFINED) == trigger[0]
+    assert trace.get("trigger", Undefined) == trigger[0]
 
     trace = _find_traces(response["result"], domain, "moon")[0]
     assert trace["last_step"] == last_step[1].format(prefix=prefix)
@@ -932,7 +932,7 @@ async def test_list_traces(
     assert trace["script_execution"] == script_execution[1]
     assert trace["timestamp"]
     assert trace["item_id"] == "moon"
-    assert trace.get("trigger", UNDEFINED) == trigger[1]
+    assert trace.get("trigger", Undefined) == trigger[1]
 
     trace = _find_traces(response["result"], domain, "moon")[1]
     assert trace["last_step"] == last_step[2].format(prefix=prefix)
@@ -941,7 +941,7 @@ async def test_list_traces(
     assert trace["script_execution"] == script_execution[2]
     assert trace["timestamp"]
     assert trace["item_id"] == "moon"
-    assert trace.get("trigger", UNDEFINED) == trigger[2]
+    assert trace.get("trigger", Undefined) == trigger[2]
 
     trace = _find_traces(response["result"], domain, "moon")[2]
     assert trace["last_step"] == last_step[3].format(prefix=prefix)
@@ -950,7 +950,7 @@ async def test_list_traces(
     assert trace["script_execution"] == script_execution[3]
     assert trace["timestamp"]
     assert trace["item_id"] == "moon"
-    assert trace.get("trigger", UNDEFINED) == trigger[3]
+    assert trace.get("trigger", Undefined) == trigger[3]
 
 
 @pytest.mark.parametrize(
@@ -1662,7 +1662,7 @@ async def test_trace_blueprint_automation(
     assert trace["state"] == "stopped"
     assert trace["script_execution"] == "error"
     assert trace["item_id"] == "sun"
-    assert trace.get("trigger", UNDEFINED) == "event 'blueprint_event'"
+    assert trace.get("trigger", Undefined) == "event 'blueprint_event'"
 
 
 class _DiagnosticActionTrace(ActionTrace):

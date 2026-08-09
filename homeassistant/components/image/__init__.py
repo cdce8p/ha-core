@@ -30,7 +30,7 @@ from homeassistant.helpers.event import (
     async_track_time_interval,
 )
 from homeassistant.helpers.httpx_client import get_async_client
-from homeassistant.helpers.typing import UNDEFINED, ConfigType, UndefinedType
+from homeassistant.helpers.typing import ConfigType, Undefined
 
 from .const import (  # noqa: F401
     ATTR_FILENAME,
@@ -193,7 +193,7 @@ class ImageEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
     # Entity Properties
     _attr_content_type: str = DEFAULT_CONTENT_TYPE
     _attr_image_last_updated: datetime | None = None
-    _attr_image_url: str | UndefinedType | None = UNDEFINED
+    _attr_image_url: str | Undefined | None = Undefined
     _attr_should_poll: bool = False  # No need to poll image entities
     _attr_state: None = None  # State is determined by last_updated
     _cached_image: Image | None = None
@@ -223,7 +223,7 @@ class ImageEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
         return self._attr_image_last_updated
 
     @cached_property
-    def image_url(self) -> str | UndefinedType | None:
+    def image_url(self) -> str | Undefined | None:
         """Return URL of image."""
         return self._attr_image_url
 
@@ -277,7 +277,7 @@ class ImageEntity(Entity, cached_properties=CACHED_PROPERTIES_WITH_ATTR_):
 
         if self._cached_image:
             return self._cached_image.content
-        if (url := self.image_url) is not UNDEFINED:
+        if (url := self.image_url) is not Undefined:
             if not url or (image := await self._async_load_image_from_url(url)) is None:
                 return None
             self._cached_image = image
