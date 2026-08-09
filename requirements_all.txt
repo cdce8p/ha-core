@@ -1207,7 +1207,7 @@ gspread==5.5.0
 guntamatic==1.9.3
 
 # homeassistant.components.profiler
-guppy3==3.1.7
+guppy3==3.1.7;python_version<'3.15'
 
 # homeassistant.components.iaqualink
 h2==4.3.0
