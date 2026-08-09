@@ -42,7 +42,7 @@ from homeassistant.const import UnitOfTemperature
 from homeassistant.core import CoreState, HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityDescription
-from homeassistant.helpers.typing import UNDEFINED
+from homeassistant.helpers.typing import Undefined
 from homeassistant.setup import async_setup_component
 from homeassistant.util import dt as dt_util
 
@@ -1925,7 +1925,7 @@ async def test_naming(hass: HomeAssistant) -> None:
     sensor_entity.hass = hass
     sensor_entity.platform = MockEntityPlatform(hass)
     assert sensor_entity.available is True
-    assert sensor_entity.name is UNDEFINED
+    assert sensor_entity.name is Undefined
     assert sensor_entity.device_class is SensorDeviceClass.TEMPERATURE
     assert sensor_entity.translation_key is None
 

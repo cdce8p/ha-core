@@ -41,7 +41,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_component import EntityComponent
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.network import get_url
-from homeassistant.helpers.typing import UNDEFINED, ConfigType
+from homeassistant.helpers.typing import ConfigType, Undefined
 from homeassistant.util import language as language_util, ulid as ulid_util
 
 from .const import (  # noqa: F401
@@ -1079,7 +1079,7 @@ class SpeechManager:
         if bitrate is not None:
             bitrate = int(bitrate)
 
-        if engine_instance.name is None or engine_instance.name is UNDEFINED:
+        if engine_instance.name is None or engine_instance.name is Undefined:
             raise HomeAssistantError("TTS engine name is not set.")
 
         if isinstance(engine_instance, Provider) or (

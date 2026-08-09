@@ -7,7 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, storage
 from homeassistant.helpers.entity_component import EntityComponent
-from homeassistant.helpers.typing import UNDEFINED, ConfigType, UndefinedType
+from homeassistant.helpers.typing import ConfigType, Undefined
 
 from .const import DATA_COMPONENT, DATA_PREFERENCES, DOMAIN, AITaskEntityFeature
 from .entity import AITaskEntity
@@ -90,8 +90,8 @@ class AITaskPreferences:
     def async_set_preferences(
         self,
         *,
-        gen_data_entity_id: str | UndefinedType | None = UNDEFINED,
-        gen_image_entity_id: str | UndefinedType | None = UNDEFINED,
+        gen_data_entity_id: str | Undefined | None = Undefined,
+        gen_image_entity_id: str | Undefined | None = Undefined,
     ) -> None:
         """Set the preferences."""
         changed = False
@@ -99,7 +99,7 @@ class AITaskPreferences:
             ("gen_data_entity_id", gen_data_entity_id),
             ("gen_image_entity_id", gen_image_entity_id),
         ):
-            if value is not UNDEFINED:
+            if value is not Undefined:
                 if getattr(self, key) != value:
                     setattr(self, key, value)
                     changed = True
