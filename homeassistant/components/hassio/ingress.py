@@ -214,7 +214,7 @@ class HassIOIngress(HomeAssistantView):
             content_length = result.headers.get(hdrs.CONTENT_LENGTH, Undefined)
             if (
                 content_length is not Undefined
-                and (content_length_int := int(content_length))
+                and (content_length_int := int(content_length))  # type: ignore[arg-type]
                 <= MAX_SIMPLE_RESPONSE_SIZE
             ):
                 body = await result.read()

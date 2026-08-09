@@ -192,7 +192,7 @@ async def _async_get_modifier(
     modifier = modifiers.get(domain, Undefined)
 
     if modifier is not Undefined:
-        return modifier
+        return modifier  # type: ignore[return-value]
 
     platform = await _async_get_analytics_platform(hass, domain)
     if platform is None:

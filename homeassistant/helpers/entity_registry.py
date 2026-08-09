@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 from enum import Enum, StrEnum
 import logging
 import time
-from typing import TYPE_CHECKING, Any, Literal, NotRequired, TypedDict, override
+from typing import TYPE_CHECKING, Any, Literal, NotRequired, TypedDict, cast, override
 
 import attr
 import voluptuous as vol
@@ -1543,10 +1543,12 @@ class EntityRegistry(BaseRegistry):
             """Return None if value is Undefined, otherwise return value."""
             return None if value is Undefined else value
 
-        device_id = none_if_undefined(device_id)
-        has_entity_name_bool = none_if_undefined(has_entity_name) or False
-        object_id_base = none_if_undefined(object_id_base)
-        suggested_object_id = none_if_undefined(suggested_object_id)
+        device_id = cast(str | None, none_if_undefined(device_id))
+        has_entity_name_bool = (
+            cast(bool | None, none_if_undefined(has_entity_name)) or False
+        )
+        object_id_base = cast(str | None, none_if_undefined(object_id_base))
+        suggested_object_id = cast(str | None, none_if_undefined(suggested_object_id))
 
         if entity_id is None:
             entity_id = self._async_generate_entity_id(
@@ -1562,9 +1564,12 @@ class EntityRegistry(BaseRegistry):
                 unique_id=unique_id,
             )
 
-        original_name = none_if_undefined(original_name)
+        original_name = cast(str | None, none_if_undefined(original_name))
         original_name_unprefixed = _unprefix_original_name(
-            self.hass, original_name, has_entity_name_bool, device_id
+            self.hass,
+            original_name,
+            has_entity_name_bool,
+            device_id,
         )
 
         if (
