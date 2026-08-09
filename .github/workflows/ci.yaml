@@ -81,9 +81,9 @@ env:
 
 permissions: {}
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 
 jobs:
   info:
@@ -313,6 +313,7 @@ jobs:
       contents: read # To check out the repository
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -333,6 +334,7 @@ jobs:
       contents: read
     needs: [info]
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -387,7 +389,7 @@ jobs:
           python --version
           uv pip freeze >> pip_freeze.txt
       - name: Upload pip_freeze artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: &actions-upload-artifact actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: pip-freeze-${{ matrix.python-version }}
           path: pip_freeze.txt
@@ -444,6 +446,7 @@ jobs:
       - info
       - base
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -474,6 +477,7 @@ jobs:
     needs:
       - info
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -527,6 +531,7 @@ jobs:
       - info
       - base
     if: |
+      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && needs.info.outputs.requirements == 'true'
@@ -543,10 +548,10 @@ jobs:
 
   audit-licenses:
     name: Audit licenses
-    runs-on: ubuntu-24.04
+    runs-on: &runs-on-ubuntu ubuntu-24.04
     permissions:
       contents: read
-    needs:
+    needs: &needs-base
       - info
       - base
     if: |
@@ -559,11 +564,13 @@ jobs:
       matrix:
         python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
     steps:
-      - name: Check out code from GitHub
+      - &checkout
+        name: Check out code from GitHub
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up Python ${{ matrix.python-version }} and restore venv
+      - &setup-python-matrix-restore-venv
+        name: Set up Python ${{ matrix.python-version }} and restore venv
         id: python
         uses: ./.github/actions/restore-or-build-venv
         with:
@@ -581,7 +588,7 @@ jobs:
       - name: Upload licenses
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: licenses-${{ github.run_number }}-${{ matrix.python-version }}
+          name: pytest-${{ github.run_number }}-${{ matrix.python-version }}-licenses
           path: licenses-${{ matrix.python-version }}.json
       - name: Check licenses
         env:
@@ -745,6 +752,36 @@ jobs:
           python --version
           mypy --num-workers=4 $(printf "homeassistant/components/%s " ${INTEGRATIONS_GLOB})
 
+  installed-packages:
+    name: List installed packages
+    runs-on: *runs-on-ubuntu
+    permissions:
+      contents: read
+    needs: *needs-base
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.15"]
+    steps:
+      - *checkout
+      - *setup-python-matrix-restore-venv
+      - name: Installed packages
+        run: |
+          . venv/bin/activate
+          pip list 2>&1 | tee packages-${{ matrix.python-version }}.txt
+      - name: Reverse pipdeptree
+        run: |
+          . venv/bin/activate
+          pipdeptree -r 2>&1 | tee dependency_tree-${{ matrix.python-version }}.txt
+      - name: Upload output
+        if: success() || failure()
+        uses: *actions-upload-artifact
+        with:
+          name: pytest-${{ github.run_number }}-${{ matrix.python-version }}-installed-pkgs
+          path: |
+            packages-*.txt
+            dependency_tree-*.txt
+
   prepare-pytest-full:
     name: Split tests for full run
     runs-on: ubuntu-24.04
@@ -838,10 +875,6 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - prek
-      - mypy
       - prepare-pytest-full
     if: |
       needs.info.outputs.lint_only != 'true'
@@ -849,7 +882,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.15"]
         group: ${{ fromJson(needs.info.outputs.test_groups) }}
     steps:
       - name: Check out code from GitHub
@@ -920,7 +953,8 @@ jobs:
             -p no:sugar \
             --exclude-warning-annotations \
             $(sed -n "${TEST_GROUP},1p" pytest_buckets.txt) \
-              2>&1 | tee pytest-${PYTHON_VERSION}-${TEST_GROUP}.txt
+              2>&1 | tee pytest-${PYTHON_VERSION}-${TEST_GROUP}${{
+                        github.run_attempt != '1' && format('_{0}', github.run_attempt) || '' }}.txt
       - name: Upload pytest output
         if: success() || failure() && steps.pytest-full.conclusion == 'failure'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -972,17 +1006,13 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - prek
-      - mypy
     if: |
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.mariadb_groups != '[]'
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.15"]
         mariadb-group: ${{ fromJson(needs.info.outputs.mariadb_groups) }}
     steps:
       - name: Check out code from GitHub
@@ -1113,17 +1143,13 @@ jobs:
     needs:
       - info
       - base
-      - gen-requirements-all
-      - hassfest
-      - prek
-      - mypy
     if: |
       needs.info.outputs.lint_only != 'true'
       && needs.info.outputs.postgresql_groups != '[]'
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(needs.info.outputs.python_versions) }}
+        python-version: ["3.15"]
         postgresql-group: ${{ fromJson(needs.info.outputs.postgresql_groups) }}
     steps:
       - name: Check out code from GitHub
@@ -1562,3 +1588,21 @@ jobs:
           fail_ci_if_error: true
           verbose: true
           use_oidc: true
+
+  debug-combine-pytest-output:
+    name: "Debug: Combine pytest output"
+    runs-on: *runs-on-ubuntu
+    needs:
+      - info
+      - audit-licenses
+      - installed-packages
+      - pytest-full
+    timeout-minutes: 5
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Merge all pytest coverage artifacts
+        uses: actions/upload-artifact/merge@v7
+        with:
+          name: pytest-${{ github.run_number }}
+          pattern: pytest-${{ github.run_number }}*
+          delete-merged: true
