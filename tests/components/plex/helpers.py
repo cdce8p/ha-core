@@ -6,7 +6,7 @@ from typing import Any
 from plexwebsocket import SIGNAL_CONNECTION_STATE, STATE_CONNECTED
 
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import UNDEFINED, UndefinedType
+from homeassistant.helpers.typing import Undefined
 from homeassistant.util import dt as dt_util
 
 from tests.common import async_fire_time_changed
@@ -33,11 +33,11 @@ def websocket_connected(mock_websocket):
 def trigger_plex_update(
     mock_websocket,
     msgtype="playing",
-    payload: dict[str, Any] | UndefinedType = UNDEFINED,
+    payload: dict[str, Any] | Undefined = Undefined,
 ):
     """Call the websocket callback method with a Plex update."""
     callback = mock_websocket.call_args[0][1]
-    callback(msgtype, UPDATE_PAYLOAD if payload is UNDEFINED else payload, None)
+    callback(msgtype, UPDATE_PAYLOAD if payload is Undefined else payload, None)
 
 
 async def wait_for_debouncer(hass: HomeAssistant) -> None:
