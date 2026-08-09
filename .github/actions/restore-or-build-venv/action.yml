@@ -100,6 +100,7 @@ runs:
       env:
         PYTHON_VERSION: ${{ steps.python.outputs.python-version }}
         PIP_CACHE: ${{ inputs.pip-cache-dir }}
+        PYO3_USE_ABI3_FORWARD_COMPATIBILITY: 1
       run: |
         python -m venv venv
         . venv/bin/activate
