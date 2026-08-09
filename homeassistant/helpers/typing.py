@@ -1,10 +1,10 @@
 """Typing Helpers for Home Assistant."""
 
 from collections.abc import Mapping
-from enum import Enum
 from typing import Any, Never
 
 import probatio
+from typing_extensions import sentinel
 
 type GPSType = tuple[float, float]
 type ConfigType = dict[str, Any]
@@ -19,11 +19,4 @@ type VolDictType = dict[str | probatio.Marker, Any]
 # Custom type for recorder Queries
 type QueryType = Any
 
-
-class UndefinedType(Enum):
-    """Singleton type for use with not set sentinel values."""
-
-    _singleton = 0
-
-
-UNDEFINED = UndefinedType._singleton  # noqa: SLF001
+Undefined = sentinel("Undefined")
