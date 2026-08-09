@@ -8,7 +8,7 @@ import pycfdns
 from homeassistant.components.cloudflare.const import CONF_RECORDS, DOMAIN
 from homeassistant.const import CONF_API_TOKEN, CONF_ZONE
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import UNDEFINED, UndefinedType
+from homeassistant.helpers.typing import Undefined
 
 from tests.common import MockConfigEntry
 
@@ -57,16 +57,16 @@ MOCK_ZONE_RECORDS: list[pycfdns.RecordModel] = [
 async def init_integration(
     hass: HomeAssistant,
     *,
-    data: dict[str, Any] | UndefinedType = UNDEFINED,
-    options: dict[str, Any] | UndefinedType = UNDEFINED,
+    data: dict[str, Any] | Undefined = Undefined,
+    options: dict[str, Any] | Undefined = Undefined,
     unique_id: str = MOCK_ZONE["name"],
     skip_setup: bool = False,
 ) -> MockConfigEntry:
     """Set up the Cloudflare integration in Home Assistant."""
     entry = MockConfigEntry(
         domain=DOMAIN,
-        data=ENTRY_CONFIG if data is UNDEFINED else data,
-        options=ENTRY_OPTIONS if options is UNDEFINED else options,
+        data=ENTRY_CONFIG if data is Undefined else data,
+        options=ENTRY_OPTIONS if options is Undefined else options,
         unique_id=unique_id,
     )
     entry.add_to_hass(hass)

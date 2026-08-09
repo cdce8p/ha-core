@@ -22,7 +22,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.start import async_at_started
-from homeassistant.helpers.typing import UNDEFINED
+from homeassistant.helpers.typing import Undefined
 from homeassistant.util import dt as dt_util
 
 from .const import CONF_MEDIA, DOMAIN
@@ -72,7 +72,7 @@ class CollectionImageImageEntity(ImageEntity):
         """Set the entity to unavailable state."""
         self._attr_available = False
         self.path = None
-        self._attr_image_url = UNDEFINED
+        self._attr_image_url = Undefined
         self._cached_image = None
         self.async_write_ha_state()
 
@@ -118,7 +118,7 @@ class CollectionImageImageEntity(ImageEntity):
             _LOGGER.warning("%s: %s", self.entity_id, str(err))
             self._attr_image_last_updated = None
             self.path = None
-            self._attr_image_url = UNDEFINED
+            self._attr_image_url = Undefined
             self._attr_content_type = DEFAULT_CONTENT_TYPE
             self.async_write_ha_state()
             return
@@ -128,7 +128,7 @@ class CollectionImageImageEntity(ImageEntity):
             self._attr_image_url = async_process_play_media_url(self.hass, resolved.url)
         else:
             self.path = resolved.path
-            self._attr_image_url = UNDEFINED
+            self._attr_image_url = Undefined
 
         self._attr_content_type = resolved.mime_type
         self._attr_image_last_updated = dt_util.utcnow()

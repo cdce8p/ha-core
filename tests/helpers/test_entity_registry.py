@@ -26,7 +26,7 @@ from homeassistant.helpers import (
     floor_registry as fr,
 )
 from homeassistant.helpers.event import async_track_entity_registry_updated_event
-from homeassistant.helpers.typing import UNDEFINED
+from homeassistant.helpers.typing import Undefined
 from homeassistant.util.dt import utc_from_timestamp, utcnow
 
 from tests.common import (
@@ -2090,9 +2090,9 @@ async def test_migration_1_11(
     deleted_entry = registry.deleted_entities[
         ("test", "super_duper_platform", "very_very_unique")
     ]
-    assert deleted_entry.disabled_by is UNDEFINED
-    assert deleted_entry.hidden_by is UNDEFINED
-    assert deleted_entry.options is UNDEFINED
+    assert deleted_entry.disabled_by is Undefined
+    assert deleted_entry.hidden_by is Undefined
+    assert deleted_entry.options is Undefined
 
     # Check migrated data
     await flush_store(registry._store)
@@ -4881,7 +4881,7 @@ async def test_restore_migrated_entity_disabled_by(
 
     deleted_entry = entity_registry.deleted_entities[("light", "hue", "1234")]
     entity_registry.deleted_entities[("light", "hue", "1234")] = attr.evolve(
-        deleted_entry, disabled_by=UNDEFINED
+        deleted_entry, disabled_by=Undefined
     )
 
     # Re-add entity, integration has changed
@@ -5006,7 +5006,7 @@ async def test_restore_migrated_entity_hidden_by(
 
     deleted_entry = entity_registry.deleted_entities[("light", "hue", "1234")]
     entity_registry.deleted_entities[("light", "hue", "1234")] = attr.evolve(
-        deleted_entry, hidden_by=UNDEFINED
+        deleted_entry, hidden_by=Undefined
     )
 
     # Re-add entity, integration has changed
@@ -5122,7 +5122,7 @@ async def test_restore_migrated_entity_initial_options(
 
     deleted_entry = entity_registry.deleted_entities[("light", "hue", "1234")]
     entity_registry.deleted_entities[("light", "hue", "1234")] = attr.evolve(
-        deleted_entry, options=UNDEFINED
+        deleted_entry, options=Undefined
     )
 
     # Re-add entity, integration has changed

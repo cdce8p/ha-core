@@ -8,7 +8,7 @@ from homeassistant.components.fronius.const import DOMAIN
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import UNDEFINED, UndefinedType
+from homeassistant.helpers.typing import Undefined
 
 from tests.common import MockConfigEntry, load_fixture
 from tests.test_util.aiohttp import AiohttpClientMocker
@@ -71,7 +71,7 @@ def mock_responses(
     aioclient_mock: AiohttpClientMocker,
     host: str = MOCK_HOST,
     fixture_set: str = "symo",
-    inverter_ids: list[str | int] | UndefinedType = UNDEFINED,
+    inverter_ids: list[str | int] | Undefined = Undefined,
     night: bool = False,
     override_data: dict[str, list[tuple[list[str], Any]]]
     | None = None,  # {filename: [([list of nested keys], patch_value)]}
@@ -85,7 +85,7 @@ def mock_responses(
         f"{host}/solar_api/GetAPIVersion.cgi",
         text=_load(f"{fixture_set}/GetAPIVersion.json", "fronius"),
     )
-    for inverter_id in [1] if inverter_ids is UNDEFINED else inverter_ids:
+    for inverter_id in [1] if inverter_ids is Undefined else inverter_ids:
         aioclient_mock.get(
             f"{host}/solar_api/v1/GetInverterRealtimeData.cgi?Scope=Device&"
             f"DeviceId={inverter_id}&DataCollection=CommonInverterData",
