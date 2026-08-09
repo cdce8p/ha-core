@@ -118,7 +118,7 @@ from .trace import (
     trace_stack_push,
     trace_stack_top,
 )
-from .typing import UNDEFINED, ConfigType, TemplateVarsType, UndefinedType
+from .typing import ConfigType, TemplateVarsType, Undefined
 
 if TYPE_CHECKING:
     from homeassistant.components.recorder import Recorder
@@ -960,7 +960,7 @@ class EntityNumericalConditionBase(EntityConditionBase):
     """Condition for numerical state comparisons with above/below thresholds."""
 
     _schema = NUMERICAL_CONDITION_SCHEMA
-    _valid_unit: str | UndefinedType | None = UNDEFINED
+    _valid_unit: str | Undefined | None = Undefined
 
     def __init__(self, hass: HomeAssistant, config: ConditionConfig) -> None:
         """Initialize the numerical condition."""
@@ -979,7 +979,7 @@ class EntityNumericalConditionBase(EntityConditionBase):
 
     def _is_valid_unit(self, unit: str | None) -> bool:
         """Check if the given unit is valid for this condition."""
-        if isinstance(self._valid_unit, UndefinedType):
+        if isinstance(self._valid_unit, Undefined):
             return True
         return unit == self._valid_unit
 
@@ -1051,7 +1051,7 @@ class EntityNumericalConditionBase(EntityConditionBase):
 
 def make_entity_numerical_condition(
     domain_specs: Mapping[str, DomainSpec] | str,
-    valid_unit: str | UndefinedType | None = UNDEFINED,
+    valid_unit: str | Undefined | None = Undefined,
     *,
     primary_entities_only: bool = True,
 ) -> type[EntityNumericalConditionBase]:

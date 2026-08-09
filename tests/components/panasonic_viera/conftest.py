@@ -20,7 +20,7 @@ from homeassistant.components.panasonic_viera.const import (
 )
 from homeassistant.const import ATTR_MANUFACTURER, CONF_HOST, CONF_NAME, CONF_PORT
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.typing import UNDEFINED, UndefinedType
+from homeassistant.helpers.typing import Undefined
 
 from tests.common import MockConfigEntry
 
@@ -54,7 +54,7 @@ def get_mock_remote(
     encrypted=False,
     app_id=None,
     encryption_key=None,
-    device_info: UndefinedType | None = UNDEFINED,
+    device_info: Undefined | None = Undefined,
 ):
     """Return a mock remote."""
     mock_remote = Mock()
@@ -79,7 +79,7 @@ def get_mock_remote(
     mock_remote.authorize_pin_code = authorize_pin_code
 
     mock_remote.get_device_info = Mock(
-        return_value=MOCK_DEVICE_INFO if device_info is UNDEFINED else device_info
+        return_value=MOCK_DEVICE_INFO if device_info is Undefined else device_info
     )
 
     mock_remote.send_key = Mock()

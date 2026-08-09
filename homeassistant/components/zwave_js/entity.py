@@ -18,7 +18,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity, EntityDescription
-from homeassistant.helpers.typing import UNDEFINED
+from homeassistant.helpers.typing import Undefined
 
 from .const import (
     DOMAIN,
@@ -198,7 +198,7 @@ class ZWaveBaseEntity(Entity):
             hasattr(self, "entity_description")
             and self.entity_description
             and self.entity_description.name
-            and self.entity_description.name is not UNDEFINED
+            and self.entity_description.name is not Undefined
         ):
             name = self.entity_description.name
 

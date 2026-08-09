@@ -94,7 +94,7 @@ from .target import (
     async_track_target_selector_state_change_event,
 )
 from .template import Template
-from .typing import UNDEFINED, ConfigType, TemplateVarsType, UndefinedType
+from .typing import ConfigType, TemplateVarsType, Undefined
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -811,7 +811,7 @@ NUMERICAL_ATTRIBUTE_CHANGED_TRIGGER_SCHEMA = ENTITY_STATE_TRIGGER_SCHEMA.extend(
 class EntityNumericalStateTriggerBase(EntityTriggerBase):
     """Base class for numerical state and state attribute triggers."""
 
-    _valid_unit: str | UndefinedType | None = UNDEFINED
+    _valid_unit: str | Undefined | None = Undefined
     _threshold_type: NumericThresholdType
 
     def __init__(self, hass: HomeAssistant, config: TriggerConfig) -> None:
@@ -829,7 +829,7 @@ class EntityNumericalStateTriggerBase(EntityTriggerBase):
 
     def _is_valid_unit(self, unit: str | None) -> bool:
         """Check if the given unit is valid for this trigger."""
-        if isinstance(self._valid_unit, UndefinedType):
+        if isinstance(self._valid_unit, Undefined):
             return True
         return unit == self._valid_unit
 
@@ -1276,7 +1276,7 @@ def make_entity_origin_state_trigger(
 
 def make_entity_numerical_state_changed_trigger(
     domain_specs: Mapping[str, DomainSpec],
-    valid_unit: str | UndefinedType | None = UNDEFINED,
+    valid_unit: str | Undefined | None = Undefined,
     *,
     primary_entities_only: bool = True,
 ) -> type[EntityNumericalStateChangedTriggerBase]:
@@ -1294,7 +1294,7 @@ def make_entity_numerical_state_changed_trigger(
 
 def make_entity_numerical_state_crossed_threshold_trigger(
     domain_specs: Mapping[str, DomainSpec],
-    valid_unit: str | UndefinedType | None = UNDEFINED,
+    valid_unit: str | Undefined | None = Undefined,
     *,
     primary_entities_only: bool = True,
 ) -> type[EntityNumericalStateCrossedThresholdTriggerBase]:
@@ -1822,7 +1822,7 @@ async def async_initialize_triggers(
     domain: str,
     name: str,
     log_cb: Callable,
-    home_assistant_start: bool | UndefinedType = UNDEFINED,
+    home_assistant_start: bool | Undefined = Undefined,
     variables: TemplateVarsType = None,
     *,
     did_not_trigger: TriggerNotTriggeredAction | None = None,
@@ -1833,7 +1833,7 @@ async def async_initialize_triggers(
     invoked - for new-style triggers that support it - when a trigger evaluates
     a relevant change but reports it did not fire. Old-style triggers ignore it.
     """
-    if home_assistant_start is not UNDEFINED:
+    if home_assistant_start is not Undefined:
         report_usage(
             "passes `home_assistant_start` to `async_initialize_triggers`, which is "
             "deprecated and will be removed in Home Assistant 2027.8; the parameter "
