@@ -2,6 +2,7 @@
 
 import asyncio
 from collections.abc import Callable, Sequence
+import sys
 from unittest.mock import ANY, AsyncMock, MagicMock, Mock, call, patch
 
 import pytest
@@ -898,20 +899,37 @@ async def test_async_flash_silabs_firmware(hass: HomeAssistant) -> None:
     assert progress_callback.mock_calls == [call(0, 100), call(50, 100), call(100, 100)]
     assert after_flash_info == expected_firmware_info
 
-    # Both owning integrations/addons are stopped and restarted
-    assert owner1.temporarily_stop.mock_calls == [
-        call(hass),
-        # pylint: disable-next=unnecessary-dunder-call
-        call().__aenter__(ANY),
-        call().__aexit__(ANY, None, None, None),
-    ]
+    # pylint: disable-next=home-assistant-test-non-deterministic
+    if sys.version_info >= (3, 15):
+        # Both owning integrations/addons are stopped and restarted
+        assert owner1.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(),
+            call().__aexit__(None, None, None),
+        ]
 
-    assert owner2.temporarily_stop.mock_calls == [
-        call(hass),
-        # pylint: disable-next=unnecessary-dunder-call
-        call().__aenter__(ANY),
-        call().__aexit__(ANY, None, None, None),
-    ]
+        assert owner2.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(),
+            call().__aexit__(None, None, None),
+        ]
+    else:
+        # Both owning integrations/addons are stopped and restarted
+        assert owner1.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(ANY),
+            call().__aexit__(ANY, None, None, None),
+        ]
+
+        assert owner2.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(ANY),
+            call().__aexit__(ANY, None, None, None),
+        ]
 
 
 @pytest.mark.parametrize(
@@ -968,19 +986,35 @@ async def test_async_flash_silabs_firmware_flash_failure(
                 flasher_cls=mock_flasher_cls,
             )
 
-    # Both owning integrations/addons are stopped and restarted
-    assert owner1.temporarily_stop.mock_calls == [
-        call(hass),
-        # pylint: disable-next=unnecessary-dunder-call
-        call().__aenter__(ANY),
-        call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
-    ]
-    assert owner2.temporarily_stop.mock_calls == [
-        call(hass),
-        # pylint: disable-next=unnecessary-dunder-call
-        call().__aenter__(ANY),
-        call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
-    ]
+    # pylint: disable-next=home-assistant-test-non-deterministic
+    if sys.version_info >= (3, 15):
+        # Both owning integrations/addons are stopped and restarted
+        assert owner1.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(),
+            call().__aexit__(HomeAssistantError, exc.value, ANY),
+        ]
+        assert owner2.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(),
+            call().__aexit__(HomeAssistantError, exc.value, ANY),
+        ]
+    else:
+        # Both owning integrations/addons are stopped and restarted
+        assert owner1.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(ANY),
+            call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
+        ]
+        assert owner2.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(ANY),
+            call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
+        ]
 
 
 async def test_async_flash_silabs_firmware_probe_failure(hass: HomeAssistant) -> None:
@@ -1028,19 +1062,35 @@ async def test_async_flash_silabs_firmware_probe_failure(hass: HomeAssistant) ->
                 flasher_cls=mock_flasher_cls,
             )
 
-    # Both owning integrations/addons are stopped and restarted
-    assert owner1.temporarily_stop.mock_calls == [
-        call(hass),
-        # pylint: disable-next=unnecessary-dunder-call
-        call().__aenter__(ANY),
-        call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
-    ]
-    assert owner2.temporarily_stop.mock_calls == [
-        call(hass),
-        # pylint: disable-next=unnecessary-dunder-call
-        call().__aenter__(ANY),
-        call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
-    ]
+    # pylint: disable-next=home-assistant-test-non-deterministic
+    if sys.version_info >= (3, 15):
+        # Both owning integrations/addons are stopped and restarted
+        assert owner1.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(),
+            call().__aexit__(HomeAssistantError, exc.value, ANY),
+        ]
+        assert owner2.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(),
+            call().__aexit__(HomeAssistantError, exc.value, ANY),
+        ]
+    else:
+        # Both owning integrations/addons are stopped and restarted
+        assert owner1.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(ANY),
+            call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
+        ]
+        assert owner2.temporarily_stop.mock_calls == [
+            call(hass),
+            # pylint: disable-next=unnecessary-dunder-call
+            call().__aenter__(ANY),
+            call().__aexit__(ANY, HomeAssistantError, exc.value, ANY),
+        ]
 
 
 @pytest.mark.parametrize(
