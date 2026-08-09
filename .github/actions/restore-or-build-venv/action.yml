@@ -105,6 +105,10 @@ runs:
         python -m venv venv
         . venv/bin/activate
         python --version
+
+        # https://github.com/ormsgpack/ormsgpack/ # 2026-07-28
+        pip install git+https://github.com/ormsgpack/ormsgpack@5ffc9f19397d5a5ddf208e25bd3852822e2d515e
+
         PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements.txt
         PIP_CACHE_DIR=$PIP_CACHE pip install -r requirements_all.txt -r requirements_test.txt
         PIP_CACHE_DIR=$PIP_CACHE pip install -e . --config-settings editable_mode=compat
