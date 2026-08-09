@@ -4,6 +4,7 @@
   "codeowners": ["@Sholofly", "@reinder83"],
   "config_flow": true,
   "dependencies": ["application_credentials"],
+  "disabled": "scipy can't be built for Python 3.15",
   "documentation": "https://www.home-assistant.io/integrations/geocaching",
   "integration_type": "service",
   "iot_class": "cloud_polling",

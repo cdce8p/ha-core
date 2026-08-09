@@ -1095,9 +1095,6 @@ genie-partner-sdk==1.0.11
 # homeassistant.components.geniushub
 geniushub-client==0.7.4
 
-# homeassistant.components.geocaching
-geocachingapi==0.3.0
-
 # homeassistant.components.aprs
 geopy==2.3.0
 

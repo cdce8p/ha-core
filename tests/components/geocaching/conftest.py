@@ -1,14 +1,19 @@
 """Fixtures for the Geocaching integration tests."""
 
 from collections.abc import Generator
+import sys
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from geocachingapi import GeocachingStatus
 import pytest
 
-from homeassistant.components.geocaching.const import DOMAIN
-
 from tests.common import MockConfigEntry
+
+if sys.version_info < (3, 15):
+    from geocachingapi import GeocachingStatus
+
+    from homeassistant.components.geocaching.const import DOMAIN
+else:
+    collect_ignore_glob = ["test_*.py"]
 
 
 @pytest.fixture

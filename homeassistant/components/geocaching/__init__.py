@@ -1,5 +1,7 @@
 """The Geocaching integration."""
 
+import sys
+
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
@@ -9,8 +11,9 @@ from homeassistant.helpers.config_entry_oauth2_flow import (
     async_get_config_entry_implementation,
 )
 
-from .const import DOMAIN
-from .coordinator import GeocachingConfigEntry, GeocachingDataUpdateCoordinator
+if sys.version_info < (3, 15):
+    from .const import DOMAIN
+    from .coordinator import GeocachingConfigEntry, GeocachingDataUpdateCoordinator
 
 PLATFORMS = [Platform.SENSOR]
 
