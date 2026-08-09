@@ -88,6 +88,7 @@ runs:
           libswresample-dev
           libswscale-dev
           libudev-dev
+          nasm
         version: ${{ inputs.apt-cache-version }}
         execute_install_scripts: true
     - name: Create Python virtual environment
