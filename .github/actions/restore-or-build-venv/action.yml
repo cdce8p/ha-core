@@ -80,6 +80,8 @@ runs:
           ffmpeg
           libturbojpeg
           libxml2-utils
+          libxslt1-dev
+          libopenblas-dev
           libavcodec-dev
           libavdevice-dev
           libavfilter-dev
@@ -88,6 +90,7 @@ runs:
           libswresample-dev
           libswscale-dev
           libudev-dev
+          nasm
         version: ${{ inputs.apt-cache-version }}
         execute_install_scripts: true
     - name: Create Python virtual environment
