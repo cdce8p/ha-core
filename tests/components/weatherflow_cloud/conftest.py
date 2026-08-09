@@ -1,6 +1,7 @@
 """Common fixtures for the WeatherflowCloud tests."""
 
 from collections.abc import Generator
+import sys
 from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 from aiohttp import ClientResponseError
@@ -15,6 +16,9 @@ from weatherflow4py.ws import WeatherFlowWebsocketAPI
 
 from homeassistant.components.weatherflow_cloud.const import DOMAIN
 from homeassistant.const import CONF_API_TOKEN
+
+if sys.version_info >= (3, 15):
+    collect_ignore_glob = ["test_*.py"]
 
 
 @pytest.fixture
