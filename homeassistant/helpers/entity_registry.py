@@ -17,7 +17,7 @@ from datetime import datetime, timedelta
 from enum import Enum, StrEnum
 import logging
 import time
-from typing import TYPE_CHECKING, Any, Literal, NotRequired, TypedDict, override
+from typing import TYPE_CHECKING, Any, Literal, NotRequired, TypedDict, cast, override
 
 import attr
 import probatio
@@ -1723,8 +1723,7 @@ class EntityRegistry(BaseRegistry):
 
         # Assign results of 'none_if_undefined' calls to a temporary variable first
         # to work around: https://github.com/python/mypy/issues/22334
-        device_id_none = none_if_undefined(device_id)
-        device_id = device_id_none
+        device_id = cast("str | None", none_if_undefined(device_id))
         has_entity_name_none = none_if_undefined(has_entity_name)
         has_entity_name_bool = has_entity_name_none or False
         object_id_base_none = none_if_undefined(object_id_base)
@@ -1748,8 +1747,7 @@ class EntityRegistry(BaseRegistry):
 
         # Assign results of 'none_if_undefined' calls to a temporary variable first
         # to work around: https://github.com/python/mypy/issues/22334
-        original_name_none = none_if_undefined(original_name)
-        original_name = original_name_none
+        original_name = cast("str | None", none_if_undefined(original_name))
         original_name_unprefixed = _unprefix_original_name(
             self.hass, original_name, has_entity_name_bool, device_id
         )
