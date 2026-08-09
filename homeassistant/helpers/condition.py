@@ -979,7 +979,7 @@ class EntityNumericalConditionBase(EntityConditionBase):
 
     def _is_valid_unit(self, unit: str | None) -> bool:
         """Check if the given unit is valid for this condition."""
-        if isinstance(self._valid_unit, Undefined):
+        if self._valid_unit is Undefined:
             return True
         return unit == self._valid_unit
 
