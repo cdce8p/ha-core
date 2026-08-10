@@ -281,7 +281,6 @@ jobs:
       contents: read
     needs: [info]
     if: |
-      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -385,7 +384,6 @@ jobs:
       - info
       - base
     if: |
-      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
@@ -543,7 +541,6 @@ jobs:
       - info
       - base
     if: |
-      false &&
       (github.event.inputs.pylint-only != 'true'
         && github.event.inputs.mypy-only != 'true'
         || github.event.inputs.audit-licenses-only == 'true')
@@ -596,7 +593,6 @@ jobs:
       - base
     timeout-minutes: 20
     if: |
-      false &&
       github.event.inputs.mypy-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.pylint-only == 'true'
@@ -643,7 +639,6 @@ jobs:
       - base
     timeout-minutes: 20
     if: |
-      false &&
       (github.event.inputs.mypy-only != 'true'
         && github.event.inputs.audit-licenses-only != 'true'
         || github.event.inputs.pylint-only == 'true')
@@ -690,7 +685,6 @@ jobs:
       - info
       - base
     if: |
-      false &&
       github.event.inputs.pylint-only != 'true'
       && github.event.inputs.audit-licenses-only != 'true'
       || github.event.inputs.mypy-only == 'true'
@@ -1729,7 +1723,7 @@ jobs:
     runs-on: *runs-on-ubuntu
     needs:
       - info
-      # - audit-licenses
+      - audit-licenses
       - installed-packages
       - pytest-full
     timeout-minutes: 5
