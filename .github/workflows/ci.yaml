@@ -37,7 +37,7 @@ on:
         type: boolean
       mypy-ref:
         description: "Mypy ref to use for type checking"
-        default: "sentinel-narrowing"
+        default: "dev"
         type: string
 
 env:
