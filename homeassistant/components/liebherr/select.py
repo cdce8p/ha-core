@@ -3,7 +3,7 @@
 from collections.abc import Callable, Coroutine
 from dataclasses import dataclass, replace
 from enum import StrEnum
-from typing import TYPE_CHECKING, Any, cast, override
+from typing import TYPE_CHECKING, Any, override
 
 from pyliebherrhomeapi import (
     BioFreshPlusControl,
@@ -249,5 +249,5 @@ class LiebherrSelectEntity(LiebherrEntity, SelectEntity):
         await self._async_send_command(
             self.entity_description.set_fn(self.coordinator, self._zone_id, mode),
             control,
-            lambda control: _replace_mode(cast(SelectControl, control), mode),
+            lambda control: _replace_mode(control, mode),
         )
