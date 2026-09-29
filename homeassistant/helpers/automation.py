@@ -133,7 +133,7 @@ def move_options_fields_to_top_level(
 
     new_config.update(options)
 
-    return new_config
+    return new_config  # type: ignore[no-any-return]
 
 
 @dataclass(frozen=True, kw_only=True)

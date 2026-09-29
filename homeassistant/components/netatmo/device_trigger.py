@@ -84,7 +84,7 @@ async def async_validate_trigger_config(
     if device.model not in DEVICES or trigger not in DEVICES[device.model]:
         raise InvalidDeviceAutomationConfig(f"Unsupported model {device.model}")
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_get_triggers(

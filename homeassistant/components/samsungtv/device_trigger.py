@@ -49,7 +49,7 @@ async def async_validate_trigger_config(
                 translation_placeholders={"device_id": device_id},
             ) from err
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_get_triggers(
