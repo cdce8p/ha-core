@@ -846,7 +846,7 @@ def default_alarm_control_panel_code(config: dict[str, Any]) -> str:
         # Remove magic value for remote code validation
         return ""
 
-    return code
+    return code  # type: ignore[no-any-return]
 
 
 @callback

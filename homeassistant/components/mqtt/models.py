@@ -395,7 +395,7 @@ class MqttValueTemplate:
                     payload=payload,
                     entity_id=self._entity.entity_id if self._entity else None,
                 ) from exc
-            return rendered_payload
+            return rendered_payload  # type: ignore[no-any-return]
 
         _LOGGER.debug(
             (
@@ -421,7 +421,7 @@ class MqttValueTemplate:
                 payload=payload,
                 entity_id=self._entity.entity_id if self._entity else None,
             ) from exc
-        return rendered_payload
+        return rendered_payload  # type: ignore[no-any-return]
 
 
 class EntityTopicState:

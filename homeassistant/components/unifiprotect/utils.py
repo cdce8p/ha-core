@@ -82,7 +82,7 @@ def async_get_devices_by_type(
     """Get devices by type."""
     devices: dict[str, ProtectAdoptableDeviceModel]
     devices = getattr(bootstrap, device_type.devices_key)
-    return devices
+    return devices  # type: ignore[no-any-return]
 
 
 @callback
