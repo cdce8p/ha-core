@@ -75,7 +75,7 @@ class FuelBecameLowTrigger(Trigger):
             if entry is None:
                 raise probatio.Invalid(f"Device {device_id} is not a Fumis stove")
 
-        return config
+        return config  # type: ignore[no-any-return]
 
     def __init__(self, hass: HomeAssistant, config: TriggerConfig) -> None:
         """Initialize the trigger."""
