@@ -63,7 +63,7 @@ async def _get_services(hass: HomeAssistant) -> list[dict[str, Any]]:
     services: list[dict[str, Any]]
     if DATA_SERVICES in hass.data:
         services = hass.data[DATA_SERVICES]
-        return services
+        return services  # type: ignore[no-any-return]
 
     try:
         services = await account_link.async_fetch_available_services(
