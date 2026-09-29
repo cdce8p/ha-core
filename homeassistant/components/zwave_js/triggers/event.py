@@ -169,7 +169,7 @@ class EventTrigger(Trigger):
                 raise probatio.Invalid(f"Config entry '{entry_id}' not found")
 
         if async_bypass_dynamic_config_validation(hass, options):
-            return config
+            return config  # type: ignore[no-any-return]
 
         if options[ATTR_EVENT_SOURCE] == "node" and not async_get_nodes_from_targets(
             hass, options
@@ -178,7 +178,7 @@ class EventTrigger(Trigger):
                 f"No nodes found for given {ATTR_DEVICE_ID}s or {ATTR_ENTITY_ID}s."
             )
 
-        return config
+        return config  # type: ignore[no-any-return]
 
     def __init__(self, hass: HomeAssistant, config: TriggerConfig) -> None:
         """Initialize trigger."""
