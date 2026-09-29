@@ -254,7 +254,7 @@ class ExposedEntities:
         if assistant in registry_entry.options:
             if "should_expose" in registry_entry.options[assistant]:
                 should_expose = registry_entry.options[assistant]["should_expose"]
-                return should_expose
+                return should_expose  # type: ignore[no-any-return]
 
         should_expose = self._default_should_expose(
             assistant, entity_id, registry_entry
@@ -280,7 +280,7 @@ class ExposedEntities:
         ) and assistant in exposed_entity.assistants:
             if "should_expose" in exposed_entity.assistants[assistant]:
                 should_expose = exposed_entity.assistants[assistant]["should_expose"]
-                return should_expose
+                return should_expose  # type: ignore[no-any-return]
 
         should_expose = self._default_should_expose(assistant, entity_id, None)
 
