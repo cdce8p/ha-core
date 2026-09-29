@@ -2509,8 +2509,8 @@ class UnitOfMeasurementSelector(Selector[UnitOfMeasurementSelectorConfig]):
             # If there is no device class or state class units limitation,
             # any (custom) unit is accepted
             unit = probatio.Any(None, str)(data)
-            return unit
+            return unit  # type: ignore[no-any-return]
 
         units_schema = probatio.In(valid_units_set)
         unit = units_schema(data)
-        return unit
+        return unit  # type: ignore[no-any-return]

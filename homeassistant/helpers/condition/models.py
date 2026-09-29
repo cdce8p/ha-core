@@ -262,7 +262,7 @@ class Condition(ConditionChecker):
             if key in specific_config:
                 complete_config[key] = specific_config[key]
 
-        return complete_config
+        return complete_config  # type: ignore[no-any-return]
 
     @classmethod
     @abc.abstractmethod
