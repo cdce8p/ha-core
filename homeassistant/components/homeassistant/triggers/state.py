@@ -91,7 +91,7 @@ async def async_validate_trigger_config(
         registry, cv.entity_ids_or_uuids(config[CONF_ENTITY_ID])
     )
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_attach_trigger(

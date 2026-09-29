@@ -182,7 +182,7 @@ class TimerStorageCollection(collection.DictStorageCollection):
         data = self.CREATE_UPDATE_SCHEMA(data)
         # make duration JSON serializeable
         data[CONF_DURATION] = _format_timedelta(data[CONF_DURATION])
-        return data
+        return data  # type: ignore[no-any-return]
 
     @callback
     @override

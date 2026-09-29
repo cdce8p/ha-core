@@ -114,13 +114,13 @@ class _ZwaveNodeCondition(Condition):
         config = cls._schema(config)
         device_ids = config[CONF_OPTIONS][ATTR_DEVICE_ID]
         if async_bypass_dynamic_config_validation(hass, {ATTR_DEVICE_ID: device_ids}):
-            return config
+            return config  # type: ignore[no-any-return]
 
         nodes = _async_resolve_nodes(hass, device_ids)
         if not nodes:
             raise probatio.Invalid("No nodes found for the given devices")
         cls._validate_nodes(nodes, config[CONF_OPTIONS])
-        return config
+        return config  # type: ignore[no-any-return]
 
     @classmethod
     def _validate_nodes(cls, nodes: set[ZwaveNode], options: dict[str, Any]) -> None:

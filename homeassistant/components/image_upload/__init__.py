@@ -93,7 +93,7 @@ class ImageStorageCollection(collection.DictStorageCollection):
         data["name"] = uploaded_file.filename
         data["uploaded_at"] = dt_util.utcnow().isoformat()
 
-        return data
+        return data  # type: ignore[no-any-return]
 
     def _move_data(self, data: dict[str, Any]) -> int:
         """Move data."""

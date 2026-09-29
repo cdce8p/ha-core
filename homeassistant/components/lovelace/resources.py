@@ -130,7 +130,7 @@ class ResourceStorageCollection(collection.DictStorageCollection):
         """Validate the config is valid."""
         data = self.CREATE_SCHEMA(data)
         data[CONF_TYPE] = data.pop(CONF_RESOURCE_TYPE_WS)
-        return data
+        return data  # type: ignore[no-any-return]
 
     @callback
     @override
