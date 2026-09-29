@@ -355,7 +355,7 @@ def async_validate_entity_schema(
             registry, config[CONF_ENTITY_ID]
         )
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 def handle_device_errors(

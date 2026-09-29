@@ -720,7 +720,7 @@ async def async_validate_trigger_config(
             f"{device} ({config[CONF_DEVICE_ID]})"
         )
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_attach_trigger(

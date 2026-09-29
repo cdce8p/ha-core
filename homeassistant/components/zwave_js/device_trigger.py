@@ -220,7 +220,7 @@ async def async_validate_trigger_config(
         ) from err
 
     if bypass_dynamic_config_validation:
-        return config
+        return config  # type: ignore[no-any-return]
 
     trigger_type = config[CONF_TYPE]
     if get_trigger_platform_from_type(trigger_type) == VALUE_UPDATED_PLATFORM_TYPE:
@@ -230,7 +230,7 @@ async def async_validate_trigger_config(
         except probatio.Invalid as err:
             raise InvalidDeviceAutomationConfig(err.msg) from err
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 def get_trigger_platform_from_type(trigger_type: str) -> str:

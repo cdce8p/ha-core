@@ -97,7 +97,7 @@ async def async_validate_trigger_config(
             f"BTHome trigger {event_type} is not valid for device_id '{device_id}'"
         )
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_get_triggers(

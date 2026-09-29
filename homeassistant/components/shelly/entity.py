@@ -590,7 +590,7 @@ class ShellyRpcAttributeEntity(ShellyRpcEntity, Entity):
         else:
             self._last_value = self.sub_status
 
-        return self._last_value
+        return self._last_value  # type: ignore[no-any-return]
 
     @property
     @override
