@@ -105,7 +105,7 @@ async def async_validate_condition_config(
         ) from err
 
     if bypass_dynamic_config_validation:
-        return config
+        return config  # type: ignore[no-any-return]
 
     if config[CONF_TYPE] == VALUE_TYPE:
         try:
@@ -114,7 +114,7 @@ async def async_validate_condition_config(
         except probatio.Invalid as err:
             raise InvalidDeviceAutomationConfig(err.msg) from err
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_get_conditions(

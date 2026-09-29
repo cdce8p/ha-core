@@ -93,7 +93,7 @@ async def async_validate_trigger_config(
     options = config[CONF_OPTIONS]
 
     if async_bypass_dynamic_config_validation(hass, options):
-        return config
+        return config  # type: ignore[no-any-return]
 
     if not async_get_nodes_from_targets(hass, options):
         raise probatio.Invalid(
@@ -128,7 +128,7 @@ async def async_validate_trigger_config(
         raise probatio.Invalid(
             f"Endpoint {endpoint} is not covered by any targeted endpoint child device"
         )
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_attach_trigger(
