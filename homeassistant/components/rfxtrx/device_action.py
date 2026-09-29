@@ -82,7 +82,7 @@ async def async_validate_action_config(
             f"Subtype {sub_type} not found in device commands {commands}"
         )
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_call_action_from_config(

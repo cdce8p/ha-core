@@ -293,7 +293,7 @@ class PersonStorageCollection(collection.DictStorageCollection):
         if (user_id := data.get(CONF_USER_ID)) is not None:
             await self._validate_user_id(user_id)
 
-        return data
+        return data  # type: ignore[no-any-return]
 
     @callback
     @override

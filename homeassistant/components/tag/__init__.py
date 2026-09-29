@@ -151,7 +151,7 @@ class TagStorageCollection(collection.DictStorageCollection):
         # Create entity in entity_registry when creating the tag
         # This is done early to store name only once in entity registry
         _create_entry(self.entity_registry, data[CONF_ID], data.get(CONF_NAME))
-        return data
+        return data  # type: ignore[no-any-return]
 
     @callback
     @override

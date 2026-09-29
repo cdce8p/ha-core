@@ -206,7 +206,7 @@ class InputSelectStorageCollection(collection.DictStorageCollection):
     ) -> dict[str, Any]:
         """Return a new updated data object."""
         update_data = self.CREATE_UPDATE_SCHEMA(update_data)
-        return {CONF_ID: item[CONF_ID]} | update_data
+        return {CONF_ID: item[CONF_ID]} | update_data  # type: ignore[no-any-return]
 
 
 # pylint: disable-next=home-assistant-enforce-class-module

@@ -90,13 +90,13 @@ async def async_validate_trigger_config(
     options = config[CONF_OPTIONS]
 
     if async_bypass_dynamic_config_validation(hass, options):
-        return config
+        return config  # type: ignore[no-any-return]
 
     if not async_get_nodes_from_targets(hass, options):
         raise probatio.Invalid(
             f"No nodes found for given {ATTR_DEVICE_ID}s or {ATTR_ENTITY_ID}s."
         )
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_attach_trigger(
