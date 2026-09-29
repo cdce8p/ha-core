@@ -102,7 +102,7 @@ async def async_validate_trigger_config(
             f"Subtype {sub_type} not found in device triggers {commands}"
         )
 
-    return config
+    return config  # type: ignore[no-any-return]
 
 
 async def async_attach_trigger(
