@@ -159,7 +159,6 @@ class MealieShoppingListTodoListEntity(MealieEntity, TodoListEntity):
             parsed_ingredient = await self.coordinator.client.parse_ingredient(
                 item_summary.strip(), parser=self.parser
             )
-        # pylint: disable-next=home-assistant-action-swallowed-exception
         except MealieError as exception:
             LOGGER.warning(
                 "Unable to parse to-do item %s: %s",
