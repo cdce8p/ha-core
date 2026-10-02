@@ -1,17 +1,23 @@
 """Define fixtures available for all tests."""
 
+import sys
 from unittest.mock import patch
 
 import pytest
-from surepy import MESTART_RESOURCE
 
-from homeassistant.components.surepetcare.const import DOMAIN
 from homeassistant.const import CONF_PASSWORD, CONF_TOKEN, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 
 from . import MOCK_API_DATA
 
 from tests.common import MockConfigEntry
+
+if sys.version_info >= (3, 15):
+    collect_ignore_glob = ["test_*.py"]
+else:
+    from surepy import MESTART_RESOURCE
+
+    from homeassistant.components.surepetcare.const import DOMAIN
 
 
 async def _mock_call(method, resource):
