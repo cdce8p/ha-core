@@ -65,7 +65,7 @@ class UpCloudServerEntity(CoordinatorEntity[UpCloudDataUpdateCoordinator]):
     def is_on(self) -> bool:
         """Return true if the server is on."""
         try:
-            return STATE_MAP.get(self._server.state, self._server.state) == STATE_ON  # type: ignore[no-any-return]
+            return STATE_MAP.get(self._server.state, self._server.state) == STATE_ON
         except AttributeError:
             return False
 
