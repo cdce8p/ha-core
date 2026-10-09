@@ -62,7 +62,7 @@ class SurePetcareDataCoordinator(DataUpdateCoordinator[dict[int, SurepyEntity]])
     async def _async_update_data(self) -> dict[int, SurepyEntity]:
         """Get the latest data from Sure Petcare."""
         try:
-            return await self.surepy.get_entities(refresh=True)
+            return await self.surepy.get_entities(refresh=True)  # type: ignore[no-any-return]
         except SurePetcareAuthenticationError as err:
             raise ConfigEntryAuthFailed("Invalid username/password") from err
         except SurePetcareError as err:
