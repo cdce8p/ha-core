@@ -402,7 +402,6 @@ def make_10ms_chunk(header: bytes) -> bytes:
 @pytest.fixture
 def mock_chat_session(hass: HomeAssistant) -> Generator[chat_session.ChatSession]:
     """Mock the ulid of chat sessions."""
-    # pylint: disable-next=contextmanager-generator-missing-cleanup
     with (
         patch(
             "homeassistant.helpers.chat_session.secure_ulid_now",
