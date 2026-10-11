@@ -32,7 +32,7 @@ async def async_get_config_entry_diagnostics(
             "dhcp_available": state.status.dhcp_available,
             "protection_enabled": state.status.protection_enabled,
             "protection_resumes_in": (
-                str(resumes_in)
+                str(resumes_in)  # pylint: disable=used-before-assignment  # false-positive
                 if (resumes_in := state.status.protection_resumes_in)
                 else None
             ),
