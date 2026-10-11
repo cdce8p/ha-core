@@ -248,7 +248,7 @@ async def test_async_iterator_reader_aclose_not_supported(
     """Test aclose of a stream which can't be closed."""
 
     class Stream:
-        def __aiter__(self) -> Stream:
+        def __aiter__(self) -> Stream:  # pylint: disable=undefined-variable  # false-positive
             return self
 
         async def __anext__(self) -> bytes:
