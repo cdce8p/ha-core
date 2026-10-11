@@ -57,6 +57,7 @@ async def async_get_config_entry_diagnostics(
                 else None
             ),
             "new_entries": (
+                # pylint: disable-next=used-before-assignment
                 len(data) if (data := coordinator.data_or_none) is not None else None
             ),
         },
