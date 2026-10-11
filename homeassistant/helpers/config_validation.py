@@ -1678,7 +1678,6 @@ AND_CONDITION_SCHEMA = probatio.Schema(
         probatio.Required(CONF_CONDITION): "and",
         probatio.Required(CONF_CONDITIONS): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
@@ -1689,7 +1688,6 @@ AND_CONDITION_SHORTHAND_SCHEMA = probatio.Schema(
         **CONDITION_BASE_SCHEMA,
         probatio.Required("and"): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
@@ -1701,7 +1699,6 @@ OR_CONDITION_SCHEMA = probatio.Schema(
         probatio.Required(CONF_CONDITION): "or",
         probatio.Required(CONF_CONDITIONS): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
@@ -1712,7 +1709,6 @@ OR_CONDITION_SHORTHAND_SCHEMA = probatio.Schema(
         **CONDITION_BASE_SCHEMA,
         probatio.Required("or"): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
@@ -1724,7 +1720,6 @@ NOT_CONDITION_SCHEMA = probatio.Schema(
         probatio.Required(CONF_CONDITION): "not",
         probatio.Required(CONF_CONDITIONS): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
@@ -1735,7 +1730,6 @@ NOT_CONDITION_SHORTHAND_SCHEMA = probatio.Schema(
         **CONDITION_BASE_SCHEMA,
         probatio.Required("not"): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
@@ -1805,7 +1799,6 @@ CONDITION_SHORTHAND_SCHEMA = probatio.Schema(
         **CONDITION_BASE_SCHEMA,
         probatio.Required(CONF_CONDITION): probatio.All(
             ensure_list,
-            # pylint: disable-next=unnecessary-lambda
             [lambda value: CONDITION_SCHEMA(value)],
         ),
     }
