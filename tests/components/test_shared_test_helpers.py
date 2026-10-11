@@ -74,7 +74,7 @@ class _InitNoSuperTrigger(_ValidTrigger):
 
     def __init__(self, hass: HomeAssistant, config: TriggerConfig) -> None:
         """Fail to delegate to super."""
-        # pylint: disable=super-init-not-called,unused-argument
+        # pylint: disable=super-init-not-called
         self._hass = hass
 
 
