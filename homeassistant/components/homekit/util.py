@@ -814,7 +814,7 @@ def async_all_homekit_instances(hass: HomeAssistant) -> list[HomeKit]:
     """All active HomeKit instances."""
     hk_data: HomeKitEntryData | None
     return [
-        hk_data.homekit
+        hk_data.homekit  # pylint: disable=undefined-variable  # false positive
         for entry in hass.config_entries.async_entries(DOMAIN)
         if (hk_data := getattr(entry, "runtime_data", None))
     ]
