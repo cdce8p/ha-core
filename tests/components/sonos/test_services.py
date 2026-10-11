@@ -118,7 +118,7 @@ async def instant_timeout(*args, **kwargs) -> None:
     """Mock a timeout error."""
     raise TimeoutError
     # This is never reached, but is needed to satisfy the asynccontextmanager
-    yield  # pylint: disable=unreachable
+    yield
 
 
 async def test_media_player_join_timeout(
