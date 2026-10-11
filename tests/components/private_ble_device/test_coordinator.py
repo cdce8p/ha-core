@@ -19,7 +19,6 @@ OTHER_IRK = "11111111111111111111111111111111"
 
 def _unavailable_callback_count(address: str) -> int:
     """Return how many non-connectable unavailable callbacks track an address."""
-    # pylint: disable-next=protected-access
     return len(_get_manager()._unavailable_callbacks.get(address, ()))
 
 
