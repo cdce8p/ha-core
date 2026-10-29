@@ -50,7 +50,6 @@ class MockAgent(conversation.AbstractConversationAgent):
 @pytest.fixture
 async def mock_chat_log(hass: HomeAssistant) -> AsyncGenerator[MockChatLog]:
     """Return mock chat logs."""
-    # pylint: disable-next=contextmanager-generator-missing-cleanup
     with (
         patch(
             "homeassistant.components.conversation.chat_log.ChatLog",

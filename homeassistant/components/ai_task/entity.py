@@ -70,7 +70,6 @@ class AITaskEntity(RestoreEntity):
         if isinstance(task, GenDataTask):
             user_llm_hass_api = task.llm_api
 
-        # pylint: disable-next=contextmanager-generator-missing-cleanup
         with (
             async_get_chat_log(
                 self.hass,
