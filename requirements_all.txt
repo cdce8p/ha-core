@@ -1809,7 +1809,7 @@ nice-go==1.0.3
 niluclient==0.1.2
 
 # homeassistant.components.noaa_tides
-noaa-coops==0.4.0
+noaa-coops==1.0.0
 
 # homeassistant.components.nfandroidtv
 notifications-android-tv==0.1.5
