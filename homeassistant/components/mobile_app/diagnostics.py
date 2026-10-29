@@ -1,5 +1,4 @@
 """Diagnostics support for Mobile App."""
-# pylint: disable=home-assistant-use-runtime-data  # Uses legacy hass.data[DOMAIN] pattern
 
 from collections import Counter
 from typing import Any
