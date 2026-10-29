@@ -68,10 +68,6 @@ PACKAGE_CHECK_VERSION_RANGE_EXCEPTIONS: dict[str, dict[str, set[str]]] = {
         # geocachingapi > reverse_geocode > scipy > numpy
         "scipy": {"numpy"}
     },
-    "noaa_tides": {
-        # https://github.com/GClunies/noaa_coops/pull/69
-        "noaa-coops": {"pandas"}
-    },
     "smarty": {
         # Current has an upper bound on major >=3.11.0,<4.0.0
         "pysmarty2": {"pymodbus"}
