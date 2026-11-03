@@ -778,7 +778,7 @@ async def test_stream_error_handling(
 
     async def stream(*args, **kwargs) -> AsyncGenerator[dict[str, Any]]:
         raise error
-        yield  # pylint: disable=unreachable
+        yield
 
     with patch("ollama.AsyncClient.chat", side_effect=stream):
         result = await conversation.async_converse(
