@@ -23,4 +23,4 @@ async def async_get_config_entry_diagnostics(
     coordinator = entry.runtime_data
     # Round-trip via JSON to trigger serialization
     data = json.loads(coordinator.data.to_json())
-    return async_redact_data(data, TO_REDACT)
+    return async_redact_data(data, TO_REDACT)  # type: ignore[no-any-return]

@@ -71,7 +71,7 @@ def _redact_runtime_record(
     raw_data: Mapping[str, Any], replacements: Mapping[str, str]
 ) -> dict[str, Any]:
     """Apply identifier replacement and key redaction to runtime data."""
-    return async_redact_data(
+    return async_redact_data(  # type: ignore[no-any-return]
         _replace_identifiers(raw_data, replacements),
         RUNTIME_TO_REDACT,
     )
