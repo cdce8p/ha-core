@@ -65,7 +65,9 @@ def validate_entity_data(entity_data: dict) -> dict:
 
     Return validated data or raise EntityStoreValidationException.
     """
-    return validate_config_store_data(ENTITY_STORE_DATA_SCHEMA, entity_data)
+    return validate_config_store_data(  # type: ignore[no-any-return]
+        ENTITY_STORE_DATA_SCHEMA, entity_data
+    )
 
 
 class EntityStoreValidationException(Exception):

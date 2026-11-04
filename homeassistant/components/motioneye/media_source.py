@@ -226,7 +226,7 @@ class MotionEyeMediaSource(MediaSource):
         data = identifier.split("#", 3)
         return cast(
             tuple[str | None, str | None, str | None, str | None],
-            tuple(data + base)[:4],  # type: ignore[operator]
+            tuple(data + base)[:4],
         )
 
     @override

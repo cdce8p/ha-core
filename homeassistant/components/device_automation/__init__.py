@@ -231,7 +231,7 @@ async def _async_get_device_automations_from_domain(
     automation_type: DeviceAutomationType,
     device_ids: Iterable[str],
     return_exceptions: bool,
-) -> list[list[dict[str, Any]] | Exception]:
+) -> list[list[dict[str, Any]] | BaseException]:
     """List device automations."""
     try:
         platform = await async_get_device_automation_platform(
@@ -242,7 +242,7 @@ async def _async_get_device_automations_from_domain(
 
     function_name = automation_type.value.get_automations_func
 
-    return await asyncio.gather(  # type: ignore[no-any-return]
+    return await asyncio.gather(
         *(
             getattr(platform, function_name)(hass, device_id)
             for device_id in device_ids
@@ -302,7 +302,7 @@ async def async_get_device_automations(
                 device_results, InvalidDeviceAutomationConfig
             ):
                 continue
-            if isinstance(device_results, Exception):
+            if isinstance(device_results, BaseException):
                 logging.getLogger(__name__).error(
                     "Unexpected error fetching device %ss",
                     automation_type.name.lower(),

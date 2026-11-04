@@ -129,7 +129,7 @@ def redact_all(
     """Redact sensitive data."""
     _data = redact_keys(data, ids)
     _data = redact_values(_data, ids)
-    return async_redact_data(_data, to_redact)
+    return async_redact_data(_data, to_redact)  # type: ignore[no-any-return]
 
 
 async def async_get_config_entry_diagnostics(

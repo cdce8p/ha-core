@@ -106,7 +106,7 @@ class AmcrestCam(Camera):
         self._motion_recording_enabled: bool | None = None
         self._color_bw: str | None = None
         self._rtsp_url: str | None = None
-        self._snapshot_task: asyncio.tasks.Task | None = None
+        self._snapshot_task: asyncio.tasks.Task[bytes | None] | None = None
         self._unsub_dispatcher: list[Callable[[], None]] = []
 
     def _check_snapshot_ok(self) -> None:
