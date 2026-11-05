@@ -4519,6 +4519,7 @@ class MQTTOptionsFlowHandler(OptionsFlow):
         fields[
             probatio.Optional(
                 "birth_enable",
+                # pylint: disable-next=consider-rewriting-conditional
                 default=CONF_BIRTH_MESSAGE not in options_config
                 or options_config[CONF_BIRTH_MESSAGE] != {},
             )
@@ -4542,6 +4543,7 @@ class MQTTOptionsFlowHandler(OptionsFlow):
         fields[
             probatio.Optional(
                 "will_enable",
+                # pylint: disable-next=consider-rewriting-conditional
                 default=CONF_WILL_MESSAGE not in options_config
                 or options_config[CONF_WILL_MESSAGE] != {},
             )

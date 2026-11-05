@@ -84,6 +84,7 @@ class ModbusRegisterSensor(ModbusStructEntity, RestoreSensor, SensorEntity):
         self._attr_native_unit_of_measurement = entry.get(CONF_UNIT_OF_MEASUREMENT)
         self._attr_state_class = entry.get(CONF_STATE_CLASS)
         self._attr_device_class = entry.get(CONF_DEVICE_CLASS)
+        # pylint: disable-next=consider-rewriting-conditional
         if self._precision > 0 or self._scale != int(self._scale):
             self._value_is_int = False
         if self._precision > 0 and self._data_type not in ["string", "custom"]:
