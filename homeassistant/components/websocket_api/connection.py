@@ -276,6 +276,7 @@ class ActiveConnection:
         if (
             # Not using isinstance as we don't care about children
             # as these are always coming from JSON
+            # pylint: disable-next=consider-rewriting-conditional
             type(msg) is not dict
             or (
                 not (cur_id := msg.get("id"))
