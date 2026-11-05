@@ -3,7 +3,7 @@
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 import logging
-from typing import override
+from typing import TYPE_CHECKING, override
 
 from goodwe import Inverter, InverterError
 
@@ -174,6 +174,8 @@ class InverterNumberEntity(NumberEntity):
         # Larger inverters can export more than the default maximum; inverter
         # families that don't report their rated power leave it at 0
         if description.native_unit_of_measurement == UnitOfPower.WATT:
+            if TYPE_CHECKING:
+                assert description.native_max_value is not None
             self._attr_native_max_value = max(
                 description.native_max_value, inverter.rated_power
             )

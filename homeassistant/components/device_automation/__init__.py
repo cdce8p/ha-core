@@ -242,7 +242,7 @@ async def _async_get_device_automations_from_domain(
 
     function_name = automation_type.value.get_automations_func
 
-    return await asyncio.gather(
+    return await asyncio.gather(  # type: ignore[no-any-return]
         *(
             getattr(platform, function_name)(hass, device_id)
             for device_id in device_ids
