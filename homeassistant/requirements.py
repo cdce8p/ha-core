@@ -197,6 +197,7 @@ class RequirementsManager:
             # it's already been checked for the requirements and we should
             # not check it again.
             and (
+                # pylint: disable-next=consider-rewriting-conditional
                 not (cached_integration := cache.get(dep))
                 or type(cached_integration) is not Integration
             )
@@ -210,6 +211,7 @@ class RequirementsManager:
                 # it's already been checked for the requirements and we should
                 # not check it again.
                 and (
+                    # pylint: disable-next=consider-rewriting-conditional
                     not (cached_integration := cache.get(check_domain))
                     or type(cached_integration) is not Integration
                 )
