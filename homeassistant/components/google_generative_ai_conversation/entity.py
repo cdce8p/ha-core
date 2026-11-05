@@ -508,6 +508,7 @@ async def _transform_stream(
 ) -> AsyncGenerator[conversation.AssistantContentDeltaDict]:
     new_message = True
     part_details: list[PartDetails] = []
+    # pylint: disable-next=too-many-nested-blocks
     try:
         async for response in result:
             LOGGER.debug("Received response chunk: %s", response)
