@@ -141,6 +141,7 @@ class HomeConnectRuntimeData:
     async def _event_listener(self) -> None:
         """Match event with listener for event type."""
         retry_time = 10
+        # pylint: disable-next=too-many-nested-blocks
         while True:
             try:
                 async for event_message in self.client.stream_all_events():
