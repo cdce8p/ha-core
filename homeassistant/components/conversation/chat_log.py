@@ -600,6 +600,7 @@ class ChatLog:
         current_tool_calls: list[llm.ToolInput] = []
         tool_call_tasks: dict[str, asyncio.Task] = {}
 
+        # pylint: disable-next=too-many-nested-blocks
         async for delta in stream:
             LOGGER.debug("Received delta: %s", delta)
 
