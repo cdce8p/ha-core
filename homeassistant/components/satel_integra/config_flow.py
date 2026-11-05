@@ -2,7 +2,7 @@
 # pylint: disable=home-assistant-config-flow-name-field  # Name field is no longer allowed in config flow schemas
 
 import logging
-from typing import Any, override
+from typing import Any, cast, override
 
 import probatio
 from satel_integra import AsyncSatel
@@ -225,14 +225,16 @@ class SatelConfigFlow(ConfigFlow, domain=DOMAIN):
 
             # Normalize user_input to include None for missing optional encryption key
             normalized_input = {CONF_ENCRYPTION_KEY: None, **user_input}
+            host = cast(str, normalized_input[CONF_HOST])
+            port = cast(int, normalized_input[CONF_PORT])
 
             if (
                 reconfigure_entry.state is not ConfigEntryState.LOADED
                 or reconfigure_entry.data != normalized_input
             ):
                 errors = await self.test_connection(
-                    normalized_input[CONF_HOST],
-                    normalized_input[CONF_PORT],
+                    host,
+                    port,
                     normalized_input.get(CONF_ENCRYPTION_KEY),
                 )
 
@@ -240,11 +242,11 @@ class SatelConfigFlow(ConfigFlow, domain=DOMAIN):
                 return self.async_update_reload_and_abort(
                     reconfigure_entry,
                     data_updates={
-                        CONF_HOST: normalized_input[CONF_HOST],
-                        CONF_PORT: normalized_input[CONF_PORT],
+                        CONF_HOST: host,
+                        CONF_PORT: port,
                         CONF_ENCRYPTION_KEY: normalized_input.get(CONF_ENCRYPTION_KEY),
                     },
-                    title=normalized_input[CONF_HOST],
+                    title=host,
                 )
 
         suggested_values: dict[str, Any] = {
