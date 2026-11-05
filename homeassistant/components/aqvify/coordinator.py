@@ -240,7 +240,9 @@ class AqvifyAggrDataCoordinator(
                     },
                 ) from err
             device_data[device_key] = (
-                aggr_data.aggr_list[0] if len(aggr_data.aggr_list) else {}
+                aggr_data.aggr_list[0]  # type: ignore[assignment]  # type error upstream
+                if len(aggr_data.aggr_list)
+                else {}
             )
 
         return device_data

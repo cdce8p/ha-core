@@ -179,7 +179,7 @@ class TradfriLight(TradfriBaseEntity, LightEntity):
                 "dimmer": brightness,
                 "transition_time": transition_time,
             }
-            dimmer_command = self._device_control.set_dimmer(**dimmer_data)
+            dimmer_command = self._device_control.set_dimmer(**dimmer_data)  # type: ignore[arg-type]
             transition_time = None
         else:
             dimmer_command = self._device_control.set_state(True)

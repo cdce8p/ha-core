@@ -1,6 +1,6 @@
 """Entities for the Counter integration."""
 
-from typing import Any, Self, override
+from typing import Any, Self, cast, override
 
 from homeassistant.const import (
     CONF_ICON,
@@ -92,10 +92,12 @@ class Counter(collection.CollectionEntity, RestoreEntity):
 
     def compute_next_state(self, state: int | None) -> int | None:
         """Keep the state within the range of min/max values."""
-        if self._config[CONF_MINIMUM] is not None:
-            state = max(self._config[CONF_MINIMUM], state)
-        if self._config[CONF_MAXIMUM] is not None:
-            state = min(self._config[CONF_MAXIMUM], state)
+        min_value = cast("int | None", self._config[CONF_MINIMUM])
+        max_value = cast("int | None", self._config[CONF_MAXIMUM])
+        if min_value is not None:
+            state = max(min_value, state if state is not None else min_value)
+        if max_value is not None:
+            state = min(max_value, state if state is not None else max_value)
 
         return state
 
