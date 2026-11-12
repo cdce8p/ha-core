@@ -31,6 +31,6 @@ class FastdotcomDataUpdateCoordinator(DataUpdateCoordinator[dict[str, float] | N
     async def _async_update_data(self) -> dict[str, float] | None:
         """Run an executor job to retrieve Fast.com data."""
         try:
-            return await self.hass.async_add_executor_job(fast_com)
+            return await self.hass.async_add_executor_job(fast_com)  # type: ignore[no-any-return]
         except Exception as exc:
             raise UpdateFailed(f"Error communicating with Fast.com: {exc}") from exc
