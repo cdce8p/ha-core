@@ -1709,10 +1709,7 @@ TRIGGER_CONDITION_SCHEMA = probatio.Schema(
     }
 )
 
-_CONDITION_LIST_SCHEMA = _list_of(
-    # pylint: disable-next=unnecessary-lambda
-    lambda value: CONDITION_SCHEMA(value)
-)
+_CONDITION_LIST_SCHEMA = _list_of(lambda value: CONDITION_SCHEMA(value))
 
 
 def _logical_condition_schemas(

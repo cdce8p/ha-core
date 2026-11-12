@@ -333,7 +333,7 @@ async def test_playback_baichuan_start_error(
 
     async def stream_mp4(*args: Any) -> AsyncGenerator[bytes]:
         raise UnexpectedDataError(TEST_ERROR)
-        yield b""  # pylint: disable=unreachable
+        yield b""
 
     reolink_host.baichuan.stream_mp4 = MagicMock(side_effect=stream_mp4)
 
